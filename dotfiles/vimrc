@@ -1,0 +1,53 @@
+set background=dark
+set title
+set titlestring=%t
+"set tabstop=3
+"set shiftwidth=3
+"set softtabstop=3
+"set expandtab
+"set copyindent
+"set preserveindent
+"set smarttab
+"set autoindent
+set smartindent
+"set cindent
+"set cinoptions=(0,u0,U0
+set hlsearch
+set incsearch
+set showmatch
+set wildmenu
+set wildignore=*.o,*~,*.pyc
+
+"pathogen
+"execute pathogen#infect()
+
+"powerline
+set noshowmode
+set laststatus=2
+set t_Co=256
+let g:Powerline_symbols='fancy'
+
+"detectindent
+:autocmd BufReadPost * :DetectIndent
+
+"vim-taglist
+let Tlist_Compact_Format = 1
+let Tlist_GainFocus_On_ToggleOpen = 1
+let Tlist_Close_On_Select = 1
+nnoremap <C-l> :TlistToggle<CR>
+
+"nerd-commenter
+let g:NERDSpaceDelims=1
+"let g:NERDCompactSexyComs=1
+let g:NERDDefaultAlign='left'
+let g:NERDCommentEmptyLines=1
+
+"youcompleteme
+let g:ycm_extra_conf_globlist=['~/.ycm_extra_conf.py']
+
+"clang-format
+map <C-K> :pyf /usr/share/vim/addons/syntax/clang-format-3.8.py<cr>
+imap <C-K> <c-o>:pyf /usr/share/vim/addons/syntax/clang-format-3.8.py<cr>
+
+syntax on
+filetype plugin indent on

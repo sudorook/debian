@@ -1,13 +1,26 @@
-source /usr/share/zsh-antigen/antigen.zsh
+# environment variables
+export BROWSER="firefox"
+export EDITOR="vim"
+export SUDO_EDITOR="$EDITOR"
+export VISUAL="$EDITOR"
 
-antigen use oh-my-zsh
-antigen bundle zsh-users/zsh-syntax-highlighting
-antigen bundle zsh-users/zsh-autosuggestions
-antigen bundle zsh-users/zsh-history-substring-search
-antigen theme fishy
-antigen apply
+# go 
+export GOPATH=~/.go
+export PATH="$PATH:$GOPATH/bin"
 
-eval $(dircolors -b)
+# ruby
+export PATH="$(ruby -e 'print Gem.user_dir')/bin:$PATH"
+export GEM_HOME=$(ruby -e 'print Gem.user_dir')
+
+# npm
+export PATH="$PATH:$HOME/.npm/bin"
+export NPM_CONFIG_PREFIX=$HOME/.npm
+
+# R 
+export R_LIBS_USER=$HOME/.R/$(R --version | grep "R version" | cut -d" " -f3)
+
+# custom scripts
+export PATH=$PATH:~/.scripts/
 
 # enable color support of ls and also add handy aliases
 alias ls='ls --color=auto'
@@ -16,8 +29,32 @@ alias grep='grep --color=auto'
 alias happymake="make -j`nproc` && sudo make install"
 alias superupgrade="apt update && apt upgrade && apt dist-upgrade && apt autoremove && apt autoclean && update-grub"
 
-# zsh fixes
-alias scp="noglob scp"
+eval $(dircolors -b)
+
+# color the man pages
+man() {
+  env LESS_TERMCAP_mb=$'\E[01;31m' \
+  LESS_TERMCAP_md=$'\E[01;38;5;74m' \
+  LESS_TERMCAP_me=$'\E[0m' \
+  LESS_TERMCAP_se=$'\E[0m' \
+  LESS_TERMCAP_so=$'\E[38;5;246m' \
+  LESS_TERMCAP_ue=$'\E[0m' \
+  LESS_TERMCAP_us=$'\E[04;38;5;146m' \
+  man "$@"
+}
 
 # colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
+# antigen
+source /usr/share/zsh-antigen/antigen.zsh
+antigen use oh-my-zsh
+antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle zsh-users/zsh-autosuggestions
+antigen bundle zsh-users/zsh-history-substring-search
+antigen theme fishy
+antigen apply
+
+# zsh fixes
+alias scp="noglob scp"
+

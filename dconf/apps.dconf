@@ -1,0 +1,51 @@
+[org/gnome/Totem]
+autoload-subtitles=true
+active-plugins=['movie-properties', 'screensaver', 'skipto', 'recent', 'variable-rate', 'media_player_keys', 'apple-trailers', 'save-file', 'autoload-subtitles', 'vimeo', 'screenshot']
+
+[org/gnome/calculator]
+button-mode='advanced'
+
+[org/gnome/terminal/legacy/profiles:]
+list=['e3fd2c3a-c7f0-438e-b939-f9487dc0aeab', '4af157c1-7d1b-412c-8d9d-9651ddbcb55b']
+default='e3fd2c3a-c7f0-438e-b939-f9487dc0aeab'
+
+[org/gnome/terminal/legacy/profiles:/:4af157c1-7d1b-412c-8d9d-9651ddbcb55b]
+login-shell=true
+scroll-on-output=false
+palette=['rgb(46,52,54)', 'rgb(204,0,0)', 'rgb(22,152,4)', 'rgb(203,166,1)', 'rgb(47,120,213)', 'rgb(174,62,191)', 'rgb(0,163,166)', 'rgb(102,104,102)', 'rgb(76,77,75)', 'rgb(241,86,86)', 'rgb(47,199,93)', 'rgb(228,209,46)', 'rgb(99,162,230)', 'rgb(201,118,191)', 'rgb(19,207,207)', 'rgb(181,184,181)']
+scrollbar-policy='always'
+visible-name='Light'
+audible-bell=false
+
+[org/gnome/terminal/legacy/profiles:/:e3fd2c3a-c7f0-438e-b939-f9487dc0aeab]
+login-shell=true
+scrollbar-policy='always'
+palette=['rgb(46,52,54)', 'rgb(222,95,95)', 'rgb(74,201,79)', 'rgb(210,185,72)', 'rgb(81,136,206)', 'rgb(199,124,212)', 'rgb(53,203,206)', 'rgb(222,226,219)', 'rgb(167,167,167)', 'rgb(236,126,126)', 'rgb(141,230,155)', 'rgb(237,227,141)', 'rgb(137,187,241)', 'rgb(232,173,226)', 'rgb(180,230,230)', 'rgb(251,251,249)']
+visible-name='Dark'
+audible-bell=false
+
+[org/gnome/terminal/legacy]
+schema-version=uint32 3
+default-show-menubar=false
+
+[org/gnome/gedit/preferences/editor]
+highlight-current-line=true
+display-right-margin=true
+display-overview-map=true
+bracket-matching=true
+scheme='oblivion'
+display-line-numbers=true
+insert-spaces=true
+auto-indent=true
+
+[org/gnome/gedit/plugins]
+active-plugins=['synctex', 'time', 'modelines', 'spell', 'smartspaces', 'filebrowser', 'codecomment', 'git', 'docinfo', 'codeassistance']
+
+[org/gnome/meld]
+indent-width=2
+highlight-current-line=true
+style-scheme='meld-dark'
+show-line-numbers=true
+use-system-font=true
+highlight-syntax=true
+ignore-blank-lines=false

@@ -1,0 +1,9 @@
+avahi-autoipd
+avahi-daemon
+avahi-discover
+network-manager-openvpn
+openssh-server
+samba
+tor
+torsocks
+ufw

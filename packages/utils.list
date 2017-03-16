@@ -1,0 +1,11 @@
+acpi
+dmidecode
+dosfstools
+encfs
+hfsprogs
+net-tools
+nmap
+ntfs-3g
+p7zip
+squashfs-tools
+unrar-free

@@ -1,8 +1,7 @@
 # Debian Post-Installation
 
-This is a set of scripts for running post-installation tasks for Debian. It is
-intended primarily to set up a Cinnamon or, to a lesser extent, GNOME desktop
-environment.
+This is a set of scripts for running post-installation tasks for Debian 9
+(Stretch). It assumes the base is a live-CD installation with the Cinnamon or, to a lesser extent, GNOME desktop environment. 
 
 Order of installations:
 

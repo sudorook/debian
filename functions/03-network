@@ -1,0 +1,46 @@
+#! /bin/bash
+#set -eu
+
+dir="$(dirname "$0")"
+
+networking="${dir}/packages/network.list"
+nmconf="/etc/NetworkManager/NetworkManager.conf"
+nsconf="/etc/nsswitch.conf"
+function install_network {
+  show_header "Setting up networking."
+  check_installed $(cat ${networking})
+  check_fail
+  show_success "Networking applications installed."
+
+  show_info "Enabling NetworkManager service"
+  sudo systemctl enable NetworkManager
+
+  show_info "Setting up MAC address randomization in Network Manager."
+  if ! test "$(grep "mac-address=random" ${nmconf})"; then
+    sudo sh -c "echo "" >> ${nmconf}"
+    sudo sh -c "echo '## Enabling built-in MAC Address randomization' >> ${nmconf}"
+    sudo sh -c "echo "[connection]" >> ${nmconf}"
+    sudo sh -c "echo "wifi.cloned-mac-address=random" >> ${nmconf}"
+    sudo sh -c "echo "ethernet.cloned-mac-address=random" >> ${nmconf}"
+    sudo systemctl restart NetworkManager
+  fi
+
+  show_info "Enabling ufw."
+  sudo ufw enable
+  sudo systemctl enable ufw.service
+
+  show_info "Enabling and starting tor service."
+  sudo systemctl enable tor
+  sudo systemctl start tor
+
+  show_info "Enabling local hostname resolution in Avahi."
+  oldhostsline="hosts: files mymachines resolve \[!UNAVAIL=return\] dns myhostname"
+  newhostsline="hosts: files mymachines mdns_minimal \[NOTFOUND=return\] resolve \[!UNAVAIL=return\] dns myhostname"
+  sudo sed -i "/^${oldhostsline}/s/^${oldhostsline}/${newhostsline}/g" ${nsconf}
+  sudo systemctl enable avahi-daemon.service
+  sudo systemctl start avahi-daemon.service
+}
+
+function 03-network {
+  install_network
+}

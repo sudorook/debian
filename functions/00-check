@@ -1,0 +1,89 @@
+#! /bin/bash
+#set -eu
+
+dir="$(dirname "$0")"
+deps="${dir}/packages/deps.list"
+
+midbranch="\0342\0224\0234\0342\0224\0200\0342\0224\0200"
+endbranch="\0342\0224\0224\0342\0224\0200\0342\0224\0200"
+
+heirarchy="Main
+ ${midbranch} Base
+ ${midbranch} Miscellaneous
+ ${midbranch} Desktop environment
+ ${midbranch} Network tools
+ ${midbranch} Applications
+ ${midbranch} Themes
+ ${endbranch} Personalization"
+
+function check_fail {
+  EXITSTATUS=${1:-}
+  if [[ $EXITSTATUS -gt 0 ]]; then
+    show_error "Error code received. Exiting."
+    #sleep 3s && main
+    exit
+  fi
+}
+
+function check_installed {
+  for package in "${@}"; do
+    metacount=$(pacman -Ss ${package} | grep -c "(.*${package}.*)" || true)
+    installcount=$(pacman -Qs ${package} | grep -c "^local.*(.*${package}.*)$" || true)
+
+    # Check if package is installed.
+    if pacman -Qi ${package} > /dev/null 2>&1; then
+      show_listitem "${package} package already installed. Skipping."
+
+    # pacman -Qi won't work with meta packages, so check if all meta package
+    # members are installed instead.
+    elif [[ (${installcount} -eq ${metacount}) \
+            && ! (${installcount} -eq 0) ]]; then
+      show_listitem "${package} meta-package already installed. Skipping."
+
+    # Runs if package is not installed or all members of meta-package are not
+    # installed.
+    else
+      show_listitem "Installing ${package}."
+      sudo pacman -S --noconfirm ${package}
+    fi
+  done
+}
+
+function install_dependencies {
+  show_header "Checking dependencies."
+  for package in $(cat $deps); do
+    if ! pacman -Qi ${package} > /dev/null 2>&1; then
+      show_info "${package} is needed for this script."
+      sudo pacman -S ${package}
+      check_fail
+      show_success "${package} now installed."
+    else
+      show_success "${package} is already installed."
+    fi
+  done
+}
+
+function check_network {
+  show_header "Checking network connection."
+  
+  if wget -q --tries=10 --timeout=20 --spider https://google.com >/dev/null; then
+    show_success "Network is working."
+  else
+    show_error "Cannot start network connextion."
+    show_info "Trying dhcpcd unit."
+    if [[ $(systemctl is-active dncpcd) == "active" ]]; then
+      show_error "dhcpcd is already active."
+      show_error "You will need to troubleshoot your network connection yourself."
+      exit 1
+    else
+      sudo systemctl start dhcpcd
+      show_info "Sleep a bit to wait for network interface to finish loading."
+      sleep 10s
+      wget -q --tries=10 --timeout=20 --spider https://google.com
+      if ! [[ $? -eq 0 ]]; then
+        show_error "Cannot start network connextion. Giving up."
+        exit 1
+      fi
+    fi
+  fi
+}

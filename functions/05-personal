@@ -1,0 +1,230 @@
+#! /bin/bash
+#set -eu
+
+dir="$(dirname "$0")"
+
+# Set dconf settings
+# Download scripts (submodule) and add to path
+
+function set_noto_fonts {
+  show_header "Configuring system fonts."
+  if pacman -Qs noto-fonts > /dev/null 2>&1; then
+    if [ ${DESKTOP_SESSION} = "cinnamon" ]; then
+      # screensaver fonts
+      gsettings set org.cinnamon.desktop.screensaver font-message "'Noto Sans 14'"
+      gsettings set org.cinnamon.desktop.screensaver font-date "'Noto Sans 24'"
+      gsettings set org.cinnamon.desktop.screensaver font-time "'Noto Sans 64'"
+
+      # desktop environment fonts
+      gsettings set org.cinnamon.desktop.interface font-name "'Noto Sans 9'"
+      # gsettings set org.nemo.desktop font "'Noto Sans 10'"
+      gsettings set org.gnome.desktop.interface document-font-name "'Noto Sans 10'"
+      gsettings set org.gnome.desktop.interface monospace-font-name "'Monospace 11'"
+      gsettings set org.cinnamon.desktop.wm.preferences titlebar-font "'Noto Sans Bold 10'"
+    elif [ ${DESKTOP_SESSION} = "gnome" ]; then
+      # desktop environment fonts
+      gsettings set org.gnome.desktop.wm.preferences titlebar-font "'Cantarell Bold 11'"
+      gsettings set org.gnome.desktop.interface document-font-name "'Cantarell 11'"
+      gsettings set org.gnome.desktop.interface font-name "'Sans 11'"
+      # gsettings set org.gnome.desktop.interface monospace-font-name "'Noto Mono 11'"
+      gsettings set org.gnome.desktop.interface monospace-font-name "'Monospace 11'"
+    else
+      show_error "Current desktop enviornment ${DESKTOP_SESSION} not supported."
+    fi
+  fi
+}
+
+icontheme="Papirus-Dark"
+xdgdefaultconf="/etc/xdg/user-dirs.defaults"
+function set_icon_theme {
+  show_header "Setting desktop icon theme to Papirus-Dark."
+  if [ ${DESKTOP_SESSION} = "cinnamon" ]; then
+    gsettings set org.cinnamon.desktop.interface icon-theme "'${icontheme}'"
+  elif [ ${DESKTOP_SESSION} = "gnome" ]; then
+    gsettings set org.gnome.desktop.interface icon-theme "'${icontheme}'"
+  fi
+
+  show_info "Creating Projects/ and Sync/ and setting gvfs metadata."
+  mkdir -p ${HOME}/Projects
+  gvfs-set-attribute ${HOME}/Projects/ -t string \
+    metadata::custom-icon-name folder-development
+  mkdir -p ${HOME}/Sync
+  gvfs-set-attribute ${HOME}/Sync/ -t string \
+    metadata::custom-icon-name folder-cloud
+
+  show_info "Disabling Templates/ and Public/ folders."
+  sudo sed -i "s/^TEMPLATES/#TEMPLATES/g" ${xdgdefaultconf}
+  sudo sed -i "s/^PUBLICSHARE/#PUBLICSHARE/g" ${xdgdefaultconf}
+  rm -rf ${HOME}/Templates
+  rm -rf ${HOME}/Public
+}
+
+gtktheme="Arc-Dark"
+function set_gtk_theme {
+  show_header "Setting desktop GTK theme to ${gtktheme}."
+  if [ ${DESKTOP_SESSION} = "cinnamon" ]; then
+    gsettings set org.cinnamon.desktop.interface gtk-theme "'${gtktheme}'"
+    gsettings set org.cinnamon.desktop.wm.preferences theme "'${gtktheme}'"
+    gsettings set org.cinnamon.theme name "'${gtktheme}'"
+  elif [ ${DESKTOP_SESSION} = "gnome" ]; then
+    gsettings set org.gnome.desktop.wm.preferences theme "'${gtktheme}'"
+    gsettings set org.gnome.desktop.interface gtk-theme "'${gtktheme}'"
+    gnome-shell-extension-tool -e "user-theme@gnome-shell-extensions.gcampax.github.com"
+    gsettings set org.gnome.shell.extensions.user-theme name "Arc-Dark"
+  fi
+}
+
+gtktheme="Arc-Dark"
+icontheme="Papirus-Dark"
+lightdmconf="/etc/lightdm/lightdm-gtk-greeter.conf"
+function set_lightdm_theme {
+  show_header "Setting LightDM login GTK theme to ${gtktheme}."
+  if pacman -Qs lightdm-gtk-greeter > /dev/null; then
+    sudo sed -i "s/^#theme-name=$/theme-name=${gtktheme}/g" ${lightdmconf}
+    sudo sed -i "s/^#icon-theme=$/icon-theme=${icontheme}/g" ${lightdmconf}
+    if pacman -Qs noto-fonts > /dev/null; then
+      sudo sed -i "s/^#font-name=$/font-name=Noto Sans/g" ${lightdmconf}
+    fi
+    sudo sed -i "s/^#xft-hintstyle=$/xft-hintstyle=slight/g" ${lightdmconf}
+  fi
+}
+
+gtksettings="${HOME}/.config/gtk-3.0/settings.ini"
+function set_dark_gtk {
+  show_header "Setting global dark theme for gtk applications."
+  if grep ^gtk-application-prefer-dark-theme= ${gtksettings} >/dev/null 2>&1; then
+    isgtkdark=$(grep ^gtk-application-prefer-dark-theme= ${gtksettings} | cut -d"=" -f2)
+    if test ${isgtkdark}; then
+      show_info "Desktop is already set to use dark GTK variants."
+    else
+      sed -i "s/^gtk-application-prefer-dark-theme=${isgtkdark}$/gtk-application-prefer-dark-theme=1/g" ${gtksettings}
+    fi
+  else
+    if [ -f ${gtksettings} ]; then
+      echo "" >> ${gtksettings}
+    else
+      mkdir -p $(dirname ${gtksettings}) && touch ${gtksettings}
+    fi
+    echo "[Settings]" >> ${gtksettings}
+    echo "gtk-application-prefer-dark-theme=1" >> ${gtksettings}
+  fi
+}
+
+cinnamondconf="${dir}/dconf/cinnamon.dconf"
+function import_cinnamon_dconf {
+  show_header "Importing cinnamon dconf settings."
+  dconf load / < ${cinnamondconf}
+  check_fail
+  show_success "Cinnamon dconf settings imported."
+}
+
+gnomedconf="${dir}/dconf/gnome.dconf"
+function import_gnome_dconf {
+  show_header "Importing gnome dconf settings."
+  dconf load / < ${gnomedconf}
+  check_fail
+  show_success "GNOME dconf settings imported."
+}
+
+appsdconf="${dir}/dconf/apps.dconf"
+function import_apps_dconf {
+  show_header "Importing application dconf settings."
+  dconf load / < ${appsdconf}
+  check_fail
+  show_success "Application dconf settings imported."
+}
+
+grubconfig="/etc/default/grub"
+function invert_brightness {
+  oldline=$(cat ${grubconfig} | grep ^GRUB_CMDLINE_LINUX=)
+  bootparams=$(echo ${oldline} | sed -n "s/^GRUB_CMDLINE_LINUX=\"\(.*\)\"/\1/p")
+  if [[ ${bootparams} =~ "i915.invert_brightness=1" ]]; then
+    show_header "Brightness already inverted. Skipping."
+  else
+    sudo sed -i "s|${bootparams}|${bootparams} i915.invert_brightness=1|g" ${grubconfig}
+    sudo sed -i "\|^GRUB_CMDLINE_LINUX=| a\#${oldline}" ${grubconfig} # backup
+    show_success "Brightness inverted."
+  fi
+}
+
+pulseconfig="/etc/pulse/default.pa"
+function disable_pulseaudio_suspend {
+  show_header "Disabling suspend on PulseAudio when sinks/sources idle."
+  if [ -f ${pulseconfig} ]; then
+    sudo sed -i "s/^load-module module-suspend-on-idle$/#load-module module-suspend-on-idle/g" ${pulseconfig}
+  else
+    show_warning "PuleAudio config file missing. Exiting."
+  fi
+}
+function 05-personal {
+  show_question "Personal: what do you want to set?"
+  show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
+
+  options=("Back" "All" "Fonts" "Icon theme" "GTK theme" "LightDM theme" \
+           "Dark GTK setting" "Cinnamon dconf settings" "GNOME dconf settings" \
+           "Application dconf settings" "Invert brightness" \
+           "Disable PulseAudio suspend")
+  select option in "${options[@]}"; do
+    case $option in
+      "Back")
+        break
+        ;;
+      "All")
+        set_noto_fonts
+        set_icon_theme
+        set_gtk_theme
+        set_lightdm_theme
+        set_dark_gtk
+        import_cinnamon_dconf
+        import_gnome_dconf
+        import_apps_dconf
+        invert_brightness
+        disable_pulseaudio_suspend
+        show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
+        ;;
+      "Fonts")
+        set_noto_fonts
+        show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
+        ;;
+      "Icon theme")
+        set_icon_theme
+        show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
+        ;;
+      "GTK theme")
+        set_gtk_theme
+        show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
+        ;;
+      "LightDM theme")
+        set_lightdm_theme
+        show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
+        ;;
+      "Dark GTK setting")
+        set_dark_gtk
+        show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
+        ;;
+      "Cinnamon dconf settings")
+        import_cinnamon_dconf
+        show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
+        ;;
+      "GNOME dconf settings")
+        import_gnome_dconf
+        show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
+        ;;
+      "Application dconf settings")
+        import_apps_dconf
+        show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
+        ;;
+      "Invert brightness")
+        invert_brightness
+        show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
+        ;;
+      "Disable PulseAudio suspend")
+        disable_pulseaudio_suspend
+        show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
+        ;;
+      *)
+        show_warning "Invalid option."
+        ;;
+    esac
+  done
+}

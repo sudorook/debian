@@ -1,0 +1,71 @@
+#! /bin/bash
+#set -eu
+
+dir="$(dirname "$0")"
+
+base="${dir}/packages/base.list"
+toprc="${dir}/dotfiles/toprc"
+pacmanconf="/etc/pacman.conf"
+function install_base {
+  show_header "Installing base packages and their config files."
+  check_installed $(cat ${base})
+  check_fail
+  show_success "Base packages installed."
+
+  show_info "Installing toprc."
+  cp -f ${toprc} ${HOME}/.toprc
+  show_success "Installed toprc."
+
+  # Customize sudo to:
+  #  - insult incorrect password attempts
+  show_info "Enabling sudo insults."
+  sudo sh -c 'cat /etc/sudoers | \
+              sed -e "/^# Defaults!REBOOT !log_output$/a Defaults insults" | \
+              (EDITOR="tee" visudo >/dev/null)'
+
+  # Customize pacman to:
+  #  - color pacman output
+  #  - show pacman-game-style progress bare for pacman
+  show_info "Enabling color and Pacman animation for pacman."
+  sudo sed -i "s/^#Color$/Color/" ${pacmanconf}
+  if ! test "$(grep ^ILoveCandy$ /etc/pacman.conf)"; then
+    sudo sed -i "/^CheckSpace$/a ILoveCandy" ${pacmanconf}
+  fi
+
+  # Use reflector to sort among fastest mirrors
+  show_info "Using reflector to have pacman use fastest https mirrors."
+  sudo reflector --verbose -l 10 -p https --sort rate --save /etc/pacman.d/mirrorlist
+}
+
+function update_packages {
+  show_header "Updating packages."
+  sudo pacman -Syu --nocheck
+  check_fail
+  show_success "Packages updated."
+}
+
+function 01-base {
+  show_question "Base: what do you want to install?"
+  show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
+
+  options=("Back" "Base packages" "Updates")
+  select option in "${options[@]}"; do
+    case $option in
+      "Back")
+        break
+        ;;
+      "Base packages")
+        install_base
+        show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
+        ;;
+      "Updates")
+        update_packages
+        show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
+        ;;
+      *)
+        show_warning "Invalid option."
+        show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
+        ;;
+    esac
+  done
+}

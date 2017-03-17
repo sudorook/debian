@@ -1,0 +1,132 @@
+#! /bin/bash
+#set -eu
+
+dir="$(dirname "$0")"
+
+themes="${dir}/packages/themes.list"
+function install_theme_deps {
+  show_header "Installing theme dependencies."
+  check_installed $(cat ${themes})
+  check_fail
+  show_success "Theme dependencies installed."
+}
+
+function install_arc_gtk {
+  show_header "Downloading, building, and installing the Arc GTK theme."
+  git clone https://github.com/pseudorook/arc-theme arc-theme
+  cd arc-theme
+  git checkout mine
+  npm install
+  ./autogen.sh --prefix=/usr
+  gulp
+  make -j`nproc`
+  sudo make install
+  cd ..
+  rm -rf arc-theme
+}
+
+function install_adapta_gtk {
+  show_header "Downloading, building, and installing the Adapta GTK theme."
+  git clone https://github.com/pseudorook/Adapta adapta-gtk-theme
+  cd adapta-gtk-theme
+  git checkout mine
+  ./autogen.sh \
+    --prefix=/usr \
+    --with-selection_color=#0097A7 \
+    --with-second_selection_color=#00ACC1 \
+    --with-accent_color=#00ACC1 \
+    --with-suggestion_color=#0097A7 \
+    --enable-parallel
+  make -j`nproc`
+  sudo make install
+  cd ..
+  rm -rf adapta-gtk-theme
+}
+
+fonts="${dir}/packages/fonts.list"
+function install_fonts {
+  show_header "Installing fonts."
+  check_installed $(cat ${fonts})
+  check_fail
+  show_success "Fonts installed."
+}
+
+function install_papirus_icons {
+  show_header "Downloading and installing the Papirus icon theme."
+  git clone https://github.com/PapirusDevelopmentTeam/papirus-icon-theme papirus-icon-theme
+  cd papirus-icon-theme
+  sudo make install
+  cd ../
+  rm -rf papirus-icon-theme
+}
+
+qt5ctconf="${dir}/configs/qt5ct.conf"
+pkgbuilddir="${HOME}/.pkgbuild"
+function set_qtcompat {
+  show_header "Building qt5-styleplugins."
+  curdir=`pwd`
+  mkdir -p ${pkgbuilddir}
+  cd ${pkgbuilddir}
+  wget -N https://aur.archlinux.org/cgit/aur.git/snapshot/qt5-styleplugins.tar.gz
+  tar xf ${pkgbuilddir}/qt5-styleplugins.tar.gz
+  cd qt5-styleplugins
+  if ! [ -f qt5-styleplugins-[0-9\.-]*-x86_64.pkg.tar.xz ]; then
+    makepkg -s
+    sudo pacman -U --nocheck qt5-styleplugins-[0-9\.-]*-x86_64.pkg.tar.xz
+  fi
+  show_success "qt5-styleplugins built and installed."
+  cd ${curdir}
+
+  show_info "Copying qt5ct config."
+  mkdir -p ${HOME}/.config/qt5ct
+  cp -f ${qt5ctconf} ${HOME}/.config/qt5ct
+  export QT_QPA_PLATFORMTHEME=qt5ct
+}
+function 04-themes {
+  show_info "Installing dependencies for building themes."
+  install_theme_deps
+
+  show_question "Themes: what do you want to install?"
+  show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
+
+  options=("Back" "All" "Arc (GTK)" "Adapta (GTK)" "Fonts" "Papirus (icons)" \
+           "Qt/GTK compatibility")
+  select option in "${options[@]}"; do
+    case $option in
+      "Back")
+        break
+        ;;
+      "All")
+        install_arc_gtk
+        install_adapta_gtk
+        install_fonts
+        install_papirus_icons
+        set_qtcompat
+        show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
+        ;;
+      "Arc (GTK)")
+        install_arc_gtk
+        show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
+        ;;
+      "Adapta (GTK)")
+        install_adapta_gtk
+        show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
+        ;;
+      "Fonts")
+        install_fonts
+        show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
+        ;;
+      "Papirus (icons)")
+        install_papirus_icons
+        show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
+        ;;
+      "Qt/GTK compatibility")
+        set_qtcompat
+        show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
+        ;;
+      *)
+        show_warning "Invalid option."
+        ;;
+    esac
+  done
+}

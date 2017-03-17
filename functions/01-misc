@@ -1,0 +1,107 @@
+#! /bin/bash
+#set -eu
+
+dir="$(dirname "$0")"
+
+zsh="${dir}/packages/zsh.list"
+zshrc="${dir}/dotfiles/zshrc"
+zshdir="${HOME}/.zsh"
+function install_zsh {
+  show_header "Installing zsh."
+  check_installed $(cat ${zsh})
+  check_fail
+  show_success "zsh installed."
+
+  show_info "Downloading zsh extras."
+  mkdir -p ${zshdir}
+  if ! [ -d ${zshdir}/zsh-history-substring-search ]; then
+    git clone https://github.com/zsh-users/zsh-history-substring-search \
+      ${zshdir}/zsh-history-substring-search
+  fi
+  if ! [ -d ${zshdir}/zsh-autosuggestions ]; then
+    git clone https://github.com/zsh-users/zsh-autosuggestions \
+      ${zshdir}/zsh-autosuggestions
+  fi
+
+  show_info "Copying zshrc."
+  cp -f ${zshrc} ${HOME}/.zshrc
+
+  if test $(getent passwd `whoami` | grep "zsh"); then
+    show_info "Changing login shell to zsh. Provide your password."
+    chsh -s /bin/zsh
+  fi
+}
+
+grsec="${dir}/packages/grsec.list"
+function install_grsec {
+  show_header "Installing grsecurity."
+  check_installed $(cat ${grsec})
+  check_fail
+  show_success "Grsecurity-patched kernel installed."
+  # need to set pax rules or enable learning mode
+}
+
+utils="${dir}/packages/utils.list"
+function install_utils {
+  show_header "Installing general utilities."
+  check_installed $(cat ${utils})
+  check_fail
+  show_success "Utilities installed."
+}
+
+laptop="${dir}/packages/laptop.list"
+function install_laptop {
+  show_header "Installing laptop utilities."
+  check_installed $(cat ${laptop})
+  check_fail
+  show_success "Laptop utilities installed."
+
+  # Enable tlp on laptops.
+  show_info "Enabling and starting tlp systemd units."
+  sudo systemctl enable tlp.service
+  sudo systemctl start tlp.service
+  sudo systemctl enable tlp-sleep.service
+  sudo systemctl start tlp-sleep.service
+  show_success "tlp enabled."
+}
+
+function 01-misc {
+  show_question "Misc: what do you want to install?"
+  show_info "Main\n ${endbranch} Misc (Hit ENTER to see options again.)"
+
+  options=("Back" "All" "zsh" "Grsecurity" "Linux utilities" "Laptop tools")
+  select option in "${options[@]}"; do
+    case $option in
+      "Back")
+        break
+        ;;
+      "All")
+        install_zsh
+        install_grsecurity
+        install_utils
+        install_laptop
+        show_info "Main\n ${endbranch} Misc (Hit ENTER to see options again.)"
+        ;;
+      "zsh")
+        install_zsh
+        show_info "Main\n ${endbranch} Misc (Hit ENTER to see options again.)"
+        ;;
+      "Grsecurity")
+        install_grsecurity
+        show_info "Main\n ${endbranch} Misc (Hit ENTER to see options again.)"
+        ;;
+      "Linux utilities")
+        install_utils
+        show_info "Main\n ${endbranch} Misc (Hit ENTER to see options again.)"
+        ;;
+      "Laptop tools")
+        install_laptop
+        show_info "Main\n ${endbranch} Misc (Hit ENTER to see options again.)"
+        ;;
+      *)
+        show_warning "Invalid option."
+        show_info "Main\n ${endbranch} Misc (Hit ENTER to see options again.)"
+        ;;
+    esac
+  done
+}

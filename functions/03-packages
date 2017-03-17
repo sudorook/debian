@@ -1,0 +1,209 @@
+#! /bin/bash
+#set -eu
+
+dir="$(dirname "$0")"
+
+android="${dir}/packages/android.list"
+function install_android {
+  show_header "Installing tools for Android devices."
+  check_installed $(cat ${android})
+  check_fail
+  show_success "Android tools installed."
+}
+
+apps="${dir}/packages/apps.list"
+mpvconfig="${dir}/configs/mpv.conf"
+function install_apps {
+  show_header "Installing desktop applications."
+  check_installed $(cat ${apps})
+  check_fail
+  show_success "Applications installed."
+
+  show_info "Copying mpv config."
+  mkdir -p ${HOME}/.config/mpv
+  cp -f ${mpvconfig} ${HOME}/.config/mpv
+}
+
+codecs="${dir}/packages/codecs.list"
+function install_codecs {
+  show_header "Installing codecs."
+  check_installed $(cat ${codecs})
+  check_fail
+  show_success "Codecs installed."
+}
+
+dev="${dir}/packages/dev.list"
+npmrc="${dir}/dotfiles/npmrc"
+function install_dev {
+  show_header "Installing languages and editors for development."
+  check_installed $(cat ${dev})
+  check_fail
+  show_success "Languages and editors installed."
+
+  show_info "Installing dotfiles."
+  cp -f ${npmrc} ${HOME}/.npmrc
+  show_success "Dotfiles installed."
+}
+
+games="${dir}/packages/games.list"
+function install_games {
+  show_header "Installing game emulators."
+  check_installed $(cat ${games})
+  check_fail
+  show_success "Emulators installed."
+}
+
+kvm="${dir}/packages/kvm.list"
+function install_kvm {
+  show_header "Installing KVM."
+  check_installed $(cat ${kvm})
+  check_fail
+  show_success "KVM installed."
+  sudo usermod -aG kvm,libvirt $(whoami)
+
+  sudo systemctl enable libvirtd
+  sudo systemctl start libvirtd
+}
+
+kvmguest="${dir}/packages/kvm-guest.list"
+mkinitcpioconf="/etc/mkinitcpio.conf"
+function install_kvm_guest {
+  if grep "^flags.*\ hypervisor" /proc/cpuinfo >/dev/null 2>&1; then
+    show_header "Installing tools for KVM guests."
+    check_installed $(cat ${kvmguest})
+    check_fail
+    show_success "KVM installed."
+
+    show_info "Adding virtio modules to initramfs."
+    virtiomodules="virtio virtio_pci virtio_blk virtio_net virtio_ring"
+    if test "$(grep "^MODULES=.*${virtiomodules}.*" ${mkinitcpioconf})"; then
+      show_info "Virtio modules already specified in ${mkinitcpioconf}."
+    else
+      mkinitcpiomodules=$(sed -n "s/^MODULES=\"\(.*\)\"/\1 ${virtiomodules}/p" ${mkinitcpioconf} | sed -e "s/^[[:space:]]//g")
+      sudo sed -i "s/^MODULES=\".*\"/MODULES=\"${mkinitcpiomodules}\"/" ${mkinitcpioconf}
+      show_info "Rebuilding kernel(s)"
+      sudo mkinitcpio -p linux
+    fi
+
+    sudo systemctl enable qemu-ga.service
+    sudo systemctl enable spice-vdagentd.service
+  else
+    show_warning "Not running on a virtualized machine. Skipping."
+  fi
+}
+
+vim="${dir}/packages/vim.list"
+vimrc="${dir}/dotfiles/vimrc"
+function install_vim {
+  show_header "Installing vim and vim plugins."
+  check_installed $(cat ${vim})
+  check_fail
+  show_success "Vim and vim plugins installed."
+
+  show_info "Installing vimrc."
+  cp -f ${vimrc} ${HOME}/.vimrc
+  show_success "vimrc installed."
+}
+
+virtualbox="${dir}/packages/virtualbox.list"
+vboxservice="${dir}/services/virtualbox-modprobe.service"
+function install_virtualbox {
+  show_header "Installing VirtualBox."
+  check_installed $(cat ${virtualbox})
+  check_fail
+  show_success "VirtualBox installed."
+
+  show_info "Adding $(whoami) to vboxusers group."
+  sudo usermod -aG vboxusers $(whoami)
+  show_success "Done."
+
+  show_info "Setting up custom services."
+  sudo ln -sf /dev/null /etc/modules-load.d/virtualbox-host-modules-arch.conf
+  sudo cp -f ${vboxservice} /etc/systemd/system
+  sudo systemctl enable virtualbox-modprobe.service
+  show_success "Done."
+}
+
+virtualboxguest="${dir}/packages/virtualbox-guest.list"
+function install_virtualbox_guest {
+  if grep "^flags.*\ hypervisor" /proc/cpuinfo >/dev/null 2>&1; then
+    show_header "Installing packages for VirtualBox guests."
+    check_installed $(cat ${virtualboxguest})
+    check_fail
+    show_success "VirtualBox guest packages installed."
+  else
+    show_warning "Not running on a virtualized machine. Skipping."
+  fi
+}
+
+function 03-packages {
+  show_question "Applications: what do you want to install?"
+  show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+
+  options=("Back" "All" "Android tools" "General" "Codecs" "Development" \
+           "Emulators" "KVM (host)" "KVM (guest)" "Vim" "VirtualBox (host)" \
+           "VirtualBox (guest)")
+  select option in "${options[@]}"; do
+    case $option in
+      "Back")
+        break
+        ;;
+      "All")
+        install_android
+        install_apps
+        install_codecs
+        install_dev
+        install_games
+        install_kvm
+        install_kvm_guest
+        install_vim
+        install_virtualbox
+        install_virtualbox_guest
+        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        ;;
+      "Android tools")
+        install_android
+        show_info "Main\n ${endbranch} Misc (Hit ENTER to see options again.)"
+        ;;
+      "General")
+        install_apps
+        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        ;;
+      "Codecs")
+        install_codecs
+        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        ;;
+      "Development")
+        install_dev
+        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        ;;
+      "Emulators")
+        install_games
+        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        ;;
+      "KVM (host)")
+        install_kvm
+        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        ;;
+      "KVM (guest)")
+        install_kvm_guest
+        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        ;;
+      "Vim")
+        install_vim
+        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        ;;
+      "VirtualBox (host)")
+        install_virtualbox
+        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        ;;
+      "VirtualBox (guest)")
+        install_virtualbox_guest
+        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        ;;
+      *)
+        show_warning "Invalid option."
+        ;;
+    esac
+  done
+}

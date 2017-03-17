@@ -1,0 +1,59 @@
+#! /bin/bash
+#set -eu
+
+dir="$(dirname "$0")"
+
+gnome="${dir}/packages/gnome.list"
+function install_gnome {
+  show_header "Setting up GNOME desktop environment."
+  check_installed $(cat ${gnome})
+  check_fail
+  show_success "GNOME installed."
+
+  show_info "Putting things into place."
+  export DESKTOP_SESSION="gnome"
+  xdg-user-dirs-update
+  sudo systemctl enable gdm.service
+  show_info "Done."
+}
+
+cinnamon="${dir}/packages/cinnamon.list"
+function install_cinnamon {
+  show_header "Setting up cinnamon desktop environment."
+  check_installed $(cat ${cinnamon})
+  check_fail
+  show_success "Cinnamon installed."
+
+  show_info "Putting things into place."
+  export DESKTOP_SESSION="cinnamon"
+  xdg-user-dirs-update
+  sudo systemctl enable lightdm.service
+  show_info "Done."
+}
+
+function install_desktop {
+  availabledesktops=("GNOME" "Cinnamon")
+  show_question "Which desktop environment do you want?"
+  select reply in "${availabledesktops[@]}"; do
+    case $reply in
+      "GNOME")
+        show_info "$reply selected."
+        install_gnome
+        break
+        ;;
+      "Cinnamon")
+        show_info "$reply selected."
+        install_cinnamon
+        break
+        ;;
+      *)
+        show_warning "Invalid option."
+        break
+        ;;
+    esac
+  done
+}
+
+function 02-desktop {
+  install_desktop
+}

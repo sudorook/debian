@@ -17,7 +17,7 @@ export PATH="$PATH:$HOME/.npm/bin"
 export NPM_CONFIG_PREFIX=$HOME/.npm
 
 # R 
-export R_LIBS_USER=$HOME/.R/$(R --version | grep "R version" | cut -d" " -f3)
+[[ -f /usr/bin/R ]] && export R_LIBS_USER=$HOME/.R/$(R --version | sed -n "s/^R version \([0-9\.]*\) .*/\1/p")
 
 # custom scripts
 export PATH=$PATH:~/.scripts/

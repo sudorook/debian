@@ -3,6 +3,7 @@ bundler
 cargo
 clang
 clang-format
+clang-tidy
 cmake
 cppcheck
 cython

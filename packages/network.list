@@ -1,6 +1,8 @@
 avahi-autoipd
 avahi-daemon
 avahi-discover
+gvfs
+libnss-mdns
 network-manager-openvpn
 openssh-server
 samba

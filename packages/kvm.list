@@ -4,5 +4,5 @@ ebtables
 libvirt-daemon
 netcat-openbsd
 qemu
-spice-gtk3
+qemu-kvm
 virt-manager

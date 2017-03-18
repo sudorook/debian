@@ -1,8 +1,13 @@
 gtk2-engines-murrine
 inkscape
 libgtk-3-dev
+libmtdev-dev
 nodejs
 npm
 parallel
+qtbase5-dev
+qtbase5-private-dev
+qttools5-dev
+qt5-default
 qt5-style-plugins
 sassc

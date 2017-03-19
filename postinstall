@@ -61,7 +61,7 @@ function main {
         break
         ;;
       "Autopilot")
-        read -r -p "Let this script install everything? (y/N) " response
+        read -r -p $'\033[1;34m Let this script install everything? (y/N) \033[0m' response
         if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
           # Install base packages
           install_base

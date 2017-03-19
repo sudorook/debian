@@ -101,7 +101,6 @@ function install_vim {
 }
 
 virtualbox="${dir}/packages/virtualbox.list"
-vboxservice="${dir}/services/virtualbox-modprobe.service"
 function install_virtualbox {
   show_header "Installing VirtualBox."
   check_installed $(cat ${virtualbox})
@@ -110,12 +109,6 @@ function install_virtualbox {
 
   show_info "Adding $(whoami) to vboxusers group."
   sudo usermod -aG vboxusers $(whoami)
-  show_success "Done."
-
-  show_info "Setting up custom services."
-  sudo ln -sf /dev/null /etc/modules-load.d/virtualbox-host-modules-arch.conf
-  sudo cp -f ${vboxservice} /etc/systemd/system
-  sudo systemctl enable virtualbox-modprobe.service
   show_success "Done."
 }
 

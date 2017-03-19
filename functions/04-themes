@@ -92,9 +92,6 @@ function set_qtcompat {
 }
 
 function 04-themes {
-  show_info "Installing dependencies for building themes."
-  install_theme_deps
-
   show_question "Themes: what do you want to install?"
   show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
 
@@ -114,10 +111,16 @@ function 04-themes {
         show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
         ;;
       "Arc (GTK)")
+        show_info "Installing dependencies for building themes."
+        install_theme_deps
+
         install_arc_gtk
         show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
         ;;
       "Adapta (GTK)")
+        show_info "Installing dependencies for building themes."
+        install_theme_deps
+
         install_adapta_gtk
         show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
         ;;

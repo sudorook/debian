@@ -26,9 +26,9 @@ function check_fail {
 
 srclist="/etc/apt/sources.list"
 function check_debian_release {
-  show_info "Checking currently set Debian release."
-  if ! [[ "$(lsb_release)" == "stretch" ]]; then
-    show_warning "Currently running $(lsb_relase -sc)"
+  show_header "Checking currently set Debian release."
+  if ! [[ "$(lsb_release -sc)" == "stretch" ]]; then
+    show_warning "Currently running $(lsb_release -sc)"
     read -r -p $'\033[1;34m Switch to stretch? (y/N) \033[0m' response
     if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
       echo "Updating sources.list."
@@ -44,7 +44,7 @@ function check_debian_release {
       show_info "Reboot your system after major updates."
     fi
   else
-    show_success "Currently running $(lsb_relase -sc)"
+    show_success "Currently running $(lsb_release -sc)"
   fi
 }
 

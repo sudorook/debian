@@ -68,7 +68,6 @@ function install_kvm {
 }
 
 kvmguest="${dir}/packages/kvm-guest.list"
-mkinitcpioconf="/etc/mkinitcpio.conf"
 function install_kvm_guest {
   if grep "^flags.*\ hypervisor" /proc/cpuinfo >/dev/null 2>&1; then
     show_header "Installing tools for KVM guests."
@@ -76,18 +75,6 @@ function install_kvm_guest {
     check_fail
     show_success "KVM installed."
 
-    show_info "Adding virtio modules to initramfs."
-    virtiomodules="virtio virtio_pci virtio_blk virtio_net virtio_ring"
-    if test "$(grep "^MODULES=.*${virtiomodules}.*" ${mkinitcpioconf})"; then
-      show_info "Virtio modules already specified in ${mkinitcpioconf}."
-    else
-      mkinitcpiomodules=$(sed -n "s/^MODULES=\"\(.*\)\"/\1 ${virtiomodules}/p" ${mkinitcpioconf} | sed -e "s/^[[:space:]]//g")
-      sudo sed -i "s/^MODULES=\".*\"/MODULES=\"${mkinitcpiomodules}\"/" ${mkinitcpioconf}
-      show_info "Rebuilding kernel(s)"
-      sudo mkinitcpio -p linux
-    fi
-
-    sudo systemctl enable qemu-ga.service
     sudo systemctl enable spice-vdagentd.service
   else
     show_warning "Not running on a virtualized machine. Skipping."

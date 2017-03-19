@@ -22,6 +22,14 @@ function install_base {
               (EDITOR="tee" visudo >/dev/null)'
 }
 
+purge="${dir}/packages/purge.list"
+function purge_packages {
+  show_header "Purging unwanted packaged often installed by default." 
+  check_uninstalled $(cat ${purge})
+  check_fail
+  show_success "Base packages installed."
+}
+
 function update_packages {
   show_header "Updating packages."
   sudo apt-get -y update && \
@@ -37,7 +45,7 @@ function 01-base {
   show_question "Base: what do you want to install?"
   show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
 
-  options=("Back" "Base packages" "Updates")
+  options=("Back" "Base packages" "Purge packages" "Updates")
   select option in "${options[@]}"; do
     case $option in
       "Back")
@@ -45,6 +53,10 @@ function 01-base {
         ;;
       "Base packages")
         install_base
+        show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
+        ;;
+      "Purge packages")
+        purge_packages
         show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
         ;;
       "Updates")

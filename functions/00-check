@@ -51,7 +51,7 @@ function check_debian_release {
 function check_installed {
   for package in "${@}"; do
     # Check if package is installed already before installing.
-    if dpkg -s ${package} > /dev/null 2>&1; then
+    if dpkg -s ${package} >/dev/null 2>&1; then
       show_listitem "${package} package already installed. Skipping."
     else
       # First check if the package exists in the repos.
@@ -61,6 +61,18 @@ function check_installed {
       else
         show_warning "Package ${package} does not exist in the repos. Skipping."
       fi
+    fi
+  done
+}
+
+function check_uninstalled {
+  for package in "${@}"; do
+    if dpkg -s ${package} >/dev/null 2>&1; then
+      show_listitem "Purging ${package}."
+      sudo apt-get -y purge ${package}
+      sudo apt-get -y autoremove
+    else
+      show_warning "Package ${package} is not installed. Skipping."
     fi
   done
 }

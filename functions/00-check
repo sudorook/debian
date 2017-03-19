@@ -53,21 +53,17 @@ function check_installed {
     # metacount=$(dp -s ${package} | grep -c "(.*${package}.*)" || true)
     # installcount=$(pacman -Qs ${package} | grep -c "^local.*(.*${package}.*)$" || true)
 
-    # Check if package is installed.
+    # Check if package is installed already before installing.
     if dpkg -s ${package} > /dev/null 2>&1; then
       show_listitem "${package} package already installed. Skipping."
-
-    # pacman -Qi won't work with meta packages, so check if all meta package
-    # members are installed instead.
-    # elif [[ (${installcount} -eq ${metacount}) \
-            # && ! (${installcount} -eq 0) ]]; then
-      # show_listitem "${package} meta-package already installed. Skipping."
-
-    # Runs if package is not installed or all members of meta-package are not
-    # installed.
     else
-      show_listitem "Installing ${package}."
-      sudo apt-get -y install ${package}
+      # First check if the package exists in the repos.
+      if apt-cache show ${package} >/dev/null 2>&1; then
+        show_listitem "Installing ${package}."
+        sudo apt-get -y install ${package}
+      else
+        show_warning "Package ${package} does not exist in the repos. Skipping."
+      fi
     fi
   done
 }

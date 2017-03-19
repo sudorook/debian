@@ -50,9 +50,6 @@ function check_debian_release {
 
 function check_installed {
   for package in "${@}"; do
-    # metacount=$(dp -s ${package} | grep -c "(.*${package}.*)" || true)
-    # installcount=$(pacman -Qs ${package} | grep -c "^local.*(.*${package}.*)$" || true)
-
     # Check if package is installed already before installing.
     if dpkg -s ${package} > /dev/null 2>&1; then
       show_listitem "${package} package already installed. Skipping."

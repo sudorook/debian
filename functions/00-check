@@ -7,14 +7,15 @@ deps="${dir}/packages/deps.list"
 midbranch="\0342\0224\0234\0342\0224\0200\0342\0224\0200"
 endbranch="\0342\0224\0224\0342\0224\0200\0342\0224\0200"
 
-heirarchy="Main
- ${midbranch} Base
- ${midbranch} Miscellaneous
- ${midbranch} Desktop environment
- ${midbranch} Network tools
- ${midbranch} Applications
- ${midbranch} Themes
- ${endbranch} Personalization"
+# # Tricks vim-autointent into thinking the default indent is 1 space.
+# heirarchy="Main
+#  ${midbranch} Base
+#  ${midbranch} Miscellaneous
+#  ${midbranch} Desktop environment
+#  ${midbranch} Network tools
+#  ${midbranch} Applications
+#  ${midbranch} Themes
+#  ${endbranch} Personalization"
 
 function check_fail {
   EXITSTATUS=${1:-}

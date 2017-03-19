@@ -3,12 +3,24 @@
 
 dir="$(dirname "$0")"
 
+npmrc="${dir}/dotfiles/npmrc"
 themes="${dir}/packages/themes.list"
 function install_theme_deps {
   show_header "Installing theme dependencies."
   check_installed $(cat ${themes})
   check_fail
   show_success "Theme dependencies installed."
+
+  if ! command -v gulp; then
+    show_header "Locally installing gulp."
+
+    # The script runs in a bash shell, so the npm install directory and the
+    # environment variables for npm binaries need to be set here manually.
+    cp -f ${npmrc} ${HOME}/.npmrc
+    export PATH="$PATH:$HOME/.npm/bin"
+    export NPM_CONFIG_PREFIX=$HOME/.npm
+    npm -g install gulp
+  fi
 }
 
 function install_arc_gtk {

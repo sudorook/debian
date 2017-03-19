@@ -19,29 +19,32 @@ function install_cinnamon {
   show_success "Cinnamon installed."
 }
 
-function install_desktop {
-  availabledesktops=("GNOME" "Cinnamon")
-  show_question "Which desktop environment do you want?"
-  select reply in "${availabledesktops[@]}"; do
-    case $reply in
-      "GNOME")
-        show_info "$reply selected."
-        install_gnome
+function 02-desktop {
+  show_question "Desktop: what do you want to install?"
+  show_info "Main\n ${endbranch} Desktop (Hit ENTER to see options again.)"
+
+  options=("Back" "All" "GNOME" "Cinnamon")
+  select option in "${options[@]}"; do
+    case $option in
+      "Back")
         break
         ;;
-      "Cinnamon")
-        show_info "$reply selected."
+      "All")
+        install_gnome
         install_cinnamon
-        break
+        show_info "Main\n ${endbranch} Desktop (Hit ENTER to see options again.)"
+        ;;
+      "GNOME")
+        install_gnome
+        show_info "Main\n ${endbranch} Desktop (Hit ENTER to see options again.)"
+        ;;
+      "Cinnamon")
+        install_cinnamon
+        show_info "Main\n ${endbranch} Desktop (Hit ENTER to see options again.)"
         ;;
       *)
         show_warning "Invalid option."
-        break
         ;;
     esac
   done
-}
-
-function 02-desktop {
-  install_desktop
 }

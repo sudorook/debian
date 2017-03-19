@@ -69,7 +69,7 @@ function set_gtk_theme {
   elif [[ ${DESKTOP_SESSION} =~ "gnome" ]]; then
     gsettings set org.gnome.desktop.wm.preferences theme "'${gtktheme}'"
     gsettings set org.gnome.desktop.interface gtk-theme "'${gtktheme}'"
-    gnome-shell-extension-tool -e "user-theme@gnome-shell-extensions.gcampax.github.com"
+    gnome-shell-extension-tool -e "user-theme@gnome-shell-extensions.gcampax.github.com" || true
     gsettings set org.gnome.shell.extensions.user-theme name "Arc-Dark"
   fi
 }

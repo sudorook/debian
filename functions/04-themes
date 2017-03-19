@@ -88,6 +88,7 @@ function set_qtcompat {
   cp -f ${qt5ctconf} ${HOME}/.config/qt5ct
   export QT_QPA_PLATFORMTHEME=qt5ct
 }
+
 function 04-themes {
   show_info "Installing dependencies for building themes."
   install_theme_deps

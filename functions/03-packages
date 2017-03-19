@@ -105,6 +105,12 @@ function install_vim {
   show_info "Installing vimrc."
   cp -f ${vimrc} ${HOME}/.vimrc
   show_success "vimrc installed."
+
+  show_info "Configuring active vim addons."
+  vim-addons install \
+    align alternate ctrlp detectindent doxygen-toolkit fugitive nerd-commenter \
+    pathogen powerline surround syntastic tabular latex-suite youcompleteme \
+    taglist
 }
 
 virtualbox="${dir}/packages/virtualbox.list"

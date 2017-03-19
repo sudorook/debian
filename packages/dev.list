@@ -21,6 +21,7 @@ ipython
 julia
 libboost-dev
 nodejs
+nodejs-legacy
 node-grunt-cli
 npm
 postgresql

@@ -3,6 +3,7 @@ gulp
 inkscape
 libgtk-3-dev
 libmtdev-dev
+librsvg2-dev
 nodejs
 nodejs-legacy
 npm

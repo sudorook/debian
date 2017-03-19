@@ -8,7 +8,7 @@ dir="$(dirname "$0")"
 
 function set_noto_fonts {
   show_header "Configuring system fonts."
-  if pacman -Qs noto-fonts > /dev/null 2>&1; then
+  if dpkg -s fonts-noto > /dev/null 2>&1; then
     if [ ${DESKTOP_SESSION} = "cinnamon" ]; then
       # screensaver fonts
       gsettings set org.cinnamon.desktop.screensaver font-message "'Noto Sans 14'"

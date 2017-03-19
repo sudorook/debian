@@ -11,15 +11,17 @@ function install_theme_deps {
   check_fail
   show_success "Theme dependencies installed."
 
-  if ! command -v gulp; then
-    show_header "Locally installing gulp."
+  if ! command -v gulp >/dev/null; then
+    if ! [ -f ${HOME}/.npm/bin/gulp ]; then
+      show_header "Locally installing gulp."
+      cp -f ${npmrc} ${HOME}/.npmrc
+      npm -g install gulp
+    fi
 
     # The script runs in a bash shell, so the npm install directory and the
     # environment variables for npm binaries need to be set here manually.
-    cp -f ${npmrc} ${HOME}/.npmrc
     export PATH="$PATH:$HOME/.npm/bin"
     export NPM_CONFIG_PREFIX=$HOME/.npm
-    npm -g install gulp
   fi
 }
 

@@ -159,6 +159,7 @@ function disable_pulseaudio_suspend {
     show_warning "PuleAudio config file missing. Exiting."
   fi
 }
+
 function 05-personal {
   show_question "Personal: what do you want to set?"
   show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"

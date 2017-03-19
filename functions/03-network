@@ -12,9 +12,6 @@ function install_network {
   check_fail
   show_success "Networking applications installed."
 
-  show_info "Enabling NetworkManager service"
-  sudo systemctl enable NetworkManager
-
   show_info "Setting up MAC address randomization in Network Manager."
   if ! test "$(grep "mac-address=random" ${nmconf})"; then
     sudo sh -c "echo "" >> ${nmconf}"
@@ -32,13 +29,6 @@ function install_network {
   show_info "Enabling and starting tor service."
   sudo systemctl enable tor
   sudo systemctl start tor
-
-  show_info "Enabling local hostname resolution in Avahi."
-  oldhostsline="hosts: files mymachines resolve \[!UNAVAIL=return\] dns myhostname"
-  newhostsline="hosts: files mymachines mdns_minimal \[NOTFOUND=return\] resolve \[!UNAVAIL=return\] dns myhostname"
-  sudo sed -i "/^${oldhostsline}/s/^${oldhostsline}/${newhostsline}/g" ${nsconf}
-  sudo systemctl enable avahi-daemon.service
-  sudo systemctl start avahi-daemon.service
 }
 
 function 03-network {

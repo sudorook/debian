@@ -78,14 +78,16 @@ gtktheme="Arc-Dark"
 icontheme="Papirus-Dark"
 lightdmconf="/etc/lightdm/lightdm-gtk-greeter.conf"
 function set_lightdm_theme {
-  show_header "Setting LightDM login GTK theme to ${gtktheme}."
-  if pacman -Qs lightdm-gtk-greeter > /dev/null; then
+  if dpkg -s lightdm-gtk-greeter > /dev/null 2>&1; then
+    show_header "Setting LightDM login GTK theme to ${gtktheme}."
     sudo sed -i "s/^#theme-name=$/theme-name=${gtktheme}/g" ${lightdmconf}
     sudo sed -i "s/^#icon-theme=$/icon-theme=${icontheme}/g" ${lightdmconf}
-    if pacman -Qs noto-fonts > /dev/null; then
+    if dpkg -s fonts-noto > /dev/null 2>&1; then
       sudo sed -i "s/^#font-name=$/font-name=Noto Sans/g" ${lightdmconf}
     fi
     sudo sed -i "s/^#xft-hintstyle=$/xft-hintstyle=slight/g" ${lightdmconf}
+  else
+    show_warning "LightDM GTK greeter not installed. Skipping."
   fi
 }
 

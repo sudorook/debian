@@ -143,7 +143,11 @@ function invert_brightness {
   if [[ ${bootparams} =~ "i915.invert_brightness=1" ]]; then
     show_header "Brightness already inverted. Skipping."
   else
-    sudo sed -i "s|${bootparams}|${bootparams} i915.invert_brightness=1|g" ${grubconfig}
+    if test "${bootparams}"; then
+      sudo sed -i "s|${bootparams}|${bootparams} i915.invert_brightness=1|g" ${grubconfig}
+    else
+      sudo sed -i "s|${oldline}|GRUB_CMDLINE_LINUX=\"i915.invert_brightness=1\"|g" ${grubconfig}
+    fi
     sudo sed -i "\|^GRUB_CMDLINE_LINUX=| a\#${oldline}" ${grubconfig} # backup
     show_success "Brightness inverted."
     sudo update-grub

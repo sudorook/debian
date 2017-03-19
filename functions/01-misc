@@ -29,6 +29,15 @@ function install_grsec {
   # need to set pax rules or enable learning mode
 }
 
+selinux="${dir}/packages/selinux.list"
+function install_selinux {
+  show_header "Installing SELinux and setting rules."
+  check_installed $(cat ${selinux})
+  check_fail
+  show_success "SELinux installed."
+  # need to learn what goes here next
+}
+
 utils="${dir}/packages/utils.list"
 function install_utils {
   show_header "Installing general utilities."
@@ -57,7 +66,8 @@ function 01-misc {
   show_question "Misc: what do you want to install?"
   show_info "Main\n ${endbranch} Misc (Hit ENTER to see options again.)"
 
-  options=("Back" "All" "zsh" "Grsecurity" "Linux utilities" "Laptop tools")
+  options=("Back" "All" "zsh" "Grsecurity" "SELinux" "Linux utilities" \
+           "Laptop tools")
   select option in "${options[@]}"; do
     case $option in
       "Back")
@@ -76,6 +86,10 @@ function 01-misc {
         ;;
       "Grsecurity")
         install_grsecurity
+        show_info "Main\n ${endbranch} Misc (Hit ENTER to see options again.)"
+        ;;
+      "SELinux")
+        install_selinux
         show_info "Main\n ${endbranch} Misc (Hit ENTER to see options again.)"
         ;;
       "Linux utilities")

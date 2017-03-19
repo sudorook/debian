@@ -9,12 +9,6 @@ function install_gnome {
   check_installed $(cat ${gnome})
   check_fail
   show_success "GNOME installed."
-
-  show_info "Putting things into place."
-  export DESKTOP_SESSION="gnome"
-  xdg-user-dirs-update
-  sudo systemctl enable gdm.service
-  show_info "Done."
 }
 
 cinnamon="${dir}/packages/cinnamon.list"
@@ -23,12 +17,6 @@ function install_cinnamon {
   check_installed $(cat ${cinnamon})
   check_fail
   show_success "Cinnamon installed."
-
-  show_info "Putting things into place."
-  export DESKTOP_SESSION="cinnamon"
-  xdg-user-dirs-update
-  sudo systemctl enable lightdm.service
-  show_info "Done."
 }
 
 function install_desktop {

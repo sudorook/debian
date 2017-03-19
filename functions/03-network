@@ -32,5 +32,26 @@ function install_network {
 }
 
 function 03-network {
-  install_network
+  show_question "Network: what do you want to install?"
+  show_info "Main\n ${endbranch} Network (Hit ENTER to see options again.)"
+
+  options=("Back" "All" "Network tools")
+  select option in "${options[@]}"; do
+    case $option in
+      "Back")
+        break
+        ;;
+      "All")
+        install_network
+        show_info "Main\n ${endbranch} Network (Hit ENTER to see options again.)"
+        ;;
+      "Network tools")
+        install_network
+        show_info "Main\n ${endbranch} Network (Hit ENTER to see options again.)"
+        ;;
+      *)
+        show_warning "Invalid option."
+        ;;
+    esac
+  done
 }

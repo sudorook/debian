@@ -59,6 +59,8 @@ function install_kvm {
   check_installed $(cat ${kvm})
   check_fail
   show_success "KVM installed."
+
+  show_info "Adding `whoami` to kvm and libvirt groups."
   sudo usermod -aG kvm,libvirt $(whoami)
 
   sudo systemctl enable libvirtd

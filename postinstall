@@ -156,6 +156,7 @@ function main {
 
 install_dependencies
 check_network
+check_debian_release
 
 
 #

@@ -3,8 +3,9 @@
 
 dir="$(dirname "$0")"
 
-# Set dconf settings
-# Download scripts (submodule) and add to path
+# Globals
+gtktheme="Arc-Dark"
+icontheme="Papirus-Dark"
 
 function set_noto_fonts {
   show_header "Configuring system fonts."
@@ -34,7 +35,6 @@ function set_noto_fonts {
   fi
 }
 
-icontheme="Papirus-Dark"
 xdgdefaultconf="/etc/xdg/user-dirs.defaults"
 function set_icon_theme {
   show_header "Setting desktop icon theme to Papirus-Dark."
@@ -59,7 +59,6 @@ function set_icon_theme {
   rm -rf ${HOME}/Public
 }
 
-gtktheme="Arc-Dark"
 function set_gtk_theme {
   show_header "Setting desktop GTK theme to ${gtktheme}."
   if [[ ${DESKTOP_SESSION} =~ "cinnamon" ]]; then
@@ -74,8 +73,6 @@ function set_gtk_theme {
   fi
 }
 
-gtktheme="Arc-Dark"
-icontheme="Papirus-Dark"
 lightdmconf="/etc/lightdm/lightdm-gtk-greeter.conf"
 function set_lightdm_theme {
   if dpkg -s lightdm-gtk-greeter > /dev/null 2>&1; then
@@ -164,13 +161,190 @@ function disable_pulseaudio_suspend {
   fi
 }
 
+function select_desktop_theme {
+  show_question "Select a GTK theme:"
+
+  options=("Back" "Adwaita" "Arc" "Arc-Darker" "Arc-Darker" "Adapta" \
+           "Adapta-Eta" "Adapta-Nokto" "Adapta-Nokto-Eta")
+  select option in "${options[@]}"; do
+    case $option in
+      "Back")
+        break
+        ;;
+      "Adwaita")
+        if [ -d /usr/share/themes/Adwaita ] || \
+           [ -d ${HOME}/.themes/Adwaita ]; then
+          gtktheme="Adwaita"
+          set_gtk_theme
+          set_lightdm_theme
+        else
+          show_warning "${option} theme is not installed."
+          select_desktop_theme
+        fi
+        break
+        ;;
+      "Arc")
+        if [ -d /usr/share/themes/Arc ] || \
+           [ -d ${HOME}/.themes/Arc ]; then
+          gtktheme="Arc"
+          set_gtk_theme
+          set_lightdm_theme
+        else
+          show_warning "${option} theme is not installed."
+          select_desktop_theme
+        fi
+        break
+        ;;
+      "Arc-Darker")
+        if [ -d /usr/share/themes/Arc-Darker ] || \
+           [ -d ${HOME}/.themes/Arc-Darker ]; then
+          gtktheme="Arc-Darker"
+          set_gtk_theme
+          set_lightdm_theme
+        else
+          show_warning "${option} theme is not installed."
+          select_desktop_theme
+        fi
+        break
+        ;;
+      "Arc-Dark")
+        if [ -d /usr/share/themes/Arc-Dark ] || \
+           [ -d ${HOME}/.themes/Arc-Dark ]; then
+          gtktheme="Arc-Dark"
+          set_gtk_theme
+          set_lightdm_theme
+        else
+          show_warning "${option} theme is not installed."
+          select_desktop_theme
+        fi
+        break
+        ;;
+      "Adapta")
+        if [ -d /usr/share/themes/Adapta ] || \
+           [ -d ${HOME}/.themes/Adapta ]; then
+          gtktheme="Adapta"
+          set_gtk_theme
+          set_lightdm_theme
+        else
+          show_warning "${option} theme is not installed."
+          select_desktop_theme
+        fi
+        break
+        ;;
+      "Adapta-Eta")
+        if [ -d /usr/share/themes/Adapta-Eta ] || \
+           [ -d ${HOME}/.themes/Adapta-Eta ]; then
+          gtktheme="Adapta-Eta"
+          set_gtk_theme
+          set_lightdm_theme
+        else
+          show_warning "${option} theme is not installed."
+          select_desktop_theme
+        fi
+        break
+        ;;
+      "Adapta-Nokto")
+        if [ -d /usr/share/themes/Adapta-Nokto ] || \
+           [ -d ${HOME}/.themes/Adapta-Nokto ]; then
+          gtktheme="Adapta-Nokto"
+          set_gtk_theme
+          set_lightdm_theme
+        else
+          show_warning "${option} theme is not installed."
+          select_desktop_theme
+        fi
+        break
+        ;;
+      "Adapta-Nokto-Eta")
+        if [ -d /usr/share/themes/Adapta-Nokto-Eta ] || \
+           [ -d ${HOME}/.themes/Adapta-Nokto-Eta ]; then
+          gtktheme="Adapta-Nokto-Eta"
+          set_gtk_theme
+          set_lightdm_theme
+        else
+          show_warning "${option} theme is not installed."
+          select_desktop_theme
+        fi
+        break
+        ;;
+      *)
+        show_warning "Invalid option."
+        ;;
+    esac
+  done
+}
+
+function select_icon_theme {
+  show_question "Select an icon theme:"
+
+  options=("Back" "Papirus" "ePapirus" "Papirus-Light" "Papirus-Dark")
+  select option in "${options[@]}"; do
+    case $option in
+      "Back")
+        break
+        ;;
+      "Papirus")
+        if [ -d /usr/share/icons/Papirus ] || \
+           [ -d ${HOME}/.icons/Papirus ]; then
+          icontheme="Papirus"
+          set_icon_theme
+          set_lightdm_theme
+        else
+          show_warning "${option} icons are not installed."
+          select_icon_theme
+        fi
+        break
+        ;;
+      "ePapirus")
+        if [ -d /usr/share/icons/ePapirus ] || \
+           [ -d ${HOME}/.icons/ePapirus ]; then
+          icontheme="ePapirus"
+          set_icon_theme
+          set_lightdm_theme
+        else
+          show_warning "${option} icons are not installed."
+          select_icon_theme
+        fi
+        break
+        ;;
+      "Papirus-Light")
+        if [ -d /usr/share/icons/Papirus-Light ] || \
+           [ -d ${HOME}/.icons/Papirus-Light ]; then
+          icontheme="Papirus-Light"
+          set_icon_theme
+          set_lightdm_theme
+        else
+          show_warning "${option} icons are not installed."
+          select_icon_theme
+        fi
+        break
+        ;;
+      "Papirus-Dark")
+        if [ -d /usr/share/icons/Papirus-Dark ] || \
+           [ -d ${HOME}/.icons/Papirus-Dark ]; then
+          icontheme="Papirus-Dark"
+          set_icon_theme
+          set_lightdm_theme
+        else
+          show_warning "${option} icons are not installed."
+          select_icon_theme
+        fi
+        break
+        ;;
+      *)
+        show_warning "Invalid option."
+        ;;
+    esac
+  done
+}
+
 function 05-personal {
   show_question "Personal: what do you want to set?"
   show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
 
-  options=("Back" "All" "Fonts" "Icon theme" "GTK theme" "LightDM theme" \
-           "Dark GTK setting" "Cinnamon dconf settings" "GNOME dconf settings" \
-           "Application dconf settings" "Invert brightness" \
+  options=("Back" "All" "Set Noto fonts" "Select icon theme" \
+           "Select desktop theme" "Set dark GTK" "Import Cinnamon dconf" \
+           "Import GNOME dconf" "Import application dconf" "Invert brightness" \
            "Disable PulseAudio suspend")
   select option in "${options[@]}"; do
     case $option in
@@ -190,35 +364,31 @@ function 05-personal {
         disable_pulseaudio_suspend
         show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
         ;;
-      "Fonts")
+      "Set Noto fonts")
         set_noto_fonts
         show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
         ;;
-      "Icon theme")
-        set_icon_theme
+      "Select icon theme")
+        select_icon_theme
         show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
         ;;
-      "GTK theme")
-        set_gtk_theme
+      "Select desktop theme")
+        select_desktop_theme
         show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
         ;;
-      "LightDM theme")
-        set_lightdm_theme
-        show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
-        ;;
-      "Dark GTK setting")
+      "Set dark GTK")
         set_dark_gtk
         show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
         ;;
-      "Cinnamon dconf settings")
+      "Import Cinnamon dconf")
         import_cinnamon_dconf
         show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
         ;;
-      "GNOME dconf settings")
+      "Import GNOME dconf")
         import_gnome_dconf
         show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
         ;;
-      "Application dconf settings")
+      "Import application dconf")
         import_apps_dconf
         show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
         ;;

@@ -9,6 +9,12 @@ function install_gnome {
   check_installed $(cat ${gnome})
   check_fail
   show_success "GNOME installed."
+
+  show_info "Putting things into place."
+  if ${DESKTOP_SESSION}; then
+    export DESKTOP_SESSION="gnome"
+  fi
+  show_info "Done."
 }
 
 cinnamon="${dir}/packages/cinnamon.list"
@@ -17,6 +23,12 @@ function install_cinnamon {
   check_installed $(cat ${cinnamon})
   check_fail
   show_success "Cinnamon installed."
+
+  show_info "Putting things into place."
+  if ${DESKTOP_SESSION}; then
+    export DESKTOP_SESSION="cinnamon"
+  fi
+  show_info "Done."
 }
 
 function 02-desktop {

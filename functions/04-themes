@@ -114,14 +114,12 @@ function 04-themes {
       "Arc (GTK)")
         show_info "Installing dependencies for building themes."
         install_theme_deps
-
         install_arc_gtk
         show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
         ;;
       "Adapta (GTK)")
         show_info "Installing dependencies for building themes."
         install_theme_deps
-
         install_adapta_gtk
         show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
         ;;

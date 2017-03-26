@@ -67,6 +67,7 @@ function main {
           install_base
           purge_packages
           update_packages
+          enable_sudo_insults
 
           # Install miscellaneous extras
           install_zsh

@@ -14,7 +14,9 @@ function install_base {
   show_info "Installing toprc."
   cp -f ${toprc} ${HOME}/.toprc
   show_success "Installed toprc."
+}
 
+function enable_sudo_insults {
   # Customize sudo to insult incorrect password attempts
   show_info "Enabling sudo insults."
   sudo sh -c 'cat /etc/sudoers | \
@@ -45,7 +47,7 @@ function 01-base {
   show_question "Base: what do you want to install?"
   show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
 
-  options=("Back" "Base packages" "Purge packages" "Updates")
+  options=("Back" "Base packages" "Purge packages" "Updates" "Sudo insults")
   select option in "${options[@]}"; do
     case $option in
       "Back")
@@ -61,6 +63,10 @@ function 01-base {
         ;;
       "Updates")
         update_packages
+        show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
+        ;;
+      "Sudo insults")
+        enable_sudo_insults
         show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
         ;;
       *)

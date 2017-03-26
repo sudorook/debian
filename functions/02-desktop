@@ -11,7 +11,7 @@ function install_gnome {
   show_success "GNOME installed."
 
   show_info "Putting things into place."
-  if ${DESKTOP_SESSION}; then
+  if test ${DESKTOP_SESSION+x}; then
     export DESKTOP_SESSION="gnome"
   fi
   show_info "Done."
@@ -25,7 +25,7 @@ function install_cinnamon {
   show_success "Cinnamon installed."
 
   show_info "Putting things into place."
-  if ${DESKTOP_SESSION}; then
+  if test ${DESKTOP_SESSION+x}; then
     export DESKTOP_SESSION="cinnamon"
   fi
   show_info "Done."

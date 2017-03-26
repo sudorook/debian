@@ -10,7 +10,9 @@ icontheme="Papirus-Dark"
 function set_noto_fonts {
   show_header "Configuring system fonts."
   if dpkg -s fonts-noto > /dev/null 2>&1; then
-    if [[ ${DESKTOP_SESSION} =~ "cinnamon" ]]; then
+    if dpkg -s cinnamon > /dev/null 2>&1; then
+      show_info "Setting fonts for cinnamon environment."
+
       # screensaver fonts
       gsettings set org.cinnamon.desktop.screensaver font-message "'Noto Sans 14'"
       gsettings set org.cinnamon.desktop.screensaver font-date "'Noto Sans 24'"
@@ -22,25 +24,33 @@ function set_noto_fonts {
       gsettings set org.gnome.desktop.interface document-font-name "'Noto Sans 10'"
       gsettings set org.gnome.desktop.interface monospace-font-name "'Monospace 11'"
       gsettings set org.cinnamon.desktop.wm.preferences titlebar-font "'Noto Sans Bold 10'"
-    elif [[ ${DESKTOP_SESSION} =~ "gnome" ]]; then
+    fi
+
+    if dpkg -s gnome-shell > /dev/null 2>&1; then
+      show_info "Setting fonts for GNOME environment."
+
       # desktop environment fonts
       gsettings set org.gnome.desktop.wm.preferences titlebar-font "'Cantarell Bold 11'"
       gsettings set org.gnome.desktop.interface document-font-name "'Cantarell 11'"
       gsettings set org.gnome.desktop.interface font-name "'Sans 11'"
       # gsettings set org.gnome.desktop.interface monospace-font-name "'Noto Mono 11'"
       gsettings set org.gnome.desktop.interface monospace-font-name "'Monospace 11'"
-    else
-      show_error "Current desktop enviornment ${DESKTOP_SESSION} not supported."
     fi
+  else
+    show_warning "Noto fonts are not installed. Skipping."
   fi
 }
 
 xdgdefaultconf="/etc/xdg/user-dirs.defaults"
 function set_icon_theme {
-  show_header "Setting desktop icon theme to Papirus-Dark."
-  if [[ ${DESKTOP_SESSION} =~ "cinnamon" ]]; then
+  show_header "Setting desktop icon theme to ${icontheme}."
+
+  if dpkg -s cinnamon > /dev/null 2>&1; then
+    show_info "Setting cinnamon icon theme to ${icontheme}."
     gsettings set org.cinnamon.desktop.interface icon-theme "'${icontheme}'"
-  elif [[ ${DESKTOP_SESSION} =~ "gnome" ]]; then
+  fi
+  if dpkg -s gnome-shell > /dev/null 2>&1; then
+    show_info "Setting GNOME icon theme to ${icontheme}."
     gsettings set org.gnome.desktop.interface icon-theme "'${icontheme}'"
   fi
 
@@ -61,11 +71,14 @@ function set_icon_theme {
 
 function set_gtk_theme {
   show_header "Setting desktop GTK theme to ${gtktheme}."
-  if [[ ${DESKTOP_SESSION} =~ "cinnamon" ]]; then
+  if dpkg -s cinnamon > /dev/null 2>&1; then
+    show_info "Setting cinnamon GTK theme to ${gtktheme}."
     gsettings set org.cinnamon.desktop.interface gtk-theme "'${gtktheme}'"
     gsettings set org.cinnamon.desktop.wm.preferences theme "'${gtktheme}'"
     gsettings set org.cinnamon.theme name "'${gtktheme}'"
-  elif [[ ${DESKTOP_SESSION} =~ "gnome" ]]; then
+  fi
+  if dpkg -s gnome-shell > /dev/null 2>&1; then
+    show_info "Setting GNOME GTK theme to ${gtktheme}."
     gsettings set org.gnome.desktop.wm.preferences theme "'${gtktheme}'"
     gsettings set org.gnome.desktop.interface gtk-theme "'${gtktheme}'"
     gnome-shell-extension-tool -e "user-theme@gnome-shell-extensions.gcampax.github.com" || true
@@ -119,7 +132,7 @@ function import_cinnamon_dconf {
 
 gnomedconf="${dir}/dconf/gnome.dconf"
 function import_gnome_dconf {
-  show_header "Importing gnome dconf settings."
+  show_header "Importing GNOME dconf settings."
   dconf load / < ${gnomedconf}
   check_fail
   show_success "GNOME dconf settings imported."

@@ -164,7 +164,7 @@ function disable_pulseaudio_suspend {
 function select_desktop_theme {
   show_question "Select a GTK theme:"
 
-  options=("Back" "Adwaita" "Arc" "Arc-Darker" "Arc-Darker" "Adapta" \
+  options=("Back" "Adwaita" "Arc" "Arc-Darker" "Arc-Dark" "Adapta" \
            "Adapta-Eta" "Adapta-Nokto" "Adapta-Nokto-Eta")
   select option in "${options[@]}"; do
     case $option in

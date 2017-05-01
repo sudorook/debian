@@ -174,6 +174,12 @@ function disable_pulseaudio_suspend {
   fi
 }
 
+function install_scripts {
+  show_header "Installing miscellaneous scripts to the ~/.scripts folder."
+  git clone https://github.com/pseudorook/misc-scripts ${HOME}/.scripts
+  show_success "Installed."
+}
+
 function select_desktop_theme {
   show_question "Select a GTK theme:"
 
@@ -358,7 +364,7 @@ function 05-personal {
   options=("Back" "All" "Set Noto fonts" "Select icon theme" \
            "Select desktop theme" "Set dark GTK" "Import Cinnamon dconf" \
            "Import GNOME dconf" "Import application dconf" "Invert brightness" \
-           "Disable PulseAudio suspend")
+           "Disable PulseAudio suspend" "Add scripts")
   select option in "${options[@]}"; do
     case $option in
       "Back")
@@ -411,6 +417,10 @@ function 05-personal {
         ;;
       "Disable PulseAudio suspend")
         disable_pulseaudio_suspend
+        show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
+        ;;
+      "Add scripts")
+        install_scripts
         show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
         ;;
       *)

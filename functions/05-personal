@@ -75,7 +75,11 @@ function set_gtk_theme {
     show_info "Setting cinnamon GTK theme to ${gtktheme}."
     gsettings set org.cinnamon.desktop.interface gtk-theme "'${gtktheme}'"
     gsettings set org.cinnamon.desktop.wm.preferences theme "'${gtktheme}'"
-    gsettings set org.cinnamon.theme name "'${gtktheme}'"
+    if [[ "$gtktheme" =~ "Adapta-.*-Eta" ]]; then
+      gsettings set org.cinnamon.theme name "'${gtktheme%-*}'"
+    else
+      gsettings set org.cinnamon.theme name "'${gtktheme}'"
+    fi
   fi
   if dpkg -s gnome-shell > /dev/null 2>&1; then
     show_info "Setting GNOME GTK theme to ${gtktheme}."

@@ -91,6 +91,7 @@ function main {
           install_games
           install_kvm
           install_kvm_guest
+          install_vim
           install_virtualbox
           install_virtualbox_guest
 

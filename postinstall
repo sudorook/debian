@@ -108,6 +108,7 @@ function main {
           set_icon_theme
           set_gtk_theme
           set_lightdm_theme
+          set_gdm_theme
           set_dark_gtk
           import_cinnamon_dconf
           import_gnome_dconf

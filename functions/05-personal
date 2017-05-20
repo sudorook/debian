@@ -105,6 +105,22 @@ function set_lightdm_theme {
   fi
 }
 
+function set_gdm_theme {
+  if dpkg -s gdm3 > /dev/null 2>&1; then
+    show_header "Setting GDM login theme to ${gtktheme}."
+    sudo cp -r /usr/share/gnome-shell /usr/share/gnome-shell-$(date +%Y%m%d)
+    sudo cp -rf /usr/share/themes/${gtktheme}/gnome-shell/* /usr/share/gnome-shell/
+    if [[ "${gtktheme}" =~ "Adapta" ]]; then
+      sudo cp -f /usr/share/themes/Adapta/gnome-shell/extensions/window-list/classic.css \
+        /usr/share/gnome-shell/extensions/window-list@gnome-shell-extensions.gcampax.github.com/
+      sudo cp -f /usr/share/themes/Adapta/gnome-shell/extensions/window-list/stylesheet.css \
+        /usr/share/gnome-shell/extensions/window-list@gnome-shell-extensions.gcampax.github.com/
+    fi
+  else
+    show_warning "GDM is not installed. Skipping."
+  fi
+}
+
 gtksettings="${HOME}/.config/gtk-3.0/settings.ini"
 function set_dark_gtk {
   show_header "Setting global dark theme for gtk applications."
@@ -200,6 +216,7 @@ function select_desktop_theme {
           gtktheme="Adwaita"
           set_gtk_theme
           set_lightdm_theme
+          set_gdm_theme
         else
           show_warning "${option} theme is not installed."
           select_desktop_theme
@@ -212,6 +229,7 @@ function select_desktop_theme {
           gtktheme="Arc"
           set_gtk_theme
           set_lightdm_theme
+          set_gdm_theme
         else
           show_warning "${option} theme is not installed."
           select_desktop_theme
@@ -224,6 +242,7 @@ function select_desktop_theme {
           gtktheme="Arc-Darker"
           set_gtk_theme
           set_lightdm_theme
+          set_gdm_theme
         else
           show_warning "${option} theme is not installed."
           select_desktop_theme
@@ -236,6 +255,7 @@ function select_desktop_theme {
           gtktheme="Arc-Dark"
           set_gtk_theme
           set_lightdm_theme
+          set_gdm_theme
         else
           show_warning "${option} theme is not installed."
           select_desktop_theme
@@ -248,6 +268,7 @@ function select_desktop_theme {
           gtktheme="Adapta"
           set_gtk_theme
           set_lightdm_theme
+          set_gdm_theme
         else
           show_warning "${option} theme is not installed."
           select_desktop_theme
@@ -260,6 +281,7 @@ function select_desktop_theme {
           gtktheme="Adapta-Eta"
           set_gtk_theme
           set_lightdm_theme
+          set_gdm_theme
         else
           show_warning "${option} theme is not installed."
           select_desktop_theme
@@ -272,6 +294,7 @@ function select_desktop_theme {
           gtktheme="Adapta-Nokto"
           set_gtk_theme
           set_lightdm_theme
+          set_gdm_theme
         else
           show_warning "${option} theme is not installed."
           select_desktop_theme
@@ -284,6 +307,7 @@ function select_desktop_theme {
           gtktheme="Adapta-Nokto-Eta"
           set_gtk_theme
           set_lightdm_theme
+          set_gdm_theme
         else
           show_warning "${option} theme is not installed."
           select_desktop_theme
@@ -379,6 +403,7 @@ function 05-personal {
         set_icon_theme
         set_gtk_theme
         set_lightdm_theme
+        set_gdm_theme
         set_dark_gtk
         import_cinnamon_dconf
         import_gnome_dconf

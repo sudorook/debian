@@ -6,6 +6,4 @@ libnss-mdns
 network-manager-openvpn
 openssh-server
 samba
-tor
-torsocks
 ufw

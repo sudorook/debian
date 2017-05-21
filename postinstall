@@ -83,6 +83,8 @@ function main {
 
           # Set up network configuration
           install_network
+          install_tor
+          tunnel_apt_tor
 
           # Install useful packages
           install_apps

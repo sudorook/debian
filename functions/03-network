@@ -31,11 +31,32 @@ function install_network {
   sudo systemctl start tor
 }
 
+tor="${dir}/packages/tor.list"
+function install_tor {
+  show_header "Installing tor."
+  check_installed $(cat ${tor})
+
+  show_info "Enabling and starting tor service."
+  sudo systemctl enable tor
+  sudo systemctl start tor
+}
+
+aptconf="/etc/apt/sources.list"
+function tunnel_apt_tor {
+  show_header "Tunneling apt over tor for Debian $(lsb_release -sc)."
+  sudo cp -f ${aptconf} ${aptconf}-bak
+  if [[ "$(lsb_release -sc)" == "stretch" ]]; then
+    cp -f "${dir}/configs/stretch-sources-tor.list" ${aptconf}
+  elif [[ "$(lsb_release -sc)" == "sid" ]]; then
+    cp -f "${dir}/configs/sid-sources-tor.list" ${aptconf}
+  fi
+}
+
 function 03-network {
   show_question "Network: what do you want to install?"
   show_info "Main\n ${endbranch} Network (Hit ENTER to see options again.)"
 
-  options=("Back" "All" "Network tools")
+  options=("Back" "All" "Network tools" "Install tor" "Tunnel apt over tor")
   select option in "${options[@]}"; do
     case $option in
       "Back")
@@ -43,10 +64,21 @@ function 03-network {
         ;;
       "All")
         install_network
+        install_tor
+        tunnel_apt_tor
         show_info "Main\n ${endbranch} Network (Hit ENTER to see options again.)"
         ;;
       "Network tools")
         install_network
+        show_info "Main\n ${endbranch} Network (Hit ENTER to see options again.)"
+        ;;
+      "Install tor")
+        install_tor
+        show_info "Main\n ${endbranch} Network (Hit ENTER to see options again.)"
+        ;;
+      "Tunnel apt over tor")
+        install_tor
+        tunnel_apt_tor
         show_info "Main\n ${endbranch} Network (Hit ENTER to see options again.)"
         ;;
       *)

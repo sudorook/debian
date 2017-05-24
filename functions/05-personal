@@ -70,13 +70,15 @@ function set_icon_theme {
     fi
   fi
 
-  show_info "Creating Projects/ and Sync/ and setting gvfs metadata."
-  mkdir -p ${HOME}/Projects
-  gvfs-set-attribute ${HOME}/Projects/ -t string \
-    metadata::custom-icon-name folder-development
-  mkdir -p ${HOME}/Sync
-  gvfs-set-attribute ${HOME}/Sync/ -t string \
-    metadata::custom-icon-name folder-cloud
+  if [[ "${icontheme}" =~ ".*Papirus.*" ]]; then
+    show_info "Creating Projects/ and Sync/ and setting gvfs metadata."
+    mkdir -p ${HOME}/Projects
+    gvfs-set-attribute ${HOME}/Projects/ -t string \
+      metadata::custom-icon-name folder-development
+    mkdir -p ${HOME}/Sync
+    gvfs-set-attribute ${HOME}/Sync/ -t string \
+      metadata::custom-icon-name folder-cloud
+  fi
 
   show_info "Disabling Templates/ and Public/ folders."
   sudo sed -i "s/^TEMPLATES/#TEMPLATES/g" ${xdgdefaultconf}

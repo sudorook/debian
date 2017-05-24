@@ -4,7 +4,7 @@
 dir="$(dirname "$0")"
 
 # Globals
-gtktheme="Arc-Dark"
+gtktheme="Adapta-Nokto-Eta"
 icontheme="Papirus-Dark"
 
 function set_noto_fonts {

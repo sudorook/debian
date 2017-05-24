@@ -54,6 +54,22 @@ function set_icon_theme {
     gsettings set org.gnome.desktop.interface icon-theme "'${icontheme}'"
   fi
 
+  # Only run this part if Papirus icons are installed.
+  papiruspath=/usr/share/icons/Papirus
+  if [ -d ${papiruspath} ]; then
+    # Change the blue folder color in Papirus to match the Adapta highlight
+    # color when using it as the GTK theme.
+    if [[ "${gtktheme}" =~ "Adapta.*" ]]; then
+      find ${papiruspath} -type f -exec sed -i "s/#5294e2/#00acc1/g" {} +
+      find ${papiruspath} -type f -exec sed -i "s/#4877b1/#0097a7/g" {} +
+    # Change the folder color back to the original blue in case this function
+    # is used to set Adapta and then later change to Arc.
+    elif [[ "${gtktheme}" =~ "Arc.*" ]]; then
+      find ${papiruspath} -type f -exec sed -i "s/#00acc1/#5294e2/g" {} +
+      find ${papiruspath} -type f -exec sed -i "s/#0097a7/#4877b1/g" {} +
+    fi
+  fi
+
   show_info "Creating Projects/ and Sync/ and setting gvfs metadata."
   mkdir -p ${HOME}/Projects
   gvfs-set-attribute ${HOME}/Projects/ -t string \

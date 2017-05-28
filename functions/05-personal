@@ -59,18 +59,18 @@ function set_icon_theme {
   if [ -d ${papiruspath} ]; then
     # Change the blue folder color in Papirus to match the Adapta highlight
     # color when using it as the GTK theme.
-    if [[ "${gtktheme}" =~ "Adapta.*" ]]; then
+    if [[ "${gtktheme}" =~ "Adapta" ]]; then
       find ${papiruspath} -type f -exec sed -i "s/#5294e2/#00acc1/g" {} +
       find ${papiruspath} -type f -exec sed -i "s/#4877b1/#0097a7/g" {} +
     # Change the folder color back to the original blue in case this function
     # is used to set Adapta and then later change to Arc.
-    elif [[ "${gtktheme}" =~ "Arc.*" ]]; then
+    elif [[ "${gtktheme}" =~ "Arc" ]]; then
       find ${papiruspath} -type f -exec sed -i "s/#00acc1/#5294e2/g" {} +
       find ${papiruspath} -type f -exec sed -i "s/#0097a7/#4877b1/g" {} +
     fi
   fi
 
-  if [[ "${icontheme}" =~ ".*Papirus.*" ]]; then
+  if [[ "${icontheme}" =~ "Papirus" ]]; then
     show_info "Creating Projects/ and Sync/ and setting gvfs metadata."
     mkdir -p ${HOME}/Projects
     gvfs-set-attribute ${HOME}/Projects/ -t string \
@@ -93,7 +93,7 @@ function set_gtk_theme {
     show_info "Setting cinnamon GTK theme to ${gtktheme}."
     gsettings set org.cinnamon.desktop.interface gtk-theme "'${gtktheme}'"
     gsettings set org.cinnamon.desktop.wm.preferences theme "'${gtktheme}'"
-    if [[ "$gtktheme" =~ "Adapta-.*-Eta" ]]; then
+    if [[ "$gtktheme" =~ "-Eta" ]]; then
       gsettings set org.cinnamon.theme name "'${gtktheme%-*}'"
     else
       gsettings set org.cinnamon.theme name "'${gtktheme}'"

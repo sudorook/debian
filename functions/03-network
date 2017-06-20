@@ -46,6 +46,7 @@ function tunnel_apt_tor {
   elif [[ "$(lsb_release -sc)" == "sid" ]]; then
     cp -f "${dir}/configs/sid-sources-tor.list" ${aptconf}
   fi
+  sudo apt update
 }
 
 function 03-network {

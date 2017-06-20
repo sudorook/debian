@@ -25,10 +25,6 @@ function install_network {
   show_info "Enabling ufw."
   sudo ufw enable
   sudo systemctl enable ufw.service
-
-  show_info "Enabling and starting tor service."
-  sudo systemctl enable tor
-  sudo systemctl start tor
 }
 
 tor="${dir}/packages/tor.list"

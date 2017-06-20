@@ -27,6 +27,8 @@ volumes-visible=false
 trash-icon-visible=false
 
 [org/gnome/desktop/media-handling]
+automount-open=false
+automount=false
 autorun-never=true
 
 [org/gnome/desktop/background]

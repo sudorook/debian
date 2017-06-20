@@ -1,7 +1,9 @@
 acpi
+dirmngr
 dmidecode
 dosfstools
 encfs
+gnupg
 hfsprogs
 net-tools
 nmap

@@ -37,15 +37,26 @@ function install_tor {
   sudo systemctl start tor
 }
 
-aptconf="/etc/apt/sources.list"
+srclist="/etc/apt/sources.list"
 function tunnel_apt_tor {
   show_header "Tunneling apt over tor for Debian $(lsb_release -sc)."
-  sudo cp -f ${aptconf} ${aptconf}.${RANDOM}.bak
-  if [[ "$(lsb_release -sc)" == "stretch" ]]; then
-    sudo cp -f "${dir}/configs/stretch-sources-tor.list" ${aptconf}
-  elif [[ "$(lsb_release -sc)" == "sid" ]]; then
-    sudo cp -f "${dir}/configs/sid-sources-tor.list" ${aptconf}
-  fi
+
+  [[ $(cat ${srclist} | grep contrib) ]]; is_contrib=$?
+  [[ $(cat ${srclist} | grep non-free) ]]; is_nonfree=$?
+
+  release=$(lsb_release -sc)
+  sudo cp -f ${srclist} ${srclist}.${RANDOM}.bak
+  sudo cp -f "${dir}/sources/${release}-sources.list" ${srclist}
+
+  [ ${is_contrib} == true ] && \
+    sudo sed -i "s,\(.* ${release} main.*\)$,\1 contrib,g" ${srclist} && \
+    sudo sed -i "s,\(.* ${release}-updates main.*\)$,\1 contrib,g" ${srclist}
+  [ ${is_nonfree} == true ] && \
+    sudo sed -i "s,\(.* ${release} main.*\)$,\1 non-free,g" ${srclist} && \
+    sudo sed -i "s,\(.* ${release}-updates main.*\)$,\1 non-free,g" ${srclist}
+  sudo sed -i "s,https://deb.debian.org,tor+http://vwakviie2ienjx6t.onion,g" ${srclist}
+  sudo sed -i "s,https://security.debian.org/,tor+http://sgvtcaew4bxjd7ln.onion/debian-security/,g" ${srclist}
+
   sudo apt update
 }
 

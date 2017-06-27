@@ -66,6 +66,9 @@ function main {
           # Install base packages
           install_base
           purge_packages
+          install_firmware
+          enable_contrib_repos
+          enable_nonfree_repos
           update_packages
           enable_sudo_insults
 

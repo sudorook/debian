@@ -16,6 +16,133 @@ function install_base {
   show_success "Installed toprc."
 }
 
+firmware="${dir}/packages/firmware.list"
+srclist="/etc/apt/sources.list"
+function install_firmware {
+  release=$(lsb_release -sc)
+  if ! cat ${srclist} | grep non-free 2>&1 >/dev/null; then
+    show_warning "non-free repos need to be enabled first."
+  else
+    show_header "Installing non-free firmware."
+    check_installed $(cat ${firmware})
+    check_fail
+    show_success "Firmware installed."
+  fi
+}
+
+srclist="/etc/apt/sources.list"
+function enable_contrib_repos {
+  release=$(lsb_release -sc)
+  if ! cat ${srclist} | grep contrib 2>&1 >/dev/null; then
+    show_info "Enabling contrib repos."
+    sudo sed -i "s,\(.* ${release} main.*\)$,\1 contrib,g" ${srclist}
+    sudo sed -i "s,\(.* ${release}-updates main.*\)$,\1 contrib,g" ${srclist}
+    sudo apt-get update
+  else
+    show_info "contrib already enabled."
+  fi
+}
+
+srclist="/etc/apt/sources.list"
+function enable_nonfree_repos {
+  release=$(lsb_release -sc)
+  if ! cat ${srclist} | grep non-free 2>&1 >/dev/null; then
+    show_info "Enabling non-free repos."
+    sudo sed -i "s,\(.* ${release} main.*\)$,\1 non-free,g" ${srclist}
+    sudo sed -i "s,\(.* ${release}-updates main.*\)$,\1 non-free,g" ${srclist}
+    sudo apt-get update
+  else
+    show_info "non-free already enabled."
+  fi
+}
+
+srclist="/etc/apt/sources.list"
+stretchlist="${dir}/sources/stretch-sources.list"
+busterlist="${dir}/sources/buster-sources.list"
+sidlist="${dir}/sources/sid-sources.list"
+function upgrade_debian_release {
+  # check how current sources.list is configured.
+  [[ $(cat ${srclist} | grep .onion) ]]; is_onion=$?
+  [[ $(cat ${srclist} | grep contrib) ]]; is_contrib=$?
+  [[ $(cat ${srclist} | grep non-free) ]]; is_nonfree=$?
+  is_upgraded=false
+  release=$(lsb_release -sc)
+
+  show_question "Upgrade Debian release?"
+  options=("Back" "Stretch" "Buster" "Sid")
+  select option in "${options[@]}"; do
+    case $option in
+      "Back")
+        break
+        ;;
+      "Stretch")
+        if [[ "$(lsb_release -sc)" == "stretch" ]]; then
+          show_warning "Already set to $(lsb_release -sc)."
+        elif [[ "$(lsb_release -sc)" == "buster" ]] || \
+             [[ "$(lsb_release -sc)" == "sid" ]]; then
+          show_warning "Downgrades not possible."
+        else
+          sudo cp -f ${srclist} ${srclist}.${RANDOM}.bak
+          sudo cp -f ${stretchlist} ${srclist}
+          is_upgraded=true
+          release=stretch
+        fi
+        break
+        ;;
+      "Buster")
+        if [[ "$(lsb_release -sc)" == "buster" ]]; then
+          show_warning "Already set to $(lsb_release -sc)."
+        elif [[ "$(lsb_release -sc)" == "sid" ]]; then
+          show_warning "Downgrades not possible."
+        else
+          sudo cp -f ${srclist} ${srclist}.${RANDOM}.bak
+          sudo cp -f ${busterlist} ${srclist}
+          is_upgraded=true
+          release=buster
+        fi
+        break
+        ;;
+      "Sid")
+        if [[ "$(lsb_release -sc)" == "sid" ]]; then
+          show_warning "Already set to $(lsb_release -sc)."
+        else
+          sudo cp -f ${srclist} ${srclist}.${RANDOM}.bak
+          sudo cp -f ${sidlist} ${srclist}
+          is_upgraded=true
+          release=sid
+        fi
+        break
+        ;;
+      *)
+        show_warning "Invalid option."
+        show_info "Hit ENTER to see options again."
+        ;;
+    esac
+  done
+
+  if [ ${is_upgraded} == true ]; then
+    [ ${is_contrib} == true ] && \
+      sudo sed -i "s,\(.* ${release} main.*\)$,\1 contrib,g" ${srclist} && \
+      sudo sed -i "s,\(.* ${release}-updates main.*\)$,\1 contrib,g" ${srclist}
+    [ ${is_nonfree} == true ] && \
+      sudo sed -i "s,\(.* ${release} main.*\)$,\1 non-free,g" ${srclist} && \
+      sudo sed -i "s,\(.* ${release}-updates main.*\)$,\1 non-free,g" ${srclist}
+    [ ${is_onion} == true ] && \
+      sudo sed -i "s,https://deb.debian.org,tor+http://vwakviie2ienjx6t.onion,g" ${srclist}
+    [ ${is_onion} == true ] && \
+      sudo sed -i "s,https://security.debian.org/,tor+http://sgvtcaew4bxjd7ln.onion/debian-security/,g" ${srclist}
+
+    sudo sh -c "apt-get update && \
+      sudo apt-get -y upgrade && \
+      sudo apt-get -y dist-upgrade && \
+      sudo apt-get -y autoremove && \
+      sudo apt-get -y autoclean && \
+      sudo update-grub"
+
+    show_info "Reboot your system after major updates."
+  fi
+}
+
 function enable_sudo_insults {
   # Customize sudo to insult incorrect password attempts
   show_info "Enabling sudo insults."
@@ -48,7 +175,8 @@ function 01-base {
   show_question "Base: what do you want to install?"
   show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
 
-  options=("Back" "Base packages" "Purge packages" "Updates" "Sudo insults")
+  options=("Back" "Base packages" "Purge packages" "Firmware" "Enable contrib"
+           "Enable non-free" "Updates" "Upgrade Debian release" "Sudo insults")
   select option in "${options[@]}"; do
     case $option in
       "Back")
@@ -62,8 +190,24 @@ function 01-base {
         purge_packages
         show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
         ;;
+      "Firmware")
+        install_firmware
+        show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
+        ;;
+      "Enable contrib")
+        enable_contrib_repos
+        show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
+        ;;
+      "Enable non-free")
+        enable_nonfree_repos
+        show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
+        ;;
       "Updates")
         update_packages
+        show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
+        ;;
+      "Upgrade Debian release")
+        upgrade_debian_release
         show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
         ;;
       "Sudo insults")

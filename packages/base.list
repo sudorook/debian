@@ -1,1 +1,3 @@
+apt-transport-https
 gdebi
+netselect-apt

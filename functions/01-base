@@ -153,7 +153,7 @@ function enable_sudo_insults {
 
 purge="${dir}/packages/purge.list"
 function purge_packages {
-  show_header "Purging unwanted packaged often installed by default." 
+  show_header "Purging unwanted packaged often installed by default."
   check_uninstalled $(cat ${purge})
   check_fail
   show_success "Base packages installed."

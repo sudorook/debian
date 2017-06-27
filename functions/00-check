@@ -99,7 +99,7 @@ function install_dependencies {
 
 function check_network {
   show_header "Checking network connection."
-  
+
   if wget -q --tries=10 --timeout=20 --spider https://debian.org >/dev/null; then
     show_success "Network is working."
   else

@@ -24,29 +24,33 @@ function check_fail {
   fi
 }
 
-# srclist="/etc/apt/sources.list"
-# function check_debian_release {
-#   show_header "Checking currently set Debian release."
-#   if ! [[ "$(lsb_release -sc)" == "stretch" ]]; then
-#     show_warning "Currently running $(lsb_release -sc)"
-#     read -r -p $'\033[1;34m Switch to stretch? (y/N) \033[0m' response
-#     if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
-#       echo "Updating sources.list."
-#       sudo sed -i "/deb cdrom/d" ${srclist}
-#       sudo sed -i "/# *$/d" ${srclist}
-#       sudo sed -i "s/$(lsb_release -sc)/stretch/g" ${srclist}
-#       sudo sh -c "apt-get update && \
-#         sudo apt-get -y upgrade && \
-#         sudo apt-get -y dist-upgrade \
-#         sudo apt-get -y autoremove \
-#         sudo apt-get -y autoclean \
-#         sudo update-grub"
-#       show_info "Reboot your system after major updates."
-#     fi
-#   else
-#     show_success "Currently running $(lsb_release -sc)"
-#   fi
-# }
+srclist="/etc/apt/sources.list"
+function check_debian_release {
+  show_header "Checking currently set Debian release."
+  release=$(lsb_release -sc)
+  if ! [[ "${release}" == "stretch" ]] && \
+     ! [[ "${release}" == "buster" ]] && \
+     ! [[ "${release}" == "sid" ]]; then
+    show_warning "Currently running ${release}"
+    read -r -p $'\033[1;34m Switch to stretch? (y/N) \033[0m' response
+    if [[ "${response}" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
+      echo "Updating sources.list."
+      sudo sed -i "/deb cdrom/d" ${srclist}
+      sudo sed -i "/# *$/d" ${srclist}
+      sudo sed -i "s/${release}/stretch/g" ${srclist}
+      sudo sh -c "apt-get update && \
+        apt-get -y upgrade && \
+        apt-get -y dist-upgrade \
+        apt-get -y autoremove \
+        apt-get -y autoclean \
+        update-grub"
+      show_info "Reboot your system after major updates."
+    fi
+  else
+    show_success "Now running ${release}."
+    show_info "Reboot soon."
+  fi
+}
 
 function check_installed {
   for package in "${@}"; do

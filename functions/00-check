@@ -45,6 +45,8 @@ function check_debian_release {
         apt-get -y autoclean \
         update-grub"
       show_info "Reboot your system after major updates."
+    else
+      show_warning "This script is not intended for $(lsb_release -sc)."
     fi
   else
     show_success "Now running ${release}."

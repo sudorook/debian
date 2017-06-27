@@ -42,6 +42,7 @@ function install_dev {
 
   show_info "Installing dotfiles."
   cp -f ${npmrc} ${HOME}/.npmrc
+  clang-format -style=mozilla -dump-config > ${HOME}/.clang-format
   show_success "Dotfiles installed."
 }
 

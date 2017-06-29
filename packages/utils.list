@@ -5,6 +5,7 @@ dosfstools
 encfs
 gnupg
 hfsprogs
+libnotify-bin
 net-tools
 nmap
 ntfs-3g

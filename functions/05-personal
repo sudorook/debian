@@ -73,10 +73,10 @@ function set_icon_theme {
   if [[ "${icontheme}" =~ "Papirus" ]]; then
     show_info "Creating Projects/ and Sync/ and setting gvfs metadata."
     mkdir -p ${HOME}/Projects
-    gvfs-set-attribute ${HOME}/Projects/ -t string \
+    gio set ${HOME}/Projects/ -t string \
       metadata::custom-icon-name folder-development
     mkdir -p ${HOME}/Sync
-    gvfs-set-attribute ${HOME}/Sync/ -t string \
+    gio set ${HOME}/Sync/ -t string \
       metadata::custom-icon-name folder-cloud
   fi
 

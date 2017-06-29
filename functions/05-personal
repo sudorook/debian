@@ -113,7 +113,7 @@ function set_lightdm_theme {
   if dpkg -s lightdm-gtk-greeter > /dev/null 2>&1; then
     show_header "Setting LightDM login GTK theme to ${gtktheme}."
     sudo sed -i "s/^#theme-name=$/theme-name=${gtktheme}/g" ${lightdmconf}
-    sudo sed -i "s/^#icon-theme=$/icon-theme=${icontheme}/g" ${lightdmconf}
+    sudo sed -i "s/^#icon-theme-name=$/icon-theme-name=${icontheme}/g" ${lightdmconf}
     if dpkg -s fonts-noto > /dev/null 2>&1; then
       sudo sed -i "s/^#font-name=$/font-name=Noto Sans/g" ${lightdmconf}
     fi

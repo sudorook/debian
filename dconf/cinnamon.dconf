@@ -52,6 +52,10 @@ audible-bell=false
 [org/cinnamon/cinnamon-session]
 quit-delay-toggle=true
 
+[org/cinnamon/sounds]
+notification-file='/usr/share/sounds/freedesktop/stereo/message.oga'
+notification-enabled=true
+
 [org/gnome/desktop/interface]
 toolkit-accessibility=false
 

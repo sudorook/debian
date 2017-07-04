@@ -184,6 +184,36 @@ function import_apps_dconf {
   show_success "Application dconf settings imported."
 }
 
+gdmconf="/etc/gdm/custom.conf"
+lightdmconf="/etc/lightdm/lightdm.conf"
+function enable_autologin {
+  show_header "Enabling automatic login for ${USER}."
+  if pacman -Qi gdm > /dev/null 2>&1; then
+    show_info "Log in as ${USER} via GDM."
+    ! [ -f ${gdmconf} ] && sudo touch ${gdmconf}
+    if ! test $(grep ^AutomaticLogin=${USER} ${gdmconf}); then
+      ! [ $(grep '^\[daemon\]' ${gdmconf}) ] && \
+        sudo sh -c 'echo "[daemon]" >> /etc/gdm/custom.conf'
+      sudo sed -i "/^\[daemon\]$/a AutomaticLogin=${USER}" ${gdmconf}
+      sudo sed -i "/^AutomaticLogin=/a AutomaticLoginEnable=True" ${gdmconf}
+    else
+      sudo sed -i "s/^AutomaticLogin=\(.*\)$/AutomaticLogin=${USER}/g" ${gdmconf}
+      sudo sed -i "s/^AutomaticLoginEnable=\(.*\)$/AutomaticLoginEnable=True/g" ${gdmconf}
+    fi
+  fi
+  if pacman -Qi lightdm > /dev/null 2>&1; then
+    show_info "Log in as ${USER} via LightDM."
+    if `test getent group | grep autologin`; then
+      sudo groupadd -r autologin
+    fi
+    ! [[ $(getent group) =~ "autologin" ]] && sudo groupadd -a ${USER} autologin
+    sudo sed -i "s/^#autologin-user=/autologin-user=/g" ${lightdmconf}
+    sudo sed -i "s/^#autologin-user-timeout=/autologin-user-timeout=/g" ${lightdmconf}
+    sudo sed -i "s/^autologin-user=\(.*\)$/autologin-user=${USER}/g" ${lightdmconf}
+  fi
+  show_success "Autologin enabled."
+}
+
 grubconfig="/etc/default/grub"
 function invert_brightness {
   oldline=$(cat ${grubconfig} | grep ^GRUB_CMDLINE_LINUX=)
@@ -409,8 +439,8 @@ function 05-personal {
 
   options=("Back" "All" "Set Noto fonts" "Select icon theme" \
            "Select desktop theme" "Set dark GTK" "Import Cinnamon dconf" \
-           "Import GNOME dconf" "Import application dconf" "Invert brightness" \
-           "Disable PulseAudio suspend" "Add scripts")
+           "Import GNOME dconf" "Import application dconf" "Enable autologin" \
+           "Invert brightness" "Disable PulseAudio suspend" "Add scripts")
   select option in "${options[@]}"; do
     case $option in
       "Back")
@@ -426,6 +456,7 @@ function 05-personal {
         import_cinnamon_dconf
         import_gnome_dconf
         import_apps_dconf
+        enable_autologin
         invert_brightness
         disable_pulseaudio_suspend
         show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
@@ -456,6 +487,10 @@ function 05-personal {
         ;;
       "Import application dconf")
         import_apps_dconf
+        show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
+        ;;
+      "Enable autologin")
+        enable_autologin
         show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
         ;;
       "Invert brightness")

@@ -201,8 +201,8 @@ function enable_autologin {
       sudo sed -i "/^\[daemon\]$/a AutomaticLogin=${USER}" ${gdmconf}
       sudo sed -i "/^AutomaticLogin=/a AutomaticLoginEnable=True" ${gdmconf}
     else
-      sudo sed -i "s/^AutomaticLogin=\(.*\)$/AutomaticLogin=${USER}/g" ${gdmconf}
-      sudo sed -i "s/^AutomaticLoginEnable=\(.*\)$/AutomaticLoginEnable=True/g" ${gdmconf}
+      sudo sed -i "s/^AutomaticLogin=.*$/AutomaticLogin=${USER}/g" ${gdmconf}
+      sudo sed -i "s/^AutomaticLoginEnable=.*$/AutomaticLoginEnable=True/g" ${gdmconf}
     fi
   fi
   if pacman -Qi lightdm > /dev/null 2>&1; then
@@ -213,7 +213,7 @@ function enable_autologin {
     ! [[ $(getent group) =~ "autologin" ]] && sudo groupadd -a ${USER} autologin
     sudo sed -i "s/^#autologin-user=/autologin-user=/g" ${lightdmconf}
     sudo sed -i "s/^#autologin-user-timeout=/autologin-user-timeout=/g" ${lightdmconf}
-    sudo sed -i "s/^autologin-user=\(.*\)$/autologin-user=${USER}/g" ${lightdmconf}
+    sudo sed -i "s/^autologin-user=.*$/autologin-user=${USER}/g" ${lightdmconf}
   fi
   show_success "Autologin enabled."
 }

@@ -69,10 +69,11 @@ function install_fonts {
 
 function install_papirus_icons {
   show_header "Downloading and installing the Papirus icon theme."
-  git clone https://github.com/PapirusDevelopmentTeam/papirus-icon-theme papirus-icon-theme
+  git clone https://github.com/PapirusDevelopmentTeam/papirus-icon-theme \
+    papirus-icon-theme
   cd papirus-icon-theme
   sudo make install
-  cd ../
+  cd ..
   rm -rf papirus-icon-theme
 }
 

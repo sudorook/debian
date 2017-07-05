@@ -112,12 +112,16 @@ lightdmgtkconf="/etc/lightdm/lightdm-gtk-greeter.conf"
 function set_lightdm_theme {
   if dpkg -s lightdm-gtk-greeter > /dev/null 2>&1; then
     show_header "Setting LightDM login GTK theme to ${gtktheme}."
-    sudo sed -i "s/^#theme-name=$/theme-name=${gtktheme}/g" ${lightdmgtkconf}
-    sudo sed -i "s/^#icon-theme-name=$/icon-theme-name=${icontheme}/g" ${lightdmgtkconf}
-    if dpkg -s fonts-noto > /dev/null 2>&1; then
-      sudo sed -i "s/^#font-name=$/font-name=Noto Sans/g" ${lightdmgtkconf}
+    sudo sed -i "s/^#theme-name=$/theme-name=/g" ${lightdmgtkconf}
+    sudo sed -i "s/^theme-name=.*/theme-name=${gtktheme}/g" ${lightdmgtkconf}
+    sudo sed -i "s/^#icon-theme-name=$/icon-theme-name=/g" ${lightdmgtkconf}
+    sudo sed -i "s/^icon-theme-name=.*$/icon-theme-name=${icontheme}/g" ${lightdmgtkconf}
+    if pacman -Qi noto-fonts > /dev/null; then
+      sudo sed -i "s/^#font-name=$/font-name=/g" ${lightdmgtkconf}
+      sudo sed -i "s/^font-name=.*/font-name=Noto Sans/g" ${lightdmgtkconf}
     fi
-    sudo sed -i "s/^#xft-hintstyle=$/xft-hintstyle=slight/g" ${lightdmgtkconf}
+    sudo sed -i "s/^#xft-hintstyle=$/xft-hintstyle=/g" ${lightdmgtkconf}
+    sudo sed -i "s/^xft-hintstyle=.*$/xft-hintstyle=slight/g" ${lightdmgtkconf}
   else
     show_warning "LightDM GTK greeter not installed. Skipping."
   fi

@@ -168,9 +168,9 @@ function main {
 #
 
 check_user
-install_dependencies
 check_network
 check_debian_release
+install_dependencies
 
 
 #

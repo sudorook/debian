@@ -17,6 +17,13 @@ endbranch="\0342\0224\0224\0342\0224\0200\0342\0224\0200"
 #  ${midbranch} Themes
 #  ${endbranch} Personalization"
 
+function check_user {
+  if [ ${EUID} -eq 0 ]; then
+    show_error "Don't run this script as root. Exiting."
+    exit 1
+  fi
+}
+
 function check_fail {
   EXITSTATUS=${1:-}
   if [[ $EXITSTATUS -gt 0 ]]; then

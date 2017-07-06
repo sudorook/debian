@@ -167,6 +167,7 @@ function main {
 # Check if dependencies are installed and if network is working
 #
 
+check_user
 install_dependencies
 check_network
 check_debian_release

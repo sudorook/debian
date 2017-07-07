@@ -194,10 +194,10 @@ function enable_autologin {
   show_header "Enabling automatic login for ${USER}."
   if pacman -Qi gdm > /dev/null 2>&1; then
     show_info "Log in as ${USER} via GDM."
-    ! [ -f ${gdmconf} ] && sudo touch ${gdmconf}
+    ! [ -f ${gdmconf} ] && sudo touch ${gdmconf} || true
     if ! test $(grep ^AutomaticLogin=${USER} ${gdmconf}); then
       ! [ $(grep '^\[daemon\]' ${gdmconf}) ] && \
-        sudo sh -c 'echo "[daemon]" >> /etc/gdm/custom.conf'
+        sudo sh -c 'echo "[daemon]" >> /etc/gdm/custom.conf' || true
       sudo sed -i "/^\[daemon\]$/a AutomaticLogin=${USER}" ${gdmconf}
       sudo sed -i "/^AutomaticLogin=/a AutomaticLoginEnable=True" ${gdmconf}
     else
@@ -210,7 +210,8 @@ function enable_autologin {
     if `test getent group | grep autologin`; then
       sudo groupadd -r autologin
     fi
-    ! [[ $(getent group) =~ "autologin" ]] && sudo groupadd -a ${USER} autologin
+    ! [[ $(getent group) =~ "autologin" ]] && \
+      sudo groupadd -a ${USER} autologin || true
     sudo sed -i "s/^#autologin-user=/autologin-user=/g" ${lightdmconf}
     sudo sed -i "s/^#autologin-user-timeout=/autologin-user-timeout=/g" ${lightdmconf}
     sudo sed -i "s/^autologin-user=.*$/autologin-user=${USER}/g" ${lightdmconf}

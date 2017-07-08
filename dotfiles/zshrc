@@ -5,19 +5,27 @@ export SUDO_EDITOR="$EDITOR"
 export VISUAL="$EDITOR"
 
 # go 
-export GOPATH=~/.go
-export PATH="$PATH:$GOPATH/bin"
+command -v go >/dev/null 2>&1 && {
+  export GOPATH=~/.go
+  export PATH="$PATH:$GOPATH/bin"
+}
 
 # ruby
-export PATH="$(ruby -e 'print Gem.user_dir')/bin:$PATH"
-export GEM_HOME=$(ruby -e 'print Gem.user_dir')
+command -v ruby >/dev/null 2>&1 && {
+  export PATH="$(ruby -e 'print Gem.user_dir')/bin:$PATH"
+  export GEM_HOME=$(ruby -e 'print Gem.user_dir')
+}
 
 # npm
-export PATH="$PATH:$HOME/.npm/bin"
-export NPM_CONFIG_PREFIX=$HOME/.npm
+command -v npm >/dev/null 2>&1 && {
+  export PATH="$PATH:$HOME/.npm/bin"
+  export NPM_CONFIG_PREFIX=$HOME/.npm
+}
 
 # R 
-[[ -f /usr/bin/R ]] && export R_LIBS_USER=$HOME/.R/$(R --version | sed -n "s/^R version \([0-9\.]*\) .*/\1/p")
+command -v R >/dev/null 2>&1 && {
+  export R_LIBS_USER=$HOME/.R/$(R --version | sed -n "s/^R version \([0-9\.]*\) .*/\1/p")
+}
 
 # custom scripts
 export PATH=$PATH:~/.scripts/
@@ -47,14 +55,15 @@ man() {
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # antigen
-source /usr/share/zsh-antigen/antigen.zsh
-antigen use oh-my-zsh
-antigen bundle zsh-users/zsh-syntax-highlighting
-antigen bundle zsh-users/zsh-autosuggestions
-antigen bundle zsh-users/zsh-history-substring-search
-antigen theme fishy
-antigen apply
+test -f /usr/share/zsh-antigen/antigen.zsh && {
+  source /usr/share/zsh-antigen/antigen.zsh
+  antigen use oh-my-zsh
+  antigen bundle zsh-users/zsh-syntax-highlighting
+  antigen bundle zsh-users/zsh-autosuggestions
+  antigen bundle zsh-users/zsh-history-substring-search
+  antigen theme fishy
+  antigen apply
+}
 
 # zsh fixes
 alias scp="noglob scp"
-

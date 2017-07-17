@@ -87,7 +87,7 @@ function main {
           # Set up network configuration
           install_network
           install_tor
-          tunnel_apt_tor
+          use_onion_repos
 
           # Install useful packages
           install_apps

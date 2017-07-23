@@ -5,6 +5,9 @@ next-applet-id=24
 workspace-expo-view-as-grid=true
 favorite-apps=['firefox.desktop', 'thunderbird.desktop', 'gnome-terminal.desktop', 'cinnamon-settings.desktop', 'nemo.desktop']
 
+[org/cinnamon/desktop/a11y/keyboard]
+togglekeys-enable-osd=true
+
 [org/cinnamon/settings-daemon/plugins/power]
 sleep-inactive-battery-timeout=0
 lock-on-suspend=true

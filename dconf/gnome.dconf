@@ -35,6 +35,7 @@ autorun-never=true
 show-desktop-icons=true
 
 [org/gnome/desktop/wm/preferences]
+audible-bell=false
 button-layout='appmenu:minimize,maximize,close'
 
 [org/gnome/desktop/interface]

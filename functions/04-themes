@@ -53,8 +53,7 @@ function install_adapta_gtk {
     --enable-parallel
   make -j`nproc`
   sudo make install
-  mkdir -p ${HOME}/.local/share/gtksourceview-3.0/styles
-  cp extra/gedit/adapta.xml ${HOME}/.local/share/gtksourceview-3.0/styles/
+  sudo cp -f extra/gedit/adapta.xml /usr/share/gtksourceview-3.0/styles/
   cd ..
   rm -rf adapta-gtk-theme
 }

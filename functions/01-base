@@ -171,12 +171,23 @@ function update_packages {
   show_success "Packages updated."
 }
 
+pcspkr_blacklist="/etc/modprobe.d/nobeep.conf"
+function blacklist_pcspkr {
+  show_header "Blacklisting pcspkr kernel module."
+  if ! find /etc/modprobe.d/ -type f
+         -exec grep "blacklist pcspkr" {} + 2>&1 >/dev/null; then
+    sudo echo "blacklist pcspkr" >> ${pcspkr_blacklist}
+  fi
+  show_success "Blacklisted in ${pcspkr_blacklist}."
+}
+
 function 01-base {
   show_question "Base: what do you want to install?"
   show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
 
   options=("Back" "Base packages" "Purge packages" "Firmware" "Enable contrib"
-           "Enable non-free" "Updates" "Upgrade Debian release" "Sudo insults")
+           "Enable non-free" "Updates" "Upgrade Debian release" "Sudo insults"
+           "Blacklist pcspkr")
   select option in "${options[@]}"; do
     case $option in
       "Back")
@@ -212,6 +223,10 @@ function 01-base {
         ;;
       "Sudo insults")
         enable_sudo_insults
+        show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
+        ;;
+      "Blacklist pcspkr")
+        blacklist_pcspkr
         show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
         ;;
       *)

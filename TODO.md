@@ -5,5 +5,3 @@
 3. Install Syncthing GTK application (Debian).
 4. Set default share in Syncthing to Sync/ folder.
 5. Port battery gauge from Arch zshrc.
-6. Add function to disable audio beep, especially when hitting backspace in the
-   terminal.

@@ -35,7 +35,8 @@ alias ls='ls --color=auto'
 alias sl='ls -r'
 alias grep='grep --color=auto'
 alias happymake="make -j`nproc` && sudo make install"
-alias superupgrade="sudo sh -c 'apt update && apt upgrade && apt dist-upgrade && apt autoremove && apt autoclean && update-grub'"
+# alias superupgrade="sudo sh -c 'apt update && apt upgrade && apt dist-upgrade && apt autoremove && apt autoclean && update-grub'"
+alias superupgrade="sudo sh -c 'apt update && apt full-upgrade'"
 
 eval $(dircolors -b)
 

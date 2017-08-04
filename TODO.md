@@ -4,4 +4,3 @@
    to catch.
 3. Install Syncthing GTK application.
 4. Port battery gauge from Arch zshrc.
-5. Fix Adapta compiling on Cinnamon (need to pass --disable-gnome).

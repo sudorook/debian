@@ -100,6 +100,7 @@ function main {
           install_vim
           # install_virtualbox
           # install_virtualbox_guest
+          # install_wine
 
           # Install themes
           install_theme_deps

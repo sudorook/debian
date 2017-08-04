@@ -127,13 +127,25 @@ function install_virtualbox_guest {
   fi
 }
 
+wine="${dir}/packages/wine.list"
+function install_wine {
+  show_header "Installing wine."
+  if [[ $(uname -m) = "x86_64" ]]; then
+    show_info "Multilib needs to be enabled for 64-bit architectures."
+    enable_multilib
+  fi
+  check_installed $(cat ${wine})
+  check_fail
+  show_success "Wine installed."
+}
+
 function 03-packages {
   show_question "Applications: what do you want to install?"
   show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
 
   options=("Back" "All" "Android tools" "General" "Codecs" "Development" \
            "Emulators" "KVM (host)" "KVM (guest)" "Vim" "VirtualBox (host)" \
-           "VirtualBox (guest)")
+           "VirtualBox (guest)" "Wine")
   select option in "${options[@]}"; do
     case $option in
       "Back")
@@ -150,6 +162,7 @@ function 03-packages {
         install_vim
         install_virtualbox
         install_virtualbox_guest
+        install_wine
         show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
         ;;
       "Android tools")
@@ -190,6 +203,10 @@ function 03-packages {
         ;;
       "VirtualBox (guest)")
         install_virtualbox_guest
+        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        ;;
+      "Wine")
+        install_wine
         show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
         ;;
       *)

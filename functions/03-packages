@@ -115,7 +115,6 @@ function install_virtualbox {
     show_info "Adding $(whoami) to vboxusers group."
     sudo usermod -aG vboxusers $(whoami)
   fi
-  show_success "Done."
 }
 
 virtualboxguest="${dir}/packages/virtualbox-guest.list"
@@ -146,9 +145,9 @@ function 03-packages {
   show_question "Applications: what do you want to install?"
   show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
 
-  options=("Back" "All" "Android tools" "General" "Codecs" "Development" \
-           "Emulators" "KVM (host)" "KVM (guest)" "Vim" "VirtualBox (host)" \
-           "VirtualBox (guest)" "Wine")
+  options=("Back" "All" "Android tools" "General applications" "Codecs" \
+           "Development" "Emulators" "KVM (host)" "KVM (guest)" "Vim" \
+           "VirtualBox (host)" "VirtualBox (guest)" "Wine")
   select option in "${options[@]}"; do
     case $option in
       "Back")
@@ -172,7 +171,7 @@ function 03-packages {
         install_android
         show_info "Main\n ${endbranch} Misc (Hit ENTER to see options again.)"
         ;;
-      "General")
+      "General applications")
         install_apps
         show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
         ;;

@@ -5,3 +5,4 @@
 3. Install Syncthing GTK application (Debian).
 4. Set default share in Syncthing to Sync/ folder.
 5. Port battery gauge from Arch zshrc.
+6. Fix Adapta compiling on Cinnamon (need to pass --disable-gnome).

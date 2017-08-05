@@ -18,6 +18,7 @@ function install_gnome {
 }
 
 cinnamon="${dir}/packages/cinnamon.list"
+redshiftconf="${dir}/configs/redshift.conf"
 function install_cinnamon {
   show_header "Setting up cinnamon desktop environment."
   check_installed $(cat ${cinnamon})
@@ -28,6 +29,7 @@ function install_cinnamon {
   if ! test ${DESKTOP_SESSION+x}; then
     export DESKTOP_SESSION="cinnamon"
   fi
+  cp -f ${redshiftconf} ${HOME}/.config/
   show_info "Done."
 }
 

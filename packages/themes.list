@@ -13,4 +13,7 @@ qtbase5-private-dev
 qttools5-dev
 qt5-default
 qt5-style-plugins
+qt5-qmake
+qt4-qmake
+qt4-linguist-tools
 sassc

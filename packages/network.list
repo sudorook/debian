@@ -4,6 +4,7 @@ avahi-discover
 gvfs
 libnss-mdns
 network-manager-openvpn
+network-manager-openvpn-gnome
 openssh-server
 samba
 ufw

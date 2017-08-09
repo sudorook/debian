@@ -9,6 +9,7 @@ cucumber
 cython
 doxygen
 exuberant-ctags
+fonts-mathjax-extras
 gcc
 gdb
 gitg
@@ -22,7 +23,13 @@ hugo
 ipython3
 jekyll
 julia
+jupyter-client
+jupyter-core
+jupyter-nbconvert
+jupyter-nbformat
+jupyter-notebook
 libboost-dev
+libjs-mathjax
 nodejs
 nodejs-legacy
 node-grunt-cli

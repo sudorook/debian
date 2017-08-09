@@ -210,11 +210,6 @@ function enable_autologin {
   fi
   if dpkg -s lightdm > /dev/null 2>&1; then
     show_info "Log in as ${USER} via LightDM."
-    if `test getent group | grep autologin`; then
-      sudo groupadd -r autologin
-    fi
-    ! [[ $(getent group) =~ "autologin" ]] && \
-      sudo groupadd -a ${USER} autologin || true
     sudo sed -i "s/^#autologin-user=/autologin-user=/g" ${lightdmconf}
     sudo sed -i "s/^#autologin-user-timeout=/autologin-user-timeout=/g" ${lightdmconf}
     sudo sed -i "s/^autologin-user=.*$/autologin-user=${USER}/g" ${lightdmconf}

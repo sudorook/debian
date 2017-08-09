@@ -5,6 +5,7 @@ clang-format
 clang-tidy
 cmake
 cppcheck
+cucumber
 cython
 doxygen
 exuberant-ctags
@@ -51,6 +52,7 @@ r-cran-hdf5
 r-cran-optparse
 r-cran-rcurl
 ruby
+ruby-aruba
 sqlite
 texlive
 uncrustify

@@ -19,7 +19,6 @@ function install_network {
     sudo sh -c "echo "[connection]" >> ${nmconf}"
     sudo sh -c "echo "wifi.cloned-mac-address=random" >> ${nmconf}"
     sudo sh -c "echo "ethernet.cloned-mac-address=random" >> ${nmconf}"
-    sudo systemctl restart NetworkManager
   fi
 
   show_info "Enabling ufw."

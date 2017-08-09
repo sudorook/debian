@@ -42,9 +42,9 @@ function install_arc_gtk {
 function install_adapta_gtk {
   show_header "Downloading, building, and installing the Adapta GTK theme."
   autotools_options=""
-  if ! pacman -Qi gnome-shell > /dev/null 2>&1; then
+  if ! dpkg -s gnome-shell > /dev/null 2>&1; then
     autotools_options=${autotools_options}"--disable-gnome "
-  elif ! pacman -Qi cinnamon > /dev/null 2>&1; then
+  elif ! dpkg -s cinnamon > /dev/null 2>&1; then
     autotools_options=${autotools_options}"--disable-cinnamon "
   fi
   git clone https://github.com/pseudorook/Adapta adapta-gtk-theme

@@ -116,7 +116,7 @@ function set_lightdm_theme {
     sudo sed -i "s/^theme-name=.*/theme-name=${gtktheme}/g" ${lightdmgtkconf}
     sudo sed -i "s/^#icon-theme-name=$/icon-theme-name=/g" ${lightdmgtkconf}
     sudo sed -i "s/^icon-theme-name=.*$/icon-theme-name=${icontheme}/g" ${lightdmgtkconf}
-    if pacman -Qi noto-fonts > /dev/null; then
+    if dpkg -s fonts-noto > /dev/null; then
       sudo sed -i "s/^#font-name=$/font-name=/g" ${lightdmgtkconf}
       sudo sed -i "s/^font-name=.*/font-name=Noto Sans/g" ${lightdmgtkconf}
     fi
@@ -195,7 +195,7 @@ gdmconf="/etc/gdm/custom.conf"
 lightdmconf="/etc/lightdm/lightdm.conf"
 function enable_autologin {
   show_header "Enabling automatic login for ${USER}."
-  if pacman -Qi gdm > /dev/null 2>&1; then
+  if dpkg -s gdm > /dev/null 2>&1; then
     show_info "Log in as ${USER} via GDM."
     ! [ -f ${gdmconf} ] && sudo touch ${gdmconf} || true
     if ! test $(grep ^AutomaticLogin=${USER} ${gdmconf}); then
@@ -208,7 +208,7 @@ function enable_autologin {
       sudo sed -i "s/^AutomaticLoginEnable=.*$/AutomaticLoginEnable=True/g" ${gdmconf}
     fi
   fi
-  if pacman -Qi lightdm > /dev/null 2>&1; then
+  if dpkg -s lightdm > /dev/null 2>&1; then
     show_info "Log in as ${USER} via LightDM."
     if `test getent group | grep autologin`; then
       sudo groupadd -r autologin

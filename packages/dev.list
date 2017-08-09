@@ -17,7 +17,9 @@ golang
 graphviz
 gulp
 hdf5-tools
+hugo
 ipython3
+jekyll
 julia
 libboost-dev
 nodejs

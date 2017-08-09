@@ -174,9 +174,9 @@ function update_packages {
 pcspkr_blacklist="/etc/modprobe.d/nobeep.conf"
 function blacklist_pcspkr {
   show_header "Blacklisting pcspkr kernel module."
-  if ! find /etc/modprobe.d/ -type f
+  if ! find /etc/modprobe.d/ -type f \
          -exec grep "blacklist pcspkr" {} + 2>&1 >/dev/null; then
-    sudo echo "blacklist pcspkr" >> ${pcspkr_blacklist}
+    sudo sh -c "echo 'blacklist pcspkr' >> ${pcspkr_blacklist}"
   fi
   show_success "Blacklisted in ${pcspkr_blacklist}."
 }

@@ -75,7 +75,6 @@ function main {
 
           # Install miscellaneous extras
           install_zsh
-          install_grsec
           install_selinux
           install_utils
           install_laptop

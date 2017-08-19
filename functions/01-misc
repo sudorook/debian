@@ -20,15 +20,6 @@ function install_zsh {
   fi
 }
 
-grsec="${dir}/packages/grsec.list"
-function install_grsec {
-  show_header "Installing grsecurity."
-  check_installed $(cat ${grsec})
-  check_fail
-  show_success "Grsecurity-patched kernel installed."
-  # need to set pax rules or enable learning mode
-}
-
 selinux="${dir}/packages/selinux.list"
 function install_selinux {
   show_header "Installing SELinux and setting rules."
@@ -66,7 +57,7 @@ function 01-misc {
   show_question "Misc: what do you want to install?"
   show_info "Main\n ${endbranch} Misc (Hit ENTER to see options again.)"
 
-  options=("Back" "All" "zsh" "Grsecurity" "SELinux" "Linux utilities" \
+  options=("Back" "All" "zsh" "SELinux" "Linux utilities" \
            "Laptop tools")
   select option in "${options[@]}"; do
     case $option in
@@ -75,17 +66,12 @@ function 01-misc {
         ;;
       "All")
         install_zsh
-        install_grsec
         install_utils
         install_laptop
         show_info "Main\n ${endbranch} Misc (Hit ENTER to see options again.)"
         ;;
       "zsh")
         install_zsh
-        show_info "Main\n ${endbranch} Misc (Hit ENTER to see options again.)"
-        ;;
-      "Grsecurity")
-        install_grsec
         show_info "Main\n ${endbranch} Misc (Hit ENTER to see options again.)"
         ;;
       "SELinux")

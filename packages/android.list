@@ -1,4 +1,11 @@
-android-tools-adb
-android-tools-fastboot
+adb
+android-libandroidfw
+android-libcutils
+android-libdex
+android-libetc1
+android-libext4-utils
 android-tools-fsutils
+fastboot
+f2fs-tools
 heimdall-flash
+mmc-utils

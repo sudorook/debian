@@ -26,7 +26,16 @@ function install_selinux {
   check_installed $(cat ${selinux})
   check_fail
   show_success "SELinux installed."
-  # need to learn what goes here next
+
+  selinux-activate
+  show_success "SELinux setup complete."
+  show_info \
+    "Reboot the computer to start using SELinux. It will be in permissive" \
+    "mode by default." \
+    "Run check-selinux-installation after rebooting to verify that SELinux is" \
+    "installed properly." \
+    "To start enforcing policies, add 'enforcing=1' to the kernel command line" \
+    "in /etc/default/grub."
 }
 
 utils="${dir}/packages/utils.list"

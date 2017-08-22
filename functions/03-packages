@@ -22,9 +22,6 @@ function install_apps {
   show_info "Copying mpv config."
   mkdir -p ${HOME}/.config/mpv
   cp -f ${mpvconfig} ${HOME}/.config/mpv
-
-  show_info "Setting Syncthing to watch ${HOME}."
-  syncthing -generate=${HOME}/Sync
 }
 
 codecs="${dir}/packages/codecs.list"

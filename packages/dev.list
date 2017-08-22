@@ -62,4 +62,5 @@ ruby
 ruby-aruba
 sqlite
 texlive
+texlive-luatex
 uncrustify

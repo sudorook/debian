@@ -47,7 +47,7 @@ function install_adapta_gtk {
   elif ! dpkg -s cinnamon > /dev/null 2>&1; then
     autotools_options=${autotools_options}"--disable-cinnamon "
   fi
-  git clone https://github.com/pseudorook/Adapta adapta-gtk-theme
+  git clone https://github.com/pseudorook/adapta-gtk-theme adapta-gtk-theme
   cd adapta-gtk-theme
   git checkout mine
   ./autogen.sh \

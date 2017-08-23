@@ -61,6 +61,7 @@ r-cran-rcurl
 ruby
 ruby-aruba
 sqlite
+strace
 texlive
 texlive-luatex
 uncrustify

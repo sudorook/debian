@@ -3,7 +3,7 @@ panels-autohide=['1:intel']
 enabled-applets=['panel1:left:1:panel-launchers@cinnamon.org:22', 'panel1:left:0:menu@cinnamon.org:0', 'panel1:left:3:window-list@cinnamon.org:3', 'panel1:right:2:systray@cinnamon.org:12', 'panel1:right:3:notifications@cinnamon.org:4', 'panel1:right:4:removable-drives@cinnamon.org:6', 'panel1:right:6:user@cinnamon.org:5', 'panel1:right:7:network@cinnamon.org:9', 'panel1:right:8:sound@cinnamon.org:10', 'panel1:right:9:power@cinnamon.org:11', 'panel1:right:10:calendar@cinnamon.org:13', 'panel1:right:11:workspace-switcher@cinnamon.org:15']
 next-applet-id=24
 workspace-expo-view-as-grid=true
-favorite-apps=['firefox.desktop', 'thunderbird.desktop', 'gnome-terminal.desktop', 'cinnamon-settings.desktop', 'nemo.desktop']
+favorite-apps=['firefox.desktop', 'thunderbird.desktop', 'org.gnome.Terminal.desktop', 'cinnamon-settings.desktop', 'nemo.desktop']
 
 [org/cinnamon/desktop/a11y/keyboard]
 togglekeys-enable-osd=true

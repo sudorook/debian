@@ -29,6 +29,7 @@ function install_cinnamon {
   if ! test ${DESKTOP_SESSION+x}; then
     export DESKTOP_SESSION="cinnamon"
   fi
+  mkdir -p ${HOME}/.config
   cp -f ${redshiftconf} ${HOME}/.config/
   show_info "Done."
 }

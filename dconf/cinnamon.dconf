@@ -9,7 +9,7 @@ favorite-apps=['firefox.desktop', 'thunderbird.desktop', 'org.gnome.Terminal.des
 togglekeys-enable-osd=true
 
 [org/cinnamon/settings-daemon/plugins/power]
-sleep-inactive-battery-timeout=0
+sleep-inactive-battery-timeout=1800
 lock-on-suspend=true
 lid-close-ac-action='suspend'
 idle-dim-battery=false

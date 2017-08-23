@@ -48,6 +48,10 @@ text-scaling-factor=1.1699999999999999
 clock-use-24h=false
 toolkit-accessibility=false
 
+[org/cinnamon/desktop/privacy]
+recent-files-max-age=-1
+remember-recent-files=true
+
 [org/cinnamon/desktop/wm/preferences]
 num-workspaces=4
 audible-bell=false

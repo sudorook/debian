@@ -44,6 +44,7 @@ python3-matplotlib
 python3-numpy
 python3-pandas
 python3-pycurl
+python3-pygments
 python3-reportlab
 python3-sklearn
 python3-sklearn-pandas

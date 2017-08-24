@@ -63,6 +63,7 @@ ruby
 ruby-aruba
 sqlite
 strace
+tesseract-ocr
 texlive
 texlive-luatex
 uncrustify

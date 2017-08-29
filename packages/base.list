@@ -2,3 +2,4 @@ apt-transport-https
 curl
 gdebi
 netselect-apt
+pv

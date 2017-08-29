@@ -83,10 +83,16 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 # antigen
 test -f /usr/share/zsh-antigen/antigen.zsh && {
   source /usr/share/zsh-antigen/antigen.zsh
-  antigen use oh-my-zsh
+
+  # custom fishy theme
+  antigen bundle pseudorook/zsh-themes plugins/git
+  antigen bundle pseudorook/zsh-themes plugins/battery
+  antigen theme pseudorook/zsh-themes themes/fishy
+
+  # fish-like syntax highlighting
   antigen bundle zsh-users/zsh-syntax-highlighting
   antigen bundle zsh-users/zsh-autosuggestions
   antigen bundle zsh-users/zsh-history-substring-search
-  antigen theme fishy
+
   antigen apply
 }

@@ -1,10 +1,19 @@
-# environment variables
+#
+# Global settings
+#
+
 export BROWSER="firefox"
 export EDITOR="vim"
 export SUDO_EDITOR="$EDITOR"
 export VISUAL="$EDITOR"
+export QT_QPA_PLATFORMTHEME=qt5ct
 
-# go 
+
+#
+# Set environment variables for programming languages
+#
+
+# go
 command -v go >/dev/null 2>&1 && {
   export GOPATH=~/.go
   export PATH="$PATH:$GOPATH/bin"
@@ -22,7 +31,7 @@ command -v npm >/dev/null 2>&1 && {
   export NPM_CONFIG_PREFIX=$HOME/.npm
 }
 
-# R 
+# R
 command -v R >/dev/null 2>&1 && {
   export R_LIBS_USER=$HOME/.R/$(R --version | sed -n "s/^R version \([0-9\.]*\) .*/\1/p")
 }
@@ -30,14 +39,25 @@ command -v R >/dev/null 2>&1 && {
 # custom scripts
 export PATH=$PATH:~/.scripts/
 
-# enable color support of ls and also add handy aliases
+
+#
+# Set zsh aliases
+#
+
 alias ls='ls --color=auto'
 alias sl='ls'
 alias grep='grep --color=auto'
+alias scp="noglob scp"
 alias happymake="make -j`nproc` && sudo make install"
 # alias superupgrade="sudo sh -c 'apt update && apt upgrade && apt dist-upgrade && apt autoremove && apt autoclean && update-grub'"
 alias superupgrade="sudo sh -c 'apt update && apt full-upgrade'"
 
+
+#
+# Color terminal output
+#
+
+# color ls output based on filetype
 eval $(dircolors -b)
 
 # color the man pages
@@ -55,6 +75,11 @@ man() {
 # colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
+
+#
+# Add zsh plugins
+#
+
 # antigen
 test -f /usr/share/zsh-antigen/antigen.zsh && {
   source /usr/share/zsh-antigen/antigen.zsh
@@ -65,6 +90,3 @@ test -f /usr/share/zsh-antigen/antigen.zsh && {
   antigen theme fishy
   antigen apply
 }
-
-# zsh fixes
-alias scp="noglob scp"

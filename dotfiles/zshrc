@@ -44,13 +44,20 @@ export PATH=$PATH:~/.scripts/
 # Set zsh aliases
 #
 
+alias vi='vim '
+alias sudo='sudo '
+alias scp="noglob scp"
+alias grep='grep --color=auto'
+alias happymake="make -j`nproc` && sudo make install"
+alias superupgrade="sudo sh -c 'apt update && apt -y full-upgrade && apt -y autoremove'"
+
+# list directory contents
 alias ls='ls --color=auto'
 alias sl='ls'
-alias grep='grep --color=auto'
-alias scp="noglob scp"
-alias happymake="make -j`nproc` && sudo make install"
-# alias superupgrade="sudo sh -c 'apt update && apt upgrade && apt dist-upgrade && apt autoremove && apt autoclean && update-grub'"
-alias superupgrade="sudo sh -c 'apt update && apt full-upgrade'"
+alias lsa='ls -lah'
+alias l='ls -lah'
+alias ll='ls -lh'
+alias la='ls -lAh'
 
 
 #

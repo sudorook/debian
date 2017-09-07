@@ -29,6 +29,7 @@ jupyter-nbconvert
 jupyter-nbformat
 jupyter-notebook
 libboost-dev
+libimage-exiftool-perl
 libjs-mathjax
 nodejs
 nodejs-legacy

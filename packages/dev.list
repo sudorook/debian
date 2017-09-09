@@ -9,6 +9,8 @@ cucumber
 cython
 doxygen
 exuberant-ctags
+flatpak
+flatpak-builder
 fonts-mathjax-extras
 gcc
 gdb

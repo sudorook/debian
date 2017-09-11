@@ -91,6 +91,70 @@ function install_kvm_guest {
   fi
 }
 
+torbrowser_path="${HOME}/.local/share/tor-browser"
+local_applications="${HOME}/.local/share/applications"
+function install_torbrowser {
+  show_header "Installing Tor browser."
+
+  if [ -d ${torbrowser_path} ]; then
+    show_warning "Tor browser is already installed in ${torbrowser_path}."
+    read -r -p $'\033[1;34mReplace? (y/N) \033[0m' response
+    if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
+      install_torbrowser=true
+    else
+      install_torbrowser=false
+    fi
+  else
+    install_torbrowser=true
+  fi
+
+  if ${install_torbrowser}; then
+    if ! gpg --list-keys 0x4E2C6E8793298290 >/dev/null 2>&1; then
+      show_info "Downloading Tor developers' GPG key."
+      gpg --keyserver pool.sks-keyservers.net --recv-keys 0x4E2C6E8793298290
+    fi
+
+    torbrowser_version=$(curl https://www.torproject.org/projects/torbrowser.html.en | \
+                         grep '<th>GNU/Linux' | \
+                         sed -n 's,.*(\([0-9\.]*\)).*,\1,p')
+    torbrowser_url=https://www.torproject.org/dist/torbrowser
+    arch=`uname -m`
+    if [ ${arch:(-2)} = "86" ]; then
+      torbrowser_package=tor-browser-linux32-${torbrowser_version}_en-US.tar.xz
+    elif [ ${arch:(-2)} = "64" ]; then
+      torbrowser_package=tor-browser-linux64-${torbrowser_version}_en-US.tar.xz
+    fi
+
+    show_info "Downloading release tarball."
+    wget ${torbrowser_url}/${torbrowser_version}/${torbrowser_package}
+    wget ${torbrowser_url}/${torbrowser_version}/${torbrowser_package}.asc
+    show_info "Extracting..."
+    gpg --verify ${torbrowser_package}.asc ${torbrowser_package}
+    tar xf ${torbrowser_package}
+
+    show_info "Putting things into place..."
+    mkdir -p ${local_applications}
+    rm -rf ${torbrowser_path}
+    mv tor-browser_en-US ${torbrowser_path}
+    cp -f ${torbrowser_path}/start-tor-browser.desktop ${local_applications}/
+    chmod -x ${local_applications}/start-tor-browser.desktop
+    sed -i "s,^Name=.*,Name=Tor Browser,g" \
+      ${local_applications}/start-tor-browser.desktop
+    sed -i "s,^Icon=.*,Icon=browser-tor,g" \
+      ${local_applications}/start-tor-browser.desktop
+    sed -i "s,^Exec=.*,Exec=sh -c '\"${torbrowser_path}/Browser/start-tor-browser\" --detach || ([ !  -x \"${torbrowser_path}/Browser/start-tor-browser\" ] \&\& \"\$(dirname \"\$*\")\"/Browser/start-tor-browser --detach)' dummy %k,g" \
+      ${local_applications}/start-tor-browser.desktop
+    update-desktop-database ${local_applications}
+
+    show_info "Cleaning up..."
+    rm -f ${torbrowser_package}
+    rm -f ${torbrowser_package}.asc
+    show_success "Tor browser installed."
+  else
+    show_info "Skipping..."
+  fi
+}
+
 vim="${dir}/packages/vim.list"
 vimrc="${dir}/dotfiles/vimrc"
 function install_vim {
@@ -152,8 +216,8 @@ function 03-packages {
   show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
 
   options=("Back" "All" "Android tools" "General applications" "Codecs" \
-           "Development" "Emulators" "KVM (host)" "KVM (guest)" "Vim" \
-           "VirtualBox (host)" "VirtualBox (guest)" "Wine")
+           "Development" "Emulators" "KVM (host)" "KVM (guest)" "Tor browser" \
+           "Vim" "VirtualBox (host)" "VirtualBox (guest)" "Wine")
   select option in "${options[@]}"; do
     case $option in
       "Back")
@@ -167,6 +231,7 @@ function 03-packages {
         install_games
         install_kvm
         install_kvm_guest
+        install_torbrowser
         install_vim
         install_virtualbox
         install_virtualbox_guest
@@ -199,6 +264,10 @@ function 03-packages {
         ;;
       "KVM (guest)")
         install_kvm_guest
+        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        ;;
+      "Tor browser")
+        install_torbrowser
         show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
         ;;
       "Vim")

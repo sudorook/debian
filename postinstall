@@ -93,7 +93,7 @@ function main {
           install_apps
           install_codecs
           install_dev
-          install_games
+          # install_games
           # install_kvm
           # install_kvm_guest
           install_torbrowser

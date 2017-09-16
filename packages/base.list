@@ -1,5 +1,7 @@
 apt-transport-https
 curl
+debian-faq
+debian-reference-en
 gdebi
 netselect-apt
 pv

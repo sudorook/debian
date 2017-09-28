@@ -79,6 +79,8 @@ function set_gtk_theme {
     gsettings set org.cinnamon.desktop.wm.preferences theme "'${gtktheme}'"
     if [[ "$gtktheme" =~ "-Eta" ]]; then
       gsettings set org.cinnamon.theme name "'${gtktheme%-*}'"
+    elif [[ "$1" =~ "-Darker" ]]; then
+      gsettings set org.cinnamon.theme name "'${1%er}'"
     else
       gsettings set org.cinnamon.theme name "'${gtktheme}'"
     fi

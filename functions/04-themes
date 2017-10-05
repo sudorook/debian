@@ -28,7 +28,7 @@ function install_arc_gtk {
   show_header "Downloading, building, and installing the Arc GTK theme."
   git clone https://github.com/pseudorook/arc-theme arc-theme
   cd arc-theme
-  git checkout mine
+  git checkout tweak
   npm install
   ./autogen.sh --prefix=/usr
   gulp
@@ -48,7 +48,7 @@ function install_adapta_gtk {
   fi
   git clone https://github.com/pseudorook/adapta-gtk-theme adapta-gtk-theme
   cd adapta-gtk-theme
-  git checkout mine
+  git checkout tweak
   ./autogen.sh \
     --prefix=/usr \
     --with-selection_color=#0097A7 \

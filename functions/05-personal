@@ -4,7 +4,7 @@ dir="$(dirname "$0")"
 
 # Globals
 gtktheme="Adapta-Nokto-Eta"
-icontheme="Papirus-Dark"
+icontheme="Papirus-Adapta-Nokto"
 
 function set_noto_fonts {
   show_header "Configuring system fonts."

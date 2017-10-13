@@ -82,22 +82,18 @@ function install_papirus_icons {
   git clone https://github.com/PapirusDevelopmentTeam/papirus-icon-theme \
     papirus-icon-theme
   cd papirus-icon-theme
-  
+
   show_info "Tweaking icon colors."
   # Tweak default (Arc) icon colors.
   find Papirus ePapirus Papirus-Dark Papirus-Light \
-       Papirus-Adapta Papirus-Adapta-Nokto \
     -type f -exec sed -i "s/#5294e2/#5c87cc/g" {} +
   find Papirus ePapirus Papirus-Dark Papirus-Light \
-       Papirus-Adapta Papirus-Adapta-Nokto \
     -type f -exec sed -i "s/#4877b1/#4d7cb7/g" {} +
 
   # Tweak Adapta icon colors.
-  find Papirus ePapirus Papirus-Dark Papirus-Light \
-       Papirus-Adapta Papirus-Adapta-Nokto \
+  find Papirus-Adapta Papirus-Adapta-Nokto \
     -type f -exec sed -i "s/#00bcd4/#00acc1/g" {} +
-  find Papirus ePapirus Papirus-Dark Papirus-Light \
-       Papirus-Adapta Papirus-Adapta-Nokto \
+  find Papirus-Adapta Papirus-Adapta-Nokto \
     -type f -exec sed -i "s/#4899b1/#0097a7/g" {} +
 
   sudo make install

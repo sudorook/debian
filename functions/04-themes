@@ -145,7 +145,7 @@ function 04-themes {
   show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
 
   options=("Back" "All" "Arc (GTK)" "Adapta (GTK)" "Fonts" "Papirus (icons)" \
-           "Thunderbird theme" "Qt/GTK compatibility")
+           "Thunderbird theme")
   select option in "${options[@]}"; do
     case $option in
       "Back")
@@ -165,12 +165,14 @@ function 04-themes {
         show_info "Installing dependencies for building themes."
         install_theme_deps
         install_arc_gtk
+        set_qtcompat
         show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
         ;;
       "Adapta (GTK)")
         show_info "Installing dependencies for building themes."
         install_theme_deps
         install_adapta_gtk
+        set_qtcompat
         show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
         ;;
       "Fonts")
@@ -183,10 +185,6 @@ function 04-themes {
         ;;
       "Thunderbird theme")
         install_thunderbird_theme
-        show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
-        ;;
-      "Qt/GTK compatibility")
-        set_qtcompat
         show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
         ;;
       *)

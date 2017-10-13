@@ -360,7 +360,8 @@ function select_desktop_theme {
 function select_icon_theme {
   show_question "Select an icon theme:"
 
-  options=("Back" "Papirus" "ePapirus" "Papirus-Light" "Papirus-Dark")
+  options=("Back" "Papirus" "ePapirus" "Papirus-Light" "Papirus-Dark" \
+           "Papirus-Adapta" "Papirus-Adapta-Nokto")
   select option in "${options[@]}"; do
     case $option in
       "Back")
@@ -406,6 +407,30 @@ function select_icon_theme {
         if [ -d /usr/share/icons/Papirus-Dark ] || \
            [ -d ${HOME}/.icons/Papirus-Dark ]; then
           icontheme="Papirus-Dark"
+          set_icon_theme
+          set_lightdm_theme
+        else
+          show_warning "${option} icons are not installed."
+          select_icon_theme
+        fi
+        break
+        ;;
+      "Papirus-Adapta")
+        if [ -d /usr/share/icons/Papirus-Adapta ] || \
+           [ -d ${HOME}/.icons/Papirus-Adapta ]; then
+          icontheme="Papirus-Adapta"
+          set_icon_theme
+          set_lightdm_theme
+        else
+          show_warning "${option} icons are not installed."
+          select_icon_theme
+        fi
+        break
+        ;;
+      "Papirus-Adapta-Nokto")
+        if [ -d /usr/share/icons/Papirus-Adapta-Nokto ] || \
+           [ -d ${HOME}/.icons/Papirus-Adapta-Nokto ]; then
+          icontheme="Papirus-Adapta-Nokto"
           set_icon_theme
           set_lightdm_theme
         else

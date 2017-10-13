@@ -231,8 +231,12 @@ function disable_pulseaudio_suspend {
 }
 
 function install_scripts {
-  show_header "Installing miscellaneous scripts to the ~/.scripts folder."
-  git clone https://github.com/pseudorook/misc-scripts ${HOME}/.scripts
+  show_header "Installing misc. scripts to the ${HOME}/.scripts folder."
+  if [ -d ${HOME}/.scripts ]; then
+    git -C ${HOME}/.scripts pull
+  else
+    git clone https://github.com/pseudorook/misc-scripts ${HOME}/.scripts
+  fi
   show_success "Installed."
 }
 

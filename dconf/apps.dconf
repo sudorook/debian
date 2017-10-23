@@ -11,16 +11,13 @@ default='e3fd2c3a-c7f0-438e-b939-f9487dc0aeab'
 
 [org/gnome/terminal/legacy/profiles:/:4af157c1-7d1b-412c-8d9d-9651ddbcb55b]
 login-shell=true
-scroll-on-output=false
-palette=['rgb(46,52,54)', 'rgb(204,0,0)', 'rgb(22,152,4)', 'rgb(203,166,1)', 'rgb(47,120,213)', 'rgb(174,62,191)', 'rgb(0,163,166)', 'rgb(102,104,102)', 'rgb(76,77,75)', 'rgb(241,86,86)', 'rgb(47,199,93)', 'rgb(228,209,46)', 'rgb(99,162,230)', 'rgb(201,118,191)', 'rgb(19,207,207)', 'rgb(181,184,181)']
-scrollbar-policy='always'
+palette=['rgb(46,52,54)', 'rgb(165,34,34)', 'rgb(21,147,0)', 'rgb(173,145,0)', 'rgb(47,94,156)', 'rgb(117,80,123)', 'rgb(6,140,142)', 'rgb(159,160,159)', 'rgb(85,87,83)', 'rgb(219,87,87)', 'rgb(101,188,59)', 'rgb(210,196,85)', 'rgb(103,149,197)', 'rgb(173,127,168)', 'rgb(61,192,192)', 'rgb(196,196,196)']
 visible-name='Light'
 audible-bell=false
 
 [org/gnome/terminal/legacy/profiles:/:e3fd2c3a-c7f0-438e-b939-f9487dc0aeab]
 login-shell=true
-scrollbar-policy='always'
-palette=['rgb(46,52,54)', 'rgb(222,95,95)', 'rgb(74,201,79)', 'rgb(210,185,72)', 'rgb(81,136,206)', 'rgb(199,124,212)', 'rgb(53,203,206)', 'rgb(222,226,219)', 'rgb(167,167,167)', 'rgb(236,126,126)', 'rgb(141,230,155)', 'rgb(237,227,141)', 'rgb(137,187,241)', 'rgb(232,173,226)', 'rgb(180,230,230)', 'rgb(251,251,249)']
+palette=['rgb(46,52,54)', 'rgb(224,98,98)', 'rgb(74,201,123)', 'rgb(210,195,72)', 'rgb(81,161,206)', 'rgb(200,128,213)', 'rgb(76,202,205)', 'rgb(216,221,213)', 'rgb(167,167,167)', 'rgb(241,134,134)', 'rgb(141,230,172)', 'rgb(237,227,141)', 'rgb(144,192,244)', 'rgb(232,173,226)', 'rgb(169,223,223)', 'rgb(251,251,249)']
 visible-name='Dark'
 audible-bell=false
 

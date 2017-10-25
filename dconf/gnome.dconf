@@ -34,6 +34,9 @@ automount-open=false
 automount=false
 autorun-never=true
 
+[org/gnome/desktop/peripherals/touchpad]
+tap-to-click=true
+
 [org/gnome/desktop/background]
 show-desktop-icons=true
 

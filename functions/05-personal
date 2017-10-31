@@ -230,14 +230,21 @@ function disable_pulseaudio_suspend {
   fi
 }
 
+autostartdir="${HOME}/.config/autostart"
+scriptdir="${HOME}/.scripts"
+batterydaemon="${dir}/daemons/battery.desktop"
 function install_scripts {
   show_header "Installing misc. scripts to the ${HOME}/.scripts folder."
   if [ -d ${HOME}/.scripts ]; then
     git -C ${HOME}/.scripts pull
   else
-    git clone https://github.com/pseudorook/misc-scripts ${HOME}/.scripts
+    git clone https://github.com/pseudorook/misc-scripts ${scriptdir}
   fi
   show_success "Installed."
+
+  show_info "Setting up battery notifications."
+  cat "${batterydaemon}" | sed -e "s,@misc-scripts@,${scriptdir},g" \
+    > "${autostartdir}/Battery Watchdog.desktop"
 }
 
 function select_desktop_theme {

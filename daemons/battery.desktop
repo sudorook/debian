@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Exec=@misc-scripts@/battery-notify
+X-GNOME-Autostart-enabled=true
+NoDisplay=false
+Hidden=false
+Name[en_US]=Battery N
+Comment[en_US]=Display battery level notifications.
+X-GNOME-Autostart-Delay=0
+X-GNOME-Autostart-enabled=true

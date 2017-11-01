@@ -37,7 +37,7 @@ command -v R >/dev/null 2>&1 && {
 }
 
 # custom scripts
-export PATH=$PATH:~/.scripts/
+export PATH=$PATH:~/.scripts
 
 
 #

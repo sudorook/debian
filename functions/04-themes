@@ -52,7 +52,6 @@ function install_adapta_gtk {
   ./autogen.sh \
     --prefix=/usr \
     --with-selection_color=#0097A7 \
-    --with-second_selection_color=#00ACC1 \
     --with-accent_color=#00ACC1 \
     --with-suggestion_color=#0097A7 \
     ${autotools_options} \

@@ -8,6 +8,10 @@ favorite-apps=['firefox.desktop', 'thunderbird.desktop', 'org.gnome.Terminal.des
 [org/cinnamon/desktop/a11y/keyboard]
 togglekeys-enable-osd=true
 
+[org/cinnamon/keyboard]
+keyboard-position='bottom'
+keyboard-type='touch'
+
 [org/cinnamon/settings-daemon/plugins/power]
 sleep-inactive-battery-timeout=1800
 lock-on-suspend=true
@@ -20,6 +24,7 @@ sleep-inactive-ac-timeout=0
 
 [org/cinnamon/settings-daemon/peripherals/touchpad]
 vertical-edge-scrolling=false
+horizontal-scrolling=true
 horizontal-two-finger-scrolling=true
 
 [org/cinnamon/settings-daemon/peripherals/mouse]

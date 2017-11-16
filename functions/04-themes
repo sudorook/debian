@@ -51,9 +51,9 @@ function install_adapta_gtk {
   git checkout tweak
   ./autogen.sh \
     --prefix=/usr \
-    --with-selection_color=#0097A7 \
-    --with-accent_color=#00ACC1 \
-    --with-suggestion_color=#0097A7 \
+    --with-selection_color=#00A2B4 \
+    --with-accent_color=#00B4CB \
+    --with-suggestion_color=#00A2B4 \
     ${autotools_options} \
     --enable-parallel
   make -j`nproc`
@@ -91,9 +91,9 @@ function install_papirus_icons {
 
   # Tweak Adapta icon colors.
   find Papirus-Adapta Papirus-Adapta-Nokto \
-    -type f -exec sed -i "s/#00bcd4/#00acc1/g" {} +
+    -type f -exec sed -i "s/#00bcd4/#00b4cb/g" {} +
   find Papirus-Adapta Papirus-Adapta-Nokto \
-    -type f -exec sed -i "s/#4899b1/#0097a7/g" {} +
+    -type f -exec sed -i "s/#4899b1/#00a2b4/g" {} +
 
   sudo make install
   cd ..

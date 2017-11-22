@@ -37,6 +37,7 @@ nodejs
 nodejs-legacy
 node-grunt-cli
 npm
+phantomjs
 postgresql
 pypy
 python-scrapy

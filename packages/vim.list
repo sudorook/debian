@@ -1,9 +1,9 @@
-powerline
 exuberant-ctags
 fonts-powerline
+powerline
 vim
-vim-autopep8
 vim-addon-manager
+vim-autopep8
 vim-ctrlp
 vim-fugitive
 vim-latexsuite

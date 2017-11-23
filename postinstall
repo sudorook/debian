@@ -169,10 +169,10 @@ function main {
 # Check if dependencies are installed and if network is working
 #
 
+install_dependencies
 check_user
 check_network
 check_debian_release
-install_dependencies
 
 
 #

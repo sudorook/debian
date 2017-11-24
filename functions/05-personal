@@ -243,6 +243,7 @@ function install_scripts {
   show_success "Installed."
 
   show_info "Setting up battery notifications."
+  mkdir -p "${autostartdir}"
   cat "${batterydaemon}" | sed -e "s,@misc-scripts@,${scriptdir},g" \
     > "${autostartdir}/Battery Watchdog.desktop"
 }

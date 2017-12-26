@@ -49,7 +49,6 @@ autorun-never=true
 fade-on-mouseover=false
 
 [org/cinnamon/desktop/interface]
-text-scaling-factor=1.1699999999999999
 clock-use-24h=false
 toolkit-accessibility=false
 

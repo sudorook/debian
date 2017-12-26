@@ -46,7 +46,6 @@ button-layout='appmenu:minimize,maximize,close'
 
 [org/gnome/desktop/interface]
 clock-show-date=true
-text-scaling-factor=1.1499999999999999
 clock-format='12h'
 gtk-im-module='gtk-im-context-simple'
 toolkit-accessibility=false

@@ -1,8 +1,8 @@
 deb https://deb.debian.org/debian/ buster main contrib non-free
 deb-src https://deb.debian.org/debian/ buster main contrib non-free
 
-deb https://security.debian.org/ buster/updates main
-deb-src https://security.debian.org/ buster/updates main
+deb https://deb.debian.org/debian-security/ buster/updates main
+deb-src https://deb.debian.org/debian-security/ buster/updates main
 
 # buster-updates, previously known as 'volatile'
 deb https://deb.debian.org/debian/ buster-updates main contrib non-free

@@ -90,6 +90,19 @@ function install_kvm_guest {
   fi
 }
 
+texlive="${dir}/packages/texlive.list"
+function install_texlive {
+  show_header "Installing TeX Live."
+  check_installed $(cat ${texlive})
+  check_fail
+  show_success "TeX Live installed."
+
+  show_info "Changing the default local texmf path to ~/.texmf"
+  texmfconfig=$(kpsewhich texmf.cnf)
+  mkdir -p ${HOME}/.texmf
+  sudo sed -i "s,^TEXMFHOME = .*$,TEXMFHOME = ~/.texmf,g" ${texmfconfig}
+}
+
 torbrowser_path="${HOME}/.local/share/tor-browser"
 local_applications="${HOME}/.local/share/applications"
 function install_torbrowser {
@@ -215,8 +228,8 @@ function 03-packages {
   show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
 
   options=("Back" "All" "Android tools" "General applications" "Codecs" \
-           "Development" "Emulators" "KVM (host)" "KVM (guest)" "Tor browser" \
-           "Vim" "VirtualBox (host)" "VirtualBox (guest)" "Wine")
+           "Development" "Emulators" "KVM (host)" "KVM (guest)" "TeX Live" \
+           "Tor browser" "Vim" "VirtualBox (host)" "VirtualBox (guest)" "Wine")
   select option in "${options[@]}"; do
     case $option in
       "Back")
@@ -230,6 +243,7 @@ function 03-packages {
         install_games
         install_kvm
         install_kvm_guest
+        install_texlive
         install_torbrowser
         install_vim
         install_virtualbox
@@ -263,6 +277,10 @@ function 03-packages {
         ;;
       "KVM (guest)")
         install_kvm_guest
+        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        ;;
+      "TeX Live")
+        install_texlive
         show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
         ;;
       "Tor browser")

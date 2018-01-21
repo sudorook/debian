@@ -68,9 +68,4 @@ ruby-aruba
 sqlite
 strace
 tesseract-ocr
-texlive
-texlive-bibtex-extra
-texlive-extra-utils
-texlive-formats-extra
-texlive-luatex
 uncrustify

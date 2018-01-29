@@ -54,6 +54,7 @@ function install_adapta_gtk {
     --with-selection_color=#00A2B4 \
     --with-accent_color=#00B4CB \
     --with-suggestion_color=#00A2B4 \
+    --with-destruction_color=#F44336 \
     ${autotools_options} \
     --enable-parallel
   make -j`nproc`

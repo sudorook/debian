@@ -61,9 +61,6 @@ remember-recent-files=true
 [org/cinnamon/desktop/wm/preferences]
 num-workspaces=4
 
-[org/cinnamon/desktop/background/slideshow]
-delay=5
-
 [org/cinnamon/cinnamon-session]
 quit-delay-toggle=true
 

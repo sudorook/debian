@@ -171,6 +171,8 @@ function update_packages {
 }
 
 pcspkr_blacklist="/etc/modprobe.d/nobeep.conf"
+gtk2conf="${HOME}/.gtkrc-2.0"
+gtk3conf="${HOME}/.config/gtk-3.0/settings.ini"
 function blacklist_pcspkr {
   show_header "Blacklisting pcspkr kernel module."
   if ! [ "$(ls -A /etc/modprobe.d/)" ]; then
@@ -178,6 +180,20 @@ function blacklist_pcspkr {
   elif ! find /etc/modprobe.d/ -type f \
          -exec grep "blacklist pcspkr" {} + 2>&1 >/dev/null; then
     sudo sh -c "echo 'blacklist pcspkr' >> ${pcspkr_blacklist}"
+  fi
+  cat "gtk-error-bell=0" > ${gtk2conf}
+  if [ -f "${gtk3conf}" ]; then
+    if grep "^gtk-error-bell" ${gtk3conf}; then
+      sed -i "s/^gtk-error-bell=.*$/gtk-error-bell=0/g" ${gtk3conf}
+    elif grep "^[Settings]" ${gtk3conf}; then
+      sed -i "/^[Settings]$/a gtk-error-bell=0" ${gtk3conf}
+    else
+      echo "[Settings]" >> ${gtk3conf}
+      echo "gtk-error-bell=0" >> ${gtk3conf}
+    fi
+  else
+    echo "[Settings]" > ${gtk3conf}
+    echo "gtk-error-bell=0" >> ${gtk3conf}
   fi
   show_success "Blacklisted in ${pcspkr_blacklist}."
 }

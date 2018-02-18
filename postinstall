@@ -125,9 +125,10 @@ function main {
           enable_autologin
           invert_brightness
           disable_pulseaudio_suspend
+
+          show_success "Everything installed."
         fi
 
-        show_success "Everything installed."
         show_info "Main (Hit ENTER to see options again.)"
         ;;
       "Base")

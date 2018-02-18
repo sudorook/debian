@@ -92,9 +92,9 @@ test -f /usr/share/zsh-antigen/antigen.zsh && {
   source /usr/share/zsh-antigen/antigen.zsh
 
   # custom fishy theme
-  antigen bundle pseudorook/zsh-themes plugins/git
-  antigen bundle pseudorook/zsh-themes plugins/battery
-  antigen theme pseudorook/zsh-themes themes/fishy
+  antigen bundle pseudorook/fishy-lite plugins/git
+  antigen bundle pseudorook/fishy-lite plugins/battery
+  antigen theme pseudorook/fishy-lite themes/fishy
 
   # fish-like syntax highlighting
   antigen bundle zsh-users/zsh-syntax-highlighting

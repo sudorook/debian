@@ -181,7 +181,15 @@ function blacklist_pcspkr {
          -exec grep "blacklist pcspkr" {} + 2>&1 >/dev/null; then
     sudo sh -c "echo 'blacklist pcspkr' >> ${pcspkr_blacklist}"
   fi
-  cat "gtk-error-bell=0" > ${gtk2conf}
+  if [ -f "${gtk2conf}" ]; then
+    if grep "^gtk-error-bell=" ${gtk2conf} >/dev/null 2>&1; then
+      sed -i "s/^gtk-error-bell=.*$/gtk-error-bell=0/g" ${gtk2conf}
+    else
+      echo "gtk-error-bell=0" >> ${gtk2conf}
+    fi
+  else
+    echo "gtk-error-bell=0" >> ${gtk2conf}
+  fi
   if [ -f "${gtk3conf}" ]; then
     if grep "^gtk-error-bell" ${gtk3conf}; then
       sed -i "s/^gtk-error-bell=.*$/gtk-error-bell=0/g" ${gtk3conf}

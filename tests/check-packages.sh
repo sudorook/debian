@@ -18,14 +18,14 @@ for file in ${pkgdir}/*; do
   for package in $(cat ${file}); do
     if apt-cache search --names-only ^$(clean_pkgname "${package}")$ >/dev/null; then
     # if dpkg -s ^$(clean_pkgname "${package}")$ >/dev/null; then
-      echo "✓ ${package}"
+      echo -e "\033[1;35m✓\033[0m" ${package}
     else
       missing=true
-      echo "✗ ${package}"
+      echo -e "\033[1;31m✗ ${package}\033[m"
     fi
   done
 
   echo
 done
 
-if $missing; then exit 1; fi
+if ${missing}; then exit 1; fi

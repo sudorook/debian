@@ -3,6 +3,7 @@
 dir="$(dirname "$0")"
 
 base="${dir}/packages/base.list"
+bashrc="${dir}/dotfiles/bashrc"
 toprc="${dir}/dotfiles/toprc"
 function install_base {
   show_header "Installing base packages and their config files."
@@ -13,6 +14,10 @@ function install_base {
   show_info "Installing toprc."
   cp -f ${toprc} ${HOME}/.toprc
   show_success "Installed toprc."
+
+  show_info "Installing bashrc."
+  cp -f ${bashrc} ${HOME}/.bashrc
+  show_success "Installed bashrc."
 }
 
 firmware="${dir}/packages/firmware.list"

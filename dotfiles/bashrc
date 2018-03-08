@@ -1,0 +1,90 @@
+#
+# ~/.bashrc
+#
+
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+alias ls='ls --color=auto'
+PS1='[\u@\h \W]\$ '
+
+#
+# Global settings
+#
+
+export BROWSER="firefox"
+export EDITOR="vim"
+export VISUAL="$EDITOR"
+export QT_QPA_PLATFORMTHEME=qt5ct
+
+
+#
+# Set environment variables for programming languages
+#
+
+# go
+command -v go >/dev/null 2>&1 && {
+  export GOPATH=~/.go
+  export PATH="$PATH:$GOPATH/bin"
+}
+
+# ruby
+command -v ruby >/dev/null 2>&1 && {
+  export PATH="$(ruby -e 'print Gem.user_dir')/bin:$PATH"
+  export GEM_HOME=$(ruby -e 'print Gem.user_dir')
+}
+
+# npm
+command -v npm >/dev/null 2>&1 && {
+  export PATH="$PATH:$HOME/.npm/bin"
+  export NPM_CONFIG_PREFIX=$HOME/.npm
+}
+
+# R
+command -v R >/dev/null 2>&1 && {
+  export R_LIBS_USER=$HOME/.R/$(R --version | sed -n "s/^R version \([0-9\.]*\) .*/\1/p")
+}
+
+# custom scripts
+export PATH=$PATH:~/.scripts
+
+
+#
+# Set bash aliases
+#
+
+alias vi='vim '
+alias sudo='sudo '
+alias grep='grep --color=auto'
+alias happymake="make -j`nproc` && sudo make install"
+alias superupgrade="sudo sh -c 'sudo pacman -Syu && sudo paccache -r && sudo paccache -ruk0'"
+
+# list directory contents
+alias sl='ls'
+alias lsa='ls -lah'
+alias l='ls -lah'
+alias ll='ls -lh'
+alias la='ls -lAh'
+
+
+#
+# Color terminal output
+#
+
+# color ls output based on filetype
+eval $(dircolors -b)
+
+# color the man pages
+man() {
+  env LESS_TERMCAP_mb=$'\E[01;31m' \
+  LESS_TERMCAP_md=$'\E[01;38;5;74m' \
+  LESS_TERMCAP_me=$'\E[0m' \
+  LESS_TERMCAP_se=$'\E[0m' \
+  LESS_TERMCAP_so=$'\E[38;5;246m' \
+  LESS_TERMCAP_ue=$'\E[0m' \
+  LESS_TERMCAP_us=$'\E[04;38;5;146m' \
+  man "$@"
+}
+
+# colored GCC warnings and errors
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'

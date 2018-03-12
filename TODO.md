@@ -8,3 +8,5 @@
 5. Cannot install nodejs-legacy on sid because it doesn't exist in the repos.
    Attempts to install result in a message that the nodejs dependency is not
    fulfilled. Removing nodejs-legacy fixes the issue in sid.
+6. Beets depends on python2 in stretch but python3 in buster. For now, just
+   install both versions of the libraries needed by beets plugins.

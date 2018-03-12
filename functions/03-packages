@@ -90,6 +90,34 @@ function install_kvm_guest {
   fi
 }
 
+music="${dir}/packages/music.list"
+beetsconf="${dir}/configs/beets.yaml"
+beetsdir="${HOME}/.config/beets"
+mpdconf="${dir}/configs/mpd.conf"
+mpddir="${HOME}/.config/mpd"
+ncmpcppconf="${dir}/configs/ncmpcpp.conf"
+ncmpcppdir="${HOME}/.ncmpcpp"
+function install_music {
+  show_header "Installing music applications."
+  check_installed $(cat ${music})
+  check_fail
+  show_success "Music applications installed."
+
+  show_info "Copying beets config."
+  mkdir -p "${beetsdir}"
+  cp -f "${beetsconf}" "${beetsdir}/config.yaml"
+
+  show_info "Copying mpd config and enabling systemd user service."
+  mkdir -p "${mpddir}"
+  mkdir -p "${mpddir}/playlists"
+  cp -f "${mpdconf}" "${mpddir}/mpd.conf"
+  systemctl enable --user mpd
+
+  show_info "Copying ncmpcpp config."
+  mkdir -p "${ncmpcppdir}"
+  cp -f "${ncmpcppconf}" "${ncmpcppdir}/config"
+}
+
 texlive="${dir}/packages/texlive.list"
 function install_texlive {
   show_header "Installing TeX Live."
@@ -228,8 +256,9 @@ function 03-packages {
   show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
 
   options=("Back" "All" "Android tools" "General applications" "Codecs" \
-           "Development" "Emulators" "KVM (host)" "KVM (guest)" "TeX Live" \
-           "Tor browser" "Vim" "VirtualBox (host)" "VirtualBox (guest)" "Wine")
+           "Development" "Emulators" "KVM (host)" "KVM (guest)" "Music" \
+           "TeX Live" "Tor browser" "Vim" "VirtualBox (host)" \
+           "VirtualBox (guest)" "Wine")
   select option in "${options[@]}"; do
     case $option in
       "Back")
@@ -243,6 +272,7 @@ function 03-packages {
         install_games
         install_kvm
         install_kvm_guest
+        install_music
         install_texlive
         install_torbrowser
         install_vim
@@ -277,6 +307,10 @@ function 03-packages {
         ;;
       "KVM (guest)")
         install_kvm_guest
+        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        ;;
+      "Music")
+        install_music
         show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
         ;;
       "TeX Live")

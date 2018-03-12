@@ -1,0 +1,35 @@
+paths:
+  default: $albumartist/$album%aunique{}/$track $albumartist - $title
+
+plugins: fetchart embedart mpdupdate replaygain types smartplaylist lastgenre
+         missing duplicates scrub
+
+fetchart:
+  auto: true
+  cautious: true
+  minwidth: 750
+  enforce_ratio: yes
+  sources: filesystem coverart amazon albumart wikipedia google fanarttv
+
+mpd:
+  host: localhost
+  port: 6600
+
+replaygain:
+  auto: no
+  backend: gstreamer
+
+types:
+  rating: int
+
+smartplaylist:
+  relative_to: ~/Music
+  playlist_dir: ~/.config/mpd/playlists
+  playlists:
+    - name: 'All.m3u'
+      query: ''
+    - name: 'Top Rated.m3u'
+      query: 'rating:5'
+
+scrub:
+  auto: no

@@ -33,6 +33,7 @@ jupyter-notebook
 libboost-dev
 libimage-exiftool-perl
 libjs-mathjax
+mbedtls
 node-grunt-cli
 nodejs
 nodejs-legacy

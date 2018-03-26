@@ -71,7 +71,7 @@ function main {
           enable_nonfree_repos
           update_packages
           enable_sudo_insults
-          blacklist_pcspkr
+          disable_beep
 
           # Install miscellaneous extras
           install_zsh

@@ -201,19 +201,19 @@ function enable_autologin {
   show_success "Autologin enabled."
 }
 
-grubconfig="/etc/default/grub"
+grubdefault="/etc/default/grub"
 function invert_brightness {
-  oldline=$(cat ${grubconfig} | grep ^GRUB_CMDLINE_LINUX=)
+  oldline=$(cat ${grubdefault} | grep ^GRUB_CMDLINE_LINUX=)
   bootparams=$(echo ${oldline} | sed -n "s/^GRUB_CMDLINE_LINUX=\"\(.*\)\"/\1/p")
   if [[ ${bootparams} =~ "i915.invert_brightness=1" ]]; then
     show_header "Brightness already inverted. Skipping."
   else
     if test "${bootparams}"; then
-      sudo sed -i "s|${bootparams}|${bootparams} i915.invert_brightness=1|g" ${grubconfig}
+      sudo sed -i "s|${bootparams}|${bootparams} i915.invert_brightness=1|g" ${grubdefault}
     else
-      sudo sed -i "s|${oldline}|GRUB_CMDLINE_LINUX=\"i915.invert_brightness=1\"|g" ${grubconfig}
+      sudo sed -i "s|${oldline}|GRUB_CMDLINE_LINUX=\"i915.invert_brightness=1\"|g" ${grubdefault}
     fi
-    sudo sed -i "\|^GRUB_CMDLINE_LINUX=| a\#${oldline}" ${grubconfig} # backup
+    sudo sed -i "\|^GRUB_CMDLINE_LINUX=| a\#${oldline}" ${grubdefault} # backup
     show_success "Brightness inverted."
     sudo update-grub
   fi

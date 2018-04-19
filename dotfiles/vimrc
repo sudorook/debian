@@ -56,5 +56,7 @@ let g:NERDCommentEmptyLines=1
 let g:ycm_extra_conf_globlist=['~/.ycm_extra_conf.py']
 
 "clang-format
-map <C-K> :pyf /usr/share/vim/addons/syntax/clang-format.py<cr>
-imap <C-K> <c-o>:pyf /usr/share/vim/addons/syntax/clang-format.py<cr>
+if filereadable( expand("/usr/share/vim/addons/syntax/clang-format.py") )
+  map <C-K> :pyf /usr/share/vim/addons/syntax/clang-format.py<cr>
+  imap <C-K> <c-o>:pyf /usr/share/vim/addons/syntax/clang-format.py<cr>
+endif

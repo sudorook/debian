@@ -1,9 +1,8 @@
-set background=dark
+"global settings
 set title
 set titlestring=%t
-"set tabstop=3
-"set shiftwidth=3
-"set softtabstop=3
+"set shiftwidth=2
+"set softtabstop=2
 "set expandtab
 "set copyindent
 "set preserveindent
@@ -12,20 +11,31 @@ set titlestring=%t
 set smartindent
 "set cindent
 "set cinoptions=(0,u0,U0
-set hlsearch
 set incsearch
+set hlsearch
 set showmatch
 set wildmenu
-set wildignore=*.o,*~,*.pyc
-
-"pathogen
-"execute pathogen#infect()
+set wildignore=*.o,*~,*.pyc,*.lo
+filetype plugin indent on
+syntax on
 
 "powerline
 set noshowmode
 set laststatus=2
 set t_Co=256
 let g:Powerline_symbols='fancy'
+
+"themes and appearance
+if (has("termguicolors"))
+  set termguicolors
+endif
+set background=dark
+
+"encryption
+set cm=blowfish
+
+"pathogen
+"execute pathogen#infect()
 
 "detectindent
 :autocmd BufReadPost * :DetectIndent
@@ -48,6 +58,3 @@ let g:ycm_extra_conf_globlist=['~/.ycm_extra_conf.py']
 "clang-format
 map <C-K> :pyf /usr/share/vim/addons/syntax/clang-format.py<cr>
 imap <C-K> <c-o>:pyf /usr/share/vim/addons/syntax/clang-format.py<cr>
-
-syntax on
-filetype plugin indent on

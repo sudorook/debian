@@ -17,7 +17,7 @@ mpd:
 
 replaygain:
   auto: no
-  backend: gstreamer
+  backend: bs1770gain
 
 types:
   rating: int

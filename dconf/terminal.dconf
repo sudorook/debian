@@ -1,0 +1,20 @@
+[org/gnome/terminal/legacy/profiles:]
+list=['b1dcc9dd-5262-4d8d-a863-c897e6d979b9', '9332e44f-251d-46e0-9dd0-282f4023d22f']
+default='9332e44f-251d-46e0-9dd0-282f4023d22f'
+
+[org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9]
+bold-is-bright=false
+login-shell=true
+palette=['rgb(46,52,54)', 'rgb(209,45,45)', 'rgb(37,167,35)', 'rgb(136,129,71)', 'rgb(70,124,198)', 'rgb(153,92,164)', 'rgb(30,158,162)', 'rgb(65,64,64)', 'rgb(122,122,121)', 'rgb(242,120,120)', 'rgb(101,201,99)', 'rgb(216,198,44)', 'rgb(116,157,214)', 'rgb(201,127,214)', 'rgb(98,193,196)', 'rgb(132,128,128)']
+visible-name='Light'
+audible-bell=false
+
+[org/gnome/terminal/legacy/profiles:/:9332e44f-251d-46e0-9dd0-282f4023d22f]
+login-shell=true
+palette=['rgb(46,52,54)', 'rgb(231,101,101)', 'rgb(50,196,91)', 'rgb(210,185,75)', 'rgb(84,150,232)', 'rgb(247,113,230)', 'rgb(38,204,206)', 'rgb(218,219,218)', 'rgb(173,173,172)', 'rgb(252,127,127)', 'rgb(134,223,144)', 'rgb(235,225,149)', 'rgb(120,178,239)', 'rgb(235,150,225)', 'rgb(126,219,219)', 'rgb(248,247,247)']
+visible-name='Dark'
+audible-bell=false
+
+[org/gnome/terminal/legacy]
+schema-version=uint32 3
+default-show-menubar=false

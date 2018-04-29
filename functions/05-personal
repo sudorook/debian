@@ -175,6 +175,14 @@ function import_apps_dconf {
   show_success "Application dconf settings imported."
 }
 
+terminaldconf="${dir}/dconf/terminal.dconf"
+function import_terminal_dconf {
+  show_header "Importing terminal profiles."
+  dconf load / < ${terminaldconf}
+  check_fail
+  show_success "GNOME terminal profiles imported."
+}
+
 gdmconf="/etc/gdm/custom.conf"
 lightdmconf="/etc/lightdm/lightdm.conf"
 function enable_autologin {
@@ -463,7 +471,8 @@ function 05-personal {
 
   options=("Back" "All" "Set Noto fonts" "Select icon theme" \
            "Select desktop theme" "Set dark GTK" "Import Cinnamon dconf" \
-           "Import GNOME dconf" "Import application dconf" "Enable autologin" \
+           "Import GNOME dconf" "Import application dconf" \
+           "Import GNOME terminal profiles" "Enable autologin" \
            "Invert brightness" "Disable PulseAudio suspend" "Add scripts")
   select option in "${options[@]}"; do
     case $option in
@@ -480,6 +489,7 @@ function 05-personal {
         import_cinnamon_dconf
         import_gnome_dconf
         import_apps_dconf
+        import_terminal_dconf
         enable_autologin
         invert_brightness
         disable_pulseaudio_suspend
@@ -511,6 +521,10 @@ function 05-personal {
         ;;
       "Import application dconf")
         import_apps_dconf
+        show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
+        ;;
+      "Import GNOME terminal profiles")
+        import_terminal_dconf
         show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
         ;;
       "Enable autologin")

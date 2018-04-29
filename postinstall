@@ -123,6 +123,7 @@ function main {
           import_cinnamon_dconf
           import_gnome_dconf
           import_apps_dconf
+          import_terminal_dconf
           enable_autologin
           invert_brightness
           disable_pulseaudio_suspend

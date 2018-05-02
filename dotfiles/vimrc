@@ -29,6 +29,7 @@ let g:Powerline_symbols='fancy'
 if (has("termguicolors"))
   set termguicolors
 endif
+colorscheme default
 set background=dark
 
 "encryption

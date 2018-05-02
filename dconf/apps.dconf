@@ -19,12 +19,3 @@ auto-indent=true
 
 [org/gnome/gedit/plugins]
 active-plugins=['synctex', 'time', 'modelines', 'spell', 'smartspaces', 'filebrowser', 'codecomment', 'git', 'docinfo', 'codeassistance']
-
-[org/gnome/meld]
-indent-width=2
-highlight-current-line=true
-style-scheme='meld-dark'
-show-line-numbers=true
-use-system-font=true
-highlight-syntax=true
-ignore-blank-lines=false

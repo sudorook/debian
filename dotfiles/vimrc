@@ -29,7 +29,9 @@ let g:Powerline_symbols='fancy'
 if (has("termguicolors"))
   set termguicolors
 endif
-colorscheme default
+if filereadable( expand("$HOME/.vim/colors/colorific.vim") )
+  colorscheme colorific
+endif
 set background=dark
 
 "encryption

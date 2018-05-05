@@ -43,6 +43,9 @@ set cm=blowfish
 "detectindent
 :autocmd BufReadPost * :DetectIndent
 
+"text/latex
+au BufRead *.tex,*.txt,*.md setlocal spell
+
 "vim-taglist
 let Tlist_Compact_Format = 1
 let Tlist_GainFocus_On_ToggleOpen = 1

@@ -101,6 +101,15 @@ function install_papirus_icons {
   rm -rf papirus-icon-theme
 }
 
+function install_vim_theme {
+  git clone --depth 1 https://github.com/sudorook/colorific.vim colorific.vim
+  mkdir -p ${HOME}/.vim/colors ${HOME}/.vim/autoload/airline/themes
+  cp -f colorific.vim/colors/colorific.vim ${HOME}/.vim/colors/
+  cp -f colorific.vim/autoload/airline/themes/colorific.vim \
+    ${HOME}/.vim/autoload/airline/themes/
+  rm -rf colorific.vim/
+}
+
 function install_thunderbird_theme {
   if ! [ -d ${HOME}/.thunderbird/*.default ]; then
     show_warning "Thunderbird profile missing. Skipping."
@@ -145,7 +154,7 @@ function 04-themes {
   show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
 
   options=("Back" "All" "Arc (GTK)" "Adapta (GTK)" "Fonts" "Papirus (icons)" \
-           "Thunderbird theme")
+           "Vim theme" "Thunderbird theme")
   select option in "${options[@]}"; do
     case $option in
       "Back")
@@ -157,6 +166,7 @@ function 04-themes {
         install_adapta_gtk
         install_fonts
         install_papirus_icons
+        install_vim_theme
         install_thunderbird_theme
         set_qtcompat
         show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
@@ -181,6 +191,10 @@ function 04-themes {
         ;;
       "Papirus (icons)")
         install_papirus_icons
+        show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
+        ;;
+      "Vim theme")
+        install_vim_theme
         show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
         ;;
       "Thunderbird theme")

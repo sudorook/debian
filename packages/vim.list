@@ -3,6 +3,7 @@ fonts-powerline
 powerline
 vim
 vim-addon-manager
+vim-airline
 vim-autopep8
 vim-ctrlp
 vim-fugitive

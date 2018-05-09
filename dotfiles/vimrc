@@ -16,6 +16,8 @@ set hlsearch
 set showmatch
 set wildmenu
 set wildignore=*.o,*~,*.pyc,*.lo
+set spelllang=en
+set spellfile=$HOME/.vim/spell/en.utf-8.add
 filetype plugin indent on
 syntax on
 

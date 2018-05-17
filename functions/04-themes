@@ -26,7 +26,7 @@ function install_theme_deps {
 
 function install_arc_gtk {
   show_header "Downloading, building, and installing the Arc GTK theme."
-  git clone https://github.com/sudorook/arc-theme arc-theme
+  git clone --depth 1 https://github.com/sudorook/arc-theme arc-theme
   cd arc-theme
   git checkout tweak
   npm install
@@ -46,7 +46,7 @@ function install_adapta_gtk {
   elif ! dpkg -s cinnamon > /dev/null 2>&1; then
     autotools_options=${autotools_options}"--disable-cinnamon "
   fi
-  git clone https://github.com/sudorook/adapta-gtk-theme adapta-gtk-theme
+  git clone --depth 1 https://github.com/sudorook/adapta-gtk-theme adapta-gtk-theme
   cd adapta-gtk-theme
   git checkout tweak
   ./autogen.sh \
@@ -79,7 +79,7 @@ function install_fonts {
 
 function install_papirus_icons {
   show_header "Downloading and installing the Papirus icon theme."
-  git clone https://github.com/PapirusDevelopmentTeam/papirus-icon-theme \
+  git clone --depth 1 https://github.com/PapirusDevelopmentTeam/papirus-icon-theme \
     papirus-icon-theme
   cd papirus-icon-theme
 

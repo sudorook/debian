@@ -46,10 +46,18 @@ function install_dev {
   check_fail
   show_success "Languages and editors installed."
 
-  show_info "Installing dotfiles."
+  show_info "Installing npmrc."
   cp -f ${npmrc} ${HOME}/.npmrc
+
+  show_info "Setting default clang-format style."
   clang-format -style=mozilla -dump-config > ${HOME}/.clang-format
-  show_success "Dotfiles installed."
+
+  show_info "Installing julia-vim for syntax highlighting."
+  git clone --depth 1 https://github.com/JuliaEditorSupport/julia-vim.git julia-vim
+  cd julia-vim
+  cp -rf autoload doc ftdetect ftplugin indent syntax ${HOME}/.vim/
+  cd ../
+  rm -rf julia-vim
 }
 
 games="${dir}/packages/games.list"

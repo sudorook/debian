@@ -246,10 +246,6 @@ function install_virtualbox_guest {
 wine="${dir}/packages/wine.list"
 function install_wine {
   show_header "Installing wine."
-  if [[ $(uname -m) = "x86_64" ]]; then
-    show_info "Multilib needs to be enabled for 64-bit architectures."
-    enable_multilib
-  fi
   check_installed $(cat ${wine})
   check_fail
   show_success "Wine installed."

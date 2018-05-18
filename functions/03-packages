@@ -79,9 +79,13 @@ function install_kvm {
   show_info "Adding `whoami` to kvm and libvirt groups."
   sudo usermod -aG kvm,libvirt $(whoami)
 
+  show_info "Edit group permissions in ${qemuconf}"
   kvmgid=$(getent group | grep kvm | cut -d":" -f3)
   sudo sed -i "s/^#dynamic_ownership/dynamic_ownership/g" ${qemuconf}
   sudo sed -i "s/^group=\"[0-9]*\"/group=\"${kvmgid}\"/g" ${qemuconf}
+  show_warning "Manually enable 'cgroup_device_acl' and add"
+  show_warning "'/dev/dri/renderD128' to the list so that the virt-manager GUI"
+  show_warning "allows setting 3d acceleration."
 
   sudo systemctl enable libvirtd
   sudo systemctl start libvirtd

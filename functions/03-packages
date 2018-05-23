@@ -24,7 +24,7 @@ function install_apps {
   cp -f ${mpvconfig} ${HOME}/.config/mpv
 
   show_info "Update xdg settings to open HTML files in Firefox."
-  xdg-mime default firefox-desktop text/html
+  xdg-mime default firefox.desktop text/html
 
   show_info "Configuring ${libaoconf} to use PulseAudio instead of ALSA."
   sudo sh -c "echo 'default_driver=pulse' > ${libaoconf}"

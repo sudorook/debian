@@ -228,6 +228,22 @@ function install_vim {
     align alternate ctrlp detectindent doxygen-toolkit fugitive nerd-commenter \
     pathogen powerline surround syntastic tabular latex-suite youcompleteme \
     taglist
+
+  show_info "Install local wordlist."
+  mkdir -p ${HOME}/.vim/spell
+  git clone --depth 1 https://github.com/sudorook/wordlist.vim wordlist.vim
+  if [ -f ${HOME}/.vim/spell/en.utf-8.add ]; then
+    show_info "Wordlist already exists in ${HOME}/.vim/spell/. Appending."
+    cat wordlist.vim/en.utf-8.add >> ${HOME}/.vim/spell/en.utf-8.add
+    sort -u ${HOME}/.vim/spell/en.utf-8.add > /tmp/temp-$$.add
+    mv /tmp/temp-$$.add ${HOME}/.vim/spell/en.utf-8.add
+  else
+    cp wordlist.vim/en.utf-8.add ${HOME}/.vim/spell/en.utf-8.add
+  fi
+  show_success "Wordlist installed in ${HOME}/.vim/spell."
+  show_info "To use the wordlist, add the following to you vimrc:"
+  show_info "  set spelllang=en"
+  show_info "  set spellfile=\$HOME/.vim/spell/en.utf-8.add"
 }
 
 virtualbox="${dir}/packages/virtualbox.list"

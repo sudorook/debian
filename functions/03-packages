@@ -229,6 +229,12 @@ function install_vim {
     pathogen powerline surround syntastic tabular latex-suite youcompleteme \
     taglist
 
+  show_info "Setting Vim as default tool for git diffs and merges."
+  # 00-check makes sure the git is installed, so no need for checks here.
+  git config --global diff.tool vimdiff
+  git config --global merge.tool vimdiff
+  git config --global --add difftool.prompt false
+
   show_info "Install local wordlist."
   mkdir -p ${HOME}/.vim/spell
   git clone --depth 1 https://github.com/sudorook/wordlist.vim wordlist.vim

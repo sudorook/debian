@@ -1,6 +1,5 @@
 "global settings
 set title
-set titlestring=%t
 "set shiftwidth=2
 "set softtabstop=2
 "set expandtab

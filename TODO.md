@@ -5,8 +5,8 @@
 3. Stop piping to \>/dev/null, it's hiding bugs from view.
 4. "Upgrade Debian release" terminates the script when the greps of the srclist
    return false.
-5. Cannot install nodejs-legacy on sid because it doesn't exist in the repos.
-   Attempts to install result in a message that the nodejs dependency is not
-   fulfilled. Removing nodejs-legacy fixes the issue in sid.
+5. Cannot install nodejs-legacy on sid or buster because it doesn't exist in
+   the repos. Attempts to install result in a message that the nodejs
+   dependency is not fulfilled.
 6. Beets depends on python2 in stretch but python3 in buster. For now, just
    install both versions of the libraries needed by beets plugins.

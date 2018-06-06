@@ -109,7 +109,7 @@ function check_network {
   if wget -q --tries=10 --timeout=20 --spider https://debian.org >/dev/null; then
     show_success "Network is working."
   else
-    show_error "Cannot start network connextion."
+    show_error "Cannot start network connection."
     exit 1
   fi
 }

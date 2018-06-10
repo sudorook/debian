@@ -66,9 +66,9 @@ busterlist="${dir}/sources/buster-sources.list"
 sidlist="${dir}/sources/sid-sources.list"
 function upgrade_debian_release {
   # check how current sources.list is configured.
-  [[ $(cat ${srclist} | grep .onion) ]]; is_onion=$?
-  [[ $(cat ${srclist} | grep contrib) ]]; is_contrib=$?
-  [[ $(cat ${srclist} | grep non-free) ]]; is_nonfree=$?
+  [[ $(cat ${srclist} | grep .onion) ]] && is_onion=$?
+  [[ $(cat ${srclist} | grep contrib) ]] && is_contrib=$?
+  [[ $(cat ${srclist} | grep non-free) ]] && is_nonfree=$?
   is_upgraded=false
   release=$(lsb_release -sc)
 

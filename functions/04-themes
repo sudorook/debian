@@ -103,10 +103,9 @@ function install_papirus_icons {
 
 function install_vim_theme {
   git clone --depth 1 https://github.com/sudorook/colorific.vim colorific.vim
-  mkdir -p ${HOME}/.vim/colors ${HOME}/.vim/autoload/airline/themes
-  cp -f colorific.vim/colors/colorific.vim ${HOME}/.vim/colors/
-  cp -f colorific.vim/autoload/airline/themes/colorific.vim \
-    ${HOME}/.vim/autoload/airline/themes/
+  cd colorific.vim
+  ./install.sh
+  cd ../
   rm -rf colorific.vim/
 }
 

@@ -1,6 +1,8 @@
 gtk2-engines-murrine
 gulp
 inkscape
+libcanberra-gtk3-module
+libcanberra-gtk-module
 libgtk-3-dev
 libmtdev-dev
 librsvg2-dev

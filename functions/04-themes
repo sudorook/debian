@@ -26,9 +26,9 @@ function install_theme_deps {
 
 function install_arc_gtk {
   show_header "Downloading, building, and installing the Arc GTK theme."
-  git clone --depth 1 https://github.com/sudorook/arc-theme arc-theme
+  git clone -b tweak --depth 1 \
+    https://github.com/sudorook/arc-theme arc-theme
   cd arc-theme
-  git checkout tweak
   npm install
   ./autogen.sh --prefix=/usr
   gulp
@@ -46,9 +46,9 @@ function install_adapta_gtk {
   elif ! dpkg -s cinnamon > /dev/null 2>&1; then
     autotools_options=${autotools_options}"--disable-cinnamon "
   fi
-  git clone --depth 1 https://github.com/sudorook/adapta-gtk-theme adapta-gtk-theme
+  git clone -b tweak --depth 1 \
+    https://github.com/sudorook/adapta-gtk-theme adapta-gtk-theme
   cd adapta-gtk-theme
-  git checkout tweak
   ./autogen.sh \
     --prefix=/usr \
     --with-selection_color=#00A2B4 \

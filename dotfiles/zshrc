@@ -48,6 +48,7 @@ alias vi='vim '
 alias sudo='sudo '
 alias scp="noglob scp"
 alias grep='grep --color=auto'
+alias diff='diff --color=auto'
 alias happymake="make -j`nproc` && sudo make install"
 alias superupgrade="sudo sh -c 'apt update && apt -y full-upgrade && apt -y autoremove'"
 

@@ -41,6 +41,7 @@ node-grunt-cli
 nodejs
 nodejs-legacy
 npm
+openblas
 phantomjs
 postgresql
 pypy

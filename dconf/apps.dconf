@@ -4,18 +4,3 @@ active-plugins=['movie-properties', 'screensaver', 'skipto', 'recent', 'variable
 
 [org/gnome/calculator]
 button-mode='advanced'
-
-[org/gnome/gedit/preferences/editor]
-highlight-current-line=true
-display-right-margin=true
-display-overview-map=true
-bracket-matching=true
-tabs-size=uint32 2
-display-line-numbers=true
-wrap-mode='none'
-insert-spaces=true
-wrap-last-split-mode='word'
-auto-indent=true
-
-[org/gnome/gedit/plugins]
-active-plugins=['synctex', 'time', 'modelines', 'spell', 'smartspaces', 'filebrowser', 'codecomment', 'git', 'docinfo', 'codeassistance']

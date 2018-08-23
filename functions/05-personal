@@ -168,9 +168,6 @@ appsdconf="${dir}/dconf/apps.dconf"
 function import_apps_dconf {
   show_header "Importing application dconf settings."
   dconf load / < ${appsdconf}
-  if [ -f /usr/share/gtksourceview-3.0/styles/adapta.xml ]; then
-    gsettings set org.gnome.gedit.preferences.editor scheme "adapta"
-  fi
   check_fail
   show_success "Application dconf settings imported."
 }

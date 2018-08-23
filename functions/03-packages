@@ -167,7 +167,7 @@ function install_torbrowser {
   if ${install_torbrowser}; then
     if ! gpg --list-keys 0x4E2C6E8793298290 >/dev/null 2>&1; then
       show_info "Downloading Tor developers' GPG key."
-      gpg --keyserver hkp://pgp.key-server.edu:80 --recv-keys 0x4E2C6E8793298290
+      gpg --recv-keys 0x4E2C6E8793298290
     fi
 
     torbrowser_version=$(curl https://www.torproject.org/projects/torbrowser.html.en | \

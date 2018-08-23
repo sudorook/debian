@@ -1,6 +1,2 @@
-[org/gnome/Totem]
-autoload-subtitles=true
-active-plugins=['movie-properties', 'screensaver', 'skipto', 'recent', 'variable-rate', 'media_player_keys', 'apple-trailers', 'save-file', 'autoload-subtitles', 'vimeo', 'screenshot']
-
 [org/gnome/calculator]
 button-mode='advanced'

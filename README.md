@@ -148,7 +148,7 @@ Automatically install (without prompting) packages and configs.
 ```
 1) Back               4) Adapta (GTK)       7) Vim theme
 2) All                5) Fonts              8) Thunderbird theme
-3) Arc (GTK)          6) Papirus (icons)
+3) Arc (GTK)          6) Papirus (icons)    9) Timed backgrounds
 ```
 
 3) Download, compile, and install a [fork](https://github.com/sudorook/arc-theme)
@@ -165,6 +165,9 @@ Automatically install (without prompting) packages and configs.
 
 8) Install the [Monterail theme](https://github.com/spymastermatt/thunderbird-monterail)
    for Thunderbird.
+
+9) Install [timed backgrounds](https://github.com/sudorook/timed-backgrounds)
+   where transitions from day to night match sunrise/sunset times.
 
 ### 9) Personalization
 ```

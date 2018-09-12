@@ -112,6 +112,7 @@ function main {
           install_papirus_icons
           install_vim_theme
           install_thunderbird_theme
+          install_timed_backgrounds
           set_qtcompat
 
           # Add my personal settings

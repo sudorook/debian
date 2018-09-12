@@ -40,6 +40,7 @@ function install_codecs {
 
 dev="${dir}/packages/dev.list"
 npmrc="${dir}/dotfiles/npmrc"
+vimpack="${HOME}/.vim/pack/dist/start"
 function install_dev {
   show_header "Installing languages and editors for development."
   check_installed $(cat ${dev})
@@ -53,11 +54,9 @@ function install_dev {
   clang-format -style=mozilla -dump-config > ${HOME}/.clang-format
 
   show_info "Installing julia-vim for syntax highlighting."
-  git clone --depth 1 https://github.com/JuliaEditorSupport/julia-vim.git julia-vim
-  cd julia-vim
-  cp -rf autoload doc ftdetect ftplugin indent syntax ${HOME}/.vim/
-  cd ../
-  rm -rf julia-vim
+  mkdir -p "${vimpack}"
+  git clone https://github.com/JuliaEditorSupport/julia-vim.git \
+    ${vimpack}/julia-vim
 }
 
 games="${dir}/packages/games.list"

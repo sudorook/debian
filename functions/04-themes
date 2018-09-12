@@ -136,6 +136,7 @@ function set_qtcompat {
   show_header "Building qt5-styleplugins."
   git clone https://github.com/mati75/qt5ct
   cd qt5ct
+  git checkout f8f1ebe09351e7eb1ea97d38f4506fe2be0519c7
   qmake
   make -j`nproc`
   sudo make install

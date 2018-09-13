@@ -20,11 +20,12 @@ set spellfile=$HOME/.vim/spell/en.utf-8.add
 filetype plugin indent on
 syntax on
 
-"powerline
+"airline
 set noshowmode
 set laststatus=2
 set t_Co=256
-let g:Powerline_symbols='fancy'
+set guifont=Monospace\ Regular\ for\ Powerline\ 10
+let g:airline_powerline_fonts=1
 
 "themes and appearance
 if (has("termguicolors"))
@@ -32,6 +33,9 @@ if (has("termguicolors"))
 endif
 if filereadable( expand("$HOME/.vim/colors/colorific.vim") )
   colorscheme colorific
+  if filereadable( expand("$HOME/.vim/autoload/airline/themes/colorific.vim") )
+    let g:airline_theme='colorific'
+  endif
 endif
 set background=dark
 

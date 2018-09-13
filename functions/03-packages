@@ -214,6 +214,7 @@ function install_torbrowser {
 
 vim="${dir}/packages/vim.list"
 vimrc="${dir}/dotfiles/vimrc"
+vimpack="${HOME}/.vim/pack/dist/start"
 function install_vim {
   show_header "Installing vim and vim plugins."
   check_installed $(cat ${vim})
@@ -224,11 +225,14 @@ function install_vim {
   cp -f ${vimrc} ${HOME}/.vimrc
   show_success "vimrc installed."
 
+  show_info "Installing vim-airline."
+  mkdir -p ${vimpack}
+  git clone https://github.com/vim-airline/vim-airline ${vimpack}/vim-airline
+
   show_info "Configuring active vim addons."
   vim-addons install \
     align alternate ctrlp detectindent doxygen-toolkit fugitive nerd-commenter \
-    pathogen powerline surround syntastic tabular latex-suite youcompleteme \
-    taglist
+    pathogen surround syntastic tabular latex-suite youcompleteme taglist
 
   show_info "Setting Vim as default tool for git diffs and merges."
   # 00-check makes sure the git is installed, so no need for checks here.

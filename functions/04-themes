@@ -124,11 +124,16 @@ function install_thunderbird_theme {
     mkdir -p ${thunderbird}/chrome
   fi
 
-  git clone https://github.com/spymastermatt/thunderbird-monterail ${thunderbird}/chrome
-  sed -i 's,^/\* @import "icons/lightDarkIcons.css";,@import "icons/lightDarkIcons.css";,g' \
-    ${thunderbird}/chrome/userChrome.css
-  sed -i 's,/\*--default-font: var(--light-sans-font);,--default-font: var(--system-font);,g' \
-    ${thunderbird}/chrome/userChrome.css
+  git clone https://github.com/entercloudbr/chrome ${thunderbird}/chrome
+
+  local userchrome=${thunderbird}/chrome/userChrome.css
+  sed -i 's|^\s*\(--folder-tree-background-color: rgba(247,247,255,1);\)|/\*\1\*/|g' ${userchrome}
+  sed -i 's|^\(\s*\)\(--folder-tree-background-color: rgba(247,247,255,1);\)|\1/\*\2\*/|g' ${userchrome}
+  sed -i 's|^\(\s*\)\(--message-list-header-background-color: rgba(247,247,255,1);\)|\1/\*\2\*/|g' ${userchrome}
+  sed -i 's|^\(\s*\)\(--message-list-background-color: white;\)|\1/\*\2\*/|g' ${userchrome}
+  sed -i 's|^\(\s*\)\(--message-list-row-height: 60px;\)|\1/\*\2\*/|g' ${userchrome}
+  sed -i 's|^\(\s*\)\(--subject-line-font-size: 150%;\)|\1/\*\2\*/|g' ${userchrome}
+  sed -i 's|^\(\s*\)\(--headers-background-color: white;\)|\1/\*\2\*/|g' ${userchrome}
 }
 
 function install_timed_backgrounds {

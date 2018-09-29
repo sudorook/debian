@@ -157,7 +157,7 @@ function install_torbrowser {
 
   if [ -d ${torbrowser_path} ]; then
     show_warning "Tor browser is already installed in ${torbrowser_path}."
-    read -r -p $'\033[1;34mReplace? (y/N) \033[0m' response
+    response=$(ask_question "Replace? (y/N)")
     if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
       install_torbrowser=true
     else

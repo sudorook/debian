@@ -20,6 +20,10 @@ show_warning() {
 show_question() {
   echo -e "\033[1;34m$@\033[0m"
 }
+ask_question() {
+  read -p $'\033[1;34m'"$@ "$'\033[0m' var
+  echo "${var}"
+}
 show_success() {
   echo -e "\033[1;35m$@\033[0m"
 }
@@ -61,7 +65,7 @@ function main {
         break
         ;;
       "Autopilot")
-        read -r -p $'\033[1;34mLet this script install everything? (y/N) \033[0m' response
+        response=$(ask_question "Let this script install everything? (y/N)")
         if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
           # Install base packages
           install_base

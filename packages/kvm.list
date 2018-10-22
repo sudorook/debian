@@ -1,6 +1,7 @@
 bridge-utils
 dnsmasq
 ebtables
+libiscsi-bin
 libvirt-daemon
 netcat-openbsd
 qemu

@@ -79,22 +79,9 @@ function install_fonts {
 
 function install_papirus_icons {
   show_header "Downloading and installing the Papirus icon theme."
-  git clone --depth 1 https://github.com/PapirusDevelopmentTeam/papirus-icon-theme \
+  git clone -b tweak --depth 1 https://github.com/sudorook/papirus-icon-theme \
     papirus-icon-theme
   cd papirus-icon-theme
-
-  show_info "Tweaking icon colors."
-  # Tweak default (Arc) icon colors.
-  find Papirus ePapirus Papirus-Dark Papirus-Light \
-    -type f -exec sed -i "s/#5294e2/#5c87cc/g" {} +
-  find Papirus ePapirus Papirus-Dark Papirus-Light \
-    -type f -exec sed -i "s/#4877b1/#4d7cb7/g" {} +
-
-  # Tweak Adapta icon colors.
-  find Papirus-Adapta Papirus-Adapta-Nokto \
-    -type f -exec sed -i "s/#00bcd4/#00b4cb/g" {} +
-  find Papirus-Adapta Papirus-Adapta-Nokto \
-    -type f -exec sed -i "s/#4899b1/#00a2b4/g" {} +
 
   sudo make install
   cd ..

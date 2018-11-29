@@ -112,6 +112,7 @@ function main {
           install_theme_deps
           install_arc_gtk
           install_adapta_gtk
+          install_plata_gtk
           install_fonts
           install_papirus_icons
           install_vim_theme

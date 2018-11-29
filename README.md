@@ -146,9 +146,10 @@ Automatically install (without prompting) packages and configs.
 
 ### 8) Themes
 ```
-1) Back               4) Adapta (GTK)       7) Vim theme
-2) All                5) Fonts              8) Thunderbird theme
-3) Arc (GTK)          6) Papirus (icons)    9) Timed backgrounds
+1) Back                 5) Plata (GTK)         9) Thunderbird theme
+2) All                  6) Fonts              10) Timed backgrounds
+3) Arc (GTK)            7) Papirus (icons)
+4) Adapta (GTK)         8) Vim theme
 ```
 
 3) Download, compile, and install a [fork](https://github.com/sudorook/arc-theme)
@@ -157,16 +158,19 @@ Automatically install (without prompting) packages and configs.
 4) Download, compile, and install a [fork](https://github.com/sudorook/adapta-gtk-theme)
    of the [Adapta GTK theme](https://github.com/adapta-project/adapta-gtk-theme).
 
-5) Install Noto, Cantarell, Ubuntu, Dejavu, and Roboto fonts.
+5) Download, compile, and install a [fork](https://gitlab.com/sudorook/plata-theme)
+   of the [Plata GTK theme](https://gitlab.com/tista500/plata-theme).
 
-6) Install tweaked version of Papirus icon theme.
+6) Install Noto, Cantarell, Ubuntu, Dejavu, and Roboto fonts.
 
-7) Set the default Vim theme to [colorific](https://github.com/sudorook/colorific.vim).
+7) Install tweaked version of Papirus icon theme.
 
-8) Install the [Monterail theme](https://github.com/spymastermatt/thunderbird-monterail)
+8) Set the default Vim theme to [colorific](https://github.com/sudorook/colorific.vim).
+
+9) Install the [Monterail theme](https://github.com/spymastermatt/thunderbird-monterail)
    for Thunderbird.
 
-9) Install [timed backgrounds](https://github.com/sudorook/timed-backgrounds)
+10) Install [timed backgrounds](https://github.com/sudorook/timed-backgrounds)
    where transitions from day to night match sunrise/sunset times.
 
 ### 9) Personalization

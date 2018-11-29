@@ -69,6 +69,38 @@ function install_adapta_gtk {
   rm -rf adapta-gtk-theme
 }
 
+function install_plata_gtk {
+  show_header "Downloading, building, and installing the Plata GTK theme."
+  autotools_options=""
+  if ! pacman -Qi gnome-shell > /dev/null 2>&1; then
+    autotools_options=${autotools_options}"--disable-gnome "
+  elif ! pacman -Qi cinnamon > /dev/null 2>&1; then
+    autotools_options=${autotools_options}"--disable-cinnamon "
+  fi
+  git clone -b tweak --depth 1 \
+    https://gitlab.com/sudorook/plata-theme plata-theme
+  cd plata-theme
+  ./autogen.sh --prefix=/usr \
+    --with-selection_color=#4877B1 \
+    --with-accent_color=#4877B1 \
+    --with-suggestion_color=#5294E2 \
+    --with-destruction_color=#F44336 \
+    ${autotools_options} \
+    --enable-parallel
+  make -j`nproc`
+  sudo make install
+  if [ -d /usr/share/gtksourceview-3.0/styles/ ]; then
+    sudo cp -f src/extra/gedit/plata-light.xml src/extra/gedit/plata-dark.xml \
+      /usr/share/gtksourceview-3.0/styles/
+  fi
+  if [ -d /usr/share/gtksourceview-2.0/styles/ ]; then
+    sudo cp -f src/extra/gedit/plata-light.xml src/extra/gedit/plata-dark.xml \
+      /usr/share/gtksourceview-2.0/styles/
+  fi
+  cd ..
+  rm -rf plata-theme
+}
+
 fonts="${dir}/packages/fonts.list"
 function install_fonts {
   show_header "Installing fonts."
@@ -156,8 +188,9 @@ function 04-themes {
   show_question "Themes: what do you want to install?"
   show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
 
-  options=("Back" "All" "Arc (GTK)" "Adapta (GTK)" "Fonts" "Papirus (icons)" \
-           "Vim theme" "Thunderbird theme" "Timed backgrounds")
+  options=("Back" "All" "Arc (GTK)" "Adapta (GTK)" "Plata (GTK)" "Fonts" \
+           "Papirus (icons)" "Vim theme" "Thunderbird theme" \
+           "Timed backgrounds")
   select option in "${options[@]}"; do
     case $option in
       "Back")
@@ -167,6 +200,7 @@ function 04-themes {
         install_theme_deps
         install_arc_gtk
         install_adapta_gtk
+        install_plata_gtk
         install_fonts
         install_papirus_icons
         install_vim_theme
@@ -186,6 +220,13 @@ function 04-themes {
         show_info "Installing dependencies for building themes."
         install_theme_deps
         install_adapta_gtk
+        set_qtcompat
+        show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
+        ;;
+      "Plata (GTK)")
+        show_info "Installing dependencies for building themes."
+        install_theme_deps
+        install_plata_gtk
         set_qtcompat
         show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
         ;;

@@ -44,7 +44,7 @@ function set_icon_theme {
   show_header "Setting desktop icon theme to ${icontheme}."
 
   if dpkg -s cinnamon > /dev/null 2>&1; then
-    show_info "Setting cinnamon icon theme to ${icontheme}."
+    show_info "Setting Cinnamon icon theme to ${icontheme}."
     gsettings set org.cinnamon.desktop.interface icon-theme "'${icontheme}'"
   fi
   if dpkg -s gnome-shell > /dev/null 2>&1; then
@@ -72,7 +72,7 @@ function set_icon_theme {
 function set_gtk_theme {
   show_header "Setting desktop GTK theme to ${gtktheme}."
   if dpkg -s cinnamon > /dev/null 2>&1; then
-    show_info "Setting cinnamon GTK theme to ${gtktheme}."
+    show_info "Setting Cinnamon GTK theme to ${gtktheme}."
     gsettings set org.cinnamon.desktop.interface gtk-theme "'${gtktheme}'"
     gsettings set org.cinnamon.desktop.wm.preferences theme "'${gtktheme}'"
     if [[ "$gtktheme" =~ "-Eta" ]]; then

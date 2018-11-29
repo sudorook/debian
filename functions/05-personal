@@ -260,15 +260,13 @@ function select_desktop_theme {
   select option in "${options[@]}"; do
     case $option in
       "Back")
+        return
         break
         ;;
       "Adwaita")
         if [ -d /usr/share/themes/Adwaita ] || \
            [ -d ${HOME}/.themes/Adwaita ]; then
           gtktheme="Adwaita"
-          set_gtk_theme
-          set_lightdm_theme
-          set_gdm_theme
         else
           show_warning "${option} theme is not installed."
           select_desktop_theme
@@ -279,9 +277,6 @@ function select_desktop_theme {
         if [ -d /usr/share/themes/Arc ] || \
            [ -d ${HOME}/.themes/Arc ]; then
           gtktheme="Arc"
-          set_gtk_theme
-          set_lightdm_theme
-          set_gdm_theme
         else
           show_warning "${option} theme is not installed."
           select_desktop_theme
@@ -292,9 +287,6 @@ function select_desktop_theme {
         if [ -d /usr/share/themes/Arc-Darker ] || \
            [ -d ${HOME}/.themes/Arc-Darker ]; then
           gtktheme="Arc-Darker"
-          set_gtk_theme
-          set_lightdm_theme
-          set_gdm_theme
         else
           show_warning "${option} theme is not installed."
           select_desktop_theme
@@ -305,9 +297,6 @@ function select_desktop_theme {
         if [ -d /usr/share/themes/Arc-Dark ] || \
            [ -d ${HOME}/.themes/Arc-Dark ]; then
           gtktheme="Arc-Dark"
-          set_gtk_theme
-          set_lightdm_theme
-          set_gdm_theme
         else
           show_warning "${option} theme is not installed."
           select_desktop_theme
@@ -318,9 +307,6 @@ function select_desktop_theme {
         if [ -d /usr/share/themes/Adapta ] || \
            [ -d ${HOME}/.themes/Adapta ]; then
           gtktheme="Adapta"
-          set_gtk_theme
-          set_lightdm_theme
-          set_gdm_theme
         else
           show_warning "${option} theme is not installed."
           select_desktop_theme
@@ -331,9 +317,6 @@ function select_desktop_theme {
         if [ -d /usr/share/themes/Adapta-Eta ] || \
            [ -d ${HOME}/.themes/Adapta-Eta ]; then
           gtktheme="Adapta-Eta"
-          set_gtk_theme
-          set_lightdm_theme
-          set_gdm_theme
         else
           show_warning "${option} theme is not installed."
           select_desktop_theme
@@ -344,9 +327,6 @@ function select_desktop_theme {
         if [ -d /usr/share/themes/Adapta-Nokto ] || \
            [ -d ${HOME}/.themes/Adapta-Nokto ]; then
           gtktheme="Adapta-Nokto"
-          set_gtk_theme
-          set_lightdm_theme
-          set_gdm_theme
         else
           show_warning "${option} theme is not installed."
           select_desktop_theme
@@ -371,6 +351,10 @@ function select_desktop_theme {
         ;;
     esac
   done
+
+  set_gtk_theme
+  set_lightdm_theme
+  set_gdm_theme
 }
 
 function select_icon_theme {
@@ -381,14 +365,13 @@ function select_icon_theme {
   select option in "${options[@]}"; do
     case $option in
       "Back")
+        return
         break
         ;;
       "Papirus")
         if [ -d /usr/share/icons/Papirus ] || \
            [ -d ${HOME}/.icons/Papirus ]; then
           icontheme="Papirus"
-          set_icon_theme
-          set_lightdm_theme
         else
           show_warning "${option} icons are not installed."
           select_icon_theme
@@ -399,8 +382,6 @@ function select_icon_theme {
         if [ -d /usr/share/icons/ePapirus ] || \
            [ -d ${HOME}/.icons/ePapirus ]; then
           icontheme="ePapirus"
-          set_icon_theme
-          set_lightdm_theme
         else
           show_warning "${option} icons are not installed."
           select_icon_theme
@@ -411,8 +392,6 @@ function select_icon_theme {
         if [ -d /usr/share/icons/Papirus-Light ] || \
            [ -d ${HOME}/.icons/Papirus-Light ]; then
           icontheme="Papirus-Light"
-          set_icon_theme
-          set_lightdm_theme
         else
           show_warning "${option} icons are not installed."
           select_icon_theme
@@ -423,8 +402,6 @@ function select_icon_theme {
         if [ -d /usr/share/icons/Papirus-Dark ] || \
            [ -d ${HOME}/.icons/Papirus-Dark ]; then
           icontheme="Papirus-Dark"
-          set_icon_theme
-          set_lightdm_theme
         else
           show_warning "${option} icons are not installed."
           select_icon_theme
@@ -435,8 +412,6 @@ function select_icon_theme {
         if [ -d /usr/share/icons/Papirus-Adapta ] || \
            [ -d ${HOME}/.icons/Papirus-Adapta ]; then
           icontheme="Papirus-Adapta"
-          set_icon_theme
-          set_lightdm_theme
         else
           show_warning "${option} icons are not installed."
           select_icon_theme
@@ -447,8 +422,6 @@ function select_icon_theme {
         if [ -d /usr/share/icons/Papirus-Adapta-Nokto ] || \
            [ -d ${HOME}/.icons/Papirus-Adapta-Nokto ]; then
           icontheme="Papirus-Adapta-Nokto"
-          set_icon_theme
-          set_lightdm_theme
         else
           show_warning "${option} icons are not installed."
           select_icon_theme
@@ -460,6 +433,9 @@ function select_icon_theme {
         ;;
     esac
   done
+
+  set_icon_theme
+  set_lightdm_theme
 }
 
 function 05-personal {

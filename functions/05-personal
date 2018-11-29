@@ -144,10 +144,13 @@ function set_gtk_theme {
   if dpkg -s cinnamon > /dev/null 2>&1; then
     show_info "Setting Cinnamon GTK theme to ${gtktheme}."
     gsettings set org.cinnamon.desktop.interface gtk-theme "'${gtktheme}'"
-    gsettings set org.cinnamon.desktop.wm.preferences theme "'${gtktheme}'"
-    if [[ "$gtktheme" =~ "-Eta" ]]; then
+    if [[ "${gtktheme}" =~ "-Eta" ]]; then
       gsettings set org.cinnamon.theme name "'${gtktheme%-*}'"
-    elif [[ "$1" =~ "-Darker" ]]; then
+      gsettings set org.cinnamon.desktop.wm.preferences theme "'${gtktheme}'"
+    elif [[ "${gtktheme}" =~ "-Compact" ]]; then
+      gsettings set org.cinnamon.theme name "'${gtktheme%-*}'"
+      gsettings set org.cinnamon.desktop.wm.preferences theme "'${gtktheme%-*}'"
+    elif [[ "${gtktheme}" =~ "-Darker" ]]; then
       gsettings set org.cinnamon.theme name "'${1%er}'"
     else
       gsettings set org.cinnamon.theme name "'${gtktheme}'"
@@ -190,14 +193,18 @@ function set_lightdm_theme {
 
 function set_gdm_theme {
   if dpkg -s gdm3 > /dev/null 2>&1; then
-    show_header "Setting GDM login theme to ${gtktheme}."
-    sudo cp -r /usr/share/gnome-shell /usr/share/gnome-shell-$(date +%Y%m%d)
-    sudo cp -rf /usr/share/themes/${gtktheme}/gnome-shell/* /usr/share/gnome-shell/
-    if [[ "${gtktheme}" =~ "Adapta" ]]; then
-      sudo cp -f /usr/share/themes/Adapta/gnome-shell/extensions/window-list/classic.css \
-        /usr/share/gnome-shell/extensions/window-list@gnome-shell-extensions.gcampax.github.com/
-      sudo cp -f /usr/share/themes/Adapta/gnome-shell/extensions/window-list/stylesheet.css \
-        /usr/share/gnome-shell/extensions/window-list@gnome-shell-extensions.gcampax.github.com/
+    if [[ -d "/usr/share/themes/${gtktheme}" ]]; then
+      show_header "Setting GDM login theme to ${gtktheme}."
+      sudo cp -r /usr/share/gnome-shell /usr/share/gnome-shell-$(date +%Y%m%d)
+      sudo cp -rf /usr/share/themes/${gtktheme}/gnome-shell/* /usr/share/gnome-shell/
+      if [[ "${gtktheme}" =~ "Adapta" ]] || [[ "${gtktheme}" =~ "Plata" ]]; then
+        sudo cp -f /usr/share/themes/${gtktheme}/gnome-shell/extensions/window-list/classic.css \
+          /usr/share/gnome-shell/extensions/window-list@gnome-shell-extensions.gcampax.github.com/
+        sudo cp -f /usr/share/themes/${gtktheme}/gnome-shell/extensions/window-list/stylesheet.css \
+          /usr/share/gnome-shell/extensions/window-list@gnome-shell-extensions.gcampax.github.com/
+      fi
+    else
+      show_warning "GTK theme ${gtktheme} not found. Skipping."
     fi
   else
     show_warning "GDM is not installed. Skipping."
@@ -333,7 +340,9 @@ function select_desktop_theme {
   show_question "Select a GTK theme:"
 
   options=("Back" "Adwaita" "Arc" "Arc-Darker" "Arc-Dark" "Adapta" \
-           "Adapta-Eta" "Adapta-Nokto" "Adapta-Nokto-Eta")
+           "Adapta-Eta" "Adapta-Nokto" "Adapta-Nokto-Eta" "Plata" \
+           "Plata-Compact" "Plata-Lumine" "Plata-Lumine-Compact" "Plata-Noir" \
+           "Plata-Noir-Compact")
   select option in "${options[@]}"; do
     case $option in
       "Back")
@@ -414,9 +423,66 @@ function select_desktop_theme {
         if [ -d /usr/share/themes/Adapta-Nokto-Eta ] || \
            [ -d ${HOME}/.themes/Adapta-Nokto-Eta ]; then
           gtktheme="Adapta-Nokto-Eta"
-          set_gtk_theme
-          set_lightdm_theme
-          set_gdm_theme
+        else
+          show_warning "${option} theme is not installed."
+          select_desktop_theme
+        fi
+        break
+        ;;
+      "Plata")
+        if [ -d /usr/share/themes/Plata ] || \
+           [ -d ${HOME}/.themes/Plata ]; then
+          gtktheme="Plata"
+        else
+          show_warning "${option} theme is not installed."
+          select_desktop_theme
+        fi
+        break
+        ;;
+      "Plata-Compact")
+        if [ -d /usr/share/themes/Plata-Compact ] || \
+           [ -d ${HOME}/.themes/Plata-Compact ]; then
+          gtktheme="Plata-Compact"
+        else
+          show_warning "${option} theme is not installed."
+          select_desktop_theme
+        fi
+        break
+        ;;
+      "Plata-Lumine")
+        if [ -d /usr/share/themes/Plata-Lumine ] || \
+           [ -d ${HOME}/.themes/Plata-Lumine ]; then
+          gtktheme="Plata-Lumine"
+        else
+          show_warning "${option} theme is not installed."
+          select_desktop_theme
+        fi
+        break
+        ;;
+      "Plata-Lumine-Compact")
+        if [ -d /usr/share/themes/Plata-Lumine-Compact ] || \
+           [ -d ${HOME}/.themes/Plata-Lumine-Compact ]; then
+          gtktheme="Plata-Lumine-Compact"
+        else
+          show_warning "${option} theme is not installed."
+          select_desktop_theme
+        fi
+        break
+        ;;
+      "Plata-Noir")
+        if [ -d /usr/share/themes/Plata-Noir ] || \
+           [ -d ${HOME}/.themes/Plata-Noir ]; then
+          gtktheme="Plata-Noir"
+        else
+          show_warning "${option} theme is not installed."
+          select_desktop_theme
+        fi
+        break
+        ;;
+      "Plata-Noir-Compact")
+        if [ -d /usr/share/themes/Plata-Noir-Compact ] || \
+           [ -d ${HOME}/.themes/Plata-Noir-Compact ]; then
+          gtktheme="Plata-Noir-Compact"
         else
           show_warning "${option} theme is not installed."
           select_desktop_theme

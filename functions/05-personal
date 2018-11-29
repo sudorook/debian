@@ -5,38 +5,108 @@ dir="$(dirname "$0")"
 # Globals
 gtktheme="Adapta-Nokto-Eta"
 icontheme="Papirus-Adapta-Nokto"
+font="Roboto"
 
-function set_noto_fonts {
-  show_header "Configuring system fonts."
-  if dpkg -s fonts-noto > /dev/null 2>&1; then
-    if dpkg -s cinnamon > /dev/null 2>&1; then
-      show_info "Setting fonts for cinnamon environment."
+function select_system_font {
+  show_question "Select a font family:"
 
-      # screensaver fonts
-      gsettings set org.cinnamon.desktop.screensaver font-message "'Noto Sans 14'"
-      gsettings set org.cinnamon.desktop.screensaver font-date "'Noto Sans 24'"
-      gsettings set org.cinnamon.desktop.screensaver font-time "'Noto Sans 64'"
+  options=("Back" "Noto" "Roboto")
+  select option in "${options[@]}"; do
+    case ${option} in
+      "Back")
+        return
+        break
+        ;;
+      "Noto")
+        if dpkg -s fonts-noto > /dev/null 2>&1; then
+          font="Noto"
+        else
+          show_warning "Font family ${option} not found. Skipping."
+        fi
+        break
+        ;;
+      "Roboto")
+        if dpkg -s fonts-roboto > /dev/null 2>&1; then
+          font="Roboto"
+        else
+          show_warning "Font family ${option} not found. Skipping."
+        fi
+        break
+        ;;
+      *)
+        show_error "Font ${option} not supported."
+        exit 3
+        ;;
+    esac
+  done
 
-      # desktop environment fonts
-      gsettings set org.cinnamon.desktop.interface font-name "'Noto Sans 12'"
-      gsettings set org.nemo.desktop font "'Noto Sans 12'"
-      gsettings set org.gnome.desktop.interface document-font-name "'Noto Sans 12'"
-      gsettings set org.gnome.desktop.interface monospace-font-name "'Monospace 13'"
-      gsettings set org.cinnamon.desktop.wm.preferences titlebar-font "'Noto Sans Bold 12'"
-    fi
+  set_system_font
+}
 
-    if dpkg -s gnome-shell > /dev/null 2>&1; then
-      show_info "Setting fonts for GNOME environment."
+function set_system_font {
+  show_header "Setting system font to ${font}."
 
-      # desktop environment fonts
-      gsettings set org.gnome.desktop.wm.preferences titlebar-font "'Noto Sans Bold 12'"
-      gsettings set org.gnome.desktop.interface document-font-name "'Noto Sans 12'"
-      gsettings set org.gnome.desktop.interface font-name "'Noto Sans 12'"
-      gsettings set org.gnome.desktop.interface monospace-font-name "'Monospace 13'"
-    fi
-  else
-    show_warning "Noto fonts are not installed. Skipping."
-  fi
+  case "${font}" in
+    "Roboto")
+      if dpkg -s cinnamon >/dev/null 2>&1; then
+        show_info "Setting fonts for Cinnamon desktop environment."
+
+        # screensaver fonts
+        gsettings set org.cinnamon.desktop.screensaver font-message "'Roboto 14'"
+        gsettings set org.cinnamon.desktop.screensaver font-date "'Roboto 24'"
+        gsettings set org.cinnamon.desktop.screensaver font-time "'Roboto 64'"
+
+        # desktop environment fonts
+        gsettings set org.cinnamon.desktop.interface font-name "'Roboto 11'"
+        gsettings set org.nemo.desktop font "'Roboto 11'"
+        gsettings set org.gnome.desktop.interface document-font-name "'Roboto 11'"
+        gsettings set org.gnome.desktop.interface monospace-font-name "'Ubuntu Mono 14'"
+        gsettings set org.cinnamon.desktop.wm.preferences titlebar-font "'Roboto Bold 11'"
+      fi
+
+      if dpkg -s gnome-shell >/dev/null 2>&1; then
+        show_info "Setting fonts for GNOME environment."
+
+        # desktop environment fonts
+        gsettings set org.gnome.desktop.wm.preferences titlebar-font "'Roboto Bold 11'"
+        gsettings set org.gnome.desktop.interface document-font-name "'Roboto 11'"
+        gsettings set org.gnome.desktop.interface font-name "'Roboto 11'"
+        gsettings set org.gnome.desktop.interface monospace-font-name "'Ubuntu Mono 14'"
+      fi
+      ;;
+    "Noto")
+      if dpkg -s cinnamon >/dev/null 2>&1; then
+        show_info "Setting fonts for Cinnamon desktop environment."
+
+        # screensaver fonts
+        gsettings set org.cinnamon.desktop.screensaver font-message "'Noto Sans 14'"
+        gsettings set org.cinnamon.desktop.screensaver font-date "'Noto Sans 24'"
+        gsettings set org.cinnamon.desktop.screensaver font-time "'Noto Sans 64'"
+
+        # desktop environment fonts
+        gsettings set org.cinnamon.desktop.interface font-name "'Noto Sans 11'"
+        gsettings set org.nemo.desktop font "'Noto Sans 11'"
+        gsettings set org.gnome.desktop.interface document-font-name "'Noto Sans 11'"
+        gsettings set org.gnome.desktop.interface monospace-font-name "'Ubuntu Mono 14'"
+        gsettings set org.cinnamon.desktop.wm.preferences titlebar-font "'Noto Sans Bold 11'"
+      fi
+
+
+      if dpkg -s gnome-shell > /dev/null 2>&1; then
+        show_info "Setting fonts for GNOME environment."
+
+        # desktop environment fonts
+        gsettings set org.gnome.desktop.wm.preferences titlebar-font "'Noto Sans Bold 11'"
+        gsettings set org.gnome.desktop.interface document-font-name "'Noto Sans 11'"
+        gsettings set org.gnome.desktop.interface font-name "'Noto Sans 11'"
+        gsettings set org.gnome.desktop.interface monospace-font-name "'Ubuntu Mono 14'"
+      fi
+      ;;
+    *)
+      show_error "Font ${1} not supported."
+      exit 3
+      ;;
+  esac
 }
 
 xdgdefaultconf="/etc/xdg/user-dirs.defaults"
@@ -100,9 +170,16 @@ function set_lightdm_theme {
     sudo sed -i "s/^theme-name=.*/theme-name=${gtktheme}/g" ${lightdmgtkconf}
     sudo sed -i "s/^#icon-theme-name=$/icon-theme-name=/g" ${lightdmgtkconf}
     sudo sed -i "s/^icon-theme-name=.*$/icon-theme-name=${icontheme}/g" ${lightdmgtkconf}
-    if dpkg -s fonts-noto > /dev/null; then
-      sudo sed -i "s/^#font-name=$/font-name=/g" ${lightdmgtkconf}
-      sudo sed -i "s/^font-name=.*/font-name=Noto Sans/g" ${lightdmgtkconf}
+    if [[ "${font}" == "Noto" ]]; then
+      if dpkg -s fonts-noto > /dev/null; then
+        sudo sed -i "s/^#font-name=$/font-name=/g" ${lightdmgtkconf}
+        sudo sed -i "s/^font-name=.*/font-name=Noto Sans/g" ${lightdmgtkconf}
+      fi
+    elif [[ "${font}" == "Roboto" ]]; then
+      if dpkg -s fonts-roboto > /dev/null; then
+        sudo sed -i "s/^#font-name=$/font-name=/g" ${lightdmgtkconf}
+        sudo sed -i "s/^font-name=.*/font-name=Roboto/g" ${lightdmgtkconf}
+      fi
     fi
     sudo sed -i "s/^#xft-hintstyle=$/xft-hintstyle=/g" ${lightdmgtkconf}
     sudo sed -i "s/^xft-hintstyle=.*$/xft-hintstyle=slight/g" ${lightdmgtkconf}
@@ -442,7 +519,7 @@ function 05-personal {
   show_question "Personal: what do you want to set?"
   show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
 
-  options=("Back" "All" "Set Noto fonts" "Select icon theme" \
+  options=("Back" "All" "Select system fonts" "Select icon theme" \
            "Select desktop theme" "Set dark GTK" "Import Cinnamon dconf" \
            "Import GNOME dconf" "Import application dconf" \
            "Import GNOME terminal profiles" "Enable autologin" \
@@ -453,7 +530,7 @@ function 05-personal {
         break
         ;;
       "All")
-        set_noto_fonts
+        set_system_font
         set_icon_theme
         set_gtk_theme
         set_lightdm_theme
@@ -468,8 +545,8 @@ function 05-personal {
         disable_pulseaudio_suspend
         show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
         ;;
-      "Set Noto fonts")
-        set_noto_fonts
+      "Select system fonts")
+        select_system_font
         show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
         ;;
       "Select icon theme")

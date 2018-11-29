@@ -120,7 +120,7 @@ function main {
           set_qtcompat
 
           # Add my personal settings
-          set_noto_fonts
+          set_system_font
           set_icon_theme
           set_gtk_theme
           set_lightdm_theme

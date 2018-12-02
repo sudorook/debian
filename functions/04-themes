@@ -90,11 +90,13 @@ function install_plata_gtk {
   make -j`nproc`
   sudo make install
   if [ -d /usr/share/gtksourceview-3.0/styles/ ]; then
-    sudo cp -f src/extra/gedit/plata-light.xml src/extra/gedit/plata-dark.xml \
+    sudo cp -f src/extra/gtksourceview/plata-light.xml \
+      src/extra/gtksourceview/plata-dark.xml \
       /usr/share/gtksourceview-3.0/styles/
   fi
   if [ -d /usr/share/gtksourceview-2.0/styles/ ]; then
-    sudo cp -f src/extra/gedit/plata-light.xml src/extra/gedit/plata-dark.xml \
+    sudo cp -f src/extra/gtksourceview/plata-light.xml \
+      src/extra/gtksourceview/plata-dark.xml \
       /usr/share/gtksourceview-2.0/styles/
   fi
   cd ..

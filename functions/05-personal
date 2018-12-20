@@ -3,8 +3,8 @@
 dir="$(dirname "$0")"
 
 # Globals
-gtktheme="Adapta-Nokto-Eta"
-icontheme="Papirus-Adapta-Nokto"
+gtktheme="Plata-Noir-Compact"
+icontheme="Papirus-Dark"
 font="Roboto"
 
 function select_system_font {

@@ -6,7 +6,6 @@ export BROWSER="firefox"
 export EDITOR="vim"
 export SUDO_EDITOR="$EDITOR"
 export VISUAL="$EDITOR"
-export QT_QPA_PLATFORMTHEME=qt5ct
 
 
 #

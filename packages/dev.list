@@ -78,5 +78,6 @@ sqlite
 strace
 tesseract-ocr
 tidy
+tmux
 uncrustify
 yamllint

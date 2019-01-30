@@ -41,6 +41,7 @@ function install_codecs {
 dev="${dir}/packages/dev.list"
 npmrc="${dir}/dotfiles/npmrc"
 rprofile="${dir}/dotfiles/Rprofile"
+tmuxconfig="${dir}/dotfiles/tmux.conf"
 vimpack="${HOME}/.vim/pack/dist/start"
 function install_dev {
   show_header "Installing languages and editors for development."
@@ -53,6 +54,9 @@ function install_dev {
 
   show_info "Installing Rprofile."
   cp -f ${rprofile} ${HOME}/.Rprofile
+
+  show_info "Installing tmux config."
+  cp -f ${tmuxconfig} ${HOME}/.tmux.conf
 
   show_info "Setting default clang-format style."
   clang-format -style=mozilla -dump-config > ${HOME}/.clang-format

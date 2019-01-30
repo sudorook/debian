@@ -42,6 +42,7 @@ nodejs
 nodejs-legacy
 npm
 openblas
+pandoc
 phantomjs
 postgresql
 pypy

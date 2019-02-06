@@ -61,10 +61,18 @@ function install_dev {
   show_info "Setting default clang-format style."
   clang-format -style=mozilla -dump-config > ${HOME}/.clang-format
 
-  show_info "Installing julia-vim for syntax highlighting."
+  show_info "Installing vim packages."
   mkdir -p "${vimpack}"
-  git clone https://github.com/JuliaEditorSupport/julia-vim.git \
-    ${vimpack}/julia-vim
+
+  if [[ -f ${vimpack}/julia-vim ]]; then
+    show_info "Installing julia-vim for syntax highlighting."
+    git clone https://github.com/JuliaEditorSupport/julia-vim.git ${vimpack}/julia-vim
+  fi
+
+  if [[ -f ${vimpack}/Nvim-R ]]; then
+    show_info "Installing Nvim-R."
+    git clone https://github.com/jalvesaq/Nvim-R ${vimpack}/Nvim-R
+  fi
 }
 
 games="${dir}/packages/games.list"

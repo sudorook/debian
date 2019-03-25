@@ -204,6 +204,7 @@ function disable_beep {
       echo "gtk-error-bell=0" >> ${gtk2conf}
     fi
   else
+    mkdir -p "$(dirname ${gtk2conf})"
     echo "gtk-error-bell=0" >> ${gtk2conf}
   fi
   if [ -f "${gtk3conf}" ]; then
@@ -216,6 +217,7 @@ function disable_beep {
       echo "gtk-error-bell=0" >> ${gtk3conf}
     fi
   else
+    mkdir -p "$(dirname ${gtk3conf})"
     echo "[Settings]" > ${gtk3conf}
     echo "gtk-error-bell=0" >> ${gtk3conf}
   fi

@@ -33,6 +33,7 @@ command -v npm >/dev/null 2>&1 && {
 # R
 command -v R >/dev/null 2>&1 && {
   export R_LIBS_USER=$HOME/.R/$(R --version | sed -n "s/^R version \([0-9\.]*\) .*/\1/p")
+  alias R='R --no-save '
 }
 
 # custom scripts

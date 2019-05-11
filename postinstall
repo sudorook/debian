@@ -100,6 +100,7 @@ function main {
           # install_games
           # install_kvm
           # install_kvm_guest
+          install_messaging
           install_music
           install_texlive
           install_torbrowser

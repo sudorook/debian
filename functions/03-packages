@@ -120,6 +120,25 @@ function install_kvm_guest {
   fi
 }
 
+message="${dir}/packages/message.list"
+weechatdir="${HOME}/.weechat"
+function install_messaging {
+  show_header "Installing messaging applications."
+  check_installed $(cat ${message})
+  check_fail
+  show_success "Messaging applications installed."
+
+  show_info "Installing WeeChat plugin for Slack."
+  mkdir -p "${weechatdir}/python/autoload"
+  if [ -d "${weechatdir}/wee-slack" ]; then
+    show_info "WeeChat plugin already installed."
+  else
+    git clone https://github.com/wee-slack/wee-slack/ "${weechatdir}/wee-slack"
+    ln -sf "${weechatdir}/wee-slack/wee_slack.py" "${weechatdir}/python/autoload/"
+  fi
+  show_success "WeeChat plugin installed."
+}
+
 music="${dir}/packages/music.list"
 beetsconf="${dir}/configs/beets.yaml"
 beetsdir="${HOME}/.config/beets"
@@ -308,8 +327,8 @@ function 03-packages {
   show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
 
   options=("Back" "All" "Android tools" "General applications" "Codecs" \
-           "Development" "Emulators" "KVM (host)" "KVM (guest)" "Music" \
-           "TeX Live" "Tor browser" "Vim" "VirtualBox (host)" \
+           "Development" "Emulators" "KVM (host)" "KVM (guest)" "Messaging" \
+           "Music" "TeX Live" "Tor browser" "Vim" "VirtualBox (host)" \
            "VirtualBox (guest)" "Wine")
   select option in "${options[@]}"; do
     case $option in
@@ -359,6 +378,10 @@ function 03-packages {
         ;;
       "KVM (guest)")
         install_kvm_guest
+        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        ;;
+      "Messaging")
+        install_messaging
         show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
         ;;
       "Music")

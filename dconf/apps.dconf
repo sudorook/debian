@@ -1,2 +1,5 @@
 [org/gnome/calculator]
 button-mode='advanced'
+
+[org/gnome/evince/default]
+sizing-mode='fit-width'

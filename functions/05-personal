@@ -234,7 +234,7 @@ function set_dark_gtk {
 
 cinnamondconf="${dir}/dconf/cinnamon.dconf"
 function import_cinnamon_dconf {
-  show_header "Importing cinnamon dconf settings."
+  show_header "Importing Cinnamon dconf settings."
   dconf load / < ${cinnamondconf}
   check_fail
   show_success "Cinnamon dconf settings imported."

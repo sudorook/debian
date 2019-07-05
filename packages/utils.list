@@ -4,6 +4,8 @@ dmidecode
 dos2unix
 dosfstools
 encfs
+ethtool
+gddrescue
 gnupg
 hfsprogs
 libnotify-bin
@@ -11,10 +13,13 @@ net-tools
 nmap
 ntfs-3g
 p7zip
+parallel
 pigz
 pixz
+pv
 rsync
 screen
+smartmontools
 squashfs-tools
 unrar-free
 zip

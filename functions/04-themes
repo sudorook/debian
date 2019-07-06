@@ -144,7 +144,7 @@ function install_thunderbird_theme {
     mkdir -p ${thunderbird}/chrome
   fi
 
-  git clone https://github.com/entercloudbr/chrome ${thunderbird}/chrome
+  git clone https://github.com/spymastermatt/thunderbird-monterail ${thunderbird}/chrome
 
   local userchrome=${thunderbird}/chrome/userChrome.css
   sed -i 's|^\(\s*\)/\*--default-font: var(--light-sans-font); .*$|\1--default-font: var(--system-font);|g' ${userchrome}

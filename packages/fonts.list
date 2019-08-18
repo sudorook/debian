@@ -1,9 +1,9 @@
+fonts-dejavu
 fonts-noto
 fonts-noto-cjk
-fonts-noto-hinted
+fonts-noto-cjk-extra
+fonts-noto-extra
 fonts-noto-mono
-fonts-noto-unhinted
 fonts-roboto
-fonts-roboto-hinted
-fonts-roboto-unhinted
-ttf-dejavu
+fonts-ubuntu
+fonts-ubuntu-console

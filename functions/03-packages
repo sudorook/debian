@@ -200,12 +200,11 @@ function install_torbrowser {
 
   if ${install_torbrowser}; then
     show_info "Downloading Tor developers' GPG key."
-    gpg --keyserver pool.sks-keyservers.net --recv-keys 0x4E2C6E8793298290
+    gpg --auto-key-locate nodefault,wkd --locate-keys torbrowser@torproject.org
 
-    torbrowser_version=$(curl https://www.torproject.org/projects/torbrowser.html.en | \
-                         grep '<th>GNU/Linux' | \
-                         sed -n 's,.*(\([0-9\.]*\)).*,\1,p')
-    torbrowser_url=https://www.torproject.org/dist/torbrowser
+    torbrowser_version=$(curl https://www.torproject.org/download/ | \
+                         sed -n 's,^ \+<a class="downloadLink" href="https://www.torproject.org/dist/torbrowser/\([0-9\.]\+\)/tor-browser-linux.*">,\1,p')
+    torbrowser_url=https://dist.torproject.org/torbrowser
     arch=`uname -m`
     if [ ${arch:(-2)} = "86" ]; then
       torbrowser_package=tor-browser-linux32-${torbrowser_version}_en-US.tar.xz

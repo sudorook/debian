@@ -610,7 +610,7 @@ function 05-personal {
            "Import GNOME dconf" "Import application dconf" \
            "Import GNOME terminal profiles" "Enable autologin" \
            "Invert brightness" "Disable PulseAudio suspend" "Disable 802.11n" \
-           "Add scripts" "Select default kernel")
+           "Add scripts")
   select option in "${options[@]}"; do
     case $option in
       "Back")
@@ -685,10 +685,6 @@ function 05-personal {
         ;;
       "Add scripts")
         install_scripts
-        show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
-        ;;
-      "Select default kernel")
-        select_default_kernel
         show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
         ;;
       *)

@@ -4,6 +4,7 @@ checkstyle
 clang
 clang-format
 clang-tidy
+clang-tools
 cmake
 cppcheck
 csstidy
@@ -24,6 +25,7 @@ git-svn
 gnuplot
 golang
 graphviz
+grunt
 gulp
 hdf5-tools
 hugo
@@ -41,7 +43,6 @@ libimage-exiftool-perl
 libjs-mathjax
 node-grunt-cli
 nodejs
-nodejs-legacy
 npm
 openblas
 pandoc
@@ -49,6 +50,7 @@ phantomjs
 postgresql
 python3-biopython
 python3-bs4
+python3-flake8
 python3-h5py
 python3-matplotlib
 python3-numpy
@@ -62,20 +64,23 @@ python3-seaborn
 python3-sklearn
 python3-sklearn-pandas
 python3-urllib3
-python-flake8
-python-scrapy
 r-base
+r-cran-data.table
+r-cran-devtols
 r-cran-dplyr
 r-cran-expm
 r-cran-ggplot2
+r-cran-glmnet
 r-cran-glpk
 r-cran-hdf5
 r-cran-igraph
+r-cran-irkernel
 r-cran-knitr
 r-cran-mass
 r-cran-mvtnorm
 r-cran-optparse
 r-cran-plyr
+r-cran-quadprog
 r-cran-rcurl
 r-cran-readr
 r-cran-reshape2

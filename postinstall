@@ -135,6 +135,8 @@ function main {
           enable_autologin
           invert_brightness
           disable_pulseaudio_suspend
+          disable_11n
+          install_scripts
 
           show_success "Everything installed."
         fi

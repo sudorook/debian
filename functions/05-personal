@@ -318,6 +318,26 @@ function disable_pulseaudio_suspend {
   fi
 }
 
+iwlwificonf="/etc/modprobe.d/iwlwifi.conf"
+function disable_11n {
+  show_header "Disabling 802.11n networking in iwlwifi."
+  if ! lsmod | grep ^iwlwifi 2>&1 >/dev/null; then
+    show_warning "iwlwifi kernel module not loaded. Exiting."
+  else
+    if ! [ "$(ls -A /etc/modprobe.d/)" ]; then
+      sudo sh -c "echo 'options iwlwifi 11n_disable=1' >> ${iwlwificonf}"
+    else
+      if ! find /etc/modprobe.d/ -type f \
+           -exec grep "^options iwlwifi .*11n_disable=1.*" {} + 2>&1 >/dev/null; then
+        sudo sh -c "echo 'options iwlwifi 11n_disable=1' >> ${iwlwificonf}"
+      else
+        show_info "11n_disable=1 flag is already set."
+      fi
+    fi
+    show_success "802.11n networking disabled in ${iwlwificonf}."
+  fi
+}
+
 autostartdir="${HOME}/.config/autostart"
 scriptdir="${HOME}/.scripts"
 batterydaemon="${dir}/daemons/battery.desktop"
@@ -589,7 +609,8 @@ function 05-personal {
            "Select desktop theme" "Set dark GTK" "Import Cinnamon dconf" \
            "Import GNOME dconf" "Import application dconf" \
            "Import GNOME terminal profiles" "Enable autologin" \
-           "Invert brightness" "Disable PulseAudio suspend" "Add scripts")
+           "Invert brightness" "Disable PulseAudio suspend" "Disable 802.11n" \
+           "Add scripts" "Select default kernel")
   select option in "${options[@]}"; do
     case $option in
       "Back")
@@ -609,6 +630,9 @@ function 05-personal {
         enable_autologin
         invert_brightness
         disable_pulseaudio_suspend
+        disable_11n
+        install_scripts
+        set_default_kernel
         show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
         ;;
       "Select system fonts")
@@ -655,8 +679,16 @@ function 05-personal {
         disable_pulseaudio_suspend
         show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
         ;;
+      "Disable 802.11n")
+        disable_11n
+        show_info "Main\n ${endbranch} Network (Hit ENTER to see options again.)"
+        ;;
       "Add scripts")
         install_scripts
+        show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
+        ;;
+      "Select default kernel")
+        select_default_kernel
         show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
         ;;
       *)

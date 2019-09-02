@@ -19,7 +19,6 @@ fonts-mathjax-extras
 gcc
 gdb
 git
-gitg
 gitk
 git-svn
 gnuplot

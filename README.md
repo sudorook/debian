@@ -125,7 +125,7 @@ Automatically install (without prompting) packages and configs.
 8) Install Virt-Manager and tools for using KVM virtualization.
 
 9) Install packages for Linux guests to enable host-to-guest sharing and
-    adjustable display resolution.
+   adjustable display resolution.
 
 10) Install applications for playing music (`mpd`, `ncmcpp`, `clementine`),
     computing replaygain (`bs1770gain`), and using Pandora (`pianobar`).
@@ -171,17 +171,18 @@ Automatically install (without prompting) packages and configs.
    for Thunderbird.
 
 10) Install [timed backgrounds](https://github.com/sudorook/timed-backgrounds)
-   where transitions from day to night match sunrise/sunset times.
+    where transitions from day to night match sunrise/sunset times.
 
 ### 9) Personalization
 ```
-1) Back                              8) Import GNOME dconf
-2) All                               9) Import application dconf
-3) Select system font               10) Import GNOME terminal profiles
-4) Select icon theme                11) Enable autologin
-5) Select desktop theme             12) Invert brightness
-6) Set dark GTK                     13) Disable PulseAudio suspend
-7) Import Cinnamon dconf            14) Add scripts
+1) Back                              9) Import application dconf
+2) All                              10) Import GNOME terminal profiles
+3) Select system font               11) Enable autologin
+4) Select icon theme                12) Invert brightness
+5) Select desktop theme             13) Disable PulseAudio suspend
+6) Set dark GTK                     14) Disable 802.11n
+7) Import Cinnamon dconf            15) Add scripts
+8) Import GNOME dconf
 ```
 
 3) Select the system font. (Noto or Roboto)
@@ -206,4 +207,7 @@ Automatically install (without prompting) packages and configs.
 
 13) Disable PulseAudio suspend (suspend can sometimes cause weird buzzing).
 
-14) Download and install [general utility scripts](https://github.com/sudorook/misc-scripts).
+14) Disable 802.11n networking in iwlwifi. May help speed up poor 802.11ac
+    connections.
+
+15) Download and install [general utility scripts](https://github.com/sudorook/misc-scripts).

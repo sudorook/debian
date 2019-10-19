@@ -42,7 +42,6 @@ pylint
 libglpk-dev
 libimage-exiftool-perl
 libjs-mathjax
-node-grunt-cli
 nodejs
 npm
 openblas

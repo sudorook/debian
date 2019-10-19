@@ -13,6 +13,7 @@ npm
 parallel
 qt4-linguist-tools
 qt4-qmake
+qt5ct
 qt5-default
 qt5-qmake
 qt5-style-plugins

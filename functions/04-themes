@@ -73,9 +73,9 @@ function install_plata_gtk {
   show_header "Downloading, building, and installing the Plata GTK theme."
   autotools_options=""
   if ! pacman -Qi gnome-shell > /dev/null 2>&1; then
-    autotools_options=${autotools_options}"--disable-gnome "
+    autotools_options=${autotools_options}"--disable-gnome --disable-mate "
   elif ! pacman -Qi cinnamon > /dev/null 2>&1; then
-    autotools_options=${autotools_options}"--disable-cinnamon "
+    autotools_options=${autotools_options}"--disable-cinnamon --disable-mate "
   fi
   git clone -b tweak --depth 1 \
     https://gitlab.com/sudorook/plata-theme plata-theme

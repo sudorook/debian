@@ -34,16 +34,16 @@ srclist="/etc/apt/sources.list"
 function check_debian_release {
   show_header "Checking currently set Debian release."
   release=$(lsb_release -sc)
-  if ! [[ "${release}" == "stretch" ]] && \
+  if ! [[ "${release}" == "bullseye" ]] && \
      ! [[ "${release}" == "buster" ]] && \
      ! [[ "${release}" == "sid" ]]; then
     show_warning "Currently running ${release}"
-    read -r -p $'\033[1;34mSwitch to stretch? (y/N) \033[0m' response
+    read -r -p $'\033[1;34mSwitch to buster? (y/N) \033[0m' response
     if [[ "${response}" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
       echo "Updating sources.list."
       sudo sed -i "/deb cdrom/d" ${srclist}
       sudo sed -i "/# *$/d" ${srclist}
-      sudo sed -i "s/${release}/stretch/g" ${srclist}
+      sudo sed -i "s/${release}/buster/g" ${srclist}
       sudo sh -c "apt-get update && \
         apt-get -y upgrade && \
         apt-get -y dist-upgrade \

@@ -1,7 +1,7 @@
 # Debian Post-Installation
 
-This is a set of scripts for running post-installation tasks for Debian 9
-(Stretch), 10 (Buster), or Unstable (sid). Works best if the Cinnamon or GNOME
+This is a set of scripts for running post-installation tasks for Debian 10
+(Buster), 11 (Bullseye), or Unstable (sid). Works best if the Cinnamon or GNOME
 desktop environments are already installed.
 
 **Note:** Some Ubuntu packages have different names, so this script may not
@@ -51,7 +51,7 @@ Automatically install (without prompting) packages and configs.
 
 7) Updates system packages.
 
-8) Upgrade the Debian release (e.g., Stretch -> Buster).
+8) Upgrade the Debian release (e.g., Buster -> Bullseye).
 
 9) Enable sudo insults for incorrect login attempts via `/etc/sudoers`. Pipes
    to `visudo` via `tee`, so it's safe.

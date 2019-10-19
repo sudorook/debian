@@ -37,6 +37,8 @@ jupyter-nbconvert
 jupyter-nbformat
 jupyter-notebook
 libboost-dev
+black
+pylint
 libglpk-dev
 libimage-exiftool-perl
 libjs-mathjax
@@ -49,7 +51,6 @@ phantomjs
 postgresql
 python3-biopython
 python3-bs4
-python3-flake8
 python3-h5py
 python3-matplotlib
 python3-numpy

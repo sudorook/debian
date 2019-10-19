@@ -1,5 +1,10 @@
+debian-reference-common
+hdate-applet
 aisleriot
 anthy
+aspell
+xterm
+im-config
 fcitx
 fcitx-bin
 fcitx-frontend-gtk2

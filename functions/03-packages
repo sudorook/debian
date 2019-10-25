@@ -203,8 +203,8 @@ function install_torbrowser {
     gpg --auto-key-locate nodefault,wkd --locate-keys torbrowser@torproject.org
 
     torbrowser_version=$(curl https://www.torproject.org/download/ | \
-                         sed -n 's,^ \+<a class="downloadLink" href="https://www.torproject.org/dist/torbrowser/\([0-9\.]\+\)/tor-browser-linux.*">,\1,p')
-    torbrowser_url=https://dist.torproject.org/torbrowser
+                         sed -n 's,^ \+<a class="downloadLink" href="/dist/torbrowser/\([0-9\.]\+\)/tor-browser-linux.*">,\1,p')
+    torbrowser_url=https://www.torproject.org/dist/torbrowser
     arch=`uname -m`
     if [ ${arch:(-2)} = "86" ]; then
       torbrowser_package=tor-browser-linux32-${torbrowser_version}_en-US.tar.xz

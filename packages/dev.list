@@ -42,6 +42,7 @@ pylint
 libglpk-dev
 libimage-exiftool-perl
 libjs-mathjax
+libsparsehash-dev
 nodejs
 npm
 openblas

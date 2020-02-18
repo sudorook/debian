@@ -18,6 +18,7 @@ function install_theme_deps {
 
 function install_arc_gtk {
   show_header "Downloading, building, and installing the Arc GTK theme."
+  rm -rf arc-theme
   git clone -b tweak --depth 1 \
     https://github.com/sudorook/arc-theme arc-theme
   cd arc-theme
@@ -38,6 +39,7 @@ function install_adapta_gtk {
   elif ! dpkg -s cinnamon > /dev/null 2>&1; then
     autotools_options=${autotools_options}"--disable-cinnamon "
   fi
+  rm -rf adapta-gtk-theme
   git clone -b tweak --depth 1 \
     https://github.com/sudorook/adapta-gtk-theme adapta-gtk-theme
   cd adapta-gtk-theme
@@ -69,6 +71,7 @@ function install_plata_gtk {
   elif ! pacman -Qi cinnamon > /dev/null 2>&1; then
     autotools_options=${autotools_options}"--disable-cinnamon --disable-mate "
   fi
+  rm -rf plata-theme
   git clone -b tweak --depth 1 \
     https://gitlab.com/sudorook/plata-theme plata-theme
   cd plata-theme

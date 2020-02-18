@@ -54,7 +54,7 @@ alias grep='grep --color=auto'
 alias diff='diff --color=auto'
 alias happymake="make -j`nproc` && sudo make install"
 alias superupgrade="sudo sh -c 'apt update && apt -y full-upgrade && apt -y autoremove'"
-alias megapurge="sudo sh -c 'apt dist-clean && apt clean'"
+alias megapurge="sudo sh -c 'apt -y autoclean && apt -y purge && apt -y clean'"
 
 # list directory contents
 alias ls='ls --color=auto'

@@ -64,6 +64,7 @@ python3-seaborn
 python3-sklearn
 python3-sklearn-pandas
 python3-urllib3
+rake
 r-base
 r-cran-data.table
 r-cran-devtols

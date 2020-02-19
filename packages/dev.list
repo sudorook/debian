@@ -37,14 +37,16 @@ jupyter-core
 jupyter-nbconvert
 jupyter-nbformat
 jupyter-notebook
+libarmadillo-dev
 libboost-dev
+libsuperlu-dev
+libopenblas-dev
 libglpk-dev
 libimage-exiftool-perl
 libjs-mathjax
 libsparsehash-dev
 nodejs
 npm
-openblas
 pandoc
 phantomjs
 postgresql
@@ -62,7 +64,6 @@ python3-scipy
 python3-scrapy
 python3-seaborn
 python3-sklearn
-python3-sklearn-pandas
 python3-urllib3
 rake
 r-base

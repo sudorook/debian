@@ -253,6 +253,9 @@ function install_vim {
   mkdir -p ${vimpack}
 
   show_info "Configuring active vim addons."
+  # NOTE: DO NOT INSTALL AIRLINE FROM HERE!!!
+  # It will be loaded automatically --- using vim-addons here will cause it to
+  # be loaded twice.
   vim-addons install \
     align alternate ctrlp detectindent doxygen-toolkit fugitive \
     nerd-commenter pathogen surround syntastic tabular latex-suite \

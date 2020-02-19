@@ -6,8 +6,11 @@ vim-airline
 vim-autopep8
 vim-ctrlp
 vim-fugitive
+vim-julia
+vim-lastplace
 vim-latexsuite
 vim-pathogen
+vim-puppet
 vim-python-jedi
 vim-scripts
 vim-snippets

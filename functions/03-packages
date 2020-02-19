@@ -64,11 +64,6 @@ function install_dev {
   show_info "Installing vim packages."
   mkdir -p "${vimpack}"
 
-  if [[ -f ${vimpack}/julia-vim ]]; then
-    show_info "Installing julia-vim for syntax highlighting."
-    git clone https://github.com/JuliaEditorSupport/julia-vim.git ${vimpack}/julia-vim
-  fi
-
   if [[ -f ${vimpack}/Nvim-R ]]; then
     show_info "Installing Nvim-R."
     git clone https://github.com/jalvesaq/Nvim-R ${vimpack}/Nvim-R
@@ -255,14 +250,13 @@ function install_vim {
   cp -f ${vimrc} ${HOME}/.vimrc
   show_success "vimrc installed."
 
-  show_info "Installing vim-airline."
   mkdir -p ${vimpack}
-  git clone https://github.com/vim-airline/vim-airline ${vimpack}/vim-airline
 
   show_info "Configuring active vim addons."
   vim-addons install \
-    align alternate ctrlp detectindent doxygen-toolkit fugitive nerd-commenter \
-    pathogen surround syntastic tabular latex-suite youcompleteme taglist
+    align alternate ctrlp detectindent doxygen-toolkit fugitive \
+    nerd-commenter pathogen surround syntastic tabular latex-suite \
+    youcompleteme taglist julia ultisnips xmledit lastplace
 
   show_info "Setting Vim as default tool for git diffs and merges."
   # 00-check makes sure the git is installed, so no need for checks here.

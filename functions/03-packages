@@ -155,8 +155,6 @@ function install_music {
   mkdir -p "${mpddir}"
   mkdir -p "${mpddir}/playlists"
   cp -f "${mpdconf}" "${mpddir}/mpd.conf"
-  systemctl enable --user mpd
-  systemctl start --user mpd
 
   show_info "Copying ncmpcpp config."
   mkdir -p "${ncmpcppdir}"

@@ -1,10 +1,7 @@
-debian-reference-common
-hdate-applet
 aisleriot
 anthy
 aspell
-xterm
-im-config
+debian-reference-common
 fcitx
 fcitx-bin
 fcitx-frontend-gtk2
@@ -25,9 +22,11 @@ gnome-tetravex
 gnote
 goldendict
 hamster-applet
+hdate-applet
 hexchat
 hitori
 iagno
+im-config
 kasumi
 khmerconverter
 lightsoff
@@ -46,3 +45,4 @@ tali
 uim
 xboard
 xiterm+thai
+xterm

@@ -39,12 +39,12 @@ jupyter-nbformat
 jupyter-notebook
 libarmadillo-dev
 libboost-dev
-libsuperlu-dev
-libopenblas-dev
 libglpk-dev
 libimage-exiftool-perl
 libjs-mathjax
+libopenblas-dev
 libsparsehash-dev
+libsuperlu-dev
 nodejs
 npm
 pandoc

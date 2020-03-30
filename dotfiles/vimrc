@@ -52,7 +52,7 @@ set cm=blowfish
 :autocmd BufReadPost * :DetectIndent
 
 "markdown/tex/text
-au FileType bib,markdown,mkd,rmd,Rmd,tex,text,textile setlocal spell
+au FileType bib,markdown,mkd,rmd,Rmd,rst,tex,text,textile setlocal spell
 
 "vim-taglist
 let Tlist_Compact_Format = 1

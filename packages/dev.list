@@ -38,10 +38,13 @@ jupyter-nbconvert
 jupyter-nbformat
 jupyter-notebook
 libarmadillo-dev
+libarpack++2-dev
+libarpack2-dev
 libboost-dev
 libglpk-dev
 libimage-exiftool-perl
 libjs-mathjax
+liblapack-dev
 libopenblas-dev
 libsparsehash-dev
 libsuperlu-dev

@@ -1,4 +1,3 @@
-libxml2-dev
 automake
 black
 bundler
@@ -46,6 +45,7 @@ libjs-mathjax
 libopenblas-dev
 libsparsehash-dev
 libsuperlu-dev
+libxml2-dev
 nodejs
 npm
 pandoc

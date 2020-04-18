@@ -1,3 +1,4 @@
+libxml2-dev
 automake
 black
 bundler
@@ -67,8 +68,10 @@ python3-sklearn
 python3-urllib3
 rake
 r-base
+r-cran-biocmanager
+r-cran-colorbrewer
 r-cran-data.table
-r-cran-devtols
+r-cran-devtools
 r-cran-dplyr
 r-cran-expm
 r-cran-ggplot2
@@ -83,13 +86,17 @@ r-cran-mvtnorm
 r-cran-optparse
 r-cran-plyr
 r-cran-quadprog
+r-cran-rcpp
+r-cran-rcpparmdillo
 r-cran-rcurl
 r-cran-readr
 r-cran-reshape2
 r-cran-rmarkdown
 r-cran-rvest
 r-cran-stringr
+r-cran-tibble
 r-cran-tidyr
+r-cran-vegan
 rubocop
 ruby
 ruby-aruba

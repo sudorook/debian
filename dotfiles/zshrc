@@ -35,6 +35,10 @@ command -v R >/dev/null 2>&1 && {
   export R_LIBS_USER="${HOME}/.R/$(R --version | \
                                    sed -n "s/^R version \([0-9\.]*\) .*/\1/p")"
   alias R='R --no-save '
+  if [ -d /usr/share/mathjax ]
+  then
+    export RMARKDOWN_MATHJAX_PATH=/usr/share/mathjax
+  fi
 }
 
 # custom scripts

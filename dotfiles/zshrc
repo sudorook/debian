@@ -14,33 +14,34 @@ export VISUAL="$EDITOR"
 
 # go
 command -v go >/dev/null 2>&1 && {
-  export GOPATH=~/.go
-  export PATH="$PATH:$GOPATH/bin"
+  export GOPATH="${HOME}/.go"
+  export PATH="${PATH}:${GOPATH}/bin"
 }
 
 # ruby
 command -v ruby >/dev/null 2>&1 && {
-  export PATH="$(ruby -e 'print Gem.user_dir')/bin:$PATH"
-  export GEM_HOME=$(ruby -e 'print Gem.user_dir')
+  export PATH="$(ruby -e 'print Gem.user_dir')/bin:${PATH}"
+  export GEM_HOME="$(ruby -e 'print Gem.user_dir')"
 }
 
 # npm
 command -v npm >/dev/null 2>&1 && {
-  export PATH="$PATH:$HOME/.npm/bin"
-  export NPM_CONFIG_PREFIX=$HOME/.npm
+  export PATH="${PATH}:${HOME}/.npm/bin"
+  export NPM_CONFIG_PREFIX="${HOME}/.npm"
 }
 
 # R
 command -v R >/dev/null 2>&1 && {
-  export R_LIBS_USER=$HOME/.R/$(R --version | sed -n "s/^R version \([0-9\.]*\) .*/\1/p")
+  export R_LIBS_USER="${HOME}/.R/$(R --version | \
+                                   sed -n "s/^R version \([0-9\.]*\) .*/\1/p")"
   alias R='R --no-save '
 }
 
 # custom scripts
-export PATH=$PATH:$HOME/.scripts
+export PATH="${PATH}:${HOME}/.scripts"
 
-# add local bin to path
-export PATH=$PATH:$HOME/.local/bin
+# local binaries
+export PATH="${HOME}/.local/bin:${PATH}"
 
 
 #

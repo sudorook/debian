@@ -59,6 +59,7 @@ python3-biopython
 python3-bs4
 python3-h5py
 python3-matplotlib
+python3-memory-profiler
 python3-numpy
 python3-pandas
 python3-pycurl

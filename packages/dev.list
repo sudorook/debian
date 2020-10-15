@@ -10,7 +10,7 @@ cmake
 cppcheck
 csstidy
 cucumber
-cython
+cython3
 doxygen
 exuberant-ctags
 flatpak
@@ -52,7 +52,6 @@ libxml2-dev
 nodejs
 npm
 pandoc
-phantomjs
 pylint
 python3-biopython
 python3-bs4

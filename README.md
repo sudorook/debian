@@ -103,12 +103,12 @@ Automatically install (without prompting) packages and configs.
 
 ### 7) Applications
 ```
-1) Back                    7) Emulators             13) Vim
-2) All                     8) KVM (host)            14) VirtualBox (host)
-3) Android tools           9) KVM (guest)           15) VirtualBox (guest)
-4) General applications   10) Music                 16) Wine
-5) Codecs                 11) TeX Live
-6) Development            12) Tor browser
+1) Back                    7) Extra applications    13) TeX Live
+2) All                     8) Emulators             14) Tor browser
+3) Android tools           9) KVM (host)            15) Vim
+4) General applications   10) KVM (guest)           16) VirtualBox (host)
+5) Codecs                 11) Messaging             17) VirtualBox (guest)
+6) Development            12) Music                 18) Wine
 ```
 
 3) Install packages in [android.list](packages/android.list) for accessing
@@ -120,28 +120,32 @@ Automatically install (without prompting) packages and configs.
 
 6) Install packages for programming and software development.
 
-7) Install game system emulators.
+7) Install extra, less used applications from [extra.list](packages/extra.list).
 
-8) Install Virt-Manager and tools for using KVM virtualization.
+8) Install game system emulators.
 
-9) Install packages for Linux guests to enable host-to-guest sharing and
-   adjustable display resolution.
+9) Install Virt-Manager and tools for using KVM virtualization.
 
-10) Install applications for playing music (`mpd`, `ncmcpp`, `clementine`),
+10) Install packages for Linux guests to enable host-to-guest sharing and
+    adjustable display resolution.
+
+11) Install applications for playing music (`mpd`, `ncmcpp`, `clementine`),
     computing replaygain (`bs1770gain`), and using Pandora (`pianobar`).
 
-11) Install TeX libraries and Font Awesome icons.
+12) Install IRC, email, and other messaging clients.
 
-12) Download and install the Tor browser. Edits the application launcher icon
+13) Install TeX libraries and Font Awesome icons.
+
+14) Download and install the Tor browser. Edits the application launcher icon
     to look for "browser-tor".
 
-13) Install `vim` and `vim-plugins` and then set the user vimrc.
+15) Install `vim` and `vim-plugins` and then set the user vimrc.
 
-14) Install VirtualBox and kernel modules (dkms) for running it (host).
+16) Install VirtualBox and kernel modules (dkms) for running it (host).
 
-15) Install kernel modules (dkms) and tools for VirtualBox guests.
+17) Install kernel modules (dkms) and tools for VirtualBox guests.
 
-16) Install Wine not-emulator, along with the Mono and browser and some audio
+18) Install Wine not-emulator, along with the Mono and browser and some audio
     libraries.
 
 ### 8) Themes

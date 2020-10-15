@@ -1,3 +1,5 @@
 # Text editor backups
 *~
-*.swp
+*.sw[a-p]
+
+TODO.md

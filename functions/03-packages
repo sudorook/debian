@@ -70,6 +70,14 @@ function install_dev {
   fi
 }
 
+extra="${dir}/packages/extra.list"
+function install_extra {
+  show_header "Installing extra desktop applications."
+  check_installed $(cat ${extra})
+  check_fail
+  show_success "Extra applications installed."
+}
+
 games="${dir}/packages/games.list"
 function install_games {
   show_header "Installing game emulators."
@@ -321,9 +329,9 @@ function 03-packages {
   show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
 
   options=("Back" "All" "Android tools" "General applications" "Codecs" \
-           "Development" "Emulators" "KVM (host)" "KVM (guest)" "Messaging" \
-           "Music" "TeX Live" "Tor browser" "Vim" "VirtualBox (host)" \
-           "VirtualBox (guest)" "Wine")
+           "Development" "Extra applications" "Emulators" "KVM (host)" \
+           "KVM (guest)" "Messaging" "Music" "TeX Live" "Tor browser" "Vim" \
+           "VirtualBox (host)" "VirtualBox (guest)" "Wine")
   select option in "${options[@]}"; do
     case $option in
       "Back")
@@ -334,6 +342,7 @@ function 03-packages {
         install_apps
         install_codecs
         install_dev
+        install_extra
         install_games
         install_kvm
         install_kvm_guest
@@ -361,6 +370,10 @@ function 03-packages {
         ;;
       "Development")
         install_dev
+        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        ;;
+      "Extra applications")
+        install_extra
         show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
         ;;
       "Emulators")

@@ -57,8 +57,6 @@ function install_laptop {
   show_info "Enabling and starting tlp systemd units."
   sudo systemctl enable tlp.service
   sudo systemctl start tlp.service
-  sudo systemctl enable tlp-sleep.service
-  sudo systemctl start tlp-sleep.service
   show_success "tlp enabled."
 }
 

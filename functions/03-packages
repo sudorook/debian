@@ -133,11 +133,13 @@ function install_messaging {
 
   show_info "Installing WeeChat plugin for Slack."
   mkdir -p "${weechatdir}/python/autoload"
-  if [ -d "${weechatdir}/wee-slack" ]; then
+  if [ -d "${weechatdir}/plugins/wee-slack" ]; then
     show_info "WeeChat plugin already installed."
   else
-    git clone https://github.com/wee-slack/wee-slack/ "${weechatdir}/wee-slack"
-    ln -sf "${weechatdir}/wee-slack/wee_slack.py" "${weechatdir}/python/autoload/"
+    git clone https://github.com/wee-slack/wee-slack.git \
+      "${weechatdir}/plugins/wee-slack"
+    ln -sf "${weechatdir}/plugins/wee-slack/wee_slack.py" \
+      "${weechatdir}/python/autoload/"
   fi
   show_success "wee-slack plugin installed."
 }

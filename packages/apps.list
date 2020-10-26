@@ -1,6 +1,10 @@
 bleachbit
+dconf-cli
 dconf-editor
+eog
+evince
 ffmpeg
+gimp
 gnome-disk-utility
 gnome-power-manager
 gparted
@@ -9,4 +13,5 @@ keepassxc
 libreoffice-base
 mpv
 syncthing
+syncthing-gtk
 transmission-gtk

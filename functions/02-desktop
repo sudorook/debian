@@ -17,6 +17,7 @@ function install_gnome {
 }
 
 cinnamon="${dir}/packages/cinnamon.list"
+lightdmconf="/etc/lightdm/lightdm.conf"
 redshiftconf="${dir}/configs/redshift.conf"
 function install_cinnamon {
   show_header "Setting up cinnamon desktop environment."
@@ -28,8 +29,11 @@ function install_cinnamon {
   if ! test ${DESKTOP_SESSION+x}; then
     export DESKTOP_SESSION="cinnamon"
   fi
-  mkdir -p ${HOME}/.config
-  cp -f ${redshiftconf} ${HOME}/.config/
+
+  show_info "Setting up LightDM greeter."
+  sudo sed -i \
+    "s/^#greeter-hide-users=false/greeter-hide-users=false/g" \
+    "${lightdmconf}"
   show_info "Done."
 }
 

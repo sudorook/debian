@@ -21,5 +21,6 @@ pv
 rsync
 screen
 squashfs-tools
+s-tui
 unrar-free
 zip

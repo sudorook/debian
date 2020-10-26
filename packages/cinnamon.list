@@ -1,2 +1,7 @@
 cinnamon
+gnome-terminal
+lightdm
+lightdm-gtk-greeter
+network-manager
 redshift-gtk
+xdg-user-dirs-gtk

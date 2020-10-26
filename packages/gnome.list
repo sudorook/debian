@@ -1,3 +1,6 @@
 chrome-gnome-shell
+gdm
 gnome-core
 gnome-tweak-tool
+network-manager
+xdg-user-dirs-gtk

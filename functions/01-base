@@ -227,12 +227,24 @@ function 01-base {
   show_question "Base: what do you want to install?"
   show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
 
-  options=("Back" "Base packages" "Purge packages" "Firmware" "Enable contrib"
-           "Enable non-free" "Updates" "Upgrade Debian release" "Sudo insults"
-           "Disable system beep")
+  options=("Back" "All" "Base packages" "Purge packages" "Firmware" "Updates" \
+           "Enable contrib" "Enable non-free" "Upgrade Debian release" \
+           "Sudo insults" "Disable system beep")
   select option in "${options[@]}"; do
     case $option in
       "Back")
+        break
+        ;;
+      "All")
+        purge_packages
+        update_packages
+        install_base
+        install_firmware
+        enable_contrib_repos
+        enable_nonfree_repos
+        enable_sudo_insults
+        disable_beep
+        show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
         break
         ;;
       "Base packages")
@@ -247,16 +259,16 @@ function 01-base {
         install_firmware
         show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
         ;;
+      "Updates")
+        update_packages
+        show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
+        ;;
       "Enable contrib")
         enable_contrib_repos
         show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
         ;;
       "Enable non-free")
         enable_nonfree_repos
-        show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
-        ;;
-      "Updates")
-        update_packages
         show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
         ;;
       "Upgrade Debian release")

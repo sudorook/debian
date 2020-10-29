@@ -1,2 +1,7 @@
+amd64-microcode
+bluez-firmware
 firmware-iwlwifi
 firmware-linux
+firmware-linux-free
+firmware-linux-nonfree
+intel-microcode

@@ -17,6 +17,7 @@ exuberant-ctags
 flatpak
 flatpak-builder
 flawfinder
+fonts-mathjax
 fonts-mathjax-extras
 gcc
 gdb

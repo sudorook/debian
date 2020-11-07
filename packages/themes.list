@@ -1,5 +1,5 @@
 automake
-autotools
+autotools-dev
 curl
 gtk2-engines-murrine
 gulp

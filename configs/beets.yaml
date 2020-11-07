@@ -7,7 +7,8 @@ plugins: fetchart embedart mpdupdate replaygain types smartplaylist lastgenre
 fetchart:
   auto: true
   cautious: true
-  minwidth: 750
+  minwidth: 720
+  maxwidth: 1440
   enforce_ratio: yes
   sources: filesystem coverart amazon albumart wikipedia google fanarttv
 

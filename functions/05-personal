@@ -628,7 +628,6 @@ function 05-personal {
         disable_pulseaudio_suspend
         disable_11n
         install_scripts
-        set_default_kernel
         show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
         ;;
       "Select system fonts")

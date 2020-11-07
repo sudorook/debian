@@ -1,11 +1,5 @@
-avahi-autoipd
-avahi-daemon
-avahi-discover
-gvfs
-libnss-mdns
+iwd
 network-manager-openvpn
 network-manager-openvpn-gnome
 openssh-server
-samba
-ufw
 wireless-tools

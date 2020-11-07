@@ -1,0 +1,6 @@
+avahi-autoipd
+avahi-daemon
+avahi-discover
+gvfs
+libnss-mdns
+samba

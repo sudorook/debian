@@ -1,9 +1,13 @@
+fonts-cantarell
 fonts-dejavu
 fonts-noto
 fonts-noto-cjk
 fonts-noto-cjk-extra
+fonts-noto-color-emoji
 fonts-noto-extra
+fonts-noto-hinted
 fonts-noto-mono
+fonts-noto-unhinted
 fonts-roboto
 fonts-ubuntu
 fonts-ubuntu-console

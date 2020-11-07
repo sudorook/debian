@@ -1,7 +1,10 @@
 apt-transport-https
+bash-completion
 curl
-debian-faq
-debian-reference-en
 gdebi
+linux-base
+lsb-release
+man-db
+manpages
+memtest86+
 netselect-apt
-pv

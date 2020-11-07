@@ -4,9 +4,11 @@ dconf-editor
 eog
 evince
 ffmpeg
-gimp
+firefox-esr
 gnome-disk-utility
 gnome-power-manager
+gnome-screenshot
+gnome-terminal
 gparted
 gufw
 keepassxc

@@ -1,4 +1,5 @@
 automake
+autotools-dev
 black
 bundler
 checkstyle
@@ -52,6 +53,7 @@ libxml2-dev
 nodejs
 npm
 pandoc
+pkg-config
 pylint
 python3-biopython
 python3-bs4

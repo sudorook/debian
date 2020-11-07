@@ -8,12 +8,14 @@ login-shell=true
 palette=['rgb(46,52,54)', 'rgb(205,55,44)', 'rgb(24,157,79)', 'rgb(173,156,2)', 'rgb(37,118,197)', 'rgb(173,68,190)', 'rgb(7,165,150)', 'rgb(65,64,64)', 'rgb(114,114,112)', 'rgb(235,106,106)', 'rgb(51,200,112)', 'rgb(216,201,70)', 'rgb(80,158,221)', 'rgb(210,130,224)', 'rgb(29,201,185)', 'rgb(132,128,128)']
 visible-name='Light'
 audible-bell=false
+default-size-columns=82
 
 [org/gnome/terminal/legacy/profiles:/:9332e44f-251d-46e0-9dd0-282f4023d22f]
 login-shell=true
 palette=['rgb(46,52,54)', 'rgb(248,86,75)', 'rgb(32,183,92)', 'rgb(218,187,25)', 'rgb(57,147,219)', 'rgb(204,108,219)', 'rgb(51,190,171)', 'rgb(211,215,207)', 'rgb(178,181,175)', 'rgb(252,118,118)', 'rgb(69,218,129)', 'rgb(236,222,102)', 'rgb(103,177,235)', 'rgb(228,150,241)', 'rgb(124,220,198)', 'rgb(232,232,230)']
 visible-name='Dark'
 audible-bell=false
+default-size-columns=82
 
 [org/gnome/terminal/legacy]
 schema-version=uint32 3

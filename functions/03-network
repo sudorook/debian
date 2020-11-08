@@ -110,7 +110,7 @@ function 03-network {
         install_network
         show_info "Main\n ${endbranch} Network (Hit ENTER to see options again.)"
         ;;
-      "Discovery")
+      "Local discovery")
         install_discovery
         show_info "Main\n ${endbranch} Network (Hit ENTER to see options again.)"
         ;;

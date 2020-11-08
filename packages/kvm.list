@@ -4,6 +4,7 @@ ebtables
 libiscsi-bin
 libvirt-daemon
 netcat-openbsd
+ovmf
 qemu
 qemu-kvm
 virt-manager

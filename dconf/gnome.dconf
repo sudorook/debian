@@ -6,15 +6,14 @@ custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybin
 
 [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0]
 binding='<Primary><Alt>t'
-command='gnome-terminal'
+command='/usr/bin/gnome-terminal'
 name='Launch Terminal'
 
 [org/gnome/shell]
-app-picker-view=uint32 1
-enabled-extensions=['alternate-tab@gnome-shell-extensions.gcampax.github.com', 'user-theme@gnome-shell-extensions.gcampax.github.com', 'places-menu@gnome-shell-extensions.gcampax.github.com', 'native-window-placement@gnome-shell-extensions.gcampax.github.com']
+enabled-extensions=['user-theme@gnome-shell-extensions.gcampax.github.com', 'nohotcorner@azuri.free.fr', 'native-window-placement@gnome-shell-extensions.gcampax.github.com']
 favorite-apps=['firefox.desktop', 'org.gnome.Terminal.desktop', 'org.gnome.Nautilus.desktop']
 
-[org/gnome/shell/overrides]
+[org/gnome/mutter]
 dynamic-workspaces=false
 
 [org/gnome/nautilus/preferences]
@@ -24,11 +23,6 @@ search-filter-time-type='last_modified'
 show-delete-permanently=true
 show-create-link=true
 
-[org/gnome/nautilus/desktop]
-home-icon-visible=false
-volumes-visible=false
-trash-icon-visible=false
-
 [org/gnome/desktop/media-handling]
 automount-open=false
 automount=false
@@ -37,15 +31,22 @@ autorun-never=true
 [org/gnome/desktop/peripherals/touchpad]
 tap-to-click=true
 
-[org/gnome/desktop/background]
-show-desktop-icons=true
+[org/gnome/desktop/sound]
+event-sounds=true
+
+[org/gnome/desktop/privacy]
+disable-camera=true
+disable-microphone=true
+
+[org/gnome/desktop/wm/keybindings]
+switch-applications=@as []
+switch-applications-backward=@as []
+switch-windows=['<Alt>Tab']
+switch-windows-backward=['<Shift><Alt>Tab']
 
 [org/gnome/desktop/wm/preferences]
 audible-bell=false
 button-layout='appmenu:minimize,maximize,close'
 
 [org/gnome/desktop/interface]
-clock-show-date=true
 clock-format='12h'
-gtk-im-module='gtk-im-context-simple'
-toolkit-accessibility=false

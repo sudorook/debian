@@ -10,7 +10,7 @@ command='/usr/bin/gnome-terminal'
 name='Launch Terminal'
 
 [org/gnome/shell]
-enabled-extensions=['user-theme@gnome-shell-extensions.gcampax.github.com', 'nohotcorner@azuri.free.fr', 'native-window-placement@gnome-shell-extensions.gcampax.github.com']
+enabled-extensions=['user-theme@gnome-shell-extensions.gcampax.github.com', 'nohotcorner@azuri.free.fr', 'native-window-placement@gnome-shell-extensions.gcampax.github.com', 'ding@rastersoft.com']
 favorite-apps=['firefox.desktop', 'org.gnome.Terminal.desktop', 'org.gnome.Nautilus.desktop']
 
 [org/gnome/mutter]

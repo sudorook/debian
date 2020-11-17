@@ -1,9 +1,11 @@
 [org/cinnamon]
-panels-autohide=['1:intel']
-enabled-applets=['panel1:right:1:systray@cinnamon.org:0', 'panel1:left:0:menu@cinnamon.org:1', 'panel1:left:2:panel-launchers@cinnamon.org:3', 'panel1:left:3:window-list@cinnamon.org:4', 'panel1:right:2:notifications@cinnamon.org:6', 'panel1:right:3:removable-drives@cinnamon.org:7', 'panel1:right:5:user@cinnamon.org:8', 'panel1:right:6:network@cinnamon.org:9', 'panel1:right:8:power@cinnamon.org:11', 'panel1:right:9:calendar@cinnamon.org:12', 'panel1:right:7:sound@cinnamon.org:13', 'panel1:right:4:on-screen-keyboard@cinnamon.org:14', 'panel1:right:10:workspace-switcher@cinnamon.org:15']
-next-applet-id=16
-workspace-expo-view-as-grid=true
+alttab-minimized-aware=true
+enabled-applets=['panel1:left:0:menu@cinnamon.org:0', 'panel1:left:1:grouped-window-list@cinnamon.org:2', 'panel1:right:1:systray@cinnamon.org:3', 'panel1:right:1:xapp-status@cinnamon.org:4', 'panel1:right:3:notifications@cinnamon.org:5', 'panel1:right:4:removable-drives@cinnamon.org:7', 'panel1:right:7:network@cinnamon.org:9', 'panel1:right:8:sound@cinnamon.org:10', 'panel1:right:9:power@cinnamon.org:11', 'panel1:right:10:calendar@cinnamon.org:12', 'panel1:right:5:on-screen-keyboard@cinnamon.org:14', 'panel1:right:11:workspace-switcher@cinnamon.org:15', 'panel1:right:6:user@cinnamon.org:16']
+next-applet-id=18
+panel-zone-icon-sizes='[{"panelId": 1, "left": 0, "center": 0, "right": 16}]'
 favorite-apps=['firefox.desktop', 'thunderbird.desktop', 'org.gnome.Terminal.desktop', 'nemo.desktop', 'cinnamon-settings.desktop']
+panels-autohide=['1:intel']
+workspace-expo-view-as-grid=true
 
 [org/cinnamon/desktop/a11y/applications]
 screen-keyboard-enabled=true
@@ -34,11 +36,9 @@ locate-pointer=true
 
 [org/cinnamon/muffin]
 placement-mode='automatic'
-tile-maximize=true
 workspace-cycle=true
 
 [org/cinnamon/desktop/screensaver]
-ask-for-away-message=false
 lock-delay=uint32 30
 
 [org/cinnamon/desktop/media-handling]
@@ -55,9 +55,6 @@ clock-use-24h=false
 [org/cinnamon/desktop/privacy]
 recent-files-max-age=-1
 remember-recent-files=true
-
-[org/cinnamon/desktop/wm/preferences]
-num-workspaces=4
 
 [org/cinnamon/cinnamon-session]
 quit-delay-toggle=true

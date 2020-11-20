@@ -7,5 +7,7 @@ android-libext4-utils
 android-tools-fsutils
 f2fs-tools
 fastboot
+go-mtpfs
 heimdall-flash
+libmtp9
 mmc-utils

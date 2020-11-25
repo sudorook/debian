@@ -107,6 +107,7 @@ test -f /usr/share/zsh-antigen/antigen.zsh && {
   antigen theme sudorook/fishy-lite themes/fishy
 
   # fish-like syntax highlighting
+  antigen bundle zsh-users/zsh-completions
   antigen bundle zsh-users/zsh-syntax-highlighting
   antigen bundle zsh-users/zsh-autosuggestions
   antigen bundle zsh-users/zsh-history-substring-search

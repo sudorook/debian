@@ -4,6 +4,7 @@ dir="$(dirname "$0")"
 
 base="${dir}/packages/base.list"
 bashrc="${dir}/dotfiles/bashrc"
+bashprofile="${dir}/dotfiles/bash_profile"
 toprc="${dir}/dotfiles/toprc"
 function install_base {
   show_header "Installing base packages and their config files."
@@ -14,6 +15,12 @@ function install_base {
   show_info "Installing toprc."
   cp -f ${toprc} ${HOME}/.toprc
   show_success "Installed toprc."
+
+  if ! [ -f "${HOME}/.bash_profile" ]; then
+    show_info "Installing bash_profile."
+    cp -f "${bashprofile}" "${HOME}/.bash_profile"
+    show_success "Installed bash_profile."
+  fi
 
   show_info "Installing bashrc."
   cp -f ${bashrc} ${HOME}/.bashrc

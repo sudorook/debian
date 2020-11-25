@@ -110,7 +110,7 @@ ruby
 ruby-aruba
 ruby-gherkin
 shellcheck
-sqlite
+sqlite3
 strace
 tesseract-ocr
 tidy

@@ -43,6 +43,7 @@ libarmadillo-dev
 libarpack++2-dev
 libarpack2-dev
 libboost-dev
+libeigen3-dev
 libglpk-dev
 libimage-exiftool-perl
 libjs-mathjax
@@ -94,6 +95,7 @@ r-cran-plyr
 r-cran-quadprog
 r-cran-rcpp
 r-cran-rcpparmadillo
+r-cran-rcppeigen
 r-cran-rcurl
 r-cran-readr
 r-cran-reshape2

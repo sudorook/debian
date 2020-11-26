@@ -23,6 +23,15 @@ function check_user {
   fi
 }
 
+function check_root {
+  if [ ${EUID} -eq 0 ]; then
+    show_info "I am root."
+  else
+    show_error "I need to be root."
+    exit 1
+  fi
+}
+
 function check_fail {
   EXITSTATUS=${1:-}
   if [[ $EXITSTATUS -gt 0 ]]; then

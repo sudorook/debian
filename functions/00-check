@@ -99,6 +99,20 @@ function check_uninstalled {
   done
 }
 
+function install_post_dependencies {
+  show_header "Checking post-installation dependencies."
+  for package in $(cat ${deps}); do
+    if ! dpkg -s "${package}" > /dev/null 2>&1; then
+      show_info "${package} is needed for this script."
+      sudo apt-get install "${package}"
+      check_fail
+      show_success "${package} now installed."
+    else
+      show_success "${package} is already installed."
+    fi
+  done
+}
+
 function install_dependencies {
   show_header "Checking dependencies."
   for package in $(cat $deps); do

@@ -91,7 +91,6 @@ function set_system_font {
         gsettings set org.cinnamon.desktop.wm.preferences titlebar-font "'Noto Sans Medium 10.3'"
       fi
 
-
       if dpkg -s gnome-shell > /dev/null 2>&1; then
         show_info "Setting fonts for GNOME environment."
 
@@ -216,26 +215,26 @@ function set_dark_gtk {
   show_header "Setting global dark theme for gtk applications."
   if grep ^gtk-application-prefer-dark-theme= ${gtksettings} >/dev/null 2>&1; then
     isgtkdark=$(grep ^gtk-application-prefer-dark-theme= ${gtksettings} | cut -d"=" -f2)
-    if test ${isgtkdark}; then
+    if test "${isgtkdark}"; then
       show_info "Desktop is already set to use dark GTK variants."
     else
-      sed -i "s/^gtk-application-prefer-dark-theme=${isgtkdark}$/gtk-application-prefer-dark-theme=1/g" ${gtksettings}
+      sed -i "s/^gtk-application-prefer-dark-theme=${isgtkdark}$/gtk-application-prefer-dark-theme=1/g" "${gtksettings}"
     fi
   else
-    if [ -f ${gtksettings} ]; then
-      echo "" >> ${gtksettings}
+    if [ -f "${gtksettings}" ]; then
+      echo "" >> "${gtksettings}"
     else
-      mkdir -p $(dirname ${gtksettings}) && touch ${gtksettings}
+      mkdir -p $(dirname ${gtksettings}) && touch "${gtksettings}"
     fi
-    echo "[Settings]" >> ${gtksettings}
-    echo "gtk-application-prefer-dark-theme=1" >> ${gtksettings}
+    echo "[Settings]" >> "${gtksettings}"
+    echo "gtk-application-prefer-dark-theme=1" >> "${gtksettings}"
   fi
 }
 
 cinnamondconf="${dir}/dconf/cinnamon.dconf"
 function import_cinnamon_dconf {
   show_header "Importing Cinnamon dconf settings."
-  dconf load / < ${cinnamondconf}
+  dconf load / < "${cinnamondconf}"
   check_fail
   show_success "Cinnamon dconf settings imported."
 }
@@ -243,7 +242,7 @@ function import_cinnamon_dconf {
 gnomedconf="${dir}/dconf/gnome.dconf"
 function import_gnome_dconf {
   show_header "Importing GNOME dconf settings."
-  dconf load / < ${gnomedconf}
+  dconf load / < "${gnomedconf}"
   check_fail
   show_success "GNOME dconf settings imported."
 }
@@ -251,7 +250,7 @@ function import_gnome_dconf {
 appsdconf="${dir}/dconf/apps.dconf"
 function import_apps_dconf {
   show_header "Importing application dconf settings."
-  dconf load / < ${appsdconf}
+  dconf load / < "${appsdconf}"
   check_fail
   show_success "Application dconf settings imported."
 }
@@ -259,7 +258,7 @@ function import_apps_dconf {
 terminaldconf="${dir}/dconf/terminal.dconf"
 function import_terminal_dconf {
   show_header "Importing terminal profiles."
-  dconf load / < ${terminaldconf}
+  dconf load / < "${terminaldconf}"
   check_fail
   show_success "GNOME terminal profiles imported."
 }
@@ -271,8 +270,8 @@ function enable_autologin {
   if dpkg -s gdm > /dev/null 2>&1; then
     show_info "Log in as ${USER} via GDM."
     ! [ -f ${gdmconf} ] && sudo touch ${gdmconf} || true
-    if ! test $(grep ^AutomaticLogin=${USER} ${gdmconf}); then
-      ! [ $(grep '^\[daemon\]' ${gdmconf}) ] && \
+    if ! test "$(grep ^AutomaticLogin=${USER} ${gdmconf})"; then
+      ! [ $(grep '^\[daemon\]' "${gdmconf}") ] && \
         sudo sh -c 'echo "[daemon]" >> /etc/gdm/custom.conf' || true
       sudo sed -i "/^\[daemon\]$/a AutomaticLogin=${USER}" ${gdmconf}
       sudo sed -i "/^AutomaticLogin=/a AutomaticLoginEnable=True" ${gdmconf}
@@ -339,17 +338,17 @@ scriptdir="${HOME}/.scripts"
 batterydaemon="${dir}/daemons/battery.desktop"
 function install_scripts {
   show_header "Installing misc. scripts to the ${HOME}/.scripts folder."
-  if [ -d ${HOME}/.scripts ]; then
-    git -C ${HOME}/.scripts pull
+  if [ -d "${HOME}/.scripts" ]; then
+    git -C "${HOME}/.scripts" pull
   else
-    git clone https://github.com/sudorook/misc-scripts ${scriptdir}
+    git clone https://github.com/sudorook/misc-scripts "${scriptdir}"
   fi
   show_success "Installed."
 
-  # show_info "Setting up battery notifications."
-  # mkdir -p "${autostartdir}"
-  # cat "${batterydaemon}" | sed -e "s,@misc-scripts@,${scriptdir},g" \
-  #   > "${autostartdir}/Battery Watchdog.desktop"
+  show_info "Setting up battery notifications."
+  mkdir -p "${autostartdir}"
+  cat "${batterydaemon}" | sed -e "s,@misc-scripts@,${scriptdir},g" \
+    > "${autostartdir}/Battery Watchdog.desktop"
 }
 
 function select_desktop_theme {
@@ -367,7 +366,7 @@ function select_desktop_theme {
         ;;
       "Adwaita")
         if [ -d /usr/share/themes/Adwaita ] || \
-           [ -d ${HOME}/.themes/Adwaita ]; then
+           [ -d "${HOME}/.themes/Adwaita" ]; then
           gtktheme="Adwaita"
         else
           show_warning "${option} theme is not installed."
@@ -377,7 +376,7 @@ function select_desktop_theme {
         ;;
       "Arc")
         if [ -d /usr/share/themes/Arc ] || \
-           [ -d ${HOME}/.themes/Arc ]; then
+           [ -d "${HOME}/.themes/Arc" ]; then
           gtktheme="Arc"
         else
           show_warning "${option} theme is not installed."
@@ -387,7 +386,7 @@ function select_desktop_theme {
         ;;
       "Arc-Darker")
         if [ -d /usr/share/themes/Arc-Darker ] || \
-           [ -d ${HOME}/.themes/Arc-Darker ]; then
+           [ -d "${HOME}/.themes/Arc-Darker" ]; then
           gtktheme="Arc-Darker"
         else
           show_warning "${option} theme is not installed."
@@ -397,7 +396,7 @@ function select_desktop_theme {
         ;;
       "Arc-Dark")
         if [ -d /usr/share/themes/Arc-Dark ] || \
-           [ -d ${HOME}/.themes/Arc-Dark ]; then
+           [ -d "${HOME}/.themes/Arc-Dark" ]; then
           gtktheme="Arc-Dark"
         else
           show_warning "${option} theme is not installed."
@@ -407,7 +406,7 @@ function select_desktop_theme {
         ;;
       "Adapta")
         if [ -d /usr/share/themes/Adapta ] || \
-           [ -d ${HOME}/.themes/Adapta ]; then
+           [ -d "${HOME}/.themes/Adapta" ]; then
           gtktheme="Adapta"
         else
           show_warning "${option} theme is not installed."
@@ -417,7 +416,7 @@ function select_desktop_theme {
         ;;
       "Adapta-Eta")
         if [ -d /usr/share/themes/Adapta-Eta ] || \
-           [ -d ${HOME}/.themes/Adapta-Eta ]; then
+           [ -d "${HOME}/.themes/Adapta-Eta" ]; then
           gtktheme="Adapta-Eta"
         else
           show_warning "${option} theme is not installed."
@@ -427,7 +426,7 @@ function select_desktop_theme {
         ;;
       "Adapta-Nokto")
         if [ -d /usr/share/themes/Adapta-Nokto ] || \
-           [ -d ${HOME}/.themes/Adapta-Nokto ]; then
+           [ -d "${HOME}/.themes/Adapta-Nokto" ]; then
           gtktheme="Adapta-Nokto"
         else
           show_warning "${option} theme is not installed."
@@ -437,7 +436,7 @@ function select_desktop_theme {
         ;;
       "Adapta-Nokto-Eta")
         if [ -d /usr/share/themes/Adapta-Nokto-Eta ] || \
-           [ -d ${HOME}/.themes/Adapta-Nokto-Eta ]; then
+           [ -d "${HOME}/.themes/Adapta-Nokto-Eta" ]; then
           gtktheme="Adapta-Nokto-Eta"
         else
           show_warning "${option} theme is not installed."
@@ -447,7 +446,7 @@ function select_desktop_theme {
         ;;
       "Plata")
         if [ -d /usr/share/themes/Plata ] || \
-           [ -d ${HOME}/.themes/Plata ]; then
+           [ -d "${HOME}/.themes/Plata" ]; then
           gtktheme="Plata"
         else
           show_warning "${option} theme is not installed."
@@ -457,7 +456,7 @@ function select_desktop_theme {
         ;;
       "Plata-Compact")
         if [ -d /usr/share/themes/Plata-Compact ] || \
-           [ -d ${HOME}/.themes/Plata-Compact ]; then
+           [ -d "${HOME}/.themes/Plata-Compact" ]; then
           gtktheme="Plata-Compact"
         else
           show_warning "${option} theme is not installed."
@@ -467,7 +466,7 @@ function select_desktop_theme {
         ;;
       "Plata-Lumine")
         if [ -d /usr/share/themes/Plata-Lumine ] || \
-           [ -d ${HOME}/.themes/Plata-Lumine ]; then
+           [ -d "${HOME}/.themes/Plata-Lumine" ]; then
           gtktheme="Plata-Lumine"
         else
           show_warning "${option} theme is not installed."
@@ -477,7 +476,7 @@ function select_desktop_theme {
         ;;
       "Plata-Lumine-Compact")
         if [ -d /usr/share/themes/Plata-Lumine-Compact ] || \
-           [ -d ${HOME}/.themes/Plata-Lumine-Compact ]; then
+           [ -d "${HOME}/.themes/Plata-Lumine-Compact" ]; then
           gtktheme="Plata-Lumine-Compact"
         else
           show_warning "${option} theme is not installed."
@@ -487,7 +486,7 @@ function select_desktop_theme {
         ;;
       "Plata-Noir")
         if [ -d /usr/share/themes/Plata-Noir ] || \
-           [ -d ${HOME}/.themes/Plata-Noir ]; then
+           [ -d "${HOME}/.themes/Plata-Noir" ]; then
           gtktheme="Plata-Noir"
         else
           show_warning "${option} theme is not installed."
@@ -497,7 +496,7 @@ function select_desktop_theme {
         ;;
       "Plata-Noir-Compact")
         if [ -d /usr/share/themes/Plata-Noir-Compact ] || \
-           [ -d ${HOME}/.themes/Plata-Noir-Compact ]; then
+           [ -d "${HOME}/.themes/Plata-Noir-Compact" ]; then
           gtktheme="Plata-Noir-Compact"
         else
           show_warning "${option} theme is not installed."
@@ -529,7 +528,7 @@ function select_icon_theme {
         ;;
       "Papirus")
         if [ -d /usr/share/icons/Papirus ] || \
-           [ -d ${HOME}/.icons/Papirus ]; then
+           [ -d "${HOME}/.icons/Papirus" ]; then
           icontheme="Papirus"
         else
           show_warning "${option} icons are not installed."
@@ -539,7 +538,7 @@ function select_icon_theme {
         ;;
       "ePapirus")
         if [ -d /usr/share/icons/ePapirus ] || \
-           [ -d ${HOME}/.icons/ePapirus ]; then
+           [ -d "${HOME}/.icons/ePapirus" ]; then
           icontheme="ePapirus"
         else
           show_warning "${option} icons are not installed."
@@ -549,7 +548,7 @@ function select_icon_theme {
         ;;
       "Papirus-Light")
         if [ -d /usr/share/icons/Papirus-Light ] || \
-           [ -d ${HOME}/.icons/Papirus-Light ]; then
+           [ -d "${HOME}/.icons/Papirus-Light" ]; then
           icontheme="Papirus-Light"
         else
           show_warning "${option} icons are not installed."
@@ -559,7 +558,7 @@ function select_icon_theme {
         ;;
       "Papirus-Dark")
         if [ -d /usr/share/icons/Papirus-Dark ] || \
-           [ -d ${HOME}/.icons/Papirus-Dark ]; then
+           [ -d "${HOME}/.icons/Papirus-Dark" ]; then
           icontheme="Papirus-Dark"
         else
           show_warning "${option} icons are not installed."
@@ -569,7 +568,7 @@ function select_icon_theme {
         ;;
       "Papirus-Adapta")
         if [ -d /usr/share/icons/Papirus-Adapta ] || \
-           [ -d ${HOME}/.icons/Papirus-Adapta ]; then
+           [ -d "${HOME}/.icons/Papirus-Adapta" ]; then
           icontheme="Papirus-Adapta"
         else
           show_warning "${option} icons are not installed."
@@ -579,7 +578,7 @@ function select_icon_theme {
         ;;
       "Papirus-Adapta-Nokto")
         if [ -d /usr/share/icons/Papirus-Adapta-Nokto ] || \
-           [ -d ${HOME}/.icons/Papirus-Adapta-Nokto ]; then
+           [ -d "${HOME}/.icons/Papirus-Adapta-Nokto" ]; then
           icontheme="Papirus-Adapta-Nokto"
         else
           show_warning "${option} icons are not installed."

@@ -13,7 +13,7 @@ function install_base {
   show_success "Base packages installed."
 
   show_info "Installing toprc."
-  cp -f ${toprc} ${HOME}/.toprc
+  cp -f "${toprc}" "${HOME}/.toprc"
   show_success "Installed toprc."
 
   if ! [ -f "${HOME}/.bash_profile" ]; then
@@ -23,7 +23,7 @@ function install_base {
   fi
 
   show_info "Installing bashrc."
-  cp -f ${bashrc} ${HOME}/.bashrc
+  cp -f "${bashrc}" "${HOME}/.bashrc"
   show_success "Installed bashrc."
 }
 
@@ -44,7 +44,7 @@ function install_firmware {
 srclist="/etc/apt/sources.list"
 function enable_contrib_repos {
   release=$(lsb_release -sc)
-  if ! cat ${srclist} | grep contrib 2>&1 >/dev/null; then
+  if ! grep contrib "${srclist}" >/dev/null 2>&1; then
     show_info "Enabling contrib repos."
     sudo sed -i "s,\(.* ${release} main.*\)$,\1 contrib,g" ${srclist}
     sudo sed -i "s,\(.* ${release}-updates main.*\)$,\1 contrib,g" ${srclist}
@@ -57,7 +57,7 @@ function enable_contrib_repos {
 srclist="/etc/apt/sources.list"
 function enable_nonfree_repos {
   release=$(lsb_release -sc)
-  if ! cat ${srclist} | grep non-free 2>&1 >/dev/null; then
+  if ! grep non-free "${srclist}" >/dev/null 2>&1; then
     show_info "Enabling non-free repos."
     sudo sed -i "s,\(.* ${release} main.*\)$,\1 non-free,g" ${srclist}
     sudo sed -i "s,\(.* ${release}-updates main.*\)$,\1 non-free,g" ${srclist}
@@ -93,8 +93,8 @@ function upgrade_debian_release {
              [[ "$(lsb_release -sc)" == "sid" ]]; then
           show_warning "Downgrades not possible."
         else
-          sudo cp -f ${srclist} ${srclist}.${RANDOM}.bak
-          sudo cp -f ${busterlist} ${srclist}
+          sudo cp -f "${srclist}" "${srclist}.${RANDOM}.bak"
+          sudo cp -f "${busterlist}" "${srclist}"
           is_upgraded=true
           release=buster
         fi
@@ -106,8 +106,8 @@ function upgrade_debian_release {
         elif [[ "$(lsb_release -sc)" == "sid" ]]; then
           show_warning "Downgrades not possible."
         else
-          sudo cp -f ${srclist} ${srclist}.${RANDOM}.bak
-          sudo cp -f ${bullseyelist} ${srclist}
+          sudo cp -f "${srclist}" "${srclist}.${RANDOM}.bak"
+          sudo cp -f "${bullseyelist}" "${srclist}"
           is_upgraded=true
           release=bullseye
         fi
@@ -117,8 +117,8 @@ function upgrade_debian_release {
         if [[ "$(lsb_release -sc)" == "sid" ]]; then
           show_warning "Already set to $(lsb_release -sc)."
         else
-          sudo cp -f ${srclist} ${srclist}.${RANDOM}.bak
-          sudo cp -f ${sidlist} ${srclist}
+          sudo cp -f "${srclist}" "${srclist}.${RANDOM}.bak"
+          sudo cp -f "${sidlist}" "${srclist}"
           is_upgraded=true
           release=sid
         fi
@@ -131,16 +131,16 @@ function upgrade_debian_release {
     esac
   done
 
-  if [ ${is_upgraded} == true ]; then
-    [ ${is_contrib} == true ] && \
+  if [ "${is_upgraded}" == true ]; then
+    [ "${is_contrib}" == true ] && \
       sudo sed -i "s,\(.* ${release} main.*\)$,\1 contrib,g" ${srclist} && \
       sudo sed -i "s,\(.* ${release}-updates main.*\)$,\1 contrib,g" ${srclist}
-    [ ${is_nonfree} == true ] && \
+    [ "${is_nonfree}" == true ] && \
       sudo sed -i "s,\(.* ${release} main.*\)$,\1 non-free,g" ${srclist} && \
       sudo sed -i "s,\(.* ${release}-updates main.*\)$,\1 non-free,g" ${srclist}
-    [ ${is_onion} == true ] && \
+    [ "${is_onion}" == true ] && \
       sudo sed -i "s,https://deb.debian.org,tor+http://vwakviie2ienjx6t.onion,g" ${srclist}
-    [ ${is_onion} == true ] && \
+    [ "${is_onion}" == true ] && \
       sudo sed -i "s,https://security.debian.org/,tor+http://sgvtcaew4bxjd7ln.onion/debian-security/,g" ${srclist}
 
     sudo sh -c "apt-get update && \
@@ -193,11 +193,11 @@ function disable_beep {
     sudo sh -c "echo 'blacklist snd_pcsp' >> ${pcspkr_blacklist}"
   else
     if ! find /etc/modprobe.d/ -type f \
-         -exec grep "blacklist pcspkr" {} + 2>&1 >/dev/null; then
+         -exec grep "blacklist pcspkr" {} + >/dev/null 2>&1; then
       sudo sh -c "echo 'blacklist pcspkr' >> ${pcspkr_blacklist}"
     fi
     if ! find /etc/modprobe.d/ -type f \
-         -exec grep "blacklist snd_pcsp" {} + 2>&1 >/dev/null; then
+         -exec grep "blacklist snd_pcsp" {} + >/dev/nulll 2>&1; then
       sudo sh -c "echo 'blacklist snd_pcsp' >> ${pcspkr_blacklist}"
     fi
   fi
@@ -205,28 +205,28 @@ function disable_beep {
 
   show_info "Disabling gtk2 and gtk3 error-bell."
   if [ -f "${gtk2conf}" ]; then
-    if grep "^gtk-error-bell=" ${gtk2conf} >/dev/null 2>&1; then
-      sed -i "s/^gtk-error-bell=.*$/gtk-error-bell=0/g" ${gtk2conf}
+    if grep "^gtk-error-bell=" "${gtk2conf}" >/dev/null 2>&1; then
+      sed -i "s/^gtk-error-bell=.*$/gtk-error-bell=0/g" "${gtk2conf}"
     else
-      echo "gtk-error-bell=0" >> ${gtk2conf}
+      echo "gtk-error-bell=0" >> "${gtk2conf}"
     fi
   else
     mkdir -p "$(dirname ${gtk2conf})"
-    echo "gtk-error-bell=0" >> ${gtk2conf}
+    echo "gtk-error-bell=0" >> "${gtk2conf}"
   fi
   if [ -f "${gtk3conf}" ]; then
-    if grep "^gtk-error-bell=" ${gtk3conf} >/dev/null 2>&1; then
-      sed -i "s/^gtk-error-bell=.*$/gtk-error-bell=0/g" ${gtk3conf}
-    elif grep "^[Settings]" ${gtk3conf} >/dev/null 2>&1; then
-      sed -i "/^[Settings]$/a gtk-error-bell=0" ${gtk3conf}
+    if grep "^gtk-error-bell=" "${gtk3conf}" >/dev/null 2>&1; then
+      sed -i "s/^gtk-error-bell=.*$/gtk-error-bell=0/g" "${gtk3conf}"
+    elif grep "^[Settings]" "${gtk3conf}" >/dev/null 2>&1; then
+      sed -i "/^[Settings]$/a gtk-error-bell=0" "${gtk3conf}"
     else
-      echo "[Settings]" >> ${gtk3conf}
-      echo "gtk-error-bell=0" >> ${gtk3conf}
+      echo "[Settings]" >> "${gtk3conf}"
+      echo "gtk-error-bell=0" >> "${gtk3conf}"
     fi
   else
     mkdir -p "$(dirname ${gtk3conf})"
-    echo "[Settings]" > ${gtk3conf}
-    echo "gtk-error-bell=0" >> ${gtk3conf}
+    echo "[Settings]" > "${gtk3conf}"
+    echo "gtk-error-bell=0" >> "${gtk3conf}"
   fi
 }
 

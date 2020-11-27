@@ -20,10 +20,10 @@ function install_apps {
   show_success "Applications installed."
 
   show_info "Copying mpv config."
-  mkdir -p ${HOME}/.config/mpv
-  cp -f ${mpvconfig} ${HOME}/.config/mpv
+  mkdir -p "${HOME}/.config/mpv"
+  cp -f "${mpvconfig}" "${HOME}/.config/mpv"
 
-  show_info "Update xdg settings to open HTML files in Firefox."
+  show_info "Updating xdg settings to open HTML files in Firefox."
   xdg-mime default firefox.desktop text/html
 
   show_info "Configuring ${libaoconf} to use PulseAudio instead of ALSA."
@@ -50,16 +50,16 @@ function install_dev {
   show_success "Languages and editors installed."
 
   show_info "Installing npmrc."
-  cp -f ${npmrc} ${HOME}/.npmrc
+  cp -f "${npmrc}" "${HOME}/.npmrc"
 
   show_info "Installing Rprofile."
-  cp -f ${rprofile} ${HOME}/.Rprofile
+  cp -f "${rprofile}" "${HOME}/.Rprofile"
 
   show_info "Installing tmux config."
-  cp -f ${tmuxconfig} ${HOME}/.tmux.conf
+  cp -f "${tmuxconfig}" "${HOME}/.tmux.conf"
 
   show_info "Setting default clang-format style."
-  clang-format -style=mozilla -dump-config > ${HOME}/.clang-format
+  clang-format -style=mozilla -dump-config > "${HOME}/.clang-format"
 
   show_info "Installing vim packages."
   mkdir -p "${vimpack}"
@@ -94,16 +94,16 @@ function install_kvm {
   check_fail
   show_success "KVM installed."
 
-  show_info "Adding `whoami` to kvm and libvirt groups."
-  sudo usermod -aG kvm,libvirt $(whoami)
+  show_info "Adding $(whoami) to kvm and libvirt groups."
+  sudo usermod -aG kvm,libvirt "$(whoami)"
 
-  show_info "Edit group permissions in ${qemuconf}"
-  kvmgid=$(getent group | grep kvm | cut -d":" -f3)
-  sudo sed -i "s/^#dynamic_ownership/dynamic_ownership/g" ${qemuconf}
-  sudo sed -i "s/^group=\"[0-9]*\"/group=\"${kvmgid}\"/g" ${qemuconf}
-  show_warning "Manually enable 'cgroup_device_acl' and add"
-  show_warning "'/dev/dri/renderD128' to the list so that the virt-manager GUI"
-  show_warning "allows setting 3d acceleration."
+  # show_info "Edit group permissions in ${qemuconf}"
+  # kvmgid="$(getent group | grep kvm | cut -d":" -f3)"
+  # sudo sed -i "s/^#dynamic_ownership/dynamic_ownership/g" "${qemuconf}"
+  # sudo sed -i "s/^group=\"[0-9]*\"/group=\"${kvmgid}\"/g" "${qemuconf}"
+  # show_warning "Manually enable 'cgroup_device_acl' and add"
+  # show_warning "'/dev/dri/renderD128' to the list so that the virt-manager GUI"
+  # show_warning "allows setting 3d acceleration."
 
   sudo systemctl enable libvirtd
   sudo systemctl start libvirtd
@@ -180,8 +180,8 @@ function install_texlive {
 
   show_info "Changing the default local texmf path to ~/.texmf"
   texmfconfig=$(kpsewhich texmf.cnf)
-  mkdir -p ${HOME}/.texmf
-  sudo sed -i "s,^TEXMFHOME = .*$,TEXMFHOME = ~/.texmf,g" ${texmfconfig}
+  mkdir -p "${HOME}/.texmf"
+  sudo sed -i "s,^TEXMFHOME = .*$,TEXMFHOME = ~/.texmf,g" "${texmfconfig}"
 }
 
 torbrowser_path="${HOME}/.local/share/tor-browser"
@@ -189,7 +189,7 @@ local_applications="${HOME}/.local/share/applications"
 function install_torbrowser {
   show_header "Installing Tor browser."
 
-  if [ -d ${torbrowser_path} ]; then
+  if [ -d "${torbrowser_path}" ]; then
     show_warning "Tor browser is already installed in ${torbrowser_path}."
     response=$(ask_question "Replace? (y/N)")
     if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
@@ -208,37 +208,37 @@ function install_torbrowser {
     torbrowser_version=$(curl https://www.torproject.org/download/ | \
                          sed -n 's,^ \+<a class="downloadLink" href="/dist/torbrowser/\([0-9\.]\+\)/tor-browser-linux.*">,\1,p')
     torbrowser_url=https://www.torproject.org/dist/torbrowser
-    arch=`uname -m`
-    if [ ${arch:(-2)} = "86" ]; then
+    arch=$(uname -m)
+    if [ "${arch:(-2)}" = "86" ]; then
       torbrowser_package=tor-browser-linux32-${torbrowser_version}_en-US.tar.xz
-    elif [ ${arch:(-2)} = "64" ]; then
+    elif [ "${arch:(-2)}" = "64" ]; then
       torbrowser_package=tor-browser-linux64-${torbrowser_version}_en-US.tar.xz
     fi
 
     show_info "Downloading release tarball."
-    wget ${torbrowser_url}/${torbrowser_version}/${torbrowser_package}
-    wget ${torbrowser_url}/${torbrowser_version}/${torbrowser_package}.asc
+    wget "${torbrowser_url}/${torbrowser_version}/${torbrowser_package}"
+    wget "${torbrowser_url}/${torbrowser_version}/${torbrowser_package}.asc"
     show_info "Extracting..."
-    gpg --verify ${torbrowser_package}.asc ${torbrowser_package}
-    tar xf ${torbrowser_package}
+    gpg --verify "${torbrowser_package}.asc" "${torbrowser_package}"
+    tar xf "${torbrowser_package}"
 
     show_info "Putting things into place..."
-    mkdir -p ${local_applications}
-    rm -rf ${torbrowser_path}
-    mv tor-browser_en-US ${torbrowser_path}
-    cp -f ${torbrowser_path}/start-tor-browser.desktop ${local_applications}/
-    chmod -x ${local_applications}/start-tor-browser.desktop
+    mkdir -p "${local_applications}"
+    rm -rf "${torbrowser_path}"
+    mv tor-browser_en-US "${torbrowser_path}"
+    cp -f "${torbrowser_path}/start-tor-browser.desktop" "${local_applications}/"
+    chmod -x "${local_applications}/start-tor-browser.desktop"
     sed -i "s,^Name=.*,Name=Tor Browser,g" \
-      ${local_applications}/start-tor-browser.desktop
+      "${local_applications}/start-tor-browser.desktop"
     sed -i "s,^Icon=.*,Icon=browser-tor,g" \
-      ${local_applications}/start-tor-browser.desktop
+      "${local_applications}/start-tor-browser.desktop"
     sed -i "s,^Exec=.*,Exec=sh -c '\"${torbrowser_path}/Browser/start-tor-browser\" --detach || ([ !  -x \"${torbrowser_path}/Browser/start-tor-browser\" ] \&\& \"\$(dirname \"\$*\")\"/Browser/start-tor-browser --detach)' dummy %k,g" \
-      ${local_applications}/start-tor-browser.desktop
-    update-desktop-database ${local_applications}
+      "${local_applications}/start-tor-browser.desktop"
+    update-desktop-database "${local_applications}"
 
     show_info "Cleaning up..."
-    rm -f ${torbrowser_package}
-    rm -f ${torbrowser_package}.asc
+    rm -f "${torbrowser_package}"
+    rm -f "${torbrowser_package}.asc"
     show_success "Tor browser installed."
   else
     show_info "Skipping..."
@@ -255,7 +255,7 @@ function install_vim {
   show_success "Vim and vim plugins installed."
 
   show_info "Installing vimrc."
-  cp -f ${vimrc} ${HOME}/.vimrc
+  cp -f "${vimrc}" "${HOME}/.vimrc"
   show_success "vimrc installed."
 
   mkdir -p ${vimpack}
@@ -276,15 +276,15 @@ function install_vim {
   git config --global --add difftool.prompt false
 
   show_info "Install local wordlist."
-  mkdir -p ${HOME}/.vim/spell
+  mkdir -p "${HOME}/.vim/spell"
   git clone --depth 1 https://github.com/sudorook/wordlist.vim wordlist.vim
-  if [ -f ${HOME}/.vim/spell/en.utf-8.add ]; then
+  if [ -f "${HOME}/.vim/spell/en.utf-8.add" ]; then
     show_info "Wordlist already exists in ${HOME}/.vim/spell/. Appending."
-    cat wordlist.vim/spell/en.utf-8.add >> ${HOME}/.vim/spell/en.utf-8.add
-    sort -u ${HOME}/.vim/spell/en.utf-8.add > /tmp/temp-$$.add
-    mv /tmp/temp-$$.add ${HOME}/.vim/spell/en.utf-8.add
+    cat wordlist.vim/spell/en.utf-8.add >> "${HOME}/.vim/spell/en.utf-8.add"
+    sort -u "${HOME}/.vim/spell/en.utf-8.add" > /tmp/temp-$$.add
+    mv /tmp/temp-$$.add "${HOME}/.vim/spell/en.utf-8.add"
   else
-    cp wordlist.vim/spell/en.utf-8.add ${HOME}/.vim/spell/en.utf-8.add
+    cp wordlist.vim/spell/en.utf-8.add "${HOME}/.vim/spell/en.utf-8.add"
   fi
   rm -rf wordlist.vim
   show_success "Wordlist installed in ${HOME}/.vim/spell."
@@ -302,7 +302,7 @@ function install_virtualbox {
 
   if getent group vboxusers; then
     show_info "Adding $(whoami) to vboxusers group."
-    sudo usermod -aG vboxusers $(whoami)
+    sudo usermod -aG vboxusers "$(whoami)"
   fi
 }
 

@@ -46,8 +46,6 @@ function install_firewall {
   show_info "Enabling ufw."
   sudo ufw default deny
   sudo ufw allow Transmission
-  sudo ufw allow syncthing
-  sudo ufw allow syncthing-gtk
   sudo ufw enable
   sudo systemctl enable ufw
 }

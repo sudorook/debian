@@ -6,6 +6,7 @@ dosfstools
 encfs
 ethtool
 gddrescue
+gdisk
 gnupg
 hfsprogs
 libnotify-bin
@@ -15,6 +16,7 @@ nmap
 ntfs-3g
 p7zip
 parallel
+parted
 pigz
 pixz
 pv

@@ -81,18 +81,18 @@ function main {
           install_zsh
           install_selinux
           install_utils
-          install_laptop
-          install_android
+          # install_laptop
+          # install_android
 
           # Install a desktop environment
-          install_gnome
+          # install_gnome
           install_cinnamon
 
           # Set up network configuration
           install_network
           install_firewall
-          install_tor
-          use_onion_repos
+          # install_tor
+          # use_onion_repos
 
           # Install useful packages
           install_apps
@@ -105,7 +105,7 @@ function main {
           install_messaging
           install_music
           install_texlive
-          install_torbrowser
+          # install_torbrowser
           install_vim
           # install_virtualbox
           # install_virtualbox_guest
@@ -113,13 +113,13 @@ function main {
 
           # Install themes
           install_theme_deps
-          install_arc_gtk
-          install_adapta_gtk
+          # install_arc_gtk
+          # install_adapta_gtk
           install_plata_gtk
           install_fonts
           install_papirus_icons
           install_vim_theme
-          install_thunderbird_theme
+          # install_thunderbird_theme
           install_timed_backgrounds
           set_qtcompat
 
@@ -131,7 +131,7 @@ function main {
           set_gdm_theme
           set_dark_gtk
           import_cinnamon_dconf
-          import_gnome_dconf
+          # import_gnome_dconf
           import_apps_dconf
           import_terminal_dconf
           enable_autologin

@@ -64,20 +64,15 @@ function 01-misc {
   show_question "Misc: what do you want to install?"
   show_info "Main\n ${endbranch} Misc (Hit ENTER to see options again.)"
 
-  options=("Back" "All" "zsh" "SELinux" "Linux utilities" \
-           "Laptop tools")
+  options=("Back" "All" "SELinux" "Linux utilities" "Laptop tools" "zsh" )
   select option in "${options[@]}"; do
     case $option in
       "Back")
         break
         ;;
       "All")
-        install_zsh
         install_utils
         install_laptop
-        show_info "Main\n ${endbranch} Misc (Hit ENTER to see options again.)"
-        ;;
-      "zsh")
         install_zsh
         show_info "Main\n ${endbranch} Misc (Hit ENTER to see options again.)"
         ;;
@@ -91,6 +86,10 @@ function 01-misc {
         ;;
       "Laptop tools")
         install_laptop
+        show_info "Main\n ${endbranch} Misc (Hit ENTER to see options again.)"
+        ;;
+      "zsh")
+        install_zsh
         show_info "Main\n ${endbranch} Misc (Hit ENTER to see options again.)"
         ;;
       *)

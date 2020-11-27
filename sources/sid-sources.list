@@ -1,2 +1,2 @@
-deb https://deb.debian.org/debian/ sid main contrib non-free
-deb-src https://deb.debian.org/debian/ sid main contrib non-free
+deb https://deb.debian.org/debian/ sid main
+deb-src https://deb.debian.org/debian/ sid main

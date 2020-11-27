@@ -2,6 +2,7 @@
 
 dir="$(dirname "$0")"
 deps="${dir}/packages/deps.list"
+install="${dir}/packages/install.list"
 
 midbranch="\0342\0224\0234\0342\0224\0200\0342\0224\0200"
 endbranch="\0342\0224\0224\0342\0224\0200\0342\0224\0200"
@@ -114,11 +115,11 @@ function install_post_dependencies {
 }
 
 function install_dependencies {
-  show_header "Checking dependencies."
-  for package in $(cat $deps); do
-    if ! dpkg -s ${package} > /dev/null 2>&1; then
+  show_header "Checking installation dependencies."
+  for package in $(cat ${install}); do
+    if ! dpkg -s "${package}" > /dev/null 2>&1; then
       show_info "${package} is needed for this script."
-      sudo apt-get install ${package}
+      sudo apt-get install "${package}"
       check_fail
       show_success "${package} now installed."
     else

@@ -1,0 +1,108 @@
+#! /bin/bash
+set -eu
+
+dir="$(dirname "$0")"
+
+
+#
+# Fancy color output
+#
+
+show_error() {
+  echo -e $'\033[1;31m'"$*"$'\033[' 1>&2
+}
+show_info() {
+  echo -e $'\033[1;32m'"$*"$'\033[0m'
+}
+show_warning() {
+  echo -e $'\033[1;33m'"$*"$'\033[0m'
+}
+show_question() {
+  echo -e $'\033[1;34m'"$*"$'\033[0m'
+}
+ask_question() {
+  read -r -p $'\033[1;34m'"$* "$'\033[0m' var
+  echo "${var}"
+}
+show_success() {
+  echo -e $'\033[1;35m'"$*"$'\033[0m'
+}
+show_header() {
+  echo -e $'\033[1;36m'"$*"$'\033[0m'
+}
+show_listitem() {
+  echo -e $'\033[1;37m'"$*"$'\033[0m'
+}
+
+
+#
+# Source the functions
+#
+
+. $dir/functions/00-check
+. $dir/functions/00-install
+
+
+#
+# Define main select wrapper
+#
+
+function main {
+  ask_release
+  ask_device
+  ask_partition_scheme
+  ask_bootmode
+  ask_partition_sizes
+
+  ask_timezone
+  ask_locale
+  ask_hostname
+  ask_username
+
+  set_partitions
+  format_partitions
+
+  mount_install
+  debootstrap --arch amd64 "${RELEASE}" /mnt https://deb.debian.org/debian
+  mkdir -p /mnt/run/udev
+  for fs in proc sys dev dev/pts run/udev; do
+    mount --bind /$fs /mnt/$fs
+  done
+  ./utils/genfstab -U /mnt >> /mnt/etc/fstab
+  TIMEZONE="${TIMEZONE}" chroot /mnt /bin/bash -c "set_timezone"
+  LOCALE="${LOCALE}" chroot /mnt /bin/bash -c "set_locale"
+
+  cp "sources/${RELEASE}-sources.list" "/mnt/etc/apt/sources.list"
+  chroot /mnt /bin/bash -c "update_mirrorlist"
+  chroot /mnt /bin/bash -c "install_packages"
+  # chroot /mnt /bin/bash -c "install_ucode"
+  HOST_NAME="${HOST_NAME}" chroot /mnt /bin/bash -c "set_hostname"
+  USER_NAME="${USER_NAME}" USER_PASSWORD="${USER_PASSWORD}" chroot /mnt /bin/bash -c "add_user"
+  if [[ "${BOOTMODE}" = "GRUB" ]]; then
+    DEVICE="${DEVICE}" chroot /mnt /bin/bash -c "install_grub"
+    if [[ "${SCHEME}" = "LVM on LUKS" ]]; then
+      CRYPT_PARTITION="${CRYPT_PARTITION}" chroot /mnt /bin/bash -c "make_luks_key"
+    fi
+  elif [[ "${BOOTMODE}" = "systemd-boot" ]]; then
+    DEVICE="${DEVICE}" chroot /mnt /bin/bash -c "install_gummiboot"
+  elif [[ "${BOOTMODE}" = "EFISTUB" ]]; then
+    show_warning "Not supported yet..."
+  fi
+  unmount_install
+  show_success "Done! Reboot now."
+}
+
+
+#
+# Check if dependencies are installed and if network is working
+#
+
+install_dependencies
+check_root
+check_network
+
+#
+# GO!!!
+#
+
+main

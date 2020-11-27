@@ -104,6 +104,7 @@ function main {
           # install_kvm_guest
           install_messaging
           install_music
+          install_printing
           install_texlive
           # install_torbrowser
           install_vim

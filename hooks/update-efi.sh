@@ -4,8 +4,12 @@ set -eu
 function get_cmdline {
   local default
   local cmdline
-  default=$(grep ^default /boot/efi/loader/loader.conf | cut -d"	" -f2)
-  cmdline=$(grep ^options "/boot/efi/loader/entries/${default}" | cut -d"	" -f2)
+  if [ -f /boot/efi/loader/loader.conf ]; then
+    default=$(grep ^default /boot/efi/loader/loader.conf | cut -d"	" -f2)
+    if [ -f "/boot/efi/loader/entries/${default}" ]; then
+      cmdline=$(grep ^options "/boot/efi/loader/entries/${default}" | cut -d"	" -f2)
+    fi
+  fi
   echo "${cmdline}"
 }
 

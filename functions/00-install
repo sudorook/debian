@@ -448,6 +448,7 @@ function install_gummiboot {
       echo "ERROR: Missing root ${root_uuid}."
       exit 3
     fi
+    cmdline="${cmdline} rw"
 
     bootctl esp-path=/boot/efi install
   fi

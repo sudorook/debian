@@ -451,6 +451,7 @@ function install_gummiboot {
     cmdline="${cmdline} rw"
 
     bootctl --esp-path=/boot/efi install
+    systemctl enable --now systemd-update-efi.path
 
     local tmp
     local kernel

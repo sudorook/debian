@@ -1,0 +1,9 @@
+[Unit]
+Description=Update systemd-boot
+
+[Path]
+PathChanged=/usr/bin/bootctl
+
+[Install]
+WantedBy=multi-user.target
+WantedBy=system-update.target

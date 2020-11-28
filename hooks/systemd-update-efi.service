@@ -1,0 +1,6 @@
+[Unit]
+Description=Update systemd-boot
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/bootctl update

@@ -451,6 +451,32 @@ function install_gummiboot {
     cmdline="${cmdline} rw"
 
     bootctl --esp-path=/boot/efi install
+
+    local tmp
+    local kernel
+    local version
+    local outfile
+    tmp=($(ls -r /boot/vmlinuz*))
+    kernel=$(basename ${tmp[0]})
+    version="${kernel/vmlinuz-/}"
+    version="${version/-amd64/}"
+    version="${version/-i386/}"
+    outfile="linux-${version}.conf"
+
+    cp -af "/boot/${kernel}" "/boot/${kernel/vmlinuz/initrd.img}" /boot/efi/
+    {
+      echo "default     ${outfile}";
+      echo "timeout     1";
+      echo "console-mode        max";
+      echo "editor      no";
+    }> /boot/efi/loader/loader.conf
+
+    {
+      echo "title       Debian, linux-${version}";
+      echo "linux       /${kernel}";
+      echo "initrd      /${kernel/vmlinuz/initrd.img}";
+      echo "options     ${cmdline}";
+    }> "/boot/efi/loader/entries/${outfile}"
   fi
 }
 export -f install_gummiboot

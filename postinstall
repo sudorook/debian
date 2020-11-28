@@ -137,7 +137,8 @@ function main {
           import_apps_dconf
           import_terminal_dconf
           enable_autologin
-          invert_brightness
+          # invert_brightness
+          # enable_intel_iommu
           disable_pulseaudio_suspend
           disable_11n
           install_scripts

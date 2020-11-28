@@ -308,6 +308,25 @@ function invert_brightness {
   fi
 }
 
+grubdefault="/etc/default/grub"
+grubcfg="/boot/grub/grub.cfg"
+function enable_intel_iommu {
+  oldline=$(grep ^GRUB_CMDLINE_LINUX= "${grubdefault}")
+  bootparams=$(echo "${oldline}" | sed -n "s/^GRUB_CMDLINE_LINUX=\"\(.*\)\"/\1/p")
+  show_info "Setting Intel IOMMU kernel parameter."
+  if [[ ${bootparams} =~ intel_iommu= ]]; then
+    sudo sed -i "s|intel_iommu=\(on\|off\)|intel_iommu=on|g" ${grubdefault}
+  else
+    if test "${bootparams}"; then
+      sudo sed -i "s|${bootparams}|${bootparams} i915.invert_brightness=1|g" ${grubdefault}
+    else
+      sudo sed -i "s|${oldline}|GRUB_CMDLINE_LINUX=\"i915.invert_brightness=1\"|g" ${grubdefault}
+    fi
+    sudo sed -i "\|^GRUB_CMDLINE_LINUX=| a\#${oldline}" ${grubdefault} # backup
+    sudo grub-mkconfig -o ${grubcfg}
+  fi
+}
+
 pulseconfig="/etc/pulse/default.pa"
 function disable_pulseaudio_suspend {
   show_header "Disabling suspend on PulseAudio when sinks/sources idle."
@@ -605,8 +624,8 @@ function 05-personal {
            "Select desktop theme" "Set dark GTK" "Import Cinnamon dconf" \
            "Import GNOME dconf" "Import application dconf" \
            "Import GNOME terminal profiles" "Enable autologin" \
-           "Invert brightness" "Disable PulseAudio suspend" "Disable 802.11n" \
-           "Add scripts")
+           "Invert brightness (i915)" "Enable IOMMU (i915)" \
+           "Disable PulseAudio suspend" "Disable 802.11n" "Add scripts")
   select option in "${options[@]}"; do
     case $option in
       "Back")
@@ -625,6 +644,7 @@ function 05-personal {
         import_terminal_dconf
         enable_autologin
         invert_brightness
+        enable_intel_iommu
         disable_pulseaudio_suspend
         disable_11n
         install_scripts
@@ -666,8 +686,12 @@ function 05-personal {
         enable_autologin
         show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
         ;;
-      "Invert brightness")
+      "Invert brightness (i915)")
         invert_brightness
+        show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
+        ;;
+      "Enable IOMMU (i915)")
+        enable_intel_iommu
         show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
         ;;
       "Disable PulseAudio suspend")

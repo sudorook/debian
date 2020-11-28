@@ -291,10 +291,11 @@ function enable_autologin {
 
 grubdefault="/etc/default/grub"
 function invert_brightness {
-  oldline=$(cat ${grubdefault} | grep ^GRUB_CMDLINE_LINUX=)
-  bootparams=$(echo ${oldline} | sed -n "s/^GRUB_CMDLINE_LINUX=\"\(.*\)\"/\1/p")
-  if [[ ${bootparams} =~ "i915.invert_brightness=1" ]]; then
-    show_header "Brightness already inverted. Skipping."
+  oldline=$(grep ^GRUB_CMDLINE_LINUX= "${grubdefault}")
+  bootparams=$(echo "${oldline}" | sed -n "s/^GRUB_CMDLINE_LINUX=\"\(.*\)\"/\1/p")
+  show_header "Inverting display brightness (Intel i915)."
+  if [[ ${bootparams} =~ i915.invert_brightness= ]]; then
+    sudo sed -i "s|i915.invert_brightness=\(1\|0\)|i915.invert_brightness=1|g" ${grubdefault}
   else
     if test "${bootparams}"; then
       sudo sed -i "s|${bootparams}|${bootparams} i915.invert_brightness=1|g" ${grubdefault}

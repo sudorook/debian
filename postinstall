@@ -103,6 +103,7 @@ function main {
           # install_kvm
           # install_kvm_guest
           install_messaging
+          # install_mingw
           install_music
           install_printing
           install_texlive

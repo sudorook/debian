@@ -160,6 +160,14 @@ function install_messaging {
   show_success "wee-slack plugin installed."
 }
 
+mingw="${dir}/packages/mingw.list"
+function install_mingw {
+  show_header "Installing MinGW for cross-platform compilation."
+  check_installed $(cat ${mingw})
+  check_fail
+  show_success "MinGW installed."
+}
+
 music="${dir}/packages/music.list"
 beetsconf="${dir}/configs/beets.yaml"
 beetsdir="${HOME}/.config/beets"
@@ -348,8 +356,8 @@ function 03-packages {
 
   options=("Back" "All" "Android tools" "General applications" "Codecs" \
            "Development" "Extra applications" "Emulators" "KVM (host)" \
-           "KVM (guest)" "Messaging" "Music" "Printing" "TeX Live" "Tor browser" \
-           "Vim" "VirtualBox (host)" "VirtualBox (guest)" "Wine")
+           "KVM (guest)" "Messaging" "MinGW" "Music" "Printing" "TeX Live" \
+           "Tor browser" "Vim" "VirtualBox (host)" "VirtualBox (guest)" "Wine")
   select option in "${options[@]}"; do
     case $option in
       "Back")
@@ -366,6 +374,7 @@ function 03-packages {
         install_kvm
         install_kvm_guest
         install_messaging
+        install_mingw
         install_music
         install_texlive
         install_torbrowser
@@ -409,6 +418,10 @@ function 03-packages {
         ;;
       "Messaging")
         install_messaging
+        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        ;;
+      "MinGW")
+        install_mingw
         show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
         ;;
       "Music")

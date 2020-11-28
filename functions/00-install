@@ -432,7 +432,7 @@ function install_gummiboot {
     crypto_uuid=$(blkid | grep crypto_LUKS | sed -n 's,.* UUID="\(\S\+\)" TYPE.*,\1,p')
 
     if [ -n "${crypto_uuid}" ]; then
-      cmdline="cryptdevice=${crypto_uuid}:${LV}:allow-discards"
+      cmdline="cryptdevice=UUID=${crypto_uuid}:${LV}:allow-discards"
       if [ -e /dev/mapper/${VG}-root ]; then
         cmdline="${cmdline} root=/dev/mapper/${VG}-root"
       fi

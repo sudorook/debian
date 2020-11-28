@@ -483,7 +483,7 @@ export -f install_gummiboot
 
 function install_grub {
   if [ -e /sys/firmware/efi ]; then
-    apt-get -y install grub-efi os-prober
+    apt-get -y install grub-efi os-prober efibootmgr
   else
     apt-get -y install grub-pc os-prober
   fi

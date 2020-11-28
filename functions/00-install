@@ -450,7 +450,7 @@ function install_gummiboot {
     fi
     cmdline="${cmdline} rw"
 
-    bootctl esp-path=/boot/efi install
+    bootctl --esp-path=/boot/efi install
   fi
 }
 export -f install_gummiboot

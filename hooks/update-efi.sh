@@ -57,7 +57,7 @@ function make_loader {
   version="${version/-i386/}"
   outfile="linux-${version}.conf"
   cat > /boot/efi/loader/loader.conf << EOF
-default	${outfile}"
+default	${outfile}
 timeout	1
 console-mode	max
 editor	no

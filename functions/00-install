@@ -466,17 +466,17 @@ function install_gummiboot {
 
     cp -af "/boot/${kernel}" "/boot/${kernel/vmlinuz/initrd.img}" /boot/efi/
     {
-      echo "default     ${outfile}";
-      echo "timeout     1";
-      echo "console-mode        max";
-      echo "editor      no";
+      echo "default	${outfile}";
+      echo "timeout	1";
+      echo "console-mode	max";
+      echo "editor	no";
     }> /boot/efi/loader/loader.conf
 
     {
-      echo "title       Debian, linux-${version}";
-      echo "linux       /${kernel}";
-      echo "initrd      /${kernel/vmlinuz/initrd.img}";
-      echo "options     ${cmdline}";
+      echo "title	Debian, linux-${version}";
+      echo "linux	/${kernel}";
+      echo "initrd	/${kernel/vmlinuz/initrd.img}";
+      echo "options	${cmdline}";
     }> "/boot/efi/loader/entries/${outfile}"
   fi
 }

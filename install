@@ -84,9 +84,9 @@ function main {
       CRYPT_PARTITION="${CRYPT_PARTITION}" chroot /mnt /bin/bash -c "make_luks_key"
     fi
   elif [[ "${BOOTMODE}" = "systemd-boot" ]]; then
-    mkdir -p /etc/kernel/postinst.d/
-    cp hooks/update-efi.sh /mnt/etc/kernel/postinst.d/zz-update-efi.sh
-    # chmod +x /mnt/etc/kernel/postinst.d/zz-update-efi.sh
+    mount --bind /sys/firmware/efi/efivars /mnt/sys/firmware/efi/efivars
+    mkdir -p /mnt/etc/kernel/postinst.d/
+    cp -af hooks/update-efi.sh /mnt/etc/kernel/postinst.d/update-efi
     DEVICE="${DEVICE}" chroot /mnt /bin/bash -c "install_gummiboot"
   elif [[ "${BOOTMODE}" = "EFISTUB" ]]; then
     show_warning "Not supported yet..."

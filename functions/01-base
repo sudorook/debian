@@ -48,6 +48,7 @@ function enable_contrib_repos {
     show_info "Enabling contrib repos."
     sudo sed -i "s,\(.* ${release} main.*\)$,\1 contrib,g" ${srclist}
     sudo sed -i "s,\(.* ${release}-updates main.*\)$,\1 contrib,g" ${srclist}
+    sudo sed -i "s,\(.* ${release}-backports main.*\)$,\1 contrib,g" ${srclist}
     sudo apt-get update
   else
     show_info "contrib already enabled."
@@ -61,6 +62,7 @@ function enable_nonfree_repos {
     show_info "Enabling non-free repos."
     sudo sed -i "s,\(.* ${release} main.*\)$,\1 non-free,g" ${srclist}
     sudo sed -i "s,\(.* ${release}-updates main.*\)$,\1 non-free,g" ${srclist}
+    sudo sed -i "s,\(.* ${release}-backports main.*\)$,\1 non-free,g" ${srclist}
     sudo apt-get update
   else
     show_info "non-free already enabled."

@@ -91,8 +91,6 @@ function install_printing {
   check_installed $(cat ${printer})
   check_fail
   show_success "Printing applications installed."
-
-  sudo systemctl enable --now cups
 }
 
 games="${dir}/packages/games.list"
@@ -134,7 +132,8 @@ function install_kvm_guest {
     check_fail
     show_success "KVM installed."
 
-    sudo systemctl enable spice-vdagentd.service
+    # sudo systemctl enable qemu-guest-agent.service
+    # sudo systemctl enable spice-vdagentd.service
   else
     show_warning "Not running on a virtualized machine. Skipping."
   fi

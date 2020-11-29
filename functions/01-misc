@@ -28,6 +28,29 @@ function install_selinux {
 
   show_info "Activating SELinux."
   sudo selinux-activate
+
+  if [ -f /etc/default/grub ]; then
+    show_info "Updating GRUB kernel command line."
+    local cmdline
+    cmdline="$(sed -n "s|^GRUB_CMDLINE_LINUX=\"\(.*\)\"|\1|p" /etc/default/grub)"
+    if ! [[ "${cmdline}" =~ security=selinux ]]; then
+      sed -i "s|^GRUB_CMDLINE_LINUX=\"${cmdline}\"|GRUB_CMDLINE_LINUX=\"${cmdline} security=selinux selinux=1\"|g" /etc/default/grub
+    fi
+  fi
+
+  if [[ "$(sudo bootctl is-installed)" = "yes" ]]; then
+    show_info "Updating systemd-boot kernel command line(s)."
+    local cmdline
+    local efidir
+    efidir="$(bootctl -p)"
+    for entry in ${efidir}/loader/entries/*.conf; do
+      cmdline="$(sed -n "s/^options\s\+\(.*\)/\1/p" "${entry}")"
+      if ! [[ "${cmdline}" =~ security=selinux ]]; then
+        sed -i "s|^options\(\s\+\)${cmdline}|options\1${cmdline} selinux=1 security=selinux|g" "${entry}"
+      fi
+    done
+  fi
+
   show_success "SELinux setup complete."
   show_info \
     "Reboot the computer to start using SELinux. It will be in permissive" \

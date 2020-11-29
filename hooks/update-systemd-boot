@@ -4,10 +4,12 @@ set -eu
 function get_cmdline {
   local default
   local cmdline
-  if [ -f /boot/efi/loader/loader.conf ]; then
-    default=$(sed -n "s/^default\(\s\+\)\(.*\)/\1/p" /boot/efi/loader/loader.conf)
-    if [ -f "/boot/efi/loader/entries/${default}" ]; then
-      cmdline=$(sed -n "s/^options\(\s\+\)\(.*\)/\1/p" "/boot/efi/loader/entries/${default}")
+  local efidir
+  efidir="$(bootctl -p)"
+  if [ -f "${efidir}/loader/loader.conf" ]; then
+    default=$(sed -n "s/^default\(\s\+\)\(.*\)/\1/p" ${efidir}/loader/loader.conf)
+    if [ -f "${efidir}/loader/entries/${default}" ]; then
+      cmdline=$(sed -n "s/^options\(\s\+\)\(.*\)/\1/p" "${efidir}/loader/entries/${default}")
     fi
   fi
   echo "${cmdline}"
@@ -17,9 +19,11 @@ function get_default {
   local default
   local current
   local new
-  if [ -f /boot/efi/loader/loader.conf ]; then
-    default=$(sed -n "s/^default\(\s\+\)\(.*\)/\1/p" /boot/efi/loader/loader.conf)
-    current=$(sed -n "s/^linux\(\s\+\)\(.*\)/\1/p" "/boot/efi/loader/entries/${default}")
+  local efidir
+  efidir="$(bootctl -p)"
+  if [ -f "${efidir}/loader/loader.conf" ]; then
+    default=$(sed -n "s/^default\(\s\+\)\(.*\)/\1/p" ${efidir}/loader/loader.conf)
+    current=$(sed -n "s/^linux\(\s\+\)\(.*\)/\1/p" "${efidir}/loader/entries/${default}")
   fi
   if [[ -n "${current}" ]]; then
     # for backported kernels...
@@ -55,12 +59,14 @@ function make_loader {
   local kernel
   local version
   local outfile
+  local efidir
+  efidir="$(bootctl -p)"
   kernel="${1}"
   version="${kernel/vmlinuz-/}"
   version="${version/-amd64/}"
   version="${version/-i386/}"
   outfile="linux-${version}.conf"
-  cat > /boot/efi/loader/loader.conf << EOF
+  cat > "${efidir}/loader/loader.conf" << EOF
 default	${outfile}
 timeout	1
 console-mode	max
@@ -73,6 +79,8 @@ function make_entry {
   local version
   local cmdline
   local outfile
+  local efidir
+  efidir="$(bootctl -p)"
   kernel="${1}"
   version="${kernel/vmlinuz-/}"
   version="${version/-amd64/}"
@@ -80,7 +88,7 @@ function make_entry {
   cmdline="${2}"
   outfile="linux-${version}.conf"
 
-  cat > "/boot/efi/loader/entries/${outfile}" << EOF
+  cat > "${efidir}/loader/entries/${outfile}" << EOF
 title	Debian, linux-${version}
 linux	/${kernel}
 initrd	/${kernel/vmlinuz/initrd.img}
@@ -89,19 +97,22 @@ EOF
 }
 
 function clear_entries {
-  find /boot/efi/loader -type f -name "*.conf" -delete
-  find /boot/efi -type f -name "vmlinuz*" -delete
-  find /boot/efi -type f -name "initrd.img*" -delete
+  local efidir
+  efidir="$(bootctl -p)"
+  find "${efidir}/loader" -type f -name "*.conf" -delete
+  find "${efidir}" -type f -name "vmlinuz*" -delete
+  find "${efidir}" -type f -name "initrd.img*" -delete
 }
 
 if [ "$(bootctl is-installed)" = "yes" ]; then
   DEFAULT="$(get_default)"
   CMDLINE="$(get_cmdline)"
+  EFIDIR="$(bootctl -p)"
 
   clear_entries
   for kernel in /boot/vmlinuz*; do
-    cp -af "${kernel}" /boot/efi/
-    cp -af "${kernel/vmlinuz/initrd.img}" /boot/efi/
+    cp -af "${kernel}" ${EFIDIR}/
+    cp -af "${kernel/vmlinuz/initrd.img}" ${EFIDIR}/
     make_entry "$(basename "${kernel}")" "${CMDLINE}"
   done
   make_loader "${DEFAULT}"

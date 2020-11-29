@@ -199,7 +199,7 @@ function disable_beep {
       sudo sh -c "echo 'blacklist pcspkr' >> ${pcspkr_blacklist}"
     fi
     if ! find /etc/modprobe.d/ -type f \
-         -exec grep "blacklist snd_pcsp" {} + >/dev/nulll 2>&1; then
+         -exec grep "blacklist snd_pcsp" {} + >/dev/null 2>&1; then
       sudo sh -c "echo 'blacklist snd_pcsp' >> ${pcspkr_blacklist}"
     fi
   fi

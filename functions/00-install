@@ -544,8 +544,6 @@ function make_luks_key {
   local crypt_key_path
   local crypt_uuid
 
-  apt-get -y install cryptsetup
-
   echo "Adding LUKS decryption key file..."
   crypt_key="crypto_keyfile.bin"
   crypt_key_path="/etc/${crypt_key}"
@@ -593,6 +591,10 @@ function install_packages {
     apt-transport-https bash-completion linux-base git man-db manpages \
     lsb-release network-manager wget rsync iwd netselect-apt lvm2 sudo \
     linux-image-amd64 linux-headers-amd64
+
+  if [[ "${SCHEME}" = "LVM on LUKS" ]]; then
+    apt-get -y install cryptsetup
+  fi
   tasksel install standard
 }
 export -f install_packages

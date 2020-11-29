@@ -11,7 +11,7 @@ function install_zsh {
   show_success "zsh installed."
 
   show_info "Copying zshrc."
-  cp -f ${zshrc} ${HOME}/.zshrc
+  cp -f "${zshrc}" "${HOME}/.zshrc"
 
   if ! test $(getent passwd `whoami` | grep "zsh"); then
     show_info "Changing login shell to zsh. Provide your password."

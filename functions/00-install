@@ -425,14 +425,14 @@ export -f add_user
 function install_gummiboot {
   if command -v bootctl >/dev/null 2>&1; then
     local root_uuid
-    local crypto_uuid
+    local crypt_uuid
     local cmdline
 
     root_uuid=$(sed -n "s,^UUID=\(\S\+\)\s\+/\s\+.*,\1,p" /etc/fstab)
-    crypto_uuid=$(blkid | grep crypto_LUKS | sed -n 's,.* UUID="\(\S\+\)" TYPE.*,\1,p')
+    crypt_uuid=$(blkid | grep crypto_LUKS | sed -n 's,.* UUID="\(\S\+\)" TYPE.*,\1,p')
 
-    if [ -n "${crypto_uuid}" ]; then
-      cmdline="cryptdevice=UUID=${crypto_uuid}:${LV}:allow-discards"
+    if [ -n "${crypt_uuid}" ]; then
+      cmdline="cryptdevice=UUID=${crypt_uuid}:${LV}:allow-discards"
       if [ -e /dev/mapper/${VG}-root ]; then
         cmdline="${cmdline} root=/dev/mapper/${VG}-root"
       fi
@@ -441,6 +441,13 @@ function install_gummiboot {
       fi
       if [ -e /dev/mapper/${VG}-swap ]; then
         cmdline="${cmdline} resume=/dev/mapper/${VG}-swap"
+      fi
+
+      # add entry to /etc/crypttab
+      if grep "${crypt_uuid}" /etc/crypttab >/dev/null 2>&1; then
+        sed -i "s|\([a-zA-Z0-9_-]\+\)	UUID=${crypt_uuid}	none	\([A-Za-z0-9_-  =,]\+\)|\1	UUID=${crypt_uuid}	none	luks,discard|g" /etc/crypttab
+      else
+        echo "${LV}	UUID=${crypt_uuid}	none	luks,discard" >> /etc/crypttab
       fi
     elif [ -n "${root_uuid}" ]; then
       cmdline="root=/dev/mapper/${VG}-root"
@@ -451,7 +458,7 @@ function install_gummiboot {
     cmdline="${cmdline} rw"
 
     bootctl --esp-path=/boot/efi install
-    systemctl enable --now systemd-update-efi.path
+    systemctl enable systemd-update-efi.path
 
     local tmp
     local kernel
@@ -479,6 +486,9 @@ function install_gummiboot {
       echo "options	${cmdline}";
     }> "/boot/efi/loader/entries/${outfile}"
   fi
+
+  # rebuild the kernel(s)
+  update-initramfs -u -k all
 }
 export -f install_gummiboot
 
@@ -562,7 +572,7 @@ EOF
   echo UMASK=0077 >> /etc/initramfs-tools/initramfs.conf
 
   # rebuild the kernel(s)
-  update-initramfs -u
+  update-initramfs -u -k all
 
   # prevent non-privileged users from reading any ramdisk
   chmod -R 700 /boot/

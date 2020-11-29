@@ -54,11 +54,9 @@ function install_selinux {
   show_success "SELinux setup complete."
   show_info \
     "Reboot the computer to start using SELinux. It will be in permissive" \
-    "mode by default." \
-    "Run # sestatus after rebooting to verify that SELinux is installed " \
-    "properly." \
-    "To start enforcing policies, add 'enforcing=1' to the kernel command line" \
-    "in /etc/default/grub."
+    "mode by default. Run # sestatus after rebooting to verify that SELinux" \
+    "is installed properly. To start enforcing policies, add 'enforcing=1' " \
+    "to the kernel command line."
 }
 
 utils="${dir}/packages/utils.list"

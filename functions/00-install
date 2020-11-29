@@ -445,7 +445,7 @@ function install_gummiboot {
 
       # add entry to /etc/crypttab
       if grep "${crypt_uuid}" /etc/crypttab >/dev/null 2>&1; then
-        sed -i "s|\([a-zA-Z0-9_-]\+\)	UUID=${crypt_uuid}	none	\([A-Za-z0-9_-  =,]\+\)|\1	UUID=${crypt_uuid}	none	luks,discard|g" /etc/crypttab
+        sed -i "s|\([a-zA-Z0-9_-]\+\)\(\s\+\)UUID=${crypt_uuid}\(\s\+\)none\(\s\+\)\([A-Za-z0-9_\-\=,]\+\)|\1\2UUID=${crypt_uuid}\3none\4luks,discard|g" /etc/crypttab
       else
         echo "${LV}	UUID=${crypt_uuid}	none	luks,discard" >> /etc/crypttab
       fi
@@ -558,7 +558,7 @@ function make_luks_key {
   # add key to /etc/crypttab
   crypt_uuid="$(lsblk -dno UUID "${CRYPT_PARTITION}")"
   if grep "${crypt_uuid}" >/dev/null 2>&1; then
-    sed -i "s,\([a-zA-Z0-9_-]\+\)	UUID=${crypt_uuid}	none	\([A-Za-z0-9_-=,]\+\),\1	UUID=${crypt_uuid}	/${crypt_key}	luks,discard,key-slot=1,keyscript=/bin/cat,g" /etc/crypttab
+    sed -i "s|\([a-zA-Z0-9_-]\+\)\(\s\+\)UUID=${crypt_uuid}\(\s\+\)none\(\s\+\)\([A-Za-z0-9_\-\=,]\+\)|\1\2UUID=${crypt_uuid}\3/${crypt_key}\4luks,discard,key-slot=1,keyscript=/bin/cat|g" /etc/crypttab
   else
     echo "${LV}	UUID=${crypt_uuid}	/${crypt_key}	luks,discard,key-slot=1,keyscript=/bin/cat" >> /etc/crypttab
   fi

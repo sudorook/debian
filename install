@@ -85,10 +85,18 @@ function main {
     fi
   elif [[ "${BOOTMODE}" = "systemd-boot" ]]; then
     mount --bind /sys/firmware/efi/efivars /mnt/sys/firmware/efi/efivars
+
     mkdir -p /mnt/etc/kernel/postinst.d/
+    mkdir -p /mnt/etc/kernel/postrm.d/
+    mkdir -p /mnt/etc/initramfs/post-update.d/
+    mkdir -p /mnt/etc/systemd/system/
+
     cp -af hooks/update-systemd-boot /mnt/etc/kernel/postinst.d/
     cp -af hooks/update-systemd-boot /mnt/etc/kernel/postrm.d/
-    cp -af hooks/systemd-update-efi.path hooks/systemd-update-efi.service /mnt/etc/systemd/system/
+    cp -af hooks/update-initrd /mnt/etc/initramfs/post-update.d/
+    cp -af hooks/systemd-update-efi.path hooks/systemd-update-efi.service \
+      /mnt/etc/systemd/system/
+
     DEVICE="${DEVICE}" chroot /mnt /bin/bash -c "install_gummiboot"
   elif [[ "${BOOTMODE}" = "EFISTUB" ]]; then
     show_warning "Not supported yet..."

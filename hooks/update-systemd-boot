@@ -7,9 +7,9 @@ function get_cmdline {
   local efidir
   efidir="$(bootctl -p)"
   if [ -f "${efidir}/loader/loader.conf" ]; then
-    default=$(sed -n "s/^default\(\s\+\)\(.*\)/\1/p" ${efidir}/loader/loader.conf)
+    default=$(sed -n "s/^default\s\+\(.*\)/\1/p" "${efidir}/loader/loader.conf")
     if [ -f "${efidir}/loader/entries/${default}" ]; then
-      cmdline=$(sed -n "s/^options\(\s\+\)\(.*\)/\1/p" "${efidir}/loader/entries/${default}")
+      cmdline=$(sed -n "s/^options\s\+\(.*\)/\1/p" "${efidir}/loader/entries/${default}")
     fi
   fi
   echo "${cmdline}"
@@ -22,8 +22,8 @@ function get_default {
   local efidir
   efidir="$(bootctl -p)"
   if [ -f "${efidir}/loader/loader.conf" ]; then
-    default=$(sed -n "s/^default\(\s\+\)\(.*\)/\1/p" ${efidir}/loader/loader.conf)
-    current=$(sed -n "s/^linux\(\s\+\)\(.*\)/\1/p" "${efidir}/loader/entries/${default}")
+    default=$(sed -n "s/^default\s\+\(.*\)/\1/p" "${efidir}/loader/loader.conf")
+    current=$(sed -n "s/^linux\s\+\(.*\)/\1/p" "${efidir}/loader/entries/${default}")
   fi
   if [[ -n "${current}" ]]; then
     # for backported kernels...

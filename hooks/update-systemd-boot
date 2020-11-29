@@ -111,8 +111,8 @@ if [ "$(bootctl is-installed)" = "yes" ]; then
 
   clear_entries
   for kernel in /boot/vmlinuz*; do
-    cp -af "${kernel}" ${EFIDIR}/
-    cp -af "${kernel/vmlinuz/initrd.img}" ${EFIDIR}/
+    cp -af "${kernel}" "${EFIDIR}/"
+    cp -af "${kernel/vmlinuz/initrd.img}" "${EFIDIR}/"
     make_entry "$(basename "${kernel}")" "${CMDLINE}"
   done
   make_loader "${DEFAULT}"

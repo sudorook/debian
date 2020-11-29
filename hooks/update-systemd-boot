@@ -5,9 +5,9 @@ function get_cmdline {
   local default
   local cmdline
   if [ -f /boot/efi/loader/loader.conf ]; then
-    default=$(grep ^default /boot/efi/loader/loader.conf | cut -d"	" -f2)
+    default=$(sed -n "s/^default\(\s\+\)\(.*\)/\1/p" /boot/efi/loader/loader.conf)
     if [ -f "/boot/efi/loader/entries/${default}" ]; then
-      cmdline=$(grep ^options "/boot/efi/loader/entries/${default}" | cut -d"	" -f2)
+      cmdline=$(sed -n "s/^options\(\s\+\)\(.*\)/\1/p" "/boot/efi/loader/entries/${default}")
     fi
   fi
   echo "${cmdline}"
@@ -18,8 +18,8 @@ function get_default {
   local current
   local new
   if [ -f /boot/efi/loader/loader.conf ]; then
-    default=$(grep ^default /boot/efi/loader/loader.conf | cut -d"	" -f2)
-    current=$(grep ^linux "/boot/efi/loader/entries/${default}" | cut -d"	" -f2)
+    default=$(sed -n "s/^default\(\s\+\)\(.*\)/\1/p" /boot/efi/loader/loader.conf)
+    current=$(sed -n "s/^linux\(\s\+\)\(.*\)/\1/p" "/boot/efi/loader/entries/${default}")
   fi
   if [[ -n "${current}" ]]; then
     # for backported kernels...

@@ -409,7 +409,7 @@ CRYPT_PASSWORD=""
 function ask_lukspass {
   local tmp
   stty -echo
-  tmp="$(ask_question "User password")"
+  tmp="$(ask_question "LUKS decryption password")"
   stty echo
   echo
   if [ -n "${tmp}" ]; then
@@ -571,13 +571,13 @@ function make_luks_key {
   crypt_key="crypto_keyfile.bin"
   crypt_key_path="/etc/${crypt_key}"
   dd bs=512 count=4 if=/dev/urandom of=${crypt_key_path} && sync
+  chmod 400 ${crypt_key_path}
   echo "${CRYPT_PASSWORD}" | \
     cryptsetup luksAddKey "${CRYPT_PARTITION}" ${crypt_key_path} -d -
-  chmod 400 ${crypt_key_path}
 
   # add key to /etc/crypttab
   crypt_uuid="$(lsblk -dno UUID "${CRYPT_PARTITION}")"
-  if grep "${crypt_uuid}" >/dev/null 2>&1; then
+  if grep "${crypt_uuid}" /etc/crypttab >/dev/null 2>&1; then
     sed -i "s|\([a-zA-Z0-9_-]\+\)\(\s\+\)UUID=${crypt_uuid}\(\s\+\)none\(\s\+\)\([A-Za-z0-9_\-\=,]\+\)|\1\2UUID=${crypt_uuid}\3/${crypt_key}\4luks,discard,key-slot=1,keyscript=/bin/cat|g" /etc/crypttab
   else
     echo "${LV}	UUID=${crypt_uuid}	/${crypt_key}	luks,discard,key-slot=1,keyscript=/bin/cat" >> /etc/crypttab

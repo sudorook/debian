@@ -662,7 +662,7 @@ function 05-personal {
            "Select desktop theme" "Set dark GTK" "Import Cinnamon dconf" \
            "Import GNOME dconf" "Import application dconf" \
            "Import GNOME terminal profiles" "Enable autologin" \
-           "Invert brightness (i915)" "Enable IOMMU (i915)" \
+           "Invert brightness (i915)" "Enable IOMMU (Intel)" \
            "Disable PulseAudio suspend" "Disable 802.11n" "Add scripts")
   select option in "${options[@]}"; do
     case $option in
@@ -728,7 +728,7 @@ function 05-personal {
         invert_brightness
         show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
         ;;
-      "Enable IOMMU (i915)")
+      "Enable IOMMU (Intel)")
         enable_intel_iommu
         show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
         ;;

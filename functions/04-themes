@@ -128,12 +128,13 @@ function install_vim_theme {
 }
 
 function install_thunderbird_theme {
-  if ! [ -d ${HOME}/.thunderbird/*.default ]; then
+  local thunderbird
+  thunderbird="$(echo ~/.thunderbird/*.default)"
+  if ! [ -d "${thunderbird}" ]; then
     show_warning "Thunderbird profile missing. Skipping."
     return
   fi
 
-  thunderbird="$(echo ~/.thunderbird/*.default)"
   show_header "Installing Monterail theme for Thunderbird."
   if [ -d "${thunderbird}/chrome" ]; then
     show_info "${thunderbird}/chrome already exists. Backing up and replacing."

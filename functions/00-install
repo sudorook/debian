@@ -580,7 +580,9 @@ EOF
   # prevent non-privileged users from reading any ramdisk
   chmod -R 700 /boot/
 
-  update-grub
+  if [ -f /etc/default/grub ]; then
+    update-grub
+  fi
 }
 export -f make_luks_key
 

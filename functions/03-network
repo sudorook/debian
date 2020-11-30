@@ -66,19 +66,21 @@ srclist="/etc/apt/sources.list"
 function use_onion_repos {
   show_header "Tunneling apt over tor for Debian $(lsb_release -sc)."
 
-  [[ $(cat ${srclist} | grep contrib) ]]; is_contrib=$?
-  [[ $(cat ${srclist} | grep non-free) ]]; is_nonfree=$?
+  grep -q contrib ${srclist}; is_contrib=$?
+  grep -q non-free ${srclist}; is_nonfree=$?
 
   release=$(lsb_release -sc)
   sudo cp -f ${srclist} ${srclist}.${RANDOM}.bak
   sudo cp -f "${dir}/sources/${release}-sources.list" ${srclist}
 
-  [ ${is_contrib} == true ] && \
+  [ ${is_contrib} == 0 ] && \
     sudo sed -i "s,\(.* ${release} main.*\)$,\1 contrib,g" ${srclist} && \
     sudo sed -i "s,\(.* ${release}-updates main.*\)$,\1 contrib,g" ${srclist}
-  [ ${is_nonfree} == true ] && \
+    sudo sed -i "s,\(.* ${release}-backports main.*\)$,\1 contrib,g" ${srclist}
+  [ ${is_nonfree} == 0 ] && \
     sudo sed -i "s,\(.* ${release} main.*\)$,\1 non-free,g" ${srclist} && \
     sudo sed -i "s,\(.* ${release}-updates main.*\)$,\1 non-free,g" ${srclist}
+    sudo sed -i "s,\(.* ${release}-backports main.*\)$,\1 non-free,g" ${srclist}
   sudo sed -i "s,https://deb.debian.org,tor+http://vwakviie2ienjx6t.onion,g" ${srclist}
   sudo sed -i "s,https://security.debian.org/,tor+http://sgvtcaew4bxjd7ln.onion/debian-security/,g" ${srclist}
 

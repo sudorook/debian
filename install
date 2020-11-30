@@ -58,7 +58,7 @@ function main {
   ask_locale
   ask_hostname
   ask_username
-  ask_lukspass
+  # ask_lukspass
 
   set_partitions
   format_partitions
@@ -82,7 +82,8 @@ function main {
   if [[ "${BOOTMODE}" = "GRUB" ]]; then
     DEVICE="${DEVICE}" chroot /mnt /bin/bash -c "install_grub"
     if [[ "${SCHEME}" = "LVM on LUKS" ]]; then
-      CRYPT_PASSWORD="${CRYPT_PASSWORD}" CRYPT_PARTITION="${CRYPT_PARTITION}" chroot /mnt /bin/bash -c "make_luks_key"
+      # CRYPT_PASSWORD="${CRYPT_PASSWORD}" CRYPT_PARTITION="${CRYPT_PARTITION}" chroot /mnt /bin/bash -c "make_luks_key"
+      CRYPT_PARTITION="${CRYPT_PARTITION}" chroot /mnt /bin/bash -c "make_luks_key"
     fi
   elif [[ "${BOOTMODE}" = "systemd-boot" ]]; then
     mount --bind /sys/firmware/efi/efivars /mnt/sys/firmware/efi/efivars

@@ -240,14 +240,17 @@ function format_partitions {
   case "${SCHEME}" in
     "LVM on LUKS")
       if [[ "${BOOTMODE}" = "GRUB" ]]; then
-        echo "${CRYPT_PASSWORD}" | \
-          cryptsetup luksFormat --type luks1 "${CRYPT_PARTITION}" -d -
+        # echo "${CRYPT_PASSWORD}" | \
+        #   cryptsetup luksFormat --type luks1 "${CRYPT_PARTITION}" -d -
+        cryptsetup luksFormat --type luks1 "${CRYPT_PARTITION}"
       else
-        echo "${CRYPT_PASSWORD}" | \
-          cryptsetup luksFormat "${CRYPT_PARTITION}" -d -
+        # echo "${CRYPT_PASSWORD}" | \
+        #   cryptsetup luksFormat "${CRYPT_PARTITION}" -d -
+        cryptsetup luksFormat "${CRYPT_PARTITION}"
       fi
-      echo "${CRYPT_PASSWORD}" | \
-        cryptsetup luksOpen "${CRYPT_PARTITION}" ${LV} -d -
+      # echo "${CRYPT_PASSWORD}" | \
+      #   cryptsetup luksOpen "${CRYPT_PARTITION}" ${LV} -d -
+      cryptsetup luksOpen "${CRYPT_PARTITION}" ${LV}
 
       pvcreate /dev/mapper/${LV}
       vgcreate ${VG} /dev/mapper/${LV}
@@ -405,20 +408,20 @@ function ask_username {
   fi
 }
 
-CRYPT_PASSWORD=""
-function ask_lukspass {
-  local tmp
-  stty -echo
-  tmp="$(ask_question "LUKS decryption password")"
-  stty echo
-  echo
-  if [ -n "${tmp}" ]; then
-    CRYPT_PASSWORD="${tmp}"
-  else
-    show_error "ERROR: no password given."
-    exit 3
-  fi
-}
+# CRYPT_PASSWORD=""
+# function ask_lukspass {
+#   local tmp
+#   stty -echo
+#   tmp="$(ask_question "LUKS decryption password")"
+#   stty echo
+#   echo
+#   if [ -n "${tmp}" ]; then
+#     CRYPT_PASSWORD="${tmp}"
+#   else
+#     show_error "ERROR: no password given."
+#     exit 3
+#   fi
+# }
 
 function add_user {
   useradd -m -c "${USER_NAME[@]^}" "${USER_NAME}" -s /bin/bash
@@ -572,8 +575,9 @@ function make_luks_key {
   crypt_key_path="/etc/${crypt_key}"
   dd bs=512 count=4 if=/dev/urandom of=${crypt_key_path} && sync
   chmod 400 ${crypt_key_path}
-  echo "${CRYPT_PASSWORD}" | \
-    cryptsetup luksAddKey "${CRYPT_PARTITION}" ${crypt_key_path} -d -
+  # echo "${CRYPT_PASSWORD}" | \
+  #   cryptsetup luksAddKey "${CRYPT_PARTITION}" ${crypt_key_path} -d -
+  cryptsetup luksAddKey "${CRYPT_PARTITION}" ${crypt_key_path}
 
   # add key to /etc/crypttab
   crypt_uuid="$(lsblk -dno UUID "${CRYPT_PARTITION}")"

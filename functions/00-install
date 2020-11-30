@@ -520,7 +520,7 @@ export -f install_gummiboot
 
 function install_grub {
   if [ -e /sys/firmware/efi ]; then
-    apt-get -y install grub-efi os-prober efibootmgr
+    apt-get -y install grub-efi grub-pc-bin os-prober efibootmgr
   else
     apt-get -y install grub-pc os-prober
   fi
@@ -557,6 +557,7 @@ function install_grub {
     sed -i "/^GRUB_CMDLINE_LINUX=/a GRUB_ENABLE_CRYPTODISK=y" /etc/default/grub
   fi
   if [ -e /sys/firmware/efi ]; then
+    grub-install --target=i386-pc "/dev/${DEVICE}" --recheck
     grub-install --target=x86_64-efi --bootloader-id="GRUB-UEFI" "/dev/${DEVICE}" --recheck
   else
     grub-install --target=i386-pc "/dev/${DEVICE}" --recheck

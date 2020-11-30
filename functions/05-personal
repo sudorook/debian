@@ -291,39 +291,77 @@ function enable_autologin {
 
 grubdefault="/etc/default/grub"
 function invert_brightness {
-  oldline=$(grep ^GRUB_CMDLINE_LINUX= "${grubdefault}")
-  bootparams=$(echo "${oldline}" | sed -n "s/^GRUB_CMDLINE_LINUX=\"\(.*\)\"/\1/p")
-  show_header "Inverting display brightness (Intel i915)."
-  if [[ ${bootparams} =~ i915.invert_brightness= ]]; then
-    sudo sed -i "s|i915.invert_brightness=\(1\|0\)|i915.invert_brightness=1|g" ${grubdefault}
-  else
-    if test "${bootparams}"; then
-      sudo sed -i "s|${bootparams}|${bootparams} i915.invert_brightness=1|g" ${grubdefault}
+  if [ -f "${grubdefault}" ]; then
+    local oldine
+    local bootparams
+    oldline=$(grep ^GRUB_CMDLINE_LINUX= "${grubdefault}")
+    bootparams=$(echo "${oldline}" | sed -n "s/^GRUB_CMDLINE_LINUX=\"\(.*\)\"/\1/p")
+    show_header "Inverting display brightness (Intel i915)."
+    if [[ ${bootparams} =~ i915.invert_brightness= ]]; then
+      sudo sed -i "s|i915.invert_brightness=\(on\|off\|1\|0\)|i915.invert_brightness=1|g" ${grubdefault}
     else
-      sudo sed -i "s|${oldline}|GRUB_CMDLINE_LINUX=\"i915.invert_brightness=1\"|g" ${grubdefault}
+      if test "${bootparams}"; then
+        sudo sed -i "s|${bootparams}|${bootparams} i915.invert_brightness=1|g" ${grubdefault}
+      else
+        sudo sed -i "s|${oldline}|GRUB_CMDLINE_LINUX=\"i915.invert_brightness=1\"|g" ${grubdefault}
+      fi
+      sudo sed -i "\|^GRUB_CMDLINE_LINUX=| a\#${oldline}" ${grubdefault} # backup
+      show_success "Brightness inverted."
+      sudo update-grub
     fi
-    sudo sed -i "\|^GRUB_CMDLINE_LINUX=| a\#${oldline}" ${grubdefault} # backup
-    show_success "Brightness inverted."
-    sudo update-grub
+  fi
+  if [[ "$(sudo bootctl is-installed)" = yes ]]; then
+    local cmdline
+    for entry in "$(bootctl -p)"/loader/entries/*.conf; do
+      cmdline=$(sed -n "s/^options\s\+\(.*\)/\1/p" "${entry}")
+      if [[ ${cmdline} =~ i915.invert_brightness= ]]; then
+        sudo sed -i "s|i915.invert_brightness=\(1\|0\)|i915.invert_brightness=1|g" "${entry}"
+      else
+        if test "${cmdline}"; then
+          sudo sed -i "s|${cmdline}|${cmdline} i915.invert_brightness=1|g" ${grubdefault}
+        else
+          echo "options	i915.invert_brightness=1" | sudo tee -a "${entry}"
+        fi
+      fi
+    done
   fi
 }
 
 grubdefault="/etc/default/grub"
 grubcfg="/boot/grub/grub.cfg"
 function enable_intel_iommu {
-  oldline=$(grep ^GRUB_CMDLINE_LINUX= "${grubdefault}")
-  bootparams=$(echo "${oldline}" | sed -n "s/^GRUB_CMDLINE_LINUX=\"\(.*\)\"/\1/p")
-  show_info "Setting Intel IOMMU kernel parameter."
-  if [[ ${bootparams} =~ intel_iommu= ]]; then
-    sudo sed -i "s|intel_iommu=\(on\|off\)|intel_iommu=on|g" ${grubdefault}
-  else
-    if test "${bootparams}"; then
-      sudo sed -i "s|${bootparams}|${bootparams} intel_iommu=on|g" ${grubdefault}
+  if [ -f "${grubdefault}" ]; then
+    local oldline
+    local bootparams
+    oldline=$(grep ^GRUB_CMDLINE_LINUX= "${grubdefault}")
+    bootparams=$(echo "${oldline}" | sed -n "s/^GRUB_CMDLINE_LINUX=\"\(.*\)\"/\1/p")
+    show_info "Setting Intel IOMMU kernel parameter."
+    if [[ ${bootparams} =~ intel_iommu= ]]; then
+      sudo sed -i "s|intel_iommu=\(on\|off\|0\|1\)|intel_iommu=on|g" ${grubdefault}
     else
-      sudo sed -i "s|${oldline}|GRUB_CMDLINE_LINUX=\"intel_iommu=on\"|g" ${grubdefault}
+      if test "${bootparams}"; then
+        sudo sed -i "s|${bootparams}|${bootparams} intel_iommu=on|g" ${grubdefault}
+      else
+        sudo sed -i "s|${oldline}|GRUB_CMDLINE_LINUX=\"intel_iommu=on\"|g" ${grubdefault}
+      fi
+      sudo sed -i "\|^GRUB_CMDLINE_LINUX=| a\#${oldline}" ${grubdefault} # backup
+      sudo grub-mkconfig -o ${grubcfg}
     fi
-    sudo sed -i "\|^GRUB_CMDLINE_LINUX=| a\#${oldline}" ${grubdefault} # backup
-    sudo grub-mkconfig -o ${grubcfg}
+  fi
+  if [[ "$(sudo bootctl is-installed)" = yes ]]; then
+    local cmdline
+    for entry in "$(bootctl -p)"/loader/entries/*.conf; do
+      cmdline=$(sed -n "s/^options\s\+\(.*\)/\1/p" "${entry}")
+      if [[ ${cmdline} =~ intel_iommu= ]]; then
+        sudo sed -i "s|intel_iommu=\(1\|0\)|intel_iommu=on|g" "${entry}"
+      else
+        if test "${cmdline}"; then
+          sudo sed -i "s|${cmdline}|${cmdline} intel_iommu=on|g" ${grubdefault}
+        else
+          echo "options	intel_iommu=on" | sudo tee -a "${entry}"
+        fi
+      fi
+    done
   fi
 }
 

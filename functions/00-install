@@ -240,11 +240,14 @@ function format_partitions {
   case "${SCHEME}" in
     "LVM on LUKS")
       if [[ "${BOOTMODE}" = "GRUB" ]]; then
-        cryptsetup luksFormat --type luks1 "${CRYPT_PARTITION}"
+        echo "${CRYPT_PASSWORD}" | \
+          cryptsetup luksFormat --type luks1 "${CRYPT_PARTITION}" -d -
       else
-        cryptsetup luksFormat "${CRYPT_PARTITION}"
+        echo "${CRYPT_PASSWORD}" | \
+          cryptsetup luksFormat "${CRYPT_PARTITION}" -d -
       fi
-      cryptsetup luksOpen "${CRYPT_PARTITION}" ${LV}
+      echo "${CRYPT_PASSWORD}" | \
+        cryptsetup luksOpen "${CRYPT_PARTITION}" ${LV} -d -
 
       pvcreate /dev/mapper/${LV}
       vgcreate ${VG} /dev/mapper/${LV}
@@ -402,6 +405,21 @@ function ask_username {
   fi
 }
 
+CRYPT_PASSWORD=""
+function ask_lukspass {
+  local tmp
+  stty -echo
+  tmp="$(ask_question "User password")"
+  stty echo
+  echo
+  if [ -n "${tmp}" ]; then
+    CRYPT_PASSWORD="${tmp}"
+  else
+    show_error "ERROR: no password given."
+    exit 3
+  fi
+}
+
 function add_user {
   useradd -m -c "${USER_NAME[@]^}" "${USER_NAME}" -s /bin/bash
   usermod -aG sudo,"${USER_NAME}" "${USER_NAME}"
@@ -552,9 +570,10 @@ function make_luks_key {
   echo "Adding LUKS decryption key file..."
   crypt_key="crypto_keyfile.bin"
   crypt_key_path="/etc/${crypt_key}"
-  dd bs=512 count=4 if=/dev/random of=${crypt_key_path}
+  dd bs=512 count=4 if=/dev/urandom of=${crypt_key_path} && sync
+  echo "${CRYPT_PASSWORD}" | \
+    cryptsetup luksAddKey "${CRYPT_PARTITION}" ${crypt_key_path} -d -
   chmod 400 ${crypt_key_path}
-  cryptsetup luksAddKey "${CRYPT_PARTITION}" ${crypt_key_path}
 
   # add key to /etc/crypttab
   crypt_uuid="$(lsblk -dno UUID "${CRYPT_PARTITION}")"

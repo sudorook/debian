@@ -553,7 +553,7 @@ function make_luks_key {
   crypt_key="crypto_keyfile.bin"
   crypt_key_path="/etc/${crypt_key}"
   dd bs=512 count=4 if=/dev/random of=${crypt_key_path}
-  chmod 400 ${crypt_key}
+  chmod 400 ${crypt_key_path}
   cryptsetup luksAddKey "${CRYPT_PARTITION}" ${crypt_key_path}
 
   # add key to /etc/crypttab

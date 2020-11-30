@@ -74,7 +74,7 @@ function main {
 
   cp "sources/${RELEASE}-sources.list" "/mnt/etc/apt/sources.list"
   chroot /mnt /bin/bash -c "update_mirrorlist"
-  chroot /mnt /bin/bash -c "install_packages"
+  SCHEME="${SCHEME}" chroot /mnt /bin/bash -c "install_packages"
   # chroot /mnt /bin/bash -c "install_ucode"
   HOST_NAME="${HOST_NAME}" chroot /mnt /bin/bash -c "set_hostname"
   USER_NAME="${USER_NAME}" USER_PASSWORD="${USER_PASSWORD}" chroot /mnt /bin/bash -c "add_user"

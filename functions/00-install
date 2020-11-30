@@ -599,7 +599,7 @@ function install_packages {
     lsb-release network-manager wget rsync iwd netselect-apt lvm2 sudo \
     linux-image-amd64 linux-headers-amd64
 
-  if [[ "${SCHEME}" = "LVM on LUKS" ]]; then
+  if [[ "${SCHEME}" =~ LUKS ]]; then
     apt-get -y install cryptsetup
   fi
   tasksel install standard

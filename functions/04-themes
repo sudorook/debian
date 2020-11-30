@@ -35,11 +35,11 @@ function install_adapta_gtk {
   show_header "Downloading, building, and installing the Adapta GTK theme."
   autotools_options=""
   if ! dpkg -s gnome-shell > /dev/null 2>&1; then
-    autotools_options=${autotools_options}"--disable-gnome "
+    autotools_options="${autotools_options} --disable-gnome"
   elif ! dpkg -s cinnamon > /dev/null 2>&1; then
-    autotools_options=${autotools_options}"--disable-cinnamon "
+    autotools_options="${autotools_options} --disable-cinnamon"
   elif ! dpkg -s marco > /dev/null 2>&1; then
-    autotools_options=${autotools_options}"--disable-mate "
+    autotools_options="${autotools_options} --disable-mate"
   fi
   rm -rf adapta-gtk-theme
   git clone -b tweak --depth 1 \
@@ -51,7 +51,7 @@ function install_adapta_gtk {
     --with-accent_color=#00B4CB \
     --with-suggestion_color=#00A2B4 \
     --with-destruction_color=#F44336 \
-    "${autotools_options}" \
+    ${autotools_options} \
     --enable-parallel
   make -j"$(nproc)"
   sudo make install
@@ -69,9 +69,9 @@ function install_plata_gtk {
   show_header "Downloading, building, and installing the Plata GTK theme."
   autotools_options=""
   if ! pacman -Qi gnome-shell > /dev/null 2>&1; then
-    autotools_options=${autotools_options}"--disable-gnome --disable-mate "
+    autotools_options="${autotools_options} --disable-gnome --disable-mate"
   elif ! pacman -Qi cinnamon > /dev/null 2>&1; then
-    autotools_options=${autotools_options}"--disable-cinnamon --disable-mate "
+    autotools_options="${autotools_options} --disable-cinnamon --disable-mate"
   fi
   rm -rf plata-theme
   git clone -b tweak --depth 1 \
@@ -82,7 +82,7 @@ function install_plata_gtk {
     --with-accent_color=#4877B1 \
     --with-suggestion_color=#5294E2 \
     --with-destruction_color=#F44336 \
-    "${autotools_options}" \
+    ${autotools_options} \
     --enable-parallel
   make -j"$(nproc)"
   sudo make install

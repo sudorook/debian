@@ -81,6 +81,7 @@ function install_plata_gtk {
     --with-selection_color=#4877B1 \
     --with-accent_color=#4877B1 \
     --with-suggestion_color=#5294E2 \
+    --with-destruction_color=#F44336 \
     ${autotools_options} \
     --enable-parallel
   make -j`nproc`

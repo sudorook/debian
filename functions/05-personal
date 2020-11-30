@@ -318,9 +318,9 @@ function enable_intel_iommu {
     sudo sed -i "s|intel_iommu=\(on\|off\)|intel_iommu=on|g" ${grubdefault}
   else
     if test "${bootparams}"; then
-      sudo sed -i "s|${bootparams}|${bootparams} i915.invert_brightness=1|g" ${grubdefault}
+      sudo sed -i "s|${bootparams}|${bootparams} intel_iommu=on|g" ${grubdefault}
     else
-      sudo sed -i "s|${oldline}|GRUB_CMDLINE_LINUX=\"i915.invert_brightness=1\"|g" ${grubdefault}
+      sudo sed -i "s|${oldline}|GRUB_CMDLINE_LINUX=\"intel_iommu=on\"|g" ${grubdefault}
     fi
     sudo sed -i "\|^GRUB_CMDLINE_LINUX=| a\#${oldline}" ${grubdefault} # backup
     sudo grub-mkconfig -o ${grubcfg}

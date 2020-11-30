@@ -53,8 +53,7 @@ function install_cinnamon {
            sed -n "s/^Latitude: \+\([-0-9\.]\+\)°$/\1/p" | head -n 1)"
     lon="$(echo "$tmp" | \
            sed -n "s/^Longitude: \+\([-0-9\.]\+\)°$/\1/p" | head -n 1)"
-    cat "${redshiftconf}" | \
-      sed -e "s,^lat=.*,lat=${lat},g" | \
+    sed -e "s,^lat=.*,lat=${lat},g" "${redshiftconf}" | \
       sed -e "s,^lon=.*,lon=${lon},g" > \
       "${HOME}/.config/redshift.conf"
   fi

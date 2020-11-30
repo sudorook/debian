@@ -123,19 +123,19 @@ function set_icon_theme {
 
   if [[ "${icontheme}" =~ "Papirus" ]]; then
     show_info "Creating Projects/ and Sync/ and setting gvfs metadata."
-    mkdir -p ${HOME}/Projects
-    gio set ${HOME}/Projects/ -t string \
+    mkdir -p "${HOME}/Projects"
+    gio set "${HOME}/Projects/" -t string \
       metadata::custom-icon-name folder-development
-    mkdir -p ${HOME}/Sync
-    gio set ${HOME}/Sync/ -t string \
+    mkdir -p "${HOME}/Sync"
+    gio set "${HOME}/Sync/" -t string \
       metadata::custom-icon-name folder-cloud
   fi
 
   show_info "Disabling Templates/ and Public/ folders."
   sudo sed -i "s/^TEMPLATES/#TEMPLATES/g" ${xdgdefaultconf}
   sudo sed -i "s/^PUBLICSHARE/#PUBLICSHARE/g" ${xdgdefaultconf}
-  rm -rf ${HOME}/Templates
-  rm -rf ${HOME}/Public
+  rm -rf "${HOME}/Templates"
+  rm -rf "${HOME}/Public"
 }
 
 function set_gtk_theme {
@@ -194,7 +194,7 @@ function set_gdm_theme {
   if dpkg -s gdm3 > /dev/null 2>&1; then
     if [[ -d "/usr/share/themes/${gtktheme}" ]]; then
       show_header "Setting GDM login theme to ${gtktheme}."
-      sudo cp -r /usr/share/gnome-shell /usr/share/gnome-shell-$(date +%Y%m%d)
+      sudo cp -r "/usr/share/gnome-shell /usr/share/gnome-shell-$(date +%Y%m%d)"
       sudo cp -rf /usr/share/themes/${gtktheme}/gnome-shell/* /usr/share/gnome-shell/
       if [[ "${gtktheme}" =~ "Adapta" ]] || [[ "${gtktheme}" =~ "Plata" ]]; then
         sudo cp -f /usr/share/themes/${gtktheme}/gnome-shell/extensions/window-list/classic.css \
@@ -213,8 +213,8 @@ function set_gdm_theme {
 gtksettings="${HOME}/.config/gtk-3.0/settings.ini"
 function set_dark_gtk {
   show_header "Setting global dark theme for gtk applications."
-  if grep ^gtk-application-prefer-dark-theme= ${gtksettings} >/dev/null 2>&1; then
-    isgtkdark=$(grep ^gtk-application-prefer-dark-theme= ${gtksettings} | cut -d"=" -f2)
+  if grep ^gtk-application-prefer-dark-theme= "${gtksettings}" >/dev/null 2>&1; then
+    isgtkdark=$(grep ^gtk-application-prefer-dark-theme= "${gtksettings}" | cut -d"=" -f2)
     if test "${isgtkdark}"; then
       show_info "Desktop is already set to use dark GTK variants."
     else
@@ -224,7 +224,7 @@ function set_dark_gtk {
     if [ -f "${gtksettings}" ]; then
       echo "" >> "${gtksettings}"
     else
-      mkdir -p $(dirname ${gtksettings}) && touch "${gtksettings}"
+      mkdir -p "$(dirname "${gtksettings}")" && touch "${gtksettings}"
     fi
     echo "[Settings]" >> "${gtksettings}"
     echo "gtk-application-prefer-dark-theme=1" >> "${gtksettings}"
@@ -292,7 +292,7 @@ function enable_autologin {
 grubdefault="/etc/default/grub"
 function invert_brightness {
   if [ -f "${grubdefault}" ]; then
-    local oldine
+    local oldline
     local bootparams
     oldline=$(grep ^GRUB_CMDLINE_LINUX= "${grubdefault}")
     bootparams=$(echo "${oldline}" | sed -n "s/^GRUB_CMDLINE_LINUX=\"\(.*\)\"/\1/p")
@@ -405,7 +405,7 @@ function install_scripts {
 
   show_info "Setting up battery notifications."
   mkdir -p "${autostartdir}"
-  cat "${batterydaemon}" | sed -e "s,@misc-scripts@,${scriptdir},g" \
+  sed -e "s,@misc-scripts@,${scriptdir},g" "${batterydaemon}" \
     > "${autostartdir}/Battery Watchdog.desktop"
 }
 

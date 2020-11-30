@@ -287,7 +287,7 @@ function install_vim {
   cp -f "${vimrc}" "${HOME}/.vimrc"
   show_success "vimrc installed."
 
-  mkdir -p ${vimpack}
+  mkdir -p "${vimpack}"
 
   show_info "Configuring active vim addons."
   # NOTE: DO NOT INSTALL AIRLINE FROM HERE!!!

@@ -43,7 +43,7 @@ function install_selinux {
     local cmdline
     local efidir
     efidir="$(bootctl -p)"
-    for entry in ${efidir}/loader/entries/*.conf; do
+    for entry in "${efidir}"/loader/entries/*.conf; do
       cmdline="$(sed -n "s/^options\s\+\(.*\)/\1/p" "${entry}")"
       if ! [[ "${cmdline}" =~ security=selinux ]]; then
         sed -i "s|^options\(\s\+\)${cmdline}|options\1${cmdline} selinux=1 security=selinux|g" "${entry}"

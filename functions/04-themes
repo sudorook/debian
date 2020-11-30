@@ -10,9 +10,9 @@ function install_theme_deps {
   check_fail
   show_success "Theme dependencies installed."
 
-  if ! [ -f ${npmrc} ]; then
+  if ! [ -f "${npmrc}" ]; then
     show_info "Installing npmrc."
-    cp -f ${npmrc} ${HOME}/.npmrc
+    cp -f "${npmrc}" "${HOME}/.npmrc"
   fi
 }
 
@@ -21,11 +21,11 @@ function install_arc_gtk {
   rm -rf arc-theme
   git clone -b tweak --depth 1 \
     https://github.com/sudorook/arc-theme arc-theme
-  cd arc-theme
+  cd arc-theme || exit
   npm install
   ./autogen.sh --prefix=/usr
   gulp
-  make -j`nproc`
+  make -j"$(nproc)"
   sudo make install
   cd ..
   rm -rf arc-theme
@@ -44,16 +44,16 @@ function install_adapta_gtk {
   rm -rf adapta-gtk-theme
   git clone -b tweak --depth 1 \
     https://github.com/sudorook/adapta-gtk-theme adapta-gtk-theme
-  cd adapta-gtk-theme
+  cd adapta-gtk-theme || exit
   ./autogen.sh \
     --prefix=/usr \
     --with-selection_color=#00A2B4 \
     --with-accent_color=#00B4CB \
     --with-suggestion_color=#00A2B4 \
     --with-destruction_color=#F44336 \
-    ${autotools_options} \
+    "${autotools_options}" \
     --enable-parallel
-  make -j`nproc`
+  make -j"$(nproc)"
   sudo make install
   if [ -d /usr/share/gtksourceview-4/styles/ ]; then
     sudo cp -f extra/gedit/adapta.xml /usr/share/gtksourceview-4/styles/
@@ -76,15 +76,15 @@ function install_plata_gtk {
   rm -rf plata-theme
   git clone -b tweak --depth 1 \
     https://gitlab.com/sudorook/plata-theme plata-theme
-  cd plata-theme
+  cd plata-theme || exit
   ./autogen.sh --prefix=/usr \
     --with-selection_color=#4877B1 \
     --with-accent_color=#4877B1 \
     --with-suggestion_color=#5294E2 \
     --with-destruction_color=#F44336 \
-    ${autotools_options} \
+    "${autotools_options}" \
     --enable-parallel
-  make -j`nproc`
+  make -j"$(nproc)"
   sudo make install
   if [ -d /usr/share/gtksourceview-4/styles/ ]; then
     sudo cp -f src/extra/gtksourceview/plata-light.xml \
@@ -112,7 +112,7 @@ function install_papirus_icons {
   show_header "Downloading and installing the Papirus icon theme."
   git clone -b tweak --depth 1 https://github.com/sudorook/papirus-icon-theme \
     papirus-icon-theme
-  cd papirus-icon-theme
+  cd papirus-icon-theme || exit
 
   sudo make install
   cd ..
@@ -121,9 +121,9 @@ function install_papirus_icons {
 
 function install_vim_theme {
   git clone --depth 1 https://github.com/sudorook/colorific.vim colorific.vim
-  cd colorific.vim
+  cd colorific.vim || exit
   ./install.sh
-  cd ../
+  cd ..
   rm -rf colorific.vim/
 }
 
@@ -135,25 +135,27 @@ function install_thunderbird_theme {
 
   thunderbird="$(echo ~/.thunderbird/*.default)"
   show_header "Installing Monterail theme for Thunderbird."
-  if [ -d ${thunderbird}/chrome ]; then
+  if [ -d "${thunderbird}/chrome" ]; then
     show_info "${thunderbird}/chrome already exists. Backing up and replacing."
-    mv ${thunderbird}/chrome ${thunderbird}/chrome.${RANDOM}.bak
+    mv "${thunderbird}/chrome" "${thunderbird}/chrome.${RANDOM}.bak"
   else
-    mkdir -p ${thunderbird}/chrome
+    mkdir -p "${thunderbird}/chrome"
   fi
 
-  git clone https://github.com/spymastermatt/thunderbird-monterail ${thunderbird}/chrome
+  git clone \
+    https://github.com/spymastermatt/thunderbird-monterail \
+    "${thunderbird}/chrome"
 
   local userchrome=${thunderbird}/chrome/userChrome.css
-  sed -i 's|^\(\s*\)/\*--default-font: var(--light-sans-font); .*$|\1--default-font: var(--system-font);|g' ${userchrome}
+  sed -i 's|^\(\s*\)/\*--default-font: var(--light-sans-font); .*$|\1--default-font: var(--system-font);|g' "${userchrome}"
 }
 
 function install_timed_backgrounds {
   git clone --depth 1 https://github.com/sudorook/timed-backgrounds \
     timed-backgrounds
-  cd timed-backgrounds
+  cd timed-backgrounds || exit
   ./autogen.sh
-  make -j`nproc`
+  make -j"$(nproc)"
   sudo make install
   cd ../
   rm -rf timed-backgrounds/
@@ -162,10 +164,10 @@ function install_timed_backgrounds {
 qt5ctconf="${dir}/configs/qt5ct.conf"
 function set_qtcompat {
   show_info "Copying qt5ct config."
-  mkdir -p ${HOME}/.config/qt5ct
-  cp -f ${qt5ctconf} ${HOME}/.config/qt5ct
+  mkdir -p "${HOME}/.config/qt5ct"
+  cp -f "${qt5ctconf}" "${HOME}/.config/qt5ct"
   export QT_QPA_PLATFORMTHEME=qt5ct
-  echo "export QT_QPA_PLATFORMTHEME=\"qt5ct\"" >> ${HOME}/.xprofile
+  echo "export QT_QPA_PLATFORMTHEME=\"qt5ct\"" >> "${HOME}/.xprofile"
 }
 
 function 04-themes {

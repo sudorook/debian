@@ -424,6 +424,7 @@ export -f add_user
 
 function install_gummiboot {
   if command -v bootctl >/dev/null 2>&1; then
+    apt install -y efibootmgr
     local root_uuid
     local crypt_uuid
     local cmdline

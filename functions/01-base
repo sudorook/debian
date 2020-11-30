@@ -153,10 +153,14 @@ function upgrade_debian_release {
 
 function enable_sudo_insults {
   # Customize sudo to insult incorrect password attempts
-  show_info "Enabling sudo insults."
-  sudo sh -c 'cat /etc/sudoers | \
-              sed -e "/^Defaults\tsecure_path/a Defaults\tinsults" | \
-              (EDITOR="tee" visudo >/dev/null)'
+  if ! sudo grep "^Defaults\s\+insults" /etc/sudoers >/dev/null 2>&1; then
+    show_info "Enabling sudo insults."
+    sudo sh -c 'cat /etc/sudoers | \
+                sed -e "/^Defaults\tsecure_path/a Defaults\tinsults" | \
+                (EDITOR="tee" visudo >/dev/null)'
+  else
+    show_info "Insults already enabled, you masochist."
+  fi
 }
 
 purge="${dir}/packages/purge.list"

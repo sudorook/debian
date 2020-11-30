@@ -82,7 +82,6 @@ function main {
           install_selinux
           install_utils
           # install_laptop
-          # install_android
 
           # Install a desktop environment
           # install_gnome
@@ -95,6 +94,7 @@ function main {
           # use_onion_repos
 
           # Install useful packages
+          # install_android
           install_apps
           install_codecs
           install_dev

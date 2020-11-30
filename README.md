@@ -1,15 +1,99 @@
-# Debian Post-Installation
+# Debian Installation
 
-This is a set of scripts for running post-installation tasks for Debian 10
-(Buster), 11 (Bullseye), or Unstable (sid). Works best if the Cinnamon or GNOME
-desktop environments are already installed.
+This is a set of scripts installing Debian and running post-installation tasks,
+e.g. installing a DE, packages, and config files. They are intended for
+Cinnamon or GNOME desktop environments.
 
-**Note:** Some Ubuntu packages have different names, so this script may not
-work for some packages.
+**Note:** While the post-installation scripts could be used for Ubuntu, some
+packages have different names than in the Debian repositories, so this script
+may not work for all packages.
 
-Depends on `wget` and `git`.
+Requirements:
+1. `wget`
+2. `git`
 
-## Usage
+## Install
+
+Install Debian on a new block device (GPT paritioning scheme). Supports
+installation using UEFI (GRUB or systemd-boot) or legacy BIOS (GRUB only).
+EFISTUB support (UEFI-only) may be added in future.
+
+Installations may be encrypted, too. Using GRUB, will encrypt the `/boot`
+directory and write a decryption key into the initial ramdisk so that the
+password prompt only appears once. For alternate bootloaders, the `boot`
+directory will remain unencrypted.
+
+There is also the optional provision for creating a separate, unencrypted
+partition of arbitrary size. Useful for creating shared filesystems readable on
+Windows / MacOS for USB drive installations.
+
+The rough partition scheme is:
+```
+1. BIOS compatibility parition, empty if GRUB not used (1 Mb)
+2. EFI partition (500 Mb)
+3. Share partition (optional)
+4. Debian system (Plain / LVM / LUKS-encrypted partitions or volumes)
+   - swap
+   - root
+   - home (optional)
+```
+
+To run, (need to be root):
+```
+sudo ./install
+```
+
+### Options
+
+Installation options will be queries as the script runs.
+
+#### Partitioning
+```
+1) Back
+2) LVM on LUKS
+3) LVM
+4) Plain
+```
+
+2) Installs on LUKS-encrypted partition. Partitions (e.g. root and home) are
+   kept as logical volumes on the LUKS partition.
+3) Installs on unencrypted LVM partition.
+4) Installs everything on primary partitions.
+
+#### Boot system
+```
+1) Back
+2) GRUB
+3) systemd-boot
+4) EFISTUB
+```
+
+2) Installs GRUB, BIOS version of no EFI firmware is detected. Otherwise, the
+   EFI version is installed.
+3) systemd-boot (previously gummiboot) installs kernels in `/boot` and copies
+   them over to `/efi`. Systemd path hoods are also installed to update kernel
+   images and microcode in `/efi` after updates.
+4) Not supported yet...
+
+#### Etc.
+
+The script will also prompt for:
+1. Host name
+2. User name
+3. User password
+4. Locale (e.g. `en_US.UTF-8`)
+5. Time zone (e.g. `America/Toronto`)
+
+The script will then mount the partitions, set up chroot, download and install
+all the `base` and `base-devel` packages via `debootstrap`, set up the
+specified user account, lock the root account, and unmount everything.
+
+## Post-install
+
+Once the base system is installed, use the `./postinstall` script (as the user
+account, not root), to install the remaining packages, themes, etc.
+
+Simply run:
 ```
 ./postinstall
 ```
@@ -17,64 +101,64 @@ Depends on `wget` and `git`.
 The script will check if the dependencies are installed and if the network
 connection is active. The rest should be self explanatory.
 
-
-## Options
+### Options
 ```
 1) Quit                 4) Miscellaneous        7) Applications
 2) Autopilot            5) Desktop environment  8) Themes
 3) Base                 6) Network tools        9) Personalization
 ```
 
-### 2) Autopilot
+#### 2) Autopilot
 
 Automatically install (without prompting) packages and configs.
 
-### 3) Base
+#### 3) Base
 ```
-1) Back                      6) Enable non-free
-2) Base packages             7) Updates
-3) Purge packages            8) Upgrade Debian release
-4) Firmware                  9) Sudo insults
-5) Enable contrib           10) Disable system beep
+1) Back                      7) Enable contrib
+2) All                       8) Enable non-free
+3) Base packages             9) Upgrade Debian release
+4) Purge packages           10) Sudo insults
+5) Firmware                 11) Disable system beep
+6) Updates
 ```
 
-2) Installs [base.list](packages/base.list).
+3) Installs [base.list](packages/base.list).
 
-3) Purge packages in [purge.list](packages/purge.list) that are unneeded but
+4) Purge packages in [purge.list](packages/purge.list) that are unneeded but
    installed by default.
 
-4) Install firmware packages for wireless cards and kernel modules.
+5) Install firmware packages for wireless cards and kernel modules.
 
-5) Enable the `contrib` package repository.
+6) Updates system packages.
 
-6) Enable the `non-free` package repository.
+7) Enable the `contrib` package repository.
 
-7) Updates system packages.
+8) Enable the `non-free` package repository.
 
-8) Upgrade the Debian release (e.g., Buster -> Bullseye).
+9) Upgrade the Debian release (e.g., Buster -> Bullseye).
 
-9) Enable sudo insults for incorrect login attempts via `/etc/sudoers`. Pipes
+10) Enable sudo insults for incorrect login attempts via `/etc/sudoers`. Pipes
    to `visudo` via `tee`, so it's safe.
 
-10) Blacklist `pcskpr` and `snd_pcsp` kernel modules.
+11) Blacklist `pcskpr` and `snd_pcsp` kernel modules.
 
-### 4) Miscellaneous
+#### 4) Miscellaneous
 ```
-1) Back             3) zsh              5) Linux utilities
-2) All              4) SELinux          6) Laptop tools
+1) Back             3) Linux utilities  5) SELinux
+2) All              4) Laptop tools     6) zsh
 ```
 
-3) Install `zsh`, [fishy-lite](https://github.com/sudorook/fishy-lite), and
-   change default shell to `zsh`.
+3) Install general command line utilities in [utils.list](packages/utils.list).
 
-4) Install and activate SELinux.
-
-5) Install general command line utilities in [utils.list](packages/utils.list).
-
-6) Install `tlp` for power management and `xorg-xbacklight` for screen
+4) Install `tlp` for power management and `xorg-xbacklight` for screen
    brightness.
 
-### 5) Desktop environment
+5) Install and activate SELinux.
+
+6) Install `zsh`, [fishy-lite](https://github.com/sudorook/fishy-lite), and
+   change default shell to `zsh`.
+
+#### 5) Desktop environment
 ```
 1) Back
 2) All
@@ -86,29 +170,34 @@ Automatically install (without prompting) packages and configs.
 
 4) Install Cinnamon desktop environment and Redshift (with LightDM for login).
 
-### 6) Network tools
+#### 6) Network tools
 ```
-1) Back                 3) Network tools        5) Tunnel apt over tor
-2) All                  4) Install tor
+1) Back                 4) Local discovery      7) Tunnel apt over tor
+2) All                  5) Firewall
+3) Networking           6) Install tor
 ```
 
-3) Install NetworkManager, Samba, SSH, and UFW for networking management and
-   security. Automatically sets NetworkManager to use random MAC addresses for
-   network interfaces, enables Avahi daemon for local hostname resolution, and
-   enables UFW firewall systemd unit. **DOES NOT** set default firewall rules.
+3) Install Network Manager and OpenSSH. Sets NetworkManager to use random MAC
+   addresses for network interfaces.
 
-4) Install `tor` and `torsocks` (no Tor Browser).
+4) Install Avahi and Samba and enable tools for local network hosting and
+   discovery.
 
-5) **EXPERIMENTAL** Tunnel all package updates through Tor.
+5) Install UFW for network firewall and set up basic rules.
 
-### 7) Applications
+6) Install `tor` and `torsocks` (no Tor Browser).
+
+7) **EXPERIMENTAL** Tunnel all package updates through Tor.
+
+#### 7) Applications
 ```
-1) Back                    7) Extra applications    13) TeX Live
-2) All                     8) Emulators             14) Tor browser
-3) Android tools           9) KVM (host)            15) Vim
-4) General applications   10) KVM (guest)           16) VirtualBox (host)
-5) Codecs                 11) Messaging             17) VirtualBox (guest)
-6) Development            12) Music                 18) Wine
+1) Back                    8) Emulators             15) TeX Live
+2) All                     9) KVM (host)            16) Tor browser
+3) Android tools          10) KVM (guest)           17) Vim
+4) General applications   11) Messaging             18) VirtualBox (host)
+5) Codecs                 12) MinGW                 19) VirtualBox (guest)
+6) Development            13) Music                 20) Wine
+7) Extra applications     14) Printing
 ```
 
 3) Install packages in [android.list](packages/android.list) for accessing
@@ -129,26 +218,30 @@ Automatically install (without prompting) packages and configs.
 10) Install packages for Linux guests to enable host-to-guest sharing and
     adjustable display resolution.
 
-11) Install applications for playing music (`mpd`, `ncmcpp`, `clementine`),
+11) Install IRC, email, and other messaging clients.
+
+12) Install MinGW for Windows/Linux cross-platform compilation.
+
+13) Install applications for playing music (`mpd`, `ncmcpp`, `clementine`),
     computing replaygain (`bs1770gain`), and using Pandora (`pianobar`).
 
-12) Install IRC, email, and other messaging clients.
+14) Install CUPS, drivers, and applications for handling printers.
 
-13) Install TeX libraries and Font Awesome icons.
+15) Install TeX libraries and Font Awesome icons.
 
-14) Download and install the Tor browser. Edits the application launcher icon
+16) Download and install the Tor browser. Edits the application launcher icon
     to look for "browser-tor".
 
-15) Install `vim` and `vim-plugins` and then set the user vimrc.
+17) Install `vim` and `vim-plugins` and then set the user vimrc.
 
-16) Install VirtualBox and kernel modules (dkms) for running it (host).
+18) Install VirtualBox and kernel modules (dkms) for running it (host).
 
-17) Install kernel modules (dkms) and tools for VirtualBox guests.
+19) Install kernel modules (dkms) and tools for VirtualBox guests.
 
-18) Install Wine not-emulator, along with the Mono and browser and some audio
+20) Install Wine not-emulator, along with the Mono and browser and some audio
     libraries.
 
-### 8) Themes
+#### 8) Themes
 ```
 1) Back                 5) Plata (GTK)         9) Thunderbird theme
 2) All                  6) Fonts              10) Timed backgrounds
@@ -177,16 +270,16 @@ Automatically install (without prompting) packages and configs.
 10) Install [timed backgrounds](https://github.com/sudorook/timed-backgrounds)
     where transitions from day to night match sunrise/sunset times.
 
-### 9) Personalization
+#### 9) Personalization
 ```
 1) Back                              9) Import application dconf
 2) All                              10) Import GNOME terminal profiles
 3) Select system font               11) Enable autologin
-4) Select icon theme                12) Invert brightness
-5) Select desktop theme             13) Disable PulseAudio suspend
-6) Set dark GTK                     14) Disable 802.11n
-7) Import Cinnamon dconf            15) Add scripts
-8) Import GNOME dconf
+4) Select icon theme                12) Invert brightness (i915)
+5) Select desktop theme             13) Enable IOMMU (Intel)
+6) Set dark GTK                     14) Disable PulseAudio suspend
+7) Import Cinnamon dconf            15) Disable 802.11n
+8) Import GNOME dconf               16) Add scripts
 ```
 
 3) Select the system font. (Noto or Roboto)
@@ -209,9 +302,12 @@ Automatically install (without prompting) packages and configs.
 
 12) Invert brightness via kernel command line options in the GRUB prompt.
 
-13) Disable PulseAudio suspend (suspend can sometimes cause weird buzzing).
+13) Enable Intel IOMMU for the i915 graphics driver. Helps fix blank displays
+    for Haswell CPUs running kernels >=5.7.
 
-14) Disable 802.11n networking in iwlwifi. May help speed up poor 802.11ac
+14) Disable PulseAudio suspend (suspend can sometimes cause weird buzzing).
+
+15) Disable 802.11n networking in iwlwifi. May help speed up poor 802.11ac
     connections.
 
-15) Download and install [general utility scripts](https://github.com/sudorook/misc-scripts).
+16) Download and install [general utility scripts](https://github.com/sudorook/misc-scripts).

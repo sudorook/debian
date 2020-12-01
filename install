@@ -95,10 +95,12 @@ function main {
     mkdir -p /mnt/etc/initramfs/post-update.d/
     mkdir -p /mnt/etc/systemd/system/
 
-    cp -af hooks/update-systemd-boot /mnt/etc/kernel/postinst.d/
-    cp -af hooks/update-systemd-boot /mnt/etc/kernel/postrm.d/
-    cp -af hooks/update-initrd /mnt/etc/initramfs/post-update.d/
-    cp -af hooks/systemd-update-efi.path hooks/systemd-update-efi.service \
+    cp -af "${dir}/hooks/update-systemd-boot" /mnt/etc/kernel/postinst.d/
+    cp -af "${dir}/hooks/update-systemd-boot" /mnt/etc/kernel/postrm.d/
+    cp -af "${dir}/hooks/update-initrd" /mnt/etc/initramfs/post-update.d/
+    cp -af \
+      "${dir}/hooks/systemd-update-efi.path" \
+      "${dir}/hooks/systemd-update-efi.service" \
       /mnt/etc/systemd/system/
 
     DEVICE="${DEVICE}" chroot /mnt /bin/bash -c "install_gummiboot"

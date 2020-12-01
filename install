@@ -69,6 +69,10 @@ function main {
   for fs in proc sys dev dev/pts run/udev; do
     mount --bind /$fs /mnt/$fs
   done
+  if [ -e /sys/firmware/efi ]; then
+    mount --bind /sys/firmware/efi/efivars /mnt/sys/firmware/efi/efivars
+  fi
+
   ./utils/genfstab -U /mnt >> /mnt/etc/fstab
   TIMEZONE="${TIMEZONE}" chroot /mnt /bin/bash -c "set_timezone"
   LOCALE="${LOCALE}" chroot /mnt /bin/bash -c "set_locale"
@@ -86,8 +90,6 @@ function main {
       CRYPT_PARTITION="${CRYPT_PARTITION}" chroot /mnt /bin/bash -c "make_luks_key"
     fi
   elif [[ "${BOOTMODE}" = "systemd-boot" ]]; then
-    mount --bind /sys/firmware/efi/efivars /mnt/sys/firmware/efi/efivars
-
     mkdir -p /mnt/etc/kernel/postinst.d/
     mkdir -p /mnt/etc/kernel/postrm.d/
     mkdir -p /mnt/etc/initramfs/post-update.d/

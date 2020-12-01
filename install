@@ -69,9 +69,6 @@ function main {
   for fs in proc sys dev dev/pts run/udev; do
     mount --bind /$fs /mnt/$fs
   done
-  if [ -e /sys/firmware/efi ]; then
-    mount --bind /sys/firmware/efi/efivars /mnt/sys/firmware/efi/efivars
-  fi
 
   ./utils/genfstab -U /mnt >> /mnt/etc/fstab
   TIMEZONE="${TIMEZONE}" chroot /mnt /bin/bash -c "set_timezone"

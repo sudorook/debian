@@ -26,7 +26,6 @@ RELEASE=
 function ask_release {
   show_question "Select Debian release:"
   options=("Back" \
-           "Stretch (oldstable)" \
            "Buster (stable)" \
            "Bullseye (testing)" \
            "Sid (unstable)")
@@ -34,10 +33,6 @@ function ask_release {
     case $option in
       "Back")
         exit
-        ;;
-      "Stretch (oldstable)")
-        RELEASE=stretch
-        break
         ;;
       "Buster (stable)")
         RELEASE=buster

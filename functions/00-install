@@ -479,7 +479,7 @@ function install_gummiboot {
     fi
     cmdline="${cmdline} rw"
 
-    bootctl --esp-path=/boot/efi install
+    bootctl install
     chmod +x \
       /etc/kernel/postinst.d/update-systemd-boot \
       /etc/kernel/postrm.d/update-systemd-boot \

@@ -194,7 +194,7 @@ function set_gdm_theme {
   if dpkg -s gdm3 > /dev/null 2>&1; then
     if [[ -d "/usr/share/themes/${gtktheme}" ]]; then
       show_header "Setting GDM login theme to ${gtktheme}."
-      sudo cp -r "/usr/share/gnome-shell /usr/share/gnome-shell-$(date +%Y%m%d)"
+      sudo cp -r "/usr/share/gnome-shell" "/usr/share/gnome-shell-$(date +%Y%m%d)"
       sudo cp -rf /usr/share/themes/${gtktheme}/gnome-shell/* /usr/share/gnome-shell/
       if [[ "${gtktheme}" =~ "Adapta" ]] || [[ "${gtktheme}" =~ "Plata" ]]; then
         sudo cp -f /usr/share/themes/${gtktheme}/gnome-shell/extensions/window-list/classic.css \

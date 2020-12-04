@@ -280,10 +280,10 @@ function enable_autologin {
     ! [ -f ${gdmconf} ] && sudo touch ${gdmconf}
     if ! grep -q "^AutomaticLogin=${USER}" ${gdmconf}; then
       sudo sed -i "s/^#  AutomaticLogin = .*$/AutomaticLogin=${USER}/g" ${gdmconf}
-      sudo sed -i "s/^#  AutomaticLoginEnable = .*$/AutomaticLoginEnable=True/g" ${gdmconf}
+      sudo sed -i "s/^#  AutomaticLoginEnable = .*$/AutomaticLoginEnable=true/g" ${gdmconf}
     else
       sudo sed -i "s/^AutomaticLogin=.*$/AutomaticLogin=${USER}/g" ${gdmconf}
-      sudo sed -i "s/^AutomaticLoginEnable=.*$/AutomaticLoginEnable=True/g" ${gdmconf}
+      sudo sed -i "s/^AutomaticLoginEnable=.*$/AutomaticLoginEnable=true/g" ${gdmconf}
     fi
   fi
   if dpkg -s lightdm > /dev/null 2>&1; then

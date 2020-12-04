@@ -275,7 +275,7 @@ gdmconf="/etc/gdm3/custom.conf" # Debian uses gdm3 instead of gdm
 lightdmconf="/etc/lightdm/lightdm.conf"
 function enable_autologin {
   show_header "Enabling automatic login for ${USER}."
-  if dpkg -s gdm > /dev/null 2>&1; then
+  if dpkg -s gdm3 > /dev/null 2>&1; then
     show_info "Log in as ${USER} via GDM."
     ! [ -f ${gdmconf} ] && sudo touch ${gdmconf} || true
     if ! grep -q "^AutomaticLogin=${USER}" ${gdmconf}; then

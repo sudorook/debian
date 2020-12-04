@@ -81,7 +81,7 @@ function main {
   HOST_NAME="${HOST_NAME}" chroot /mnt /bin/bash -c "set_hostname"
   USER_NAME="${USER_NAME}" USER_PASSWORD="${USER_PASSWORD}" chroot /mnt /bin/bash -c "add_user"
   if [[ "${BOOTMODE}" = "GRUB" ]]; then
-    DEVICE="${DEVICE}" chroot /mnt /bin/bash -c "install_grub"
+    SCHEME="${SCHEME}" DEVICE="${DEVICE}" chroot /mnt /bin/bash -c "install_grub"
     if [[ "${SCHEME}" = "LVM on LUKS" ]]; then
       # CRYPT_PASSWORD="${CRYPT_PASSWORD}" CRYPT_PARTITION="${CRYPT_PARTITION}" chroot /mnt /bin/bash -c "make_luks_key"
       CRYPT_PARTITION="${CRYPT_PARTITION}" chroot /mnt /bin/bash -c "make_luks_key"
@@ -100,7 +100,7 @@ function main {
       "${dir}/hooks/systemd-update-efi.service" \
       /mnt/etc/systemd/system/
 
-    DEVICE="${DEVICE}" chroot /mnt /bin/bash -c "install_gummiboot"
+    SCHEME="${SCHEME}" DEVICE="${DEVICE}" chroot /mnt /bin/bash -c "install_gummiboot"
   elif [[ "${BOOTMODE}" = "EFISTUB" ]]; then
     show_warning "Not supported yet..."
   fi

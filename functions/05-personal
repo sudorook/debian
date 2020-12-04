@@ -271,7 +271,7 @@ function import_terminal_dconf {
   show_success "GNOME terminal profiles imported."
 }
 
-gdmconf="/etc/gdm/custom.conf"
+gdmconf="/etc/gdm3/custom.conf" # Debian uses gdm3 instead of gdm
 lightdmconf="/etc/lightdm/lightdm.conf"
 function enable_autologin {
   show_header "Enabling automatic login for ${USER}."

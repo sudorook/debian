@@ -68,10 +68,12 @@ function install_adapta_gtk {
 function install_plata_gtk {
   show_header "Downloading, building, and installing the Plata GTK theme."
   autotools_options=""
-  if ! pacman -Qi gnome-shell > /dev/null 2>&1; then
-    autotools_options="${autotools_options} --disable-gnome --disable-mate"
-  elif ! pacman -Qi cinnamon > /dev/null 2>&1; then
-    autotools_options="${autotools_options} --disable-cinnamon --disable-mate"
+  if ! dpkg -s gnome-shell > /dev/null 2>&1; then
+    autotools_options="${autotools_options} --disable-gnome"
+  elif ! dpkg -s cinnamon > /dev/null 2>&1; then
+    autotools_options="${autotools_options} --disable-cinnamon"
+  elif ! dpkg -s marco > /dev/null 2>&1; then
+    autotools_options="${autotools_options} --disable-mate"
   fi
   rm -rf plata-theme
   git clone -b tweak --depth 1 \

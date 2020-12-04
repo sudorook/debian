@@ -36,9 +36,11 @@ function install_adapta_gtk {
   autotools_options=""
   if ! dpkg -s gnome-shell > /dev/null 2>&1; then
     autotools_options="${autotools_options} --disable-gnome "
-  elif ! dpkg -s cinnamon > /dev/null 2>&1; then
+  fi
+  if ! dpkg -s cinnamon > /dev/null 2>&1; then
     autotools_options="${autotools_options} --disable-cinnamon "
-  elif ! dpkg -s marco > /dev/null 2>&1; then
+  fi
+  if ! dpkg -s marco > /dev/null 2>&1; then
     autotools_options="${autotools_options} --disable-mate "
   fi
   rm -rf adapta-gtk-theme
@@ -70,9 +72,11 @@ function install_plata_gtk {
   autotools_options=""
   if ! dpkg -s gnome-shell > /dev/null 2>&1; then
     autotools_options="${autotools_options} --disable-gnome "
-  elif ! dpkg -s cinnamon > /dev/null 2>&1; then
+  fi
+  if ! dpkg -s cinnamon > /dev/null 2>&1; then
     autotools_options="${autotools_options} --disable-cinnamon "
-  elif ! dpkg -s marco > /dev/null 2>&1; then
+  fi
+  if ! dpkg -s marco > /dev/null 2>&1; then
     autotools_options="${autotools_options} --disable-mate "
   fi
   rm -rf plata-theme

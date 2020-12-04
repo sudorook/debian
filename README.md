@@ -38,6 +38,10 @@ The rough partition scheme is:
    - home (optional)
 ```
 
+**Note:** The script uses `sgdisk` for partitioning, which uses binary (base 2)
+units for specifying partition sizes. For example, 500M corresponds to 500
+mebibytes, not 500 megabytes.
+
 To run, (need to be root):
 ```
 sudo ./install

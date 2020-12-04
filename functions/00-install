@@ -628,6 +628,7 @@ export -f add_user
 function install_gummiboot {
   if command -v bootctl >/dev/null 2>&1; then
     apt install -y efibootmgr
+
     local root_uuid
     local crypt_uuid
     local cmdline
@@ -635,31 +636,35 @@ function install_gummiboot {
     root_uuid=$(sed -n "s,^UUID=\(\S\+\)\s\+/\s\+.*,\1,p" /etc/fstab)
     crypt_uuid=$(blkid | grep crypto_LUKS | sed -n 's,.* UUID="\(\S\+\)" TYPE.*,\1,p')
 
-    if [ -n "${crypt_uuid}" ]; then
-      cmdline="cryptdevice=UUID=${crypt_uuid}:${LV}:allow-discards"
-      if [ -e /dev/mapper/${VG}-root ]; then
-        cmdline="${cmdline} root=/dev/mapper/${VG}-root"
-      fi
-      if [ -e /dev/mapper/${VG}-home ]; then
-        cmdline="${cmdline} home=/dev/mapper/${VG}-home"
-      fi
-      if [ -e /dev/mapper/${VG}-swap ]; then
-        cmdline="${cmdline} resume=/dev/mapper/${VG}-swap"
-      fi
+    if [[ "${SCHEME}" =~ LVM ]]; then
+      if [ -n "${crypt_uuid}" ]; then
+        cmdline="cryptdevice=UUID=${crypt_uuid}:${LV}:allow-discards"
+        if [ -e /dev/mapper/${VG}-root ]; then
+          cmdline="${cmdline} root=/dev/mapper/${VG}-root"
+        fi
+        if [ -e /dev/mapper/${VG}-home ]; then
+          cmdline="${cmdline} home=/dev/mapper/${VG}-home"
+        fi
+        if [ -e /dev/mapper/${VG}-swap ]; then
+          cmdline="${cmdline} resume=/dev/mapper/${VG}-swap"
+        fi
 
-      # add entry to /etc/crypttab
-      if grep "${crypt_uuid}" /etc/crypttab >/dev/null 2>&1; then
-        sed -i "s|\([a-zA-Z0-9_-]\+\)\(\s\+\)UUID=${crypt_uuid}\(\s\+\)none\(\s\+\)\([A-Za-z0-9_\-\=,]\+\)|\1\2UUID=${crypt_uuid}\3none\4luks,discard|g" /etc/crypttab
+        # add entry to /etc/crypttab
+        if grep "${crypt_uuid}" /etc/crypttab >/dev/null 2>&1; then
+          sed -i "s|\([a-zA-Z0-9_-]\+\)\(\s\+\)UUID=${crypt_uuid}\(\s\+\)none\(\s\+\)\([A-Za-z0-9_\-\=,]\+\)|\1\2UUID=${crypt_uuid}\3none\4luks,discard|g" /etc/crypttab
+        else
+          echo "${LV}	UUID=${crypt_uuid}	none	luks,discard" >> /etc/crypttab
+        fi
+      elif [ -n "${root_uuid}" ]; then
+        cmdline="root=/dev/mapper/${VG}-root"
       else
-        echo "${LV}	UUID=${crypt_uuid}	none	luks,discard" >> /etc/crypttab
+        echo "ERROR: Missing root ${root_uuid}."
+        exit 3
       fi
-    elif [ -n "${root_uuid}" ]; then
-      cmdline="root=/dev/mapper/${VG}-root"
+      cmdline="${cmdline} rw"
     else
-      echo "ERROR: Missing root ${root_uuid}."
-      exit 3
+      cmdline="rw"
     fi
-    cmdline="${cmdline} rw"
 
     bootctl install
     chmod +x \
@@ -708,31 +713,33 @@ function install_grub {
   fi
 
   local root_uuid
-  local crypto_uuid
+  local crypt_uuid
   local cmdline
 
   root_uuid=$(sed -n "s,^UUID=\(\S\+\)\s\+/\s\+.*,\1,p" /etc/fstab)
-  crypto_uuid=$(blkid | grep crypto_LUKS | sed -n 's,.* UUID="\(\S\+\)" TYPE.*,\1,p')
+  crypt_uuid=$(blkid | grep crypto_LUKS | sed -n 's,.* UUID="\(\S\+\)" TYPE.*,\1,p')
 
-  if [ -n "${crypto_uuid}" ]; then
-    cmdline="cryptdevice=UUID=${crypto_uuid}:${LV}:allow-discards"
-    if [ -e /dev/mapper/${VG}-root ]; then
-      cmdline="${cmdline} root=/dev/mapper/${VG}-root"
+  if [[ "${SCHEME}" =~ LVM ]]; then
+    if [ -n "${crypt_uuid}" ]; then
+      cmdline="cryptdevice=UUID=${crypt_uuid}:${LV}:allow-discards"
+      if [ -e /dev/mapper/${VG}-root ]; then
+        cmdline="${cmdline} root=/dev/mapper/${VG}-root"
+      fi
+      if [ -e /dev/mapper/${VG}-home ]; then
+        cmdline="${cmdline} home=/dev/mapper/${VG}-home"
+      fi
+      if [ -e /dev/mapper/${VG}-swap ]; then
+        cmdline="${cmdline} resume=/dev/mapper/${VG}-swap"
+      fi
+    elif [ -n "${root_uuid}" ]; then
+      cmdline="root=/dev/mapper/${VG}-root"
+    else
+      echo "ERROR: Missing root ${root_uuid}."
+      exit 3
     fi
-    if [ -e /dev/mapper/${VG}-home ]; then
-      cmdline="${cmdline} home=/dev/mapper/${VG}-home"
-    fi
-    if [ -e /dev/mapper/${VG}-swap ]; then
-      cmdline="${cmdline} resume=/dev/mapper/${VG}-swap"
-    fi
-  elif [ -n "${root_uuid}" ]; then
-    cmdline="root=/dev/mapper/${VG}-root"
-  else
-    echo "ERROR: Missing root ${root_uuid}."
-    exit 3
+    sed -i "s|^GRUB_CMDLINE_LINUX=[\"\"]*|GRUB_CMDLINE_LINUX=\"${cmdline}\"|g" /etc/default/grub
   fi
 
-  sed -i "s|^GRUB_CMDLINE_LINUX=[\"\"]*|GRUB_CMDLINE_LINUX=\"${cmdline}\"|g" /etc/default/grub
   if grep "^#GRUB_ENABLE_CRYPTODISK" /etc/default/grub >/dev/null 2>&1; then
     sed -i "s/^#GRUB_ENABLE_CRYPTODISK/GRUB_ENABLE_CRYPTODISK/g" /etc/default/grub
   else

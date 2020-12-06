@@ -14,14 +14,15 @@ Requirements:
 
 ## Install
 
-Install Debian on a new block device (GPT paritioning scheme). Supports
-installation using UEFI (GRUB or systemd-boot) or legacy BIOS (GRUB only).
-EFISTUB support (UEFI-only) may be added in future.
+The `install` script will install Arch Linux on a user-prompted block device.
+Supports installations on hardware using UEFI or legacy BIOS and will set a GPT
+partition table and ext4 filesystem. Other features, such as bootloader or
+encryption, are set when prompted.
 
-Installations may be encrypted, too. Using GRUB, will encrypt the `/boot`
-directory and write a decryption key into the initial ramdisk so that the
-password prompt only appears once. For alternate bootloaders, the `boot`
-directory will remain unencrypted.
+The OS can be configured for LVM-on-LUKS full-disk encryption or not. Using
+GRUB will also encrypt the `/boot` directory and write a decryption key into
+the initial ramdisk so that the password prompt only appears once. For
+alternate bootloaders, the `boot` directory will remain unencrypted.
 
 There is also the optional provision for creating a separate, unencrypted
 partition of arbitrary size. Useful for creating shared filesystems readable on

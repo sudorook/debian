@@ -504,8 +504,8 @@ function format_partitions {
 function mount_install {
   mount "${ROOT_PARTITION}" /mnt
   if [ -b "${EFI_PARTITION}" ]; then
-    mkdir -p /mnt/efi
-    mount "${EFI_PARTITION}" /mnt/efi
+    mkdir -p /mnt/boot/efi
+    mount "${EFI_PARTITION}" /mnt/boot/efi
   fi
   if [ -e "${HOME_PARTITION}" ]; then
     mkdir -p /mnt/home

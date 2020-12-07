@@ -1,9 +1,9 @@
 apt-transport-https
 bash-completion
 curl
-gdebi
 linux-base
 lsb-release
+make
 man-db
 manpages
 memtest86+

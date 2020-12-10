@@ -110,7 +110,7 @@ function set_system_font {
       fi
       ;;
     *)
-      show_error "Font ${1} not supported."
+      show_error "Font ${font} not supported."
       exit 3
       ;;
   esac
@@ -151,14 +151,14 @@ function set_gtk_theme {
   if dpkg -s cinnamon > /dev/null 2>&1; then
     show_info "Setting Cinnamon GTK theme to ${gtktheme}."
     gsettings set org.cinnamon.desktop.interface gtk-theme "'${gtktheme}'"
-    if [[ "${gtktheme}" =~ "-Eta" ]]; then
+    if [[ "${gtktheme}" =~ -Eta$ ]]; then
       gsettings set org.cinnamon.theme name "'${gtktheme%-*}'"
       gsettings set org.cinnamon.desktop.wm.preferences theme "'${gtktheme}'"
-    elif [[ "${gtktheme}" =~ "-Compact" ]]; then
+    elif [[ "${gtktheme}" =~ -Compact$ ]]; then
       gsettings set org.cinnamon.theme name "'${gtktheme%-*}'"
       gsettings set org.cinnamon.desktop.wm.preferences theme "'${gtktheme}'"
-    elif [[ "${gtktheme}" =~ "-Darker" ]]; then
-      gsettings set org.cinnamon.theme name "'${1%er}'"
+    elif [[ "${gtktheme}" =~ -Darker$ ]]; then
+      gsettings set org.cinnamon.theme name "'${gtktheme%er}'"
     else
       gsettings set org.cinnamon.theme name "'${gtktheme}'"
     fi

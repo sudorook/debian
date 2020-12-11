@@ -3,8 +3,10 @@ set -eu
 
 if [[ $(bootctl is-installed) = "yes" ]]; then
   EFI_DEST_PATH="$(bootctl -p)"
-else
+elif [ -d /boot/efi ]; then
   EFI_DEST_PATH=/boot/efi
+else
+  exit
 fi
 
 echo "Copying kernel and initrd-${1} to EFI System Partition"

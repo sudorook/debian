@@ -6,7 +6,7 @@ zsh="${dir}/packages/zsh.list"
 zshrc="${dir}/dotfiles/zshrc"
 function install_zsh {
   show_header "Installing zsh."
-  check_installed $(cat ${zsh})
+  check_installed "${zsh}"
   check_fail
   show_success "zsh installed."
 
@@ -22,7 +22,7 @@ function install_zsh {
 selinux="${dir}/packages/selinux.list"
 function install_selinux {
   show_header "Installing SELinux and setting rules."
-  check_installed $(cat ${selinux})
+  check_installed "${selinux}"
   check_fail
   show_success "SELinux installed."
 
@@ -62,7 +62,7 @@ function install_selinux {
 utils="${dir}/packages/utils.list"
 function install_utils {
   show_header "Installing general utilities."
-  check_installed $(cat ${utils})
+  check_installed "${utils}"
   check_fail
   show_success "Utilities installed."
 }
@@ -70,7 +70,7 @@ function install_utils {
 laptop="${dir}/packages/laptop.list"
 function install_laptop {
   show_header "Installing laptop utilities."
-  check_installed $(cat ${laptop})
+  check_installed "${laptop}"
   check_fail
   show_success "Laptop utilities installed."
 

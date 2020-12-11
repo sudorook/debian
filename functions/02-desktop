@@ -5,7 +5,7 @@ dir="$(dirname "$0")"
 gnome="${dir}/packages/gnome.list"
 function install_gnome {
   show_header "Setting up GNOME desktop environment."
-  check_installed $(cat ${gnome})
+  check_installed "${gnome}"
   check_fail
   show_success "GNOME installed."
 
@@ -32,7 +32,7 @@ lightdmconf="/etc/lightdm/lightdm.conf"
 redshiftconf="${dir}/configs/redshift.conf"
 function install_cinnamon {
   show_header "Setting up cinnamon desktop environment."
-  check_installed $(cat ${cinnamon})
+  check_installed "${cinnamon}"
   check_fail
   show_success "Cinnamon installed."
 

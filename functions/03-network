@@ -6,7 +6,7 @@ networking="${dir}/packages/network.list"
 nmconf="/etc/NetworkManager/NetworkManager.conf"
 function install_network {
   show_header "Setting up networking."
-  check_installed $(cat ${networking})
+  check_installed "${networking}"
   check_fail
   show_success "Networking applications installed."
 
@@ -24,7 +24,7 @@ discovery="${dir}/packages/discover.list"
 nsconf="/etc/nsswitch.conf"
 function install_discovery {
   show_header "Setting up local network discovery."
-  check_installed $(cat ${discovery})
+  check_installed "${discovery}"
   check_fail
   show_success "Discovery applications installed."
 
@@ -39,7 +39,7 @@ function install_discovery {
 firewall="${dir}/packages/firewall.list"
 function install_firewall {
   show_header "Setting up firewall."
-  check_installed $(cat ${firewall})
+  check_installed "${firewall}"
   check_fail
   show_success "Firewall packages installed."
 
@@ -53,7 +53,7 @@ function install_firewall {
 tor="${dir}/packages/tor.list"
 function install_tor {
   show_header "Installing tor."
-  check_installed $(cat ${tor})
+  check_installed "${tor}"
   check_fail
   show_success "Tor installed."
 

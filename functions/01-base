@@ -7,7 +7,7 @@ bashrc="${dir}/dotfiles/bashrc"
 bashprofile="${dir}/dotfiles/bash_profile"
 function install_base {
   show_header "Installing base packages and their config files."
-  check_installed $(cat ${base})
+  check_installed "${base}"
   check_fail
   show_success "Base packages installed."
 
@@ -30,7 +30,7 @@ function install_firmware {
     show_warning "non-free repos need to be enabled first."
   else
     show_header "Installing non-free firmware."
-    check_installed $(cat ${firmware})
+    check_installed "${firmware}"
     check_fail
     show_success "Firmware installed."
   fi
@@ -166,7 +166,7 @@ function enable_sudo_insults {
 purge="${dir}/packages/purge.list"
 function purge_packages {
   show_header "Purging unwanted packaged often installed by default."
-  check_uninstalled $(cat ${purge})
+  check_uninstalled "${purge}"
   check_fail
   show_success "Base packages installed."
 }
@@ -212,7 +212,7 @@ function disable_beep {
       echo "gtk-error-bell=0" >> "${gtk2conf}"
     fi
   else
-    mkdir -p "$(dirname ${gtk2conf})"
+    mkdir -p "$(dirname "${gtk2conf}")"
     echo "gtk-error-bell=0" >> "${gtk2conf}"
   fi
   if [ -f "${gtk3conf}" ]; then
@@ -225,7 +225,7 @@ function disable_beep {
       echo "gtk-error-bell=0" >> "${gtk3conf}"
     fi
   else
-    mkdir -p "$(dirname ${gtk3conf})"
+    mkdir -p "$(dirname "${gtk3conf}")"
     echo "[Settings]" > "${gtk3conf}"
     echo "gtk-error-bell=0" >> "${gtk3conf}"
   fi

@@ -72,9 +72,9 @@ function check_debian_release {
 }
 
 function check_installed {
-  for package in "${@}"; do
+  while read -r package; do
     # Check if package is installed already before installing.
-    if dpkg -s ${package} >/dev/null 2>&1; then
+    if dpkg -s "${package}" >/dev/null 2>&1; then
       show_listitem "${package} package already installed. Skipping."
     else
       # First check if the package exists in the repos.
@@ -85,12 +85,12 @@ function check_installed {
         show_warning "Package ${package} does not exist in the repos. Skipping."
       fi
     fi
-  done
+  done < "${1}"
 }
 
 function check_uninstalled {
   for package in "${@}"; do
-    if dpkg -s ${package} >/dev/null 2>&1; then
+    if dpkg -s "${package}" >/dev/null 2>&1; then
       show_listitem "Purging ${package}."
       sudo apt-get -y purge "${package}"
       sudo apt-get -y autoremove
@@ -102,7 +102,7 @@ function check_uninstalled {
 
 function install_post_dependencies {
   show_header "Checking post-installation dependencies."
-  for package in $(cat ${deps}); do
+  while read -r package; do
     if ! dpkg -s "${package}" > /dev/null 2>&1; then
       show_info "${package} is needed for this script."
       sudo apt-get install "${package}"
@@ -111,12 +111,12 @@ function install_post_dependencies {
     else
       show_success "${package} is already installed."
     fi
-  done
+  done < "${deps}"
 }
 
 function install_dependencies {
   show_header "Checking installation dependencies."
-  for package in $(cat ${install}); do
+  while read -r package; do
     if ! dpkg -s "${package}" > /dev/null 2>&1; then
       show_info "${package} is needed for this script."
       sudo apt-get install "${package}"
@@ -125,7 +125,7 @@ function install_dependencies {
     else
       show_success "${package} is already installed."
     fi
-  done
+  done < "${install}"
 }
 
 function check_network {

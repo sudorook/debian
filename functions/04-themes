@@ -6,7 +6,7 @@ npmrc="${dir}/dotfiles/npmrc"
 themes="${dir}/packages/themes.list"
 function install_theme_deps {
   show_header "Installing theme dependencies."
-  check_installed $(cat ${themes})
+  check_installed "${themes}"
   check_fail
   show_success "Theme dependencies installed."
 
@@ -109,7 +109,7 @@ function install_plata_gtk {
 fonts="${dir}/packages/fonts.list"
 function install_fonts {
   show_header "Installing fonts."
-  check_installed $(cat ${fonts})
+  check_installed "${fonts}"
   check_fail
   show_success "Fonts installed."
 }

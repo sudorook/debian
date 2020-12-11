@@ -5,7 +5,7 @@ dir="$(dirname "$0")"
 android="${dir}/packages/android.list"
 function install_android {
   show_header "Installing tools for Android devices."
-  check_installed $(cat ${android})
+  check_installed "${android}"
   check_fail
   show_success "Android tools installed."
 }
@@ -15,7 +15,7 @@ mpvconfig="${dir}/configs/mpv.conf"
 libaoconf="/etc/libao.conf"
 function install_apps {
   show_header "Installing desktop applications."
-  check_installed $(cat ${apps})
+  check_installed "${apps}"
   check_fail
   show_success "Applications installed."
 
@@ -40,7 +40,7 @@ function install_apps {
 codecs="${dir}/packages/codecs.list"
 function install_codecs {
   show_header "Installing codecs."
-  check_installed $(cat ${codecs})
+  check_installed "${codecs}"
   check_fail
   show_success "Codecs installed."
 }
@@ -52,7 +52,7 @@ tmuxconfig="${dir}/dotfiles/tmux.conf"
 vimpack="${HOME}/.vim/pack/dist/start"
 function install_dev {
   show_header "Installing languages and editors for development."
-  check_installed $(cat ${dev})
+  check_installed "${dev}"
   check_fail
   show_success "Languages and editors installed."
 
@@ -80,7 +80,7 @@ function install_dev {
 extra="${dir}/packages/extra.list"
 function install_extra {
   show_header "Installing extra desktop applications."
-  check_installed $(cat ${extra})
+  check_installed "${extra}"
   check_fail
   show_success "Extra applications installed."
 }
@@ -88,7 +88,7 @@ function install_extra {
 printer="${dir}/packages/printer.list"
 function install_printing {
   show_header "Installing CPUS and printer firmware."
-  check_installed $(cat ${printer})
+  check_installed "${printer}"
   check_fail
   show_success "Printing applications installed."
 }
@@ -96,7 +96,7 @@ function install_printing {
 games="${dir}/packages/games.list"
 function install_games {
   show_header "Installing game emulators."
-  check_installed $(cat ${games})
+  check_installed "${games}"
   check_fail
   show_success "Emulators installed."
 }
@@ -105,7 +105,7 @@ kvm="${dir}/packages/kvm.list"
 qemuconf="/etc/libvirt/qemu.conf"
 function install_kvm {
   show_header "Installing KVM."
-  check_installed $(cat ${kvm})
+  check_installed "${kvm}"
   check_fail
   show_success "KVM installed."
 
@@ -128,7 +128,7 @@ kvmguest="${dir}/packages/kvm-guest.list"
 function install_kvm_guest {
   if grep "^flags.*\ hypervisor" /proc/cpuinfo >/dev/null 2>&1; then
     show_header "Installing tools for KVM guests."
-    check_installed $(cat ${kvmguest})
+    check_installed "${kvmguest}"
     check_fail
     show_success "KVM installed."
 
@@ -143,7 +143,7 @@ message="${dir}/packages/message.list"
 weechatdir="${HOME}/.weechat"
 function install_messaging {
   show_header "Installing messaging applications."
-  check_installed $(cat ${message})
+  check_installed "${message}"
   check_fail
   show_success "Messaging applications installed."
 
@@ -163,7 +163,7 @@ function install_messaging {
 mingw="${dir}/packages/mingw.list"
 function install_mingw {
   show_header "Installing MinGW for cross-platform compilation."
-  check_installed $(cat ${mingw})
+  check_installed "${mingw}"
   check_fail
   show_success "MinGW installed."
 }
@@ -177,7 +177,7 @@ ncmpcppconf="${dir}/configs/ncmpcpp.conf"
 ncmpcppdir="${HOME}/.ncmpcpp"
 function install_music {
   show_header "Installing music applications."
-  check_installed $(cat ${music})
+  check_installed "${music}"
   check_fail
   show_success "Music applications installed."
 
@@ -203,7 +203,7 @@ function install_music {
 texlive="${dir}/packages/texlive.list"
 function install_texlive {
   show_header "Installing TeX Live."
-  check_installed $(cat ${texlive})
+  check_installed "${texlive}"
   check_fail
   show_success "TeX Live installed."
 
@@ -279,7 +279,7 @@ vimrc="${dir}/dotfiles/vimrc"
 vimpack="${HOME}/.vim/pack/dist/start"
 function install_vim {
   show_header "Installing vim and vim plugins."
-  check_installed $(cat ${vim})
+  check_installed "${vim}"
   check_fail
   show_success "Vim and vim plugins installed."
 
@@ -325,7 +325,7 @@ function install_vim {
 virtualbox="${dir}/packages/virtualbox.list"
 function install_virtualbox {
   show_header "Installing VirtualBox."
-  check_installed $(cat ${virtualbox})
+  check_installed "${virtualbox}"
   check_fail
   show_success "VirtualBox installed."
 
@@ -339,7 +339,7 @@ virtualboxguest="${dir}/packages/virtualbox-guest.list"
 function install_virtualbox_guest {
   if grep "^flags.*\ hypervisor" /proc/cpuinfo >/dev/null 2>&1; then
     show_header "Installing packages for VirtualBox guests."
-    check_installed $(cat ${virtualboxguest})
+    check_installed "${virtualboxguest}"
     check_fail
     show_success "VirtualBox guest packages installed."
   else
@@ -350,7 +350,7 @@ function install_virtualbox_guest {
 wine="${dir}/packages/wine.list"
 function install_wine {
   show_header "Installing wine."
-  check_installed $(cat ${wine})
+  check_installed "${wine}"
   check_fail
   show_success "Wine installed."
 }

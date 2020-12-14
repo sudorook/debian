@@ -45,6 +45,7 @@ libarpack++2-dev
 libarpack2-dev
 libboost-dev
 libeigen3-dev
+libgit2-dev
 libglpk-dev
 libimage-exiftool-perl
 libjs-mathjax

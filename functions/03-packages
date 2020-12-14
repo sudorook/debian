@@ -51,10 +51,10 @@ rprofile="${dir}/dotfiles/Rprofile"
 tmuxconfig="${dir}/dotfiles/tmux.conf"
 vimpack="${HOME}/.vim/pack/dist/start"
 function install_dev {
-  show_header "Installing languages and editors for development."
+  show_header "Installing languages, libraries, and tools for development."
   check_installed "${dev}"
   check_fail
-  show_success "Languages and editors installed."
+  show_success "Development packages installed."
 
   show_info "Installing npmrc."
   cp -f "${npmrc}" "${HOME}/.npmrc"

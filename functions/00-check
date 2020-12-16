@@ -105,7 +105,7 @@ function install_post_dependencies {
   while read -r package; do
     if ! dpkg -s "${package}" > /dev/null 2>&1; then
       show_info "${package} is needed for this script."
-      sudo apt-get install "${package}"
+      sudo apt-get -y install "${package}"
       check_fail $?
       show_success "${package} now installed."
     else
@@ -119,7 +119,7 @@ function install_dependencies {
   while read -r package; do
     if ! dpkg -s "${package}" > /dev/null 2>&1; then
       show_info "${package} is needed for this script."
-      sudo apt-get install "${package}"
+      sudo apt-get -y install "${package}"
       check_fail $?
       show_success "${package} now installed."
     else

@@ -354,7 +354,7 @@ function set_partitions {
   part_count=2
 
   if [[ "${MAKE_EFI_PARTITION}" = "yes" ]]; then
-    sgdisk_opts="${sgdisk_opts} --new=2:0:+512MiB --typecode=${part_count}:ef00"
+    sgdisk_opts="${sgdisk_opts} --new=2:0:+500MiB --typecode=${part_count}:ef00"
     EFI_PARTITION="/dev/${DEVICE}${part_count}"
     part_count=$(( part_count + 1 ))
   fi

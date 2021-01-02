@@ -11,6 +11,7 @@ gdisk
 gnupg
 hfsprogs
 libnotify-bin
+lshw
 mtools
 net-tools
 nmap

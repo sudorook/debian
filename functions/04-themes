@@ -151,10 +151,13 @@ function install_vim_theme {
   rm -rf colorific.vim/
 }
 
+thunderbirdprofile="${HOME}/.thunderbird/profiles.ini"
 function install_thunderbird_theme {
   local thunderbird
-  thunderbird="$(echo ~/.thunderbird/*.default)"
-  if ! [ -d "${thunderbird}" ]; then
+  if [ -f "${thunderbirdprofile}" ]; then
+    thunderbird="$(grep -A 1 "^\[Install" "${thunderbirdprofile}" | \
+                   sed -n "s/^Default=\(.*\)/\1/p")"
+  else
     show_warning "Thunderbird profile missing. Skipping."
     return
   fi

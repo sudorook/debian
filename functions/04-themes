@@ -166,8 +166,6 @@ function install_thunderbird_theme {
   if [ -d "${thunderbird}/chrome" ]; then
     show_info "${thunderbird}/chrome already exists. Backing up and replacing."
     mv "${thunderbird}/chrome" "${thunderbird}/chrome.${RANDOM}.bak"
-  else
-    mkdir -p "${thunderbird}/chrome"
   fi
 
   git clone \

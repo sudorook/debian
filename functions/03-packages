@@ -316,6 +316,9 @@ function install_vim {
     nerd-commenter pathogen surround syntastic tabular latex-suite \
     youcompleteme taglist julia ultisnips xmledit lastplace
 
+  git clone https://github.com/airblade/vim-gitgutter.git \
+    "${vimpack}/vim-gitgutter"
+
   show_info "Setting Vim as default tool for git diffs and merges."
   # 00-check makes sure the git is installed, so no need for checks here.
   git config --global diff.tool vimdiff

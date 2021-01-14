@@ -20,6 +20,12 @@ set spellfile=$HOME/.vim/spell/en.utf-8.add
 filetype plugin indent on
 syntax on
 
+"packages
+packadd! AlignPlugin
+packadd! detectindent
+packadd! doxygen-toolkit
+packadd! nerd-commenter
+
 "airline
 set noshowmode
 set laststatus=2

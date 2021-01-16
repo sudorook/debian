@@ -314,7 +314,7 @@ function install_vim {
   vim-addons install \
     align alternate ctrlp detectindent doxygen-toolkit fugitive \
     nerd-commenter pathogen surround syntastic tabular latex-suite \
-    youcompleteme taglist julia ultisnips xmledit lastplace
+    youcompleteme taglist julia ultisnips xmledit lastplace snippets
 
   git clone https://github.com/airblade/vim-gitgutter.git \
     "${vimpack}/vim-gitgutter"

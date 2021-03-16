@@ -23,27 +23,33 @@ set -eu
 # Check that all the packages in ../packages actually exist.
 #
 
-function clean_pkgname() {
-  echo "${1}" | sed -e "s,+$,\\\+,g"
-}
+PKGDIR=../packages
+MISSING=false
 
-pkgdir=../packages
+for file in "${PKGDIR}"/*; do
+  basename "${file}"
 
-for file in ${pkgdir}/*; do
-  echo $(basename ${file})
+  # Skip the wine list if multilib is not enabled.
+  if [[ "${file}" = "../packages/wine.list" ]]; then
+    if ! pacman -Sl multilib >/dev/null 2>&1; then
+      echo "[multilib] not enabled. Skipping."
+      echo
+      continue
+    fi
+  fi
 
-  missing=false
-  for package in $(cat ${file}); do
-    if apt-cache search --names-only ^$(clean_pkgname "${package}")$ >/dev/null; then
-    # if dpkg -s ^$(clean_pkgname "${package}")$ >/dev/null; then
-      echo -e "\033[1;35m✓\033[0m" ${package}
+  while read -r package; do
+    if apt-cahce search --names-only ^"${package//+/\\\+}"$ >/dev/null; then
+      echo -e "\033[1;35m✓\033[0m" "${package}"
     else
-      missing=true
+      MISSING=true
       echo -e "\033[1;31m✗ ${package}\033[m"
     fi
-  done
+  done < "${file}"
 
   echo
 done
 
-if ${missing}; then exit 1; fi
+if ${MISSING}; then
+  exit 1
+fi

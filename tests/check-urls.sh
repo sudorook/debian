@@ -34,19 +34,20 @@ function try_wget {
 
 function check_url_debian {
   local url="https://debian.org"
+  local missing=false
   if try_wget ${url}; then
     show_success "${url}"
   else
+    missing=true
     show_error "${url}"
-    # exit 1
   fi
+  return ${missing}
 }
 
 function check_url_torbrowser {
   local torbrowser_version
   local torbrowser_url="https://www.torproject.org/dist/torbrowser"
-  local arch
-
+  local missing=false
   torbrowser_version=$(curl -s https://www.torproject.org/download/ | \
                        sed -n 's,^ \+<a class="downloadLink" href="/dist/torbrowser/\([0-9\.]\+\)/tor-browser-linux.*">,\1,p')
   for arch in "32" "64"; do
@@ -55,9 +56,10 @@ function check_url_torbrowser {
       show_success "${torbrowser_url}/${torbrowser_version}/${torbrowser_package}"
     else
       show_error "${torbrowser_url}/${torbrowser_version}/${torbrowser_package}"
-      # exit 1
+      missing=true
     fi
   done
+  return ${missing}
 }
 
 check_url_debian

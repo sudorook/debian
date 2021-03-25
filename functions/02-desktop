@@ -89,7 +89,7 @@ function 02-desktop {
   show_question "Desktop: what do you want to install?"
   show_info "Main\n ${endbranch} Desktop (Hit ENTER to see options again.)"
 
-  options=("Back" "All" "GNOME" "Cinnamon")
+  local options=("Back" "All" "GNOME" "Cinnamon")
   select option in "${options[@]}"; do
     case $option in
       "Back")

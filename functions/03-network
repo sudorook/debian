@@ -47,8 +47,8 @@ function install_discovery {
   show_success "Discovery applications installed."
 
   show_info "Enabling local hostname resolution in Avahi."
-  oldhostsline="hosts: files mymachines myhostname resolve \[!UNAVAIL=return\] dns"
-  newhostsline="hosts: files mymachines myhostname mdns_minimal \[NOTFOUND=return\] resolve \[!UNAVAIL=return\] dns"
+  local oldhostsline="hosts: files mymachines myhostname resolve \[!UNAVAIL=return\] dns"
+  local newhostsline="hosts: files mymachines myhostname mdns_minimal \[NOTFOUND=return\] resolve \[!UNAVAIL=return\] dns"
   sudo sed -i "/^${oldhostsline}/s/^${oldhostsline}/${newhostsline}/g" ${nsconf}
   sudo systemctl enable avahi-daemon.service
   sudo systemctl start avahi-daemon.service
@@ -84,9 +84,12 @@ srclist="/etc/apt/sources.list"
 function use_onion_repos {
   show_header "Tunneling apt over tor for Debian $(lsb_release -sc)."
 
+  local is_contrib
   grep -q contrib ${srclist}; is_contrib=$?
+  local is_nonfree
   grep -q non-free ${srclist}; is_nonfree=$?
 
+  local release
   release=$(lsb_release -sc)
   sudo cp -f ${srclist} ${srclist}.${RANDOM}.bak
   sudo cp -f "${dir}/sources/${release}-sources.list" ${srclist}
@@ -109,8 +112,14 @@ function 03-network {
   show_question "Network: what do you want to install?"
   show_info "Main\n ${endbranch} Network (Hit ENTER to see options again.)"
 
-  options=("Back" "All" "Networking" "Local discovery" "Firewall" "Install tor" \
-           "Tunnel apt over tor")
+  local options=(
+    "Back"
+    "All"
+    "Networking"
+    "Local discovery"
+    "Firewall"
+    "Install Tor"
+    "Tunnel apt over Tor")
   select option in "${options[@]}"; do
     case $option in
       "Back")

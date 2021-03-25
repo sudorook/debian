@@ -74,8 +74,16 @@ show_listitem() {
 function main {
   show_question "Select an option:"
   show_info "Main (Hit ENTER to see options again.)"
-  options=("Quit" "Autopilot" "Base" "Miscellaneous" "Desktop environment" \
-           "Network tools" "Applications" "Themes" "Personalization")
+  local options=(
+    "Quit"
+    "Autopilot"
+    "Base"
+    "Miscellaneous"
+    "Desktop environment"
+    "Network tools"
+    "Applications"
+    "Themes"
+    "Personalization")
   select option in "${options[@]}"; do
     case $option in
       "Quit")
@@ -83,6 +91,7 @@ function main {
         break
         ;;
       "Autopilot")
+        local response
         response=$(ask_question "Let this script install everything? (y/N)")
         if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
           # Install base packages

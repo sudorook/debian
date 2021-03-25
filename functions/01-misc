@@ -103,7 +103,13 @@ function 01-misc {
   show_question "Misc: what do you want to install?"
   show_info "Main\n ${endbranch} Misc (Hit ENTER to see options again.)"
 
-  options=("Back" "All" "Linux utilities" "Laptop tools" "SELinux" "zsh" )
+  local options=(
+    "Back"
+    "All"
+    "Linux utilities"
+    "Laptop tools"
+    "SELinux"
+    "zsh")
   select option in "${options[@]}"; do
     case $option in
       "Back")

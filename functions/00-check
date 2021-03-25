@@ -22,11 +22,11 @@ dir="$(dirname "$0")"
 deps="${dir}/packages/deps.list"
 install="${dir}/packages/install.list"
 
-midbranch="\0342\0224\0234\0342\0224\0200\0342\0224\0200"
-endbranch="\0342\0224\0224\0342\0224\0200\0342\0224\0200"
+export midbranch="\0342\0224\0234\0342\0224\0200\0342\0224\0200"
+export endbranch="\0342\0224\0224\0342\0224\0200\0342\0224\0200"
 
 # # Tricks vim-autointent into thinking the default indent is 1 space.
-# heirarchy="Main
+# export heirarchy="Main
 #  ${midbranch} Base
 #  ${midbranch} Miscellaneous
 #  ${midbranch} Desktop environment
@@ -52,8 +52,8 @@ function check_root {
 }
 
 function check_fail {
-  EXITSTATUS=${1:-}
-  if [[ $EXITSTATUS -gt 0 ]]; then
+  local exitstatus=${1:-}
+  if [[ ${exitstatus} -gt 0 ]]; then
     show_error "Error code received. Returning to main."
     sleep 3s && main
   fi
@@ -62,6 +62,7 @@ function check_fail {
 srclist="/etc/apt/sources.list"
 function check_debian_release {
   show_header "Checking currently set Debian release."
+  local release
   release=$(lsb_release -sc)
   if ! [[ "${release}" == "bullseye" ]] && \
      ! [[ "${release}" == "buster" ]] && \

@@ -226,6 +226,7 @@ function install_texlive {
   show_success "TeX Live installed."
 
   show_info "Changing the default local texmf path to ~/.texmf"
+  local texmfconfig
   texmfconfig=$(kpsewhich texmf.cnf)
   mkdir -p "${HOME}/.texmf"
   sudo sed -i "s,^TEXMFHOME = .*$,TEXMFHOME = ~/.texmf,g" "${texmfconfig}"
@@ -236,6 +237,8 @@ local_applications="${HOME}/.local/share/applications"
 function install_torbrowser {
   show_header "Installing Tor browser."
 
+  local response
+  local install_torbrowser
   if [ -d "${torbrowser_path}" ]; then
     show_warning "Tor browser is already installed in ${torbrowser_path}."
     response=$(ask_question "Replace? (y/N)")
@@ -249,12 +252,16 @@ function install_torbrowser {
   fi
 
   if ${install_torbrowser}; then
+    local torbrowser_version
+    local torbrowser_package
+    local torbrowser_url="https://www.torproject.org/dist/torbrowser"
+    local arch
+
     show_info "Downloading Tor developers' GPG key."
     gpg --auto-key-locate nodefault,wkd --locate-keys torbrowser@torproject.org
 
     torbrowser_version=$(curl https://www.torproject.org/download/ | \
                          sed -n 's,^ \+<a class="downloadLink" href="/dist/torbrowser/\([0-9\.]\+\)/tor-browser-linux.*">,\1,p')
-    torbrowser_url=https://www.torproject.org/dist/torbrowser
     arch=$(uname -m)
     if [ "${arch:(-2)}" = "86" ]; then
       torbrowser_package=tor-browser-linux32-${torbrowser_version}_en-US.tar.xz
@@ -380,10 +387,27 @@ function 03-packages {
   show_question "Applications: what do you want to install?"
   show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
 
-  options=("Back" "All" "Android tools" "General applications" "Codecs" \
-           "Development" "Extra applications" "Emulators" "KVM (host)" \
-           "KVM (guest)" "Messaging" "MinGW" "Music" "Printing" "TeX Live" \
-           "Tor browser" "Vim" "VirtualBox (host)" "VirtualBox (guest)" "Wine")
+  local options=(
+    "Back"
+    "All"
+    "Android tools"
+    "General applications"
+    "Codecs"
+    "Development"
+    "Extra applications"
+    "Emulators"
+    "KVM (host)"
+    "KVM (guest)"
+    "Messaging"
+    "MinGW"
+    "Music"
+    "Printing"
+    "TeX Live"
+    "Tor browser"
+    "Vim"
+    "VirtualBox (host)"
+    "VirtualBox (guest)"
+    "Wine")
   select option in "${options[@]}"; do
     case $option in
       "Back")

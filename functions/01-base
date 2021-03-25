@@ -43,6 +43,7 @@ function install_base {
 firmware="${dir}/packages/firmware.list"
 srclist="/etc/apt/sources.list"
 function install_firmware {
+  local release
   release=$(lsb_release -sc)
   if ! grep non-free "${srclist}" >/dev/null 2>&1; then
     show_warning "non-free repos need to be enabled first."
@@ -56,6 +57,7 @@ function install_firmware {
 
 srclist="/etc/apt/sources.list"
 function enable_contrib_repos {
+  local release
   release=$(lsb_release -sc)
   if ! grep contrib "${srclist}" >/dev/null 2>&1; then
     show_info "Enabling contrib repos."
@@ -70,6 +72,7 @@ function enable_contrib_repos {
 
 srclist="/etc/apt/sources.list"
 function enable_nonfree_repos {
+  local release
   release=$(lsb_release -sc)
   if ! grep non-free "${srclist}" >/dev/null 2>&1; then
     show_info "Enabling non-free repos."
@@ -88,6 +91,11 @@ bullseyelist="${dir}/sources/bullseye-sources.list"
 sidlist="${dir}/sources/sid-sources.list"
 function upgrade_debian_release {
   # check how current sources.list is configured.
+  local is_onion
+  local is_contrib
+  local is_nonfree
+  local is_upgraded
+  local release
   is_onion=$(grep -q onion ${srclist} && echo $? || echo $?)
   is_contrib=$(grep -q contrib ${srclist} && echo $? || echo $?)
   is_nonfree=$(grep -q nonfree ${srclist} && echo $? || echo $?)
@@ -95,7 +103,7 @@ function upgrade_debian_release {
   release=$(lsb_release -sc)
 
   show_question "Upgrade Debian release?"
-  options=("Back" "Buster" "Bullseye" "Sid")
+  local options=("Back" "Buster" "Bullseye" "Sid")
   select option in "${options[@]}"; do
     case $option in
       "Back")
@@ -253,9 +261,18 @@ function 01-base {
   show_question "Base: what do you want to install?"
   show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
 
-  options=("Back" "All" "Base packages" "Purge packages" "Firmware" "Updates" \
-           "Enable contrib" "Enable non-free" "Upgrade Debian release" \
-           "Sudo insults" "Disable system beep")
+  local options=(
+    "Back"
+    "All"
+    "Base packages"
+    "Purge packages"
+    "Firmware"
+    "Updates"
+    "Enable contrib"
+    "Enable non-free"
+    "Upgrade Debian release"
+    "Sudo insults"
+    "Disable system beep")
   select option in "${options[@]}"; do
     case $option in
       "Back")

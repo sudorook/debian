@@ -51,7 +51,7 @@ function install_arc_gtk {
 
 function install_adapta_gtk {
   show_header "Downloading, building, and installing the Adapta GTK theme."
-  autotools_options=""
+  local autotools_options
   if ! dpkg -s gnome-shell > /dev/null 2>&1; then
     autotools_options="${autotools_options} --disable-gnome "
   fi
@@ -87,7 +87,7 @@ function install_adapta_gtk {
 
 function install_plata_gtk {
   show_header "Downloading, building, and installing the Plata GTK theme."
-  autotools_options=""
+  local autotools_options
   if ! dpkg -s gnome-shell > /dev/null 2>&1; then
     autotools_options="${autotools_options} --disable-gnome "
   fi
@@ -200,9 +200,17 @@ function 04-themes {
   show_question "Themes: what do you want to install?"
   show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
 
-  options=("Back" "All" "Arc (GTK)" "Adapta (GTK)" "Plata (GTK)" "Fonts" \
-           "Papirus (icons)" "Vim theme" "Thunderbird theme" \
-           "Timed backgrounds")
+  local options=(
+    "Back"
+    "All"
+    "Arc (GTK)"
+    "Adapta (GTK)"
+    "Plata (GTK)"
+    "Fonts"
+    "Papirus (icons)"
+    "Vim theme"
+    "Thunderbird theme"
+    "Timed backgrounds")
   select option in "${options[@]}"; do
     case $option in
       "Back")

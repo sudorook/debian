@@ -145,11 +145,11 @@ function 03-network {
         install_firewall
         show_info "Main\n ${endbranch} Network (Hit ENTER to see options again.)"
         ;;
-      "Install tor")
+      "Install Tor")
         install_tor
         show_info "Main\n ${endbranch} Network (Hit ENTER to see options again.)"
         ;;
-      "Tunnel apt over tor")
+      "Tunnel apt over Tor")
         install_tor
         use_onion_repos
         show_info "Main\n ${endbranch} Network (Hit ENTER to see options again.)"

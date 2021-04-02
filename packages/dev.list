@@ -112,6 +112,7 @@ rubocop
 ruby
 ruby-aruba
 ruby-gherkin
+scour
 shellcheck
 sqlite3
 strace

@@ -107,6 +107,7 @@ function install_plata_gtk {
     --with-suggestion_color=#5294E2 \
     --with-destruction_color=#F44336 \
     ${autotools_options} \
+    --enable-gtk_next \
     --enable-parallel
   make -j"$(nproc)"
   sudo make install

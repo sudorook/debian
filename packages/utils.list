@@ -11,6 +11,8 @@ gddrescue
 gdisk
 gnupg
 hfsprogs
+libbcprov-java
+libcommons-lang3-java
 libnotify-bin
 mtools
 net-tools
@@ -19,6 +21,7 @@ ntfs-3g
 p7zip
 parallel
 parted
+pdftk
 pigz
 pixz
 pv

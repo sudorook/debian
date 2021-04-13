@@ -3,6 +3,8 @@ gdm3
 gnome-core
 gnome-terminal
 gnome-tweaks
+nautilus
+nautilus-share
 network-manager
 xdg-user-dirs
 xdg-user-dirs-gtk

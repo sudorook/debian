@@ -1,8 +1,8 @@
 paths:
   default: $albumartist/$album%aunique{}/$track $albumartist - $title
 
-plugins: fetchart embedart mpdupdate replaygain types smartplaylist lastgenre
-         missing duplicates scrub
+plugins: fetchart edit embedart mpdupdate replaygain types smartplaylist
+         lastgenre missing duplicates scrub
 
 fetchart:
   auto: true
@@ -33,4 +33,4 @@ smartplaylist:
       query: 'rating:5'
 
 scrub:
-  auto: no
+  auto: true

@@ -14,7 +14,7 @@ Requirements:
 
 ## Install
 
-The `install` script will install Arch Linux on a user-prompted block device.
+The `install` script will install Debian on a user-prompted block device.
 Supports installations on hardware using UEFI or legacy BIOS and will set a GPT
 partition table and ext4 filesystem. Other features, such as bootloader or
 encryption, are set when prompted.

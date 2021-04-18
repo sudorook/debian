@@ -88,7 +88,7 @@ function main {
     mount --bind /$fs /mnt/$fs
   done
 
-  ./utils/genfstab -U /mnt >> /mnt/etc/fstab
+  ${dir}/utils/genfstab -U /mnt >> /mnt/etc/fstab
   TIMEZONE="${TIMEZONE}" chroot /mnt /bin/bash -c "set_timezone"
   LOCALE="${LOCALE}" chroot /mnt /bin/bash -c "set_locale"
 

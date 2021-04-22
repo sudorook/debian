@@ -229,12 +229,21 @@ function set_gdm_theme {
     if [[ -d "/usr/share/themes/${gtktheme}" ]]; then
       show_header "Setting GDM login theme to ${gtktheme}."
       sudo cp -r "/usr/share/gnome-shell" "/usr/share/gnome-shell-$(date +%Y%m%d)"
-      sudo cp -rf /usr/share/themes/${gtktheme}/gnome-shell/* /usr/share/gnome-shell/
-      if [[ "${gtktheme}" =~ "Adapta" ]] || [[ "${gtktheme}" =~ "Plata" ]]; then
-        sudo cp -f /usr/share/themes/${gtktheme}/gnome-shell/extensions/window-list/classic.css \
+      if [[ "${gtktheme}" =~ Adapta ]] || [[ "${gtktheme}" =~ Plata ]]; then
+        sudo cp -rf \
+          /usr/share/themes/${gtktheme}/gnome-shell/* \
+          /usr/share/gnome-shell/
+        sudo cp -f \
+          /usr/share/themes/${gtktheme}/gnome-shell/extensions/window-list/classic.css \
           /usr/share/gnome-shell/extensions/window-list@gnome-shell-extensions.gcampax.github.com/
-        sudo cp -f /usr/share/themes/${gtktheme}/gnome-shell/extensions/window-list/stylesheet.css \
+        sudo cp -f \
+          /usr/share/themes/${gtktheme}/gnome-shell/extensions/window-list/stylesheet.css \
           /usr/share/gnome-shell/extensions/window-list@gnome-shell-extensions.gcampax.github.com/
+      elif [[ "${gtktheme}" =~ Materia ]]; then
+        sudo glib-compile-resources \
+          --target="/usr/share/gnome-shell/gnome-shell-theme.gresource" \
+          --sourcedir="/usr/share/themes/${gtktheme}/gnome-shell" \
+          "/usr/share/themes/${gtktheme}/gnome-shell/gnome-shell-theme.gresource.xml"
       fi
     else
       show_warning "GTK theme ${gtktheme} not found. Skipping."
@@ -461,6 +470,12 @@ function select_desktop_theme {
     "Adapta-Eta"
     "Adapta-Nokto"
     "Adapta-Nokto-Eta"
+    "Materia"
+    "Materia-compact"
+    "Materia-dark"
+    "Materia-dark-compact"
+    "Materia-light"
+    "Materia-light-compact"
     "Plata"
     "Plata-Compact"
     "Plata-Lumine"
@@ -547,6 +562,66 @@ function select_desktop_theme {
         if [ -d /usr/share/themes/Adapta-Nokto-Eta ] || \
            [ -d "${HOME}/.themes/Adapta-Nokto-Eta" ]; then
           gtktheme="Adapta-Nokto-Eta"
+        else
+          show_warning "${option} theme is not installed."
+          select_desktop_theme
+        fi
+        break
+        ;;
+      "Materia")
+        if [ -d /usr/share/themes/Materia ] || \
+           [ -d "${HOME}/.themes/Materia" ]; then
+          gtktheme="Materia"
+        else
+          show_warning "${option} theme is not installed."
+          select_desktop_theme
+        fi
+        break
+        ;;
+      "Materia-compact")
+        if [ -d /usr/share/themes/Materia-compact ] || \
+           [ -d "${HOME}/.themes/Materia-compact" ]; then
+          gtktheme="Materia-compact"
+        else
+          show_warning "${option} theme is not installed."
+          select_desktop_theme
+        fi
+        break
+        ;;
+      "Materia-light")
+        if [ -d /usr/share/themes/Materia-light ] || \
+           [ -d "${HOME}/.themes/Materia-light" ]; then
+          gtktheme="Materia-light"
+        else
+          show_warning "${option} theme is not installed."
+          select_desktop_theme
+        fi
+        break
+        ;;
+      "Materia-light-compact")
+        if [ -d /usr/share/themes/Materia-light-compact ] || \
+           [ -d "${HOME}/.themes/Materia-light-compact" ]; then
+          gtktheme="Materia-light-compact"
+        else
+          show_warning "${option} theme is not installed."
+          select_desktop_theme
+        fi
+        break
+        ;;
+      "Materia-dark")
+        if [ -d /usr/share/themes/Materia-dark ] || \
+           [ -d "${HOME}/.themes/Materia-dark" ]; then
+          gtktheme="Materia-dark"
+        else
+          show_warning "${option} theme is not installed."
+          select_desktop_theme
+        fi
+        break
+        ;;
+      "Materia-dark-compact")
+        if [ -d /usr/share/themes/Materia-dark-compact ] || \
+           [ -d "${HOME}/.themes/Materia-dark-compact" ]; then
+          gtktheme="Materia-dark-compact"
         else
           show_warning "${option} theme is not installed."
           select_desktop_theme

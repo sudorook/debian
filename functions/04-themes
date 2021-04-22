@@ -125,6 +125,20 @@ function install_plata_gtk {
   rm -rf plata-theme
 }
 
+function install_materia_gtk {
+  show_header "Downloading, building, and installing the Materia GTK theme."
+  rm -rf materia-theme
+  git clone -b tweak --depth 1 \
+    https://github.com/sudorook/materia-theme materia-theme
+  cd materia-theme || exit
+  mkdir -p _build
+  meson _build
+  meson compile -C _build
+  sudo meson install -C _build
+  cd ..
+  rm -rf materia-theme
+}
+
 fonts="${dir}/packages/fonts.list"
 function install_fonts {
   show_header "Installing fonts."
@@ -207,6 +221,7 @@ function 04-themes {
     "Arc (GTK)"
     "Adapta (GTK)"
     "Plata (GTK)"
+    "Materia (GTK)"
     "Fonts"
     "Papirus (icons)"
     "Vim theme"
@@ -248,6 +263,13 @@ function 04-themes {
         show_info "Installing dependencies for building themes."
         install_theme_deps
         install_plata_gtk
+        set_qtcompat
+        show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
+        ;;
+      "Materia (GTK)")
+        show_info "Installing dependencies for building themes."
+        install_theme_deps
+        install_materia_gtk
         set_qtcompat
         show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
         ;;

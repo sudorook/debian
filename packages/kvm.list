@@ -1,10 +1,10 @@
 bridge-utils
 dnsmasq
-ebtables
 libguestfs-tools
 libiscsi-bin
 libvirt-daemon
 netcat-openbsd
+nftables
 ovmf
 qemu
 qemu-kvm

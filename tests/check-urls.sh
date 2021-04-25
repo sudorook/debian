@@ -25,7 +25,7 @@ function show_success {
 }
 
 function show_error {
-  echo -e $'\033[1;31m✗ '"$*"$'\033[' 1>&2
+  echo -e $'\033[1;31m✗ '"$*"$'\033[0m' 1>&2
 }
 
 function try_wget {

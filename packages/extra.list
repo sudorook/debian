@@ -7,9 +7,9 @@ gnome-clocks
 gnome-font-viewer
 gnome-logs
 gnome-system-monitor
-id3v2
 inkscape
 peek
+python3-mutagen
 recordmydesktop
 subtitleeditor
 v4l-utils

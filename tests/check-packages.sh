@@ -29,17 +29,8 @@ MISSING=false
 for file in "${PKGDIR}"/*; do
   basename "${file}"
 
-  # Skip the wine list if multilib is not enabled.
-  if [[ "${file}" = "../packages/wine.list" ]]; then
-    if ! pacman -Sl multilib >/dev/null 2>&1; then
-      echo "[multilib] not enabled. Skipping."
-      echo
-      continue
-    fi
-  fi
-
   while read -r package; do
-    if apt-cahce search --names-only ^"${package//+/\\\+}"$ >/dev/null; then
+    if apt-cache search --names-only ^"${package//+/\\\+}"$ >/dev/null; then
       echo -e "\033[1;35m✓\033[0m" "${package}"
     else
       MISSING=true

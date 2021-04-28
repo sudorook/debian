@@ -11,6 +11,7 @@ may not work for all packages.
 Requirements:
 1. `wget`
 2. `git`
+3. `sudo`
 
 ## Install
 

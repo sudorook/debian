@@ -217,6 +217,7 @@ function main {
 
 install_post_dependencies
 check_user
+install_sudo
 check_network
 check_debian_release
 

@@ -151,13 +151,18 @@ function install_sudo {
   if ! dpkg -s sudo > /dev/null 2>&1; then
     show_header "sudo is needed for this script."
     show_info "Installing sudo via root (enter root password):"
-    su root - sh -c "apt-get -y install sudo && /sbin/adduser $(whoami) sudo"
-    show_success "sudo installed."
-    show_info "$(whoami) added to group sudo. Log out and log back in again."
-    exit
+    if [ ${EUID} -eq 0 ]; then
+      apt-get -y install sudo
+      show_success "sudo installed." # will exit after check_user()
+    else
+      su root - sh -c "apt-get -y install sudo && /sbin/adduser $(whoami) sudo"
+      show_success "sudo installed and $(whoami) added to group sudo."
+      show_info "Log out and log back in again."
+      exit
+    fi
   elif ! [[ $(groups) =~ \ *sudo\ * ]]; then
     show_error "User $(whoami) not in sudoer group."
-    show_info "If a root password is set, run:"
+    show_info "If the root user is enabled, run:"
     show_listitem "su root - sh -c \"/sbin/adduser $(whoami) sudo\""
     show_info "Then, log out and log back in again."
     exit

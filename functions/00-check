@@ -86,7 +86,6 @@ function check_debian_release {
     fi
   else
     show_success "Now running ${release}."
-    show_info "Reboot soon."
   fi
 }
 

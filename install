@@ -131,8 +131,8 @@ function main {
 # Check if dependencies are installed and if network is working
 #
 
-install_dependencies
 check_root
+install_dependencies
 check_network
 
 #

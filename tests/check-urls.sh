@@ -40,7 +40,7 @@ function check_url_debian {
     missing=true
     show_error "${url}"
   fi
-  return ${missing}
+  ${missing} && return 1 || return 0
 }
 
 function check_url_torbrowser {
@@ -58,7 +58,7 @@ function check_url_torbrowser {
       missing=true
     fi
   done
-  return ${missing}
+  ${missing} && return 1 || return 0
 }
 
 check_url_debian

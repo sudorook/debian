@@ -1,11 +1,13 @@
+#! /bin/zsh
+
 #
 # Global settings
 #
 
 export BROWSER="firefox"
 export EDITOR="vim"
-export SUDO_EDITOR="$EDITOR"
-export VISUAL="$EDITOR"
+export SUDO_EDITOR="${EDITOR}"
+export VISUAL="${EDITOR}"
 
 
 #
@@ -20,8 +22,10 @@ command -v go >/dev/null 2>&1 && {
 
 # ruby
 command -v ruby >/dev/null 2>&1 && {
-  export PATH="$(ruby -e 'print Gem.user_dir')/bin:${PATH}"
-  export GEM_HOME="$(ruby -e 'print Gem.user_dir')"
+  PATH="$(ruby -e 'print Gem.user_dir')/bin:${PATH}"
+  GEM_HOME=$(ruby -e 'print Gem.user_dir')
+  export PATH
+  export GEM_HOME
 }
 
 # npm
@@ -32,11 +36,10 @@ command -v npm >/dev/null 2>&1 && {
 
 # R
 command -v R >/dev/null 2>&1 && {
-  export R_LIBS_USER="${HOME}/.R/$(R --version | \
-                                   sed -n "s/^R version \([0-9\.]*\) .*/\1/p")"
+  R_LIBS_USER="${HOME}/.R/$(R --version | sed -n "s/^R version \([0-9\.]*\) .*/\1/p")"
+  export R_LIBS_USER
   alias R='R --no-save '
-  if [ -d /usr/share/mathjax ]
-  then
+  if [ -d /usr/share/mathjax ]; then
     export RMARKDOWN_MATHJAX_PATH=/usr/share/mathjax
   fi
 }
@@ -57,7 +60,7 @@ alias sudo='sudo '
 alias scp="noglob scp"
 alias grep='grep --color=auto'
 alias diff='diff --color=auto'
-alias happymake="make -j`nproc` && sudo make install"
+alias happymake="make -j$(nproc) && sudo make install"
 alias superupgrade="sudo sh -c 'apt update && apt -y full-upgrade && apt -y autoremove'"
 alias megapurge="sudo sh -c 'apt -y autoremove && apt -y autoclean && apt -y purge && apt -y clean && journalctl --vacuum-time=1day'"
 

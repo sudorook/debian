@@ -1,3 +1,5 @@
+#! /bin/bash
+
 #
 # ~/.bashrc
 #
@@ -14,7 +16,8 @@ PS1='[\u@\h \W]\$ '
 
 export BROWSER="firefox"
 export EDITOR="vim"
-export VISUAL="$EDITOR"
+export SUDO_EDITOR="${EDITOR}"
+export VISUAL="${EDITOR}"
 
 
 #
@@ -23,14 +26,16 @@ export VISUAL="$EDITOR"
 
 # go
 command -v go >/dev/null 2>&1 && {
-  export GOPATH=~/.go
-  export PATH="$PATH:$GOPATH/bin"
+  export GOPATH="${HOME}/.go"
+  export PATH="${PATH}:${GOPATH}/bin"
 }
 
 # ruby
 command -v ruby >/dev/null 2>&1 && {
-  export PATH="$(ruby -e 'print Gem.user_dir')/bin:$PATH"
-  export GEM_HOME=$(ruby -e 'print Gem.user_dir')
+  PATH="$(ruby -e 'print Gem.user_dir')/bin:${PATH}"
+  GEM_HOME=$(ruby -e 'print Gem.user_dir')
+  export PATH
+  export GEM_HOME
 }
 
 # npm
@@ -41,8 +46,12 @@ command -v npm >/dev/null 2>&1 && {
 
 # R
 command -v R >/dev/null 2>&1 && {
-  export R_LIBS_USER=$HOME/.R/$(R --version | sed -n "s/^R version \([0-9\.]*\) .*/\1/p")
+  R_LIBS_USER="${HOME}/.R/$(R --version | sed -n "s/^R version \([0-9\.]*\) .*/\1/p")"
+  export R_LIBS_USER
   alias R='R --no-save '
+  if [ -d /usr/share/mathjax ]; then
+    export RMARKDOWN_MATHJAX_PATH=/usr/share/mathjax
+  fi
 }
 
 # custom scripts
@@ -78,7 +87,7 @@ alias la='ls -lAh'
 #
 
 # color ls output based on filetype
-eval $(dircolors -b)
+eval "$(dircolors -b)"
 
 # color the man pages
 man() {

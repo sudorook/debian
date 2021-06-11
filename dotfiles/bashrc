@@ -54,6 +54,11 @@ command -v R >/dev/null 2>&1 && {
   fi
 }
 
+# beet autocompletion
+command -v beet >/dev/null 2>&1 && {
+  eval "$(beet completion)"
+}
+
 # custom scripts
 export PATH=$PATH:$HOME/.scripts
 

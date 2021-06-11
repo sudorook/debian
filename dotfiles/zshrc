@@ -61,8 +61,18 @@ alias scp="noglob scp"
 alias grep='grep --color=auto'
 alias diff='diff --color=auto'
 alias happymake="make -j$(nproc) && sudo make install"
-alias superupgrade="sudo sh -c 'apt update && apt -y full-upgrade && apt -y autoremove'"
-alias megapurge="sudo sh -c 'apt -y autoremove && apt -y autoclean && apt -y purge && apt -y clean && journalctl --vacuum-time=1day'"
+
+function superupgrade {
+  sudo sh -c 'apt update && apt -y full-upgrade && apt -y autoremove'
+}
+
+function megapurge {
+  sudo apt -y autoremove && \
+    sudo apt -y autoclean && \
+    sudo apt -y clean && \
+    sudo journalctl --rotate && \
+    sudo journalctl --vacuum-time=1s
+}
 
 # list directory contents
 alias ls='ls --color=auto'

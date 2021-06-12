@@ -143,7 +143,7 @@ function ask_bootmode {
   else
     show_info "EFI support not detected. Defaulting to GRUB."
     BOOTMODE="GRUB"
-    result="$(ask_question "Create EFI partition? (y/N)")"
+    result="$(ask_question "Create EFI partition anyway? (y/N)")"
     if ! [[ "${result}" =~ ^[Yy]$|[Yy][Ee][Ss] ]]; then
       MAKE_EFI_PARTITION=no
     fi

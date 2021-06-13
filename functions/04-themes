@@ -51,7 +51,7 @@ function install_arc_gtk {
 
 function install_adapta_gtk {
   show_header "Downloading, building, and installing the Adapta GTK theme."
-  local autotools_options
+  local autotools_options=
   if ! dpkg -s gnome-shell > /dev/null 2>&1; then
     autotools_options="${autotools_options} --disable-gnome "
   fi
@@ -90,7 +90,7 @@ function install_adapta_gtk {
 
 function install_plata_gtk {
   show_header "Downloading, building, and installing the Plata GTK theme."
-  local autotools_options
+  local autotools_options=
   if ! dpkg -s gnome-shell > /dev/null 2>&1; then
     autotools_options="${autotools_options} --disable-gnome "
   fi

@@ -64,6 +64,12 @@ function install_adapta_gtk {
   if ! dpkg -s marco > /dev/null 2>&1; then
     autotools_options="${autotools_options} --disable-mate "
   fi
+  if ! dpkg -s openbox > /dev/null 2>&1; then
+    autotools_options="${autotools_options} --disable-openbox "
+  fi
+  if ! dpkg -s xfce4-session > /dev/null 2>&1; then
+    autotools_options="${autotools_options} --disable-xfce "
+  fi
   rm -rf adapta-gtk-theme
   git clone -b tweak --depth 1 \
     https://github.com/sudorook/adapta-gtk-theme adapta-gtk-theme
@@ -102,6 +108,12 @@ function install_plata_gtk {
   fi
   if ! dpkg -s marco > /dev/null 2>&1; then
     autotools_options="${autotools_options} --disable-mate "
+  fi
+  if ! dpkg -s openbox > /dev/null 2>&1; then
+    autotools_options="${autotools_options} --disable-openbox "
+  fi
+  if ! dpkg -s xfce4-session > /dev/null 2>&1; then
+    autotools_options="${autotools_options} --disable-xfce "
   fi
   rm -rf plata-theme
   git clone -b tweak --depth 1 \

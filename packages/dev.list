@@ -43,6 +43,7 @@ jupyter-notebook
 libarmadillo-dev
 libarpack++2-dev
 libarpack2-dev
+libblosc-dev
 libboost-dev
 libeigen3-dev
 libgit2-dev

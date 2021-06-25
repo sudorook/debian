@@ -50,6 +50,7 @@ libglpk-dev
 libimage-exiftool-perl
 libjs-mathjax
 liblapack-dev
+liblapacke-dev
 libopenblas-dev
 libsparsehash-dev
 libsuperlu-dev

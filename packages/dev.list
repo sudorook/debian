@@ -20,6 +20,7 @@ flawfinder
 fonts-mathjax
 fonts-mathjax-extras
 gcc
+g++
 gdb
 git
 gitk
@@ -48,6 +49,7 @@ libboost-dev
 libeigen3-dev
 libgit2-dev
 libglpk-dev
+libgsl-dev
 libimage-exiftool-perl
 libjs-mathjax
 liblapack-dev

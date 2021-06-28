@@ -30,5 +30,6 @@ rsync
 screen
 squashfs-tools
 s-tui
+tmux
 unrar-free
 zip

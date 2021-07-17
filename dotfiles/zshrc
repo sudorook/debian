@@ -63,13 +63,13 @@ alias diff='diff --color=auto'
 alias happymake="make -j$(nproc) && sudo make install"
 
 function superupgrade {
-  sudo sh -c 'apt update && apt -y full-upgrade && apt -y autoremove'
+  sudo sh -c 'apt update && apt full-upgrade -y && apt autoremove -y'
 }
 
 function megapurge {
-  sudo apt -y autoremove && \
-    sudo apt -y autoclean && \
-    sudo apt -y clean && \
+  sudo apt autoremove -y && \
+    sudo apt autoclean -y && \
+    sudo apt clean -y && \
     sudo journalctl --rotate && \
     sudo journalctl --vacuum-time=1s
 }

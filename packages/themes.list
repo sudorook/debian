@@ -15,8 +15,6 @@ nodejs
 npm
 parallel
 pkg-config
-qt4-linguist-tools
-qt4-qmake
 qt5ct
 qt5-default
 qt5-qmake

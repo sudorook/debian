@@ -4,3 +4,4 @@ debootstrap
 gdisk
 lvm2
 parted
+wget

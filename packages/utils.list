@@ -28,6 +28,7 @@ pv
 reiserfsprogs
 rsync
 screen
+signify-openbsd
 squashfs-tools
 s-tui
 time

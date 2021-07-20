@@ -19,8 +19,8 @@ flatpak-builder
 flawfinder
 fonts-mathjax
 fonts-mathjax-extras
-gcc
 g++
+gcc
 gdb
 git
 gitk

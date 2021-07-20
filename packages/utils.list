@@ -18,6 +18,7 @@ mtools
 net-tools
 nmap
 ntfs-3g
+nvme-cli
 p7zip
 parallel
 parted

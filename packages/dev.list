@@ -80,6 +80,8 @@ python3-scrapy
 python3-seaborn
 python3-sklearn
 python3-urllib3
+python-dev-is-python3
+python-is-python3
 rake
 r-base
 r-cran-biocmanager

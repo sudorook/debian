@@ -7,6 +7,7 @@ vim-ale
 vim-autopep8
 vim-ctrlp
 vim-fugitive
+vim-gitgutter
 vim-julia
 vim-lastplace
 vim-latexsuite
@@ -16,6 +17,8 @@ vim-python-jedi
 vim-scripts
 vim-snippets
 vim-syntastic
+vim-syntax-docker
+vim-syntax-go
 vim-syntax-gtk
 vim-tabular
 vim-tlib

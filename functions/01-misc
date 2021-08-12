@@ -78,11 +78,15 @@ function install_selinux {
 }
 
 utils="${dir}/packages/utils.list"
+tmuxconfig="${dir}/dotfiles/tmux.conf"
 function install_utils {
   show_header "Installing general utilities."
   check_installed "${utils}"
   check_fail
   show_success "Utilities installed."
+
+  show_info "Installing tmux config."
+  cp -f "${tmuxconfig}" "${HOME}/.tmux.conf"
 }
 
 laptop="${dir}/packages/laptop.list"

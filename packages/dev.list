@@ -84,6 +84,9 @@ python-dev-is-python3
 python-is-python3
 rake
 r-base
+r-cran-ape
+r-cran-argparse
+r-cran-assertthat
 r-cran-biocmanager
 r-cran-colorbrewer
 r-cran-data.table

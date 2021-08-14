@@ -64,6 +64,7 @@ function install_codecs {
 }
 
 dev="${dir}/packages/dev.list"
+r="${dir}/packages/r.list"
 npmrc="${dir}/dotfiles/npmrc"
 rprofile="${dir}/dotfiles/Rprofile"
 vimpack="${HOME}/.vim/pack/dist/start"
@@ -78,6 +79,9 @@ function install_dev {
 
   show_info "Installing Rprofile."
   cp -f "${rprofile}" "${HOME}/.Rprofile"
+
+  show_info "Installing R packages."
+  check_installed "${r}"
 
   show_info "Setting default clang-format style."
   clang-format -style=mozilla -dump-config > "${HOME}/.clang-format"

@@ -183,11 +183,11 @@ function upgrade_debian_release {
       sudo sed -i "s,https://security.debian.org/,tor+http://sgvtcaew4bxjd7ln.onion/debian-security/,g" ${srclist}
 
     sudo sh -c "apt-get update && \
-      sudo apt-get -y upgrade && \
-      sudo apt-get -y dist-upgrade && \
-      sudo apt-get -y autoremove && \
-      sudo apt-get -y autoclean && \
-      sudo update-grub"
+      apt-get -y upgrade && \
+      apt-get -y dist-upgrade && \
+      apt-get -y autoremove && \
+      apt-get -y autoclean && \
+      update-grub"
 
     show_info "Reboot your system after major updates."
   fi

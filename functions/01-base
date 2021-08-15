@@ -88,6 +88,7 @@ function enable_nonfree_repos {
 srclist="/etc/apt/sources.list"
 busterlist="${dir}/sources/buster-sources.list"
 bullseyelist="${dir}/sources/bullseye-sources.list"
+bookwormlist="${dir}/sources/bookworm-sources.list"
 sidlist="${dir}/sources/sid-sources.list"
 function upgrade_debian_release {
   # check how current sources.list is configured.
@@ -103,7 +104,7 @@ function upgrade_debian_release {
   release=$(lsb_release -sc)
 
   show_question "Upgrade Debian release?"
-  local options=("Back" "Buster" "Bullseye" "Sid")
+  local options=("Back" "Buster" "Bullseye" "Bookworm" "Sid")
   select option in "${options[@]}"; do
     case $option in
       "Back")
@@ -113,6 +114,7 @@ function upgrade_debian_release {
         if [[ "$(lsb_release -sc)" == "buster" ]]; then
           show_warning "Already set to $(lsb_release -sc)."
         elif [[ "$(lsb_release -sc)" == "bullseye" ]] || \
+             [[ "$(lsb_release -sc)" == "bookworm" ]] || \
              [[ "$(lsb_release -sc)" == "sid" ]]; then
           show_warning "Downgrades not possible."
         else
@@ -126,13 +128,27 @@ function upgrade_debian_release {
       "Bullseye")
         if [[ "$(lsb_release -sc)" == "bullseye" ]]; then
           show_warning "Already set to $(lsb_release -sc)."
-        elif [[ "$(lsb_release -sc)" == "sid" ]]; then
+        elif [[ "$(lsb_release -sc)" == "bookworm" ]] || \
+             [[ "$(lsb_release -sc)" == "sid" ]]; then
           show_warning "Downgrades not possible."
         else
           sudo cp -f "${srclist}" "${srclist}.${RANDOM}.bak"
           sudo cp -f "${bullseyelist}" "${srclist}"
           is_upgraded=true
           release=bullseye
+        fi
+        break
+        ;;
+      "Bookworm")
+        if [[ "$(lsb_release -sc)" == "bookworm" ]]; then
+          show_warning "Already set to $(lsb_release -sc)."
+        elif [[ "$(lsb_release -sc)" == "sid" ]]; then
+          show_warning "Downgrades not possible."
+        else
+          sudo cp -f "${srclist}" "${srclist}.${RANDOM}.bak"
+          sudo cp -f "${bookwormlist}" "${srclist}"
+          is_upgraded=true
+          release=bookworm
         fi
         break
         ;;

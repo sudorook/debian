@@ -44,20 +44,25 @@ RELEASE=
 function ask_release {
   show_question "Select Debian release:"
   options=("Back" \
-           "Buster (stable)" \
-           "Bullseye (testing)" \
+           "Buster (oldstable)" \
+           "Bullseye (stable)" \
+           "Bookworm (testing)" \
            "Sid (unstable)")
   select option in "${options[@]}"; do
     case $option in
       "Back")
         exit
         ;;
-      "Buster (stable)")
+      "Buster (oldstable)")
         RELEASE=buster
         break
         ;;
-      "Bullseye (testing)")
+      "Bullseye (stable)")
         RELEASE=bullseye
+        break
+        ;;
+      "Bookworm (testing)")
+        RELEASE=bookworm
         break
         ;;
       "Sid (unstable)")

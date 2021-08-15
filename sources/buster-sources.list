@@ -1,12 +1,12 @@
-deb https://deb.debian.org/debian/ buster main
-deb-src https://deb.debian.org/debian/ buster main
+deb https://deb.debian.org/debian buster main
+deb-src https://deb.debian.org/debian buster main
 
 deb https://deb.debian.org/debian-security buster/updates main
 deb-src https://deb.debian.org/debian-security buster/updates main
 
 # buster-updates, previously known as 'volatile'
-deb https://deb.debian.org/debian/ buster-updates main
-deb-src https://deb.debian.org/debian/ buster-updates main
+deb https://deb.debian.org/debian buster-updates main
+deb-src https://deb.debian.org/debian buster-updates main
 
 deb https://deb.debian.org/debian buster-backports main
 deb-src https://deb.debian.org/debian buster-backports main

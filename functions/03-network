@@ -36,6 +36,12 @@ function install_network {
     sudo sh -c "echo 'wifi.cloned-mac-address=random' >> ${nmconf}"
     sudo sh -c "echo 'ethernet.cloned-mac-address=random' >> ${nmconf}"
   fi
+
+  show_info "Disabling SSH root login and forcing SSH v2."
+  sudo sed -i \
+    -e "/^#PermitRootLogin prohibit-password$/a PermitRootLogin no" \
+    -e "/^#Port 22$/i Protocol 2" \
+    /etc/ssh/sshd_config
 }
 
 discovery="${dir}/packages/discover.list"

@@ -86,7 +86,7 @@ function install_dev {
   show_info "Setting default clang-format style."
   clang-format -style=mozilla -dump-config > "${HOME}/.clang-format"
 
-  show_info "Installing vim packages."
+  show_info "Installing Vim packages."
   mkdir -p "${vimpack}"
 
   if ! [[ -f "${vimpack}/Nvim-R" ]]; then
@@ -303,10 +303,10 @@ vim="${dir}/packages/vim.list"
 vimrc="${dir}/dotfiles/vimrc"
 vimpack="${HOME}/.vim/pack/dist/start"
 function install_vim {
-  show_header "Installing vim and vim plugins."
+  show_header "Installing Vim and Vim plugins."
   check_installed "${vim}"
   check_fail
-  show_success "Vim and vim plugins installed."
+  show_success "Vim and Vim plugins installed."
 
   show_info "Installing vimrc."
   cp -f "${vimrc}" "${HOME}/.vimrc"

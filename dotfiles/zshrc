@@ -28,6 +28,11 @@ command -v ruby >/dev/null 2>&1 && {
   export GEM_HOME
 }
 
+# rust
+command -v cargo >/dev/null 2>&1 && {
+  export PATH="${PATH}:${HOME}/.cargo/bin"
+}
+
 # npm
 command -v npm >/dev/null 2>&1 && {
   export PATH="${PATH}:${HOME}/.npm/bin"

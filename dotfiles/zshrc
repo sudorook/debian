@@ -75,6 +75,12 @@ function megapurge {
   sudo sh -c 'apt autoremove -y && apt autoclean -y && apt clean -y && journalctl --rotate && journalctl --vacuum-time=1s'
 }
 
+command -v eog >/dev/null 2>&1 && {
+  function eog {
+    nohup /usr/bin/eog "${1}" >/dev/null 2>&1
+  }
+}
+
 # list directory contents
 alias ls='ls --color=auto'
 alias sl='ls'

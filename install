@@ -75,6 +75,7 @@ function main {
   ask_timezone
   ask_locale
   ask_hostname
+  ask_password
   ask_username
   # ask_lukspass
 

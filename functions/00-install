@@ -591,7 +591,6 @@ function set_hostname {
 export -f set_hostname
 
 USER_NAME="admin"
-USER_PASSWORD=""
 function ask_username {
   local tmp
   tmp="$(ask_question "User name (default: ${USER_NAME})")"
@@ -600,16 +599,25 @@ function ask_username {
   else
     show_info "Defaulting user name to ${USER_NAME}."
   fi
+}
 
+USER_PASSWORD=""
+function ask_password {
+  local tmp1
+  local tmp2
   stty -echo
-  tmp="$(ask_question "User password")"
+  tmp1="$(ask_question "User password")"
+  tmp2="$(ask_question "Re-enter password")"
   stty echo
   echo
-  if [ -n "${tmp}" ]; then
-    USER_PASSWORD="${tmp}"
-  else
+  if [ -z "${tmp1}" ]; then
     show_error "ERROR: no password given."
     exit 3
+  elif [ "${tmp1}" != "${tmp2}" ]; then
+    show_error "ERROR: password mismatch."
+    exit 3
+  else
+    USER_PASSWORD="${tmp1}"
   fi
 }
 

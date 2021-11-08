@@ -45,8 +45,8 @@ command -v cargo >/dev/null 2>&1 && {
 
 # npm
 command -v npm >/dev/null 2>&1 && {
-  export PATH="$PATH:$HOME/.npm/bin"
-  export NPM_CONFIG_PREFIX=$HOME/.npm
+  export PATH="${PATH}:${HOME}/.npm/bin"
+  export NPM_CONFIG_PREFIX="${HOME}/.npm"
 }
 
 # R
@@ -65,10 +65,10 @@ command -v beet >/dev/null 2>&1 && {
 }
 
 # custom scripts
-export PATH=$PATH:$HOME/.scripts
+export PATH="${PATH}:${HOME}/.scripts"
 
-# add local bin to path
-export PATH=$PATH:$HOME/.local/bin
+# local binaries
+export PATH="${HOME}/.local/bin:${PATH}"
 
 
 #

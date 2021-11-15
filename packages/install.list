@@ -1,6 +1,7 @@
 bc
 cryptsetup
 debootstrap
+fzf
 gdisk
 lvm2
 parted

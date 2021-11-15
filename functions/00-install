@@ -542,9 +542,17 @@ function unmount_install {
 
 TIMEZONE="UTC"
 function ask_timezone {
-  result="$(ask_question "Time zone (default: ${TIMEZONE})")"
-  if [[ -n "${result}" ]]; then
-    TIMEZONE="${result}"
+  local res
+
+  mapfile -t res < \
+    <(timedatectl list-timezones | \
+      fzf --layout=reverse --scroll-off=5 \
+          --header="Select time zone (default: ${TIMEZONE})" --header-first)
+
+  if [ -v res ]; then
+    TIMEZONE="${res}"
+  else
+    show_info "Using default time zone ${TIMEZONE@Q}."
   fi
 }
 
@@ -555,15 +563,21 @@ function set_timezone {
 export -f set_timezone
 
 LOCALE="en_US.UTF-8"
+CHARSET="UTF-8"
 function ask_locale {
-  local tmp
-  tmp="$(ask_question "Locale (default: ${LOCALE})")"
-  if [ -n "${tmp}" ]; then
-    if [[ "${tmp}" = "${tmp%.*}" ]]; then
-      LOCALE="${tmp}.UTF-8"
-    else
-      LOCALE="${tmp}"
-    fi
+  local res
+
+  mapfile -t res < \
+    <(sed -n "s,^#\?\([a-z]\+\)\(_[A-Z]\+\)\?\(.*\),\1\2\3,p" /etc/locale.gen | \
+      fzf --layout=reverse --scroll-off=5 \
+          --header="Select locale (default: ${LOCALE})" --header-first)
+
+  if [ -v res ]; then
+    LOCALE="$(echo "${res}" | cut -d" " -f1)"
+    CHARSET="$(echo "${res}" | cut -d" " -f2)"
+  else
+    show_info "Using default locale ${LOCALE@Q}."
+    show_info "Using default charset ${CHARSET@Q}."
   fi
 }
 

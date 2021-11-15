@@ -544,12 +544,11 @@ TIMEZONE="UTC"
 function ask_timezone {
   local res
 
-  mapfile -t res < \
-    <(timedatectl list-timezones | \
-      fzf --layout=reverse --scroll-off=5 \
-          --header="Select time zone (default: ${TIMEZONE})" --header-first)
+  res="$(timedatectl list-timezones | \
+         fzf --layout=reverse --scroll-off=5 --header-first \
+             --header="Select time zone ('ESC' for default: ${TIMEZONE})" || true)"
 
-  if [ -v res ]; then
+  if [ -n "${res}" ]; then
     TIMEZONE="${res}"
   else
     show_info "Using default time zone ${TIMEZONE@Q}."
@@ -567,12 +566,11 @@ CHARSET="UTF-8"
 function ask_locale {
   local res
 
-  mapfile -t res < \
-    <(sed -n "s,^#\?\([a-z]\+\)\(_[A-Z]\+\)\?\(.*\),\1\2\3,p" /etc/locale.gen | \
-      fzf --layout=reverse --scroll-off=5 \
-          --header="Select locale (default: ${LOCALE})" --header-first)
+  res="$(sed -n "s,^#\?\([a-z]\+\)\(_[A-Z]\+\)\?\(.*\),\1\2\3,p" /etc/locale.gen | \
+         fzf --layout=reverse --scroll-off=5 --header-first \
+             --header="Select locale ('ESC' for default: ${LOCALE})" || true)"
 
-  if [ -v res ]; then
+  if [ -n "${res}" ]; then
     LOCALE="$(echo "${res}" | cut -d" " -f1)"
     CHARSET="$(echo "${res}" | cut -d" " -f2)"
   else

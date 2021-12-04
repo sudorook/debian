@@ -28,6 +28,8 @@ function install_zsh {
   check_fail
   show_success "zsh installed."
 
+  mkdir -p "${HOME}/.local/share/zsh/site-functions"
+
   show_info "Copying zshrc."
   cp -f "${zshrc}" "${HOME}/.zshrc"
 

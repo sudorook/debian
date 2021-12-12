@@ -103,6 +103,9 @@ command -v eog >/dev/null 2>&1 && {
   }
 }
 
+{ command -v yt-dlp && ! command -v youtube-dl; } >/dev/null 2>&1 \
+  && alias youtube-dl='yt-dlp '
+
 # list directory contents
 alias ls='ls --color=auto'
 alias sl='ls'

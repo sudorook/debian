@@ -102,7 +102,7 @@ alias la='ls -lAh'
 #
 
 # color ls output based on filetype
-eval $(dircolors -b)
+eval "$(dircolors -b)"
 
 # color the man pages
 man() {

@@ -97,9 +97,9 @@ function megapurge {
     sudo journalctl --vacuum-time=1s
 }
 
-command -v eog >/dev/null 2>&1 && {
+command -v eog >/dev/null && {
   function eog {
-    nohup /usr/bin/eog "${1}" >/dev/null 2>&1
+    (/usr/bin/eog "${1}" >/dev/null 2>&1 &)
   }
 }
 

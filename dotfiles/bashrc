@@ -103,6 +103,12 @@ command -v eog >/dev/null && {
   }
 }
 
+command -v evince >/dev/null && {
+  function evince {
+    (/usr/bin/evince "${1}" >/dev/null 2>&1 &)
+  }
+}
+
 { command -v yt-dlp && ! command -v youtube-dl; } >/dev/null 2>&1 \
   && alias youtube-dl='yt-dlp '
 

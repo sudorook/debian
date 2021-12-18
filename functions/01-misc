@@ -33,7 +33,7 @@ function install_zsh {
   show_info "Copying zshrc."
   cp -f "${zshrc}" "${HOME}/.zshrc"
 
-  if ! test $(getent passwd `whoami` | grep "zsh"); then
+  if ! test "$(getent passwd "$(whoami)" | grep "zsh")"; then
     show_info "Changing login shell to zsh. Provide your password."
     chsh -s /bin/zsh
   fi

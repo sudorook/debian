@@ -621,6 +621,7 @@ function ask_password {
   local tmp2
   stty -echo
   tmp1="$(ask_question "User password")"
+  echo
   tmp2="$(ask_question "Re-enter password")"
   stty echo
   echo

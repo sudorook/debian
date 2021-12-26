@@ -1,3 +1,6 @@
+[ca/desrt/dconf-editor]
+show-warning=false
+
 [org/gnome/calculator]
 button-mode='advanced'
 

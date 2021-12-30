@@ -83,7 +83,7 @@ alias vi='vim '
 alias sudo='sudo '
 alias grep='grep --color=auto'
 alias diff='diff --color=auto'
-alias happymake="make -j$(nproc) && sudo make install"
+alias happymake="make -j\$(nproc) && sudo make install"
 
 function superupgrade {
   sudo sh -c 'apt update && apt full-upgrade -y && apt autoremove -y'

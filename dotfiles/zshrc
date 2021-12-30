@@ -79,17 +79,18 @@ function megapurge {
   sudo sh -c 'apt autoremove -y && apt autoclean -y && apt clean -y && journalctl --rotate && journalctl --vacuum-time=1s'
 }
 
-command -v eog >/dev/null && {
-  function eog {
-    (/usr/bin/eog "${1}" >/dev/null 2>&1 &)
+function alias_bg {
+  command -v "${1}" >/dev/null && {
+    local cmd
+    local bin
+    bin="$(which "${1}")"
+    cmd="function ${1} { (${bin} \${1} >/dev/null 2>&1 &); }"
+    eval "${cmd}"
   }
 }
 
-command -v evince >/dev/null && {
-  function evince {
-    (/usr/bin/evince "${1}" >/dev/null 2>&1 &)
-  }
-}
+alias_bg eog
+alias_bg evince
 
 { command -v yt-dlp && ! command -v youtube-dl; } >/dev/null 2>&1 \
   && alias youtube-dl='yt-dlp '

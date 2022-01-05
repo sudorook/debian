@@ -92,6 +92,8 @@ function alias_bg {
 alias_bg eog
 alias_bg evince
 
+unset -f alias_bg
+
 { command -v yt-dlp && ! command -v youtube-dl; } >/dev/null 2>&1 \
   && alias youtube-dl='yt-dlp '
 

@@ -91,7 +91,9 @@ function alias_bg {
 
 alias_bg eog
 alias_bg evince
+alias_bg gimp
 alias_bg gitk
+alias_bg inkscape
 
 unset -f alias_bg
 

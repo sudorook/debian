@@ -179,7 +179,7 @@ function install_papirus_icons {
 function install_vim_theme {
   git clone --depth 1 https://github.com/sudorook/colorific.vim colorific.vim
   cd colorific.vim || exit
-  ./install.sh
+  ./install
   cd ..
   rm -rf colorific.vim/
 }

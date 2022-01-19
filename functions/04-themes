@@ -36,15 +36,39 @@ function install_theme_deps {
 
 function install_arc_gtk {
   show_header "Downloading, building, and installing the Arc GTK theme."
+  local meson_options=""
+  if dpkg -s gnome-shell >/dev/null 2>&1; then
+    meson_options="${meson_options}gnome-shell,"
+  fi
+  if dpkg -s cinnamon >/dev/null 2>&1; then
+    meson_options="${meson_options}cinnamon,"
+  fi
+  if dpkg -s libgtk-2-common >/dev/null 2>&1; then
+    meson_options="${meson_options}gtk2,"
+  fi
+  if dpkg -s libgtk-3-common >/dev/null 2>&1; then
+    meson_options="${meson_options}gtk3,"
+  fi
+  if dpkg -s libgtk-4-common >/dev/null 2>&1; then
+    meson_options="${meson_options}gtk4,"
+  fi
+  if dpkg -s metacity >/dev/null 2>&1; then
+    meson_options="${meson_options}metacity,"
+  fi
+  if dpkg -s plank >/dev/null 2>&1; then
+    meson_options="${meson_options}plank,"
+  fi
+  if dpkg -s xfwm4 >/dev/null 2>&1; then
+    meson_options="${meson_options}xfwm,"
+  fi
+  meson_options="${meson_options%,}"
   rm -rf arc-theme
   git clone -b tweak --depth 1 \
     https://github.com/sudorook/arc-theme arc-theme
   cd arc-theme || exit
-  npm install
-  ./autogen.sh --prefix=/usr
-  gulp
-  make -j"$(nproc)"
-  sudo make install
+  meson setup --prefix=/usr -Dthemes="${meson_options}" _build/
+  meson compile -C _build/
+  sudo meson install -C _build/
   cd ..
   rm -rf arc-theme
 }

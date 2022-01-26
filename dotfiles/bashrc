@@ -102,7 +102,7 @@ function alias_bg {
     local cmd
     local bin
     bin="$(which "${1}")"
-    cmd="function ${1} { (${bin} \${@} >/dev/null 2>&1 &); }"
+    cmd="function ${1} { local cmd=\"(${bin} \${@@Q} >/dev/null 2>&1 &)\"; eval \"\${cmd}\"; }"
     eval "${cmd}"
   }
 }

@@ -57,14 +57,14 @@ show_listitem() {
 # Source the functions
 #
 
-. $dir/functions/00-check
-. $dir/functions/01-base
-. $dir/functions/01-misc
-. $dir/functions/02-desktop
-. $dir/functions/03-network
-. $dir/functions/03-packages
-. $dir/functions/04-themes
-. $dir/functions/05-personal
+. "${dir}"/functions/00-check
+. "${dir}"/functions/01-base
+. "${dir}"/functions/01-misc
+. "${dir}"/functions/02-desktop
+. "${dir}"/functions/03-network
+. "${dir}"/functions/03-packages
+. "${dir}"/functions/04-themes
+. "${dir}"/functions/05-personal
 
 
 #

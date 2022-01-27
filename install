@@ -57,8 +57,8 @@ show_listitem() {
 # Source the functions
 #
 
-. $dir/functions/00-check
-. $dir/functions/00-install
+. "${dir}"/functions/00-check
+. "${dir}"/functions/00-install
 
 
 #
@@ -89,7 +89,7 @@ function main {
     mount --bind /$fs /mnt/$fs
   done
 
-  ${dir}/utils/genfstab -U /mnt >> /mnt/etc/fstab
+  "${dir}"/utils/genfstab -U /mnt >> /mnt/etc/fstab
   TIMEZONE="${TIMEZONE}" chroot /mnt /bin/bash -c "set_timezone"
   LOCALE="${LOCALE}" CHARSET="${CHARSET}" chroot /mnt /bin/bash -c "set_locale"
 

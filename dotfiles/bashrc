@@ -90,11 +90,7 @@ function superupgrade {
 }
 
 function megapurge {
-  sudo apt autoremove -y && \
-    sudo apt autoclean -y && \
-    sudo apt clean -y && \
-    sudo journalctl --rotate && \
-    sudo journalctl --vacuum-time=1s
+  sudo sh -c 'apt autoremove -y && apt autoclean -y && apt clean -y && journalctl --rotate && journalctl --vacuum-time=1s'
 }
 
 function alias_bg {

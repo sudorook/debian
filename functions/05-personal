@@ -225,28 +225,37 @@ function set_lightdm_theme {
 }
 
 function set_gdm_theme {
+  local gtkthemedir
   if dpkg -s gdm3 > /dev/null 2>&1; then
-    if [[ -d "/usr/share/themes/${gtktheme}" ]]; then
-      show_header "Setting GDM login theme to ${gtktheme}."
-      sudo cp -r "/usr/share/gnome-shell" "/usr/share/gnome-shell-$(date +%Y%m%d)"
-      if [[ "${gtktheme}" =~ Adapta ]] || [[ "${gtktheme}" =~ Plata ]]; then
-        sudo cp -rf \
-          /usr/share/themes/${gtktheme}/gnome-shell/* \
-          /usr/share/gnome-shell/
-        sudo cp -f \
-          /usr/share/themes/${gtktheme}/gnome-shell/extensions/window-list/classic.css \
-          /usr/share/gnome-shell/extensions/window-list@gnome-shell-extensions.gcampax.github.com/
-        sudo cp -f \
-          /usr/share/themes/${gtktheme}/gnome-shell/extensions/window-list/stylesheet.css \
-          /usr/share/gnome-shell/extensions/window-list@gnome-shell-extensions.gcampax.github.com/
-      elif [[ "${gtktheme}" =~ Materia ]]; then
-        sudo glib-compile-resources \
-          --target="/usr/share/gnome-shell/gnome-shell-theme.gresource" \
-          --sourcedir="/usr/share/themes/${gtktheme}/gnome-shell" \
-          "/usr/share/themes/${gtktheme}/gnome-shell/gnome-shell-theme.gresource.xml"
-      fi
+    if [[ -d "/usr/local/share/themes/${gtktheme}" ]]; then
+      gtkthemedir="/usr/local/share/themes/${gtktheme}"
+    elif [[ -d "${HOME}/.local/share/themes/${gtktheme}" ]]; then
+      gtkthemedir="${HOME}/.local/share/themes/${gtktheme}"
+    elif [[ -d "${HOME}/.themes/${gtktheme}" ]]; then
+      gtkthemedir="${HOME}/.themes/${gtktheme}"
+    elif [[ -d "/usr/share/themes/${gtktheme}" ]]; then
+      gtkthemedir="/usr/share/themes/${gtktheme}"
     else
       show_warning "GTK theme ${gtktheme} not found. Skipping."
+      return
+    fi
+    show_header "Setting GDM login theme to ${gtktheme}."
+    sudo cp -r "/usr/share/gnome-shell" "/usr/share/gnome-shell-$(date +%Y%m%d)"
+    if [[ "${gtktheme}" =~ Adapta ]] || [[ "${gtktheme}" =~ Plata ]]; then
+      sudo cp -rf \
+        ${gtkthemedir}/gnome-shell/* \
+        /usr/share/gnome-shell/
+      sudo cp -f \
+        ${gtkthemedir}/gnome-shell/extensions/window-list/classic.css \
+        /usr/share/gnome-shell/extensions/window-list@gnome-shell-extensions.gcampax.github.com/
+      sudo cp -f \
+        ${gtkthemedir}/gnome-shell/extensions/window-list/stylesheet.css \
+        /usr/share/gnome-shell/extensions/window-list@gnome-shell-extensions.gcampax.github.com/
+    elif [[ "${gtktheme}" =~ Materia ]]; then
+      sudo glib-compile-resources \
+        --target="/usr/share/gnome-shell/gnome-shell-theme.gresource" \
+        --sourcedir="${gtkthemedir}/gnome-shell" \
+        "${gtkthemedir}/gnome-shell/gnome-shell-theme.gresource.xml"
     fi
   else
     show_warning "GDM is not installed. Skipping."
@@ -510,6 +519,8 @@ function select_desktop_theme {
         ;;
       "Arc")
         if [ -d /usr/share/themes/Arc ] || \
+           [ -d /usr/local/share/themes/Arc ] || \
+           [ -d "${HOME}/.local/share/themes/Arc" ] || \
            [ -d "${HOME}/.themes/Arc" ]; then
           gtktheme="Arc"
         else
@@ -520,6 +531,8 @@ function select_desktop_theme {
         ;;
       "Arc-Darker")
         if [ -d /usr/share/themes/Arc-Darker ] || \
+           [ -d /usr/local/share/themes/Arc-Darker ] || \
+           [ -d "${HOME}/.local/share/themes/Arc-Darker" ] || \
            [ -d "${HOME}/.themes/Arc-Darker" ]; then
           gtktheme="Arc-Darker"
         else
@@ -530,6 +543,8 @@ function select_desktop_theme {
         ;;
       "Arc-Dark")
         if [ -d /usr/share/themes/Arc-Dark ] || \
+           [ -d /usr/local/share/themes/Arc-Dark ] || \
+           [ -d "${HOME}/.local/share/themes/Arc-Dark" ] || \
            [ -d "${HOME}/.themes/Arc-Dark" ]; then
           gtktheme="Arc-Dark"
         else
@@ -540,6 +555,8 @@ function select_desktop_theme {
         ;;
       "Arc-Lighter")
         if [ -d /usr/share/themes/Arc-Lighter ] || \
+           [ -d /usr/local/share/themes/Arc-Lighter ] || \
+           [ -d "${HOME}/.local/share/themes/Arc-Lighter" ] || \
            [ -d "${HOME}/.themes/Arc-Lighter" ]; then
           gtktheme="Arc-Lighter"
         else
@@ -550,6 +567,8 @@ function select_desktop_theme {
         ;;
       "Adapta")
         if [ -d /usr/share/themes/Adapta ] || \
+           [ -d /usr/local/share/themes/Adapta ] || \
+           [ -d "${HOME}/.local/share/themes/Adapta" ] || \
            [ -d "${HOME}/.themes/Adapta" ]; then
           gtktheme="Adapta"
         else
@@ -560,6 +579,8 @@ function select_desktop_theme {
         ;;
       "Adapta-Eta")
         if [ -d /usr/share/themes/Adapta-Eta ] || \
+           [ -d /usr/local/share/themes/Adapta-Eta ] || \
+           [ -d "${HOME}/.local/share/themes/Adapta-Eta" ] || \
            [ -d "${HOME}/.themes/Adapta-Eta" ]; then
           gtktheme="Adapta-Eta"
         else
@@ -570,6 +591,8 @@ function select_desktop_theme {
         ;;
       "Adapta-Nokto")
         if [ -d /usr/share/themes/Adapta-Nokto ] || \
+           [ -d /usr/local/share/themes/Adapta-Nokto ] || \
+           [ -d "${HOME}/.local/share/themes/Adapta-Nokto" ] || \
            [ -d "${HOME}/.themes/Adapta-Nokto" ]; then
           gtktheme="Adapta-Nokto"
         else
@@ -580,6 +603,8 @@ function select_desktop_theme {
         ;;
       "Adapta-Nokto-Eta")
         if [ -d /usr/share/themes/Adapta-Nokto-Eta ] || \
+           [ -d /usr/local/share/themes/Adapta-Nokto-Eta ] || \
+           [ -d "${HOME}/.local/share/themes/Adapta-Nokto-Eta" ] || \
            [ -d "${HOME}/.themes/Adapta-Nokto-Eta" ]; then
           gtktheme="Adapta-Nokto-Eta"
         else
@@ -590,6 +615,8 @@ function select_desktop_theme {
         ;;
       "Materia")
         if [ -d /usr/share/themes/Materia ] || \
+           [ -d /usr/local/share/themes/Materia ] || \
+           [ -d "${HOME}/.local/share/themes/Materia" ] || \
            [ -d "${HOME}/.themes/Materia" ]; then
           gtktheme="Materia"
         else
@@ -600,6 +627,8 @@ function select_desktop_theme {
         ;;
       "Materia-compact")
         if [ -d /usr/share/themes/Materia-compact ] || \
+           [ -d /usr/local/share/themes/Materia-compact ] || \
+           [ -d "${HOME}/.local/share/themes/Materia-compact" ] || \
            [ -d "${HOME}/.themes/Materia-compact" ]; then
           gtktheme="Materia-compact"
         else
@@ -610,6 +639,8 @@ function select_desktop_theme {
         ;;
       "Materia-light")
         if [ -d /usr/share/themes/Materia-light ] || \
+           [ -d /usr/local/share/themes/Materia-light ] || \
+           [ -d "${HOME}/.local/share/themes/Materia-light" ] || \
            [ -d "${HOME}/.themes/Materia-light" ]; then
           gtktheme="Materia-light"
         else
@@ -620,6 +651,8 @@ function select_desktop_theme {
         ;;
       "Materia-light-compact")
         if [ -d /usr/share/themes/Materia-light-compact ] || \
+           [ -d /usr/local/share/themes/Materia-light-compact ] || \
+           [ -d "${HOME}/.local/share/themes/Materia-light-compact" ] || \
            [ -d "${HOME}/.themes/Materia-light-compact" ]; then
           gtktheme="Materia-light-compact"
         else
@@ -630,6 +663,8 @@ function select_desktop_theme {
         ;;
       "Materia-dark")
         if [ -d /usr/share/themes/Materia-dark ] || \
+           [ -d /usr/local/share/themes/Materia-dark ] || \
+           [ -d "${HOME}/.local/share/themes/Materia-dark" ] || \
            [ -d "${HOME}/.themes/Materia-dark" ]; then
           gtktheme="Materia-dark"
         else
@@ -640,6 +675,8 @@ function select_desktop_theme {
         ;;
       "Materia-dark-compact")
         if [ -d /usr/share/themes/Materia-dark-compact ] || \
+           [ -d /usr/local/share/themes/Materia-dark-compact ] || \
+           [ -d "${HOME}/.local/share/themes/Materia-dark-compact" ] || \
            [ -d "${HOME}/.themes/Materia-dark-compact" ]; then
           gtktheme="Materia-dark-compact"
         else
@@ -650,6 +687,8 @@ function select_desktop_theme {
         ;;
       "Plata")
         if [ -d /usr/share/themes/Plata ] || \
+           [ -d /usr/local/share/themes/Plata ] || \
+           [ -d "${HOME}/.local/share/themes/Plata" ] || \
            [ -d "${HOME}/.themes/Plata" ]; then
           gtktheme="Plata"
         else
@@ -660,6 +699,8 @@ function select_desktop_theme {
         ;;
       "Plata-Compact")
         if [ -d /usr/share/themes/Plata-Compact ] || \
+           [ -d /usr/local/share/themes/Plata-Compact ] || \
+           [ -d "${HOME}/.local/share/themes/Plata-Compact" ] || \
            [ -d "${HOME}/.themes/Plata-Compact" ]; then
           gtktheme="Plata-Compact"
         else
@@ -670,6 +711,8 @@ function select_desktop_theme {
         ;;
       "Plata-Lumine")
         if [ -d /usr/share/themes/Plata-Lumine ] || \
+           [ -d /usr/local/share/themes/Plata-Lumine ] || \
+           [ -d "${HOME}/.local/share/themes/Plata-Lumine" ] || \
            [ -d "${HOME}/.themes/Plata-Lumine" ]; then
           gtktheme="Plata-Lumine"
         else
@@ -680,6 +723,8 @@ function select_desktop_theme {
         ;;
       "Plata-Lumine-Compact")
         if [ -d /usr/share/themes/Plata-Lumine-Compact ] || \
+           [ -d /usr/local/share/themes/Plata-Lumine-Compact ] || \
+           [ -d "${HOME}/.local/share/themes/Plata-Lumine-Compact" ] || \
            [ -d "${HOME}/.themes/Plata-Lumine-Compact" ]; then
           gtktheme="Plata-Lumine-Compact"
         else
@@ -690,6 +735,8 @@ function select_desktop_theme {
         ;;
       "Plata-Noir")
         if [ -d /usr/share/themes/Plata-Noir ] || \
+           [ -d /usr/local/share/themes/Plata-Noir ] || \
+           [ -d "${HOME}/.local/share/themes/Plata-Noir" ] || \
            [ -d "${HOME}/.themes/Plata-Noir" ]; then
           gtktheme="Plata-Noir"
         else
@@ -700,6 +747,8 @@ function select_desktop_theme {
         ;;
       "Plata-Noir-Compact")
         if [ -d /usr/share/themes/Plata-Noir-Compact ] || \
+           [ -d /usr/local/share/themes/Plata-Noir-Compact ] || \
+           [ -d "${HOME}/.local/share/themes/Plata-Noir-Compact" ] || \
            [ -d "${HOME}/.themes/Plata-Noir-Compact" ]; then
           gtktheme="Plata-Noir-Compact"
         else
@@ -739,6 +788,8 @@ function select_icon_theme {
         ;;
       "Papirus")
         if [ -d /usr/share/icons/Papirus ] || \
+           [ -d /usr/local/share/icons/Papirus ] || \
+           [ -d "${HOME}/.local/share/icons/Papirus" ] || \
            [ -d "${HOME}/.icons/Papirus" ]; then
           icontheme="Papirus"
         else
@@ -749,6 +800,8 @@ function select_icon_theme {
         ;;
       "ePapirus")
         if [ -d /usr/share/icons/ePapirus ] || \
+           [ -d /usr/local/share/icons/ePapirus ] || \
+           [ -d "${HOME}/.local/share/icons/ePapirus" ] || \
            [ -d "${HOME}/.icons/ePapirus" ]; then
           icontheme="ePapirus"
         else
@@ -759,6 +812,8 @@ function select_icon_theme {
         ;;
       "ePapirus-Dark")
         if [ -d /usr/share/icons/ePapirus-Dark ] || \
+           [ -d /usr/local/share/icons/ePapirus-Dark ] || \
+           [ -d "${HOME}/.local/share/icons/ePapirus-Dark" ] || \
            [ -d "${HOME}/.icons/ePapirus-Dark" ]; then
           icontheme="ePapirus-Dark"
         else
@@ -769,6 +824,8 @@ function select_icon_theme {
         ;;
       "Papirus-Light")
         if [ -d /usr/share/icons/Papirus-Light ] || \
+           [ -d /usr/local/share/icons/Papirus-Light ] || \
+           [ -d "${HOME}/.local/share/icons/Papirus-Light" ] || \
            [ -d "${HOME}/.icons/Papirus-Light" ]; then
           icontheme="Papirus-Light"
         else
@@ -779,6 +836,8 @@ function select_icon_theme {
         ;;
       "Papirus-Dark")
         if [ -d /usr/share/icons/Papirus-Dark ] || \
+           [ -d /usr/local/share/icons/Papirus-Dark ] || \
+           [ -d "${HOME}/.local/share/icons/Papirus-Dark" ] || \
            [ -d "${HOME}/.icons/Papirus-Dark" ]; then
           icontheme="Papirus-Dark"
         else
@@ -789,6 +848,8 @@ function select_icon_theme {
         ;;
       "Papirus-Adapta")
         if [ -d /usr/share/icons/Papirus-Adapta ] || \
+           [ -d /usr/local/share/icons/Papirus-Adapta ] || \
+           [ -d "${HOME}/.local/share/icons/Papirus-Adapta" ] || \
            [ -d "${HOME}/.icons/Papirus-Adapta" ]; then
           icontheme="Papirus-Adapta"
         else
@@ -799,6 +860,8 @@ function select_icon_theme {
         ;;
       "Papirus-Adapta-Nokto")
         if [ -d /usr/share/icons/Papirus-Adapta-Nokto ] || \
+           [ -d /usr/local/share/icons/Papirus-Adapta-Nokto ] || \
+           [ -d "${HOME}/.local/share/icons/Papirus-Adapta-Nokto" ] || \
            [ -d "${HOME}/.icons/Papirus-Adapta-Nokto" ]; then
           icontheme="Papirus-Adapta-Nokto"
         else

@@ -466,6 +466,7 @@ function select_desktop_theme {
     "Arc"
     "Arc-Darker"
     "Arc-Dark"
+    "Arc-Lighter"
     "Adapta"
     "Adapta-Eta"
     "Adapta-Nokto"
@@ -522,6 +523,16 @@ function select_desktop_theme {
         if [ -d /usr/share/themes/Arc-Dark ] || \
            [ -d "${HOME}/.themes/Arc-Dark" ]; then
           gtktheme="Arc-Dark"
+        else
+          show_warning "${option} theme is not installed."
+          select_desktop_theme
+        fi
+        break
+        ;;
+      "Arc-Lighter")
+        if [ -d /usr/share/themes/Arc-Lighter ] || \
+           [ -d "${HOME}/.themes/Arc-Lighter" ]; then
+          gtktheme="Arc-Lighter"
         else
           show_warning "${option} theme is not installed."
           select_desktop_theme

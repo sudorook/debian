@@ -717,6 +717,7 @@ function select_icon_theme {
     "Back"
     "Papirus"
     "ePapirus"
+    "ePapirus-Dark"
     "Papirus-Light"
     "Papirus-Dark"
     "Papirus-Adapta"
@@ -741,6 +742,16 @@ function select_icon_theme {
         if [ -d /usr/share/icons/ePapirus ] || \
            [ -d "${HOME}/.icons/ePapirus" ]; then
           icontheme="ePapirus"
+        else
+          show_warning "${option} icons are not installed."
+          select_icon_theme
+        fi
+        break
+        ;;
+      "ePapirus-Dark")
+        if [ -d /usr/share/icons/ePapirus-Dark ] || \
+           [ -d "${HOME}/.icons/ePapirus-Dark" ]; then
+          icontheme="ePapirus-Dark"
         else
           show_warning "${option} icons are not installed."
           select_icon_theme

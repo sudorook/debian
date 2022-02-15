@@ -712,7 +712,7 @@ function install_gummiboot {
       elif [ -n "${root_uuid}" ]; then
         cmdline="root=/dev/mapper/${VG}-root"
       else
-        echo "ERROR: Missing root ${root_uuid}."
+        show_error "ERROR: Missing root ${root_uuid}."
         exit 3
       fi
       cmdline="${cmdline} rw"
@@ -788,7 +788,7 @@ function install_grub {
     elif [ -n "${root_uuid}" ]; then
       cmdline="root=/dev/mapper/${VG}-root"
     else
-      echo "ERROR: Missing root ${root_uuid}."
+      show_error "ERROR: Missing root ${root_uuid}."
       exit 3
     fi
     sed -i "s|^GRUB_CMDLINE_LINUX=[\"\"]*|GRUB_CMDLINE_LINUX=\"${cmdline}\"|g" /etc/default/grub
@@ -814,7 +814,7 @@ function make_luks_key {
   local crypt_key_path
   local crypt_uuid
 
-  echo "Adding LUKS decryption key file..."
+  show_header "Adding LUKS decryption key file..."
   crypt_key="crypto_keyfile.bin"
   crypt_key_path="/etc/${crypt_key}"
   dd bs=512 count=4 if=/dev/urandom of=${crypt_key_path} && sync
@@ -841,12 +841,14 @@ EOF
   echo UMASK=0077 >> /etc/initramfs-tools/initramfs.conf
 
   # rebuild the kernel(s)
+  show_info "Rebuilding kernel(s)..."
   update-initramfs -u -k all
 
   # prevent non-privileged users from reading any ramdisk
   chmod -R 700 /boot/
 
   if [ -f /etc/default/grub ]; then
+    show_info "Updating GRUB configuration..."
     update-grub
   fi
 }

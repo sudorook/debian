@@ -80,6 +80,10 @@ function ask_device {
   local result
   disks=($(lsblk | grep disk | cut -d' ' -f1 | tr '\n' ' '))
   select disk in "${disks[@]}"; do
+    if [ -z "${disk}" ]; then
+      show_warning "Invalid selection. Try again."
+      continue
+    fi
     result="$(ask_question "Use ${disk}? (Y/n)")"
     if ! [[ "${result}" =~ ^([Nn]$|[Nn][Oo]) ]]; then
       DEVICE="${disk}"

@@ -610,7 +610,7 @@ function ask_username {
   local tmp
   tmp="$(ask_question "User name (default: ${USER_NAME})")"
   if [ -n "${tmp}" ]; then
-    USER_NAME="${tmp}"
+    USER_NAME="${tmp,,}"
   else
     show_info "Defaulting user name to ${USER_NAME}."
   fi

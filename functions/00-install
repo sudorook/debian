@@ -661,11 +661,13 @@ function add_user {
   useradd -m -c "${USER_NAME[@]^}" "${USER_NAME}" -s /bin/bash
   usermod -aG sudo,"${USER_NAME}" "${USER_NAME}"
   echo "${USER_NAME}:${USER_PASSWORD}" | chpasswd
-
-  # disable root account
-  passwd -l root
 }
 export -f add_user
+
+function disable_root {
+  passwd -l root
+}
+export -f disable_root
 
 # function install_ucode {
 #   vendor="$(lscpu | sed -n "s,^Vendor ID: \+\([A-Za-z]\+\),\1,p")"

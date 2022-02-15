@@ -101,6 +101,7 @@ function main {
   # chroot /mnt /bin/bash -c "install_ucode"
   HOST_NAME="${HOST_NAME}" chroot /mnt /bin/bash -c "set_hostname"
   USER_NAME="${USER_NAME}" USER_PASSWORD="${USER_PASSWORD}" chroot /mnt /bin/bash -c "add_user"
+  chroot /mnt /bin/bash -c "disable_root"
   if [[ "${BOOTMODE}" = "GRUB" ]]; then
     SCHEME="${SCHEME}" DEVICE="${DEVICE}" chroot /mnt /bin/bash -c "install_grub"
     if [[ "${SCHEME}" = "LVM on LUKS" ]]; then

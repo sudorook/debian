@@ -91,6 +91,7 @@ function check_debian_release {
 }
 
 function check_installed {
+  local package
   while read -r package; do
     # Check if package is installed already before installing.
     if dpkg -s "${package}" >/dev/null 2>&1; then
@@ -108,6 +109,7 @@ function check_installed {
 }
 
 function check_uninstalled {
+  local package
   for package in "${@}"; do
     if dpkg -s "${package}" >/dev/null 2>&1; then
       show_listitem "Purging ${package}."
@@ -121,6 +123,7 @@ function check_uninstalled {
 
 function install_post_dependencies {
   show_header "Checking post-installation dependencies."
+  local package
   while read -r package; do
     if ! dpkg -s "${package}" > /dev/null 2>&1; then
       show_info "${package} is needed for this script."

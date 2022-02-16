@@ -138,10 +138,21 @@ function install_post_dependencies {
 
 function install_dependencies {
   show_header "Checking installation dependencies."
+  local state=true
+  local exe
+  while read -r exe; do
+    if ! command -v "${exe}" >/dev/null; then
+      state=false
+    fi
+  done < "${install}"
+  if "${state}"; then return; fi
+
+  apt-get update
+  local package
   while read -r package; do
     if ! dpkg -s "${package}" > /dev/null 2>&1; then
       show_info "${package} is needed for this script."
-      sudo apt-get -y install "${package}"
+      apt-get -y install "${package}"
       check_fail $?
       show_success "${package} now installed."
     else

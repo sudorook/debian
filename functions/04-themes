@@ -66,7 +66,7 @@ function install_arc_gtk {
   git clone -b tweak --depth 1 \
     https://github.com/sudorook/arc-theme arc-theme
   cd arc-theme || exit
-  meson setup --prefix=/usr -Dthemes="${meson_options}" _build/
+  meson setup --prefix=/usr/local -Dthemes="${meson_options}" _build/
   meson compile -C _build/
   sudo meson install -C _build/
   cd ..
@@ -100,7 +100,7 @@ function install_adapta_gtk {
     https://github.com/sudorook/adapta-gtk-theme adapta-gtk-theme
   cd adapta-gtk-theme || exit
   ./autogen.sh \
-    --prefix=/usr \
+    --prefix=/usr/local \
     --with-selection_color=#00A2B4 \
     --with-accent_color=#00B4CB \
     --with-suggestion_color=#00A2B4 \
@@ -145,7 +145,7 @@ function install_plata_gtk {
   git clone -b tweak --depth 1 \
     https://gitlab.com/sudorook/plata-theme plata-theme
   cd plata-theme || exit
-  ./autogen.sh --prefix=/usr \
+  ./autogen.sh --prefix=/usr/local \
     --with-selection_color=#4877B1 \
     --with-accent_color=#4877B1 \
     --with-suggestion_color=#5294E2 \
@@ -177,7 +177,7 @@ function install_materia_gtk {
     https://github.com/sudorook/materia-theme materia-theme
   cd materia-theme || exit
   mkdir -p _build
-  meson _build
+  meson _build -Dprefix=/usr/local
   meson compile -C _build
   sudo meson install -C _build
   cd ..
@@ -199,7 +199,7 @@ function install_papirus_icons {
     papirus-icon-theme
   cd papirus-icon-theme || exit
 
-  sudo make install
+  sudo make PREFIX=/usr/local install
   cd ..
   rm -rf papirus-icon-theme
 }

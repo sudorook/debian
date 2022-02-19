@@ -37,11 +37,14 @@ function install_theme_deps {
 function install_arc_gtk {
   show_header "Downloading, building, and installing the Arc GTK theme."
   local meson_options=""
+  local meson_gresource="false"
   if dpkg -s gnome-shell >/dev/null 2>&1; then
     meson_options="${meson_options}gnome-shell,"
+    meson_gresource="true"
   fi
   if dpkg -s cinnamon >/dev/null 2>&1; then
     meson_options="${meson_options}cinnamon,"
+    meson_gresource="true"
   fi
   if dpkg -s libgtk-2-common >/dev/null 2>&1; then
     meson_options="${meson_options}gtk2,"
@@ -66,7 +69,11 @@ function install_arc_gtk {
   git clone -b tweak --depth 1 \
     https://github.com/sudorook/arc-theme arc-theme
   cd arc-theme || exit
-  meson setup --prefix=/usr/local -Dthemes="${meson_options}" _build/
+  meson setup --prefix=/usr/local \
+    -Dtransparency=true \
+    -Dgnome_shell_gresource="${meson_gresource}" \
+    -Dthemes="${meson_options}" \
+    _build/
   meson compile -C _build/
   sudo meson install -C _build/
   cd ..

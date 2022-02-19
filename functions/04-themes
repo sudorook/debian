@@ -206,7 +206,7 @@ function install_papirus_icons {
     papirus-icon-theme
   cd papirus-icon-theme || exit
 
-  sudo make PREFIX=/usr/local install
+  sudo make PREFIX=/usr/local -j"$(nproc)" install
   cd ..
   rm -rf papirus-icon-theme
 }

@@ -241,7 +241,7 @@ function set_gdm_theme {
     fi
     show_header "Setting GDM login theme to ${gtktheme}."
     sudo cp -r "/usr/share/gnome-shell" "/usr/share/gnome-shell-$(date +%Y%m%d)"
-    if [[ "${gtktheme}" =~ Adapta ]] || [[ "${gtktheme}" =~ Plata ]]; then
+    if [[ "${gtktheme}" =~ ^Adapta ]] || [[ "${gtktheme}" =~ ^Plata ]]; then
       sudo cp -rf \
         ${gtkthemedir}/gnome-shell/* \
         /usr/share/gnome-shell/
@@ -251,7 +251,7 @@ function set_gdm_theme {
       sudo cp -f \
         ${gtkthemedir}/gnome-shell/extensions/window-list/stylesheet.css \
         /usr/share/gnome-shell/extensions/window-list@gnome-shell-extensions.gcampax.github.com/
-    elif [[ "${gtktheme}" =~ Materia ]]; then
+    elif [[ "${gtktheme}" =~ ^Materia ]]; then
       sudo glib-compile-resources \
         --target="/usr/share/gnome-shell/gnome-shell-theme.gresource" \
         --sourcedir="${gtkthemedir}/gnome-shell" \

@@ -288,11 +288,10 @@ function install_torbrowser {
     mv tor-browser_en-US "${torbrowser_path}"
     cp -f "${torbrowser_path}/start-tor-browser.desktop" "${local_applications}/"
     chmod -x "${local_applications}/start-tor-browser.desktop"
-    sed -i "s,^Name=.*,Name=Tor Browser,g" \
-      "${local_applications}/start-tor-browser.desktop"
-    sed -i "s,^Icon=.*,Icon=browser-tor,g" \
-      "${local_applications}/start-tor-browser.desktop"
-    sed -i "s,^Exec=.*,Exec=sh -c '\"${torbrowser_path}/Browser/start-tor-browser\" --detach || ([ !  -x \"${torbrowser_path}/Browser/start-tor-browser\" ] \&\& \"\$(dirname \"\$*\")\"/Browser/start-tor-browser --detach)' dummy %k,g" \
+    sed -i \
+      -e "s,^Name=.*,Name=Tor Browser,g" \
+      -e "s,^Icon=.*,Icon=browser-tor,g" \
+      -e "s,^Exec=.*,Exec=sh -c '\"${torbrowser_path}/Browser/start-tor-browser\" --detach || ([ !  -x \"${torbrowser_path}/Browser/start-tor-browser\" ] \&\& \"\$(dirname \"\$*\")\"/Browser/start-tor-browser --detach)' dummy %k,g" \
       "${local_applications}/start-tor-browser.desktop"
     update-desktop-database "${local_applications}"
 

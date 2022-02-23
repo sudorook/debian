@@ -89,7 +89,13 @@ function install_dev {
   show_info "Installing Vim packages."
   mkdir -p "${vimpack}"
 
-  if ! [[ -f "${vimpack}/Nvim-R" ]]; then
+  if ! [[ -e "${vimpack}/kotlin-vim" ]]; then
+    show_info "Installing kotlin-vim for Vim syntax highlighting."
+    git clone https://github.com/udalov/kotlin-vim.git \
+      "${vimpack}/kotlin-vim"
+  fi
+
+  if ! [[ -e "${vimpack}/Nvim-R" ]]; then
     show_info "Installing Nvim-R."
     git clone https://github.com/jalvesaq/Nvim-R "${vimpack}/Nvim-R"
   fi

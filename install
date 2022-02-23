@@ -52,6 +52,15 @@ show_listitem() {
   echo -e $'\033[1;37m'"$*"$'\033[0m'
 }
 
+export -f show_error
+export -f show_info
+export -f show_warning
+export -f show_question
+export -f ask_question
+export -f show_success
+export -f show_header
+export -f show_listitem
+
 
 #
 # Source the functions

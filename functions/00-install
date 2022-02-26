@@ -608,53 +608,78 @@ export -f set_hostname
 USER_NAME="admin"
 function ask_username {
   local tmp
-  tmp="$(ask_question "User name (default: ${USER_NAME})")"
-  if [ -n "${tmp}" ]; then
-    USER_NAME="${tmp,,}"
-  else
-    show_info "Defaulting user name to ${USER_NAME}."
-  fi
+  local is_invalid=true
+
+  while "${is_invalid}"; do
+    tmp="$(ask_question "User name (default: ${USER_NAME})")"
+    if [ -n "${tmp}" ]; then
+      if (( "${#tmp}" > 16 )); then
+        show_error "ERROR: user name ${tmp@Q} greater than 16 characters."
+        tmp=
+        continue
+      elif [[ "${tmp}" =~ ^[[:lower:]_][[:lower:][:digit:]_-]{2,15}$ ]]; then
+        USER_NAME="${tmp,,}"
+        is_invalid=false
+      else
+        show_error "ERROR: user name ${tmp@Q} is invalid."
+        tmp=
+        continue
+      fi
+    else
+      show_info "Defaulting user name to ${USER_NAME@Q}."
+      is_invalid=false
+    fi
+  done
 }
 
 USER_PASSWORD=""
 function ask_password {
   local tmp1
   local tmp2
-  stty -echo
-  tmp1="$(ask_question "User password")"
-  echo
-  tmp2="$(ask_question "Re-enter password")"
-  stty echo
-  echo
-  if [ -z "${tmp1}" ]; then
-    show_error "ERROR: no password given."
-    exit 3
-  elif [ "${tmp1}" != "${tmp2}" ]; then
-    show_error "ERROR: password mismatch."
-    exit 3
-  else
-    USER_PASSWORD="${tmp1}"
-  fi
+  local is_invalid=true
+  while "${is_invalid}"; do
+    stty -echo
+    tmp1="$(ask_question "User password")"
+    echo
+    tmp2="$(ask_question "Re-enter password")"
+    stty echo
+    echo
+    if [ -z "${tmp1}" ]; then
+      show_error "ERROR: no password given."
+      continue
+    elif [ "${tmp1}" != "${tmp2}" ]; then
+      show_error "ERROR: password mismatch."
+      continue
+    else
+      USER_PASSWORD="${tmp1}"
+      is_invalid=false
+    fi
+  done
 }
 
 CRYPT_PASSWORD=""
 function ask_lukspass {
   local tmp1
-  stty -echo
-  tmp1="$(ask_question "LUKS decryption password")"
-  echo
-  tmp2="$(ask_question "Re-enter LUKS decription password")"
-  stty echo
-  echo
-  if [ -z "${tmp1}" ]; then
-    show_error "ERROR: no password given."
-    exit 3
-  elif [ "${tmp1}" != "${tmp2}" ]; then
-    show_error "ERROR: password mismatch."
-    exit 3
-  else
-    CRYPT_PASSWORD="${tmp1}"
-  fi
+  local tmp2
+  local is_invalid=true
+  while "${is_invalid}"; do
+    stty -echo
+    tmp1="$(ask_question "LUKS decryption password")"
+    echo
+    tmp2="$(ask_question "Re-enter LUKS decription password")"
+    stty echo
+    echo
+    if [ -z "${tmp1}" ]; then
+      show_error "ERROR: no password given."
+      continue
+    elif [ "${tmp1}" != "${tmp2}" ]; then
+      show_error "ERROR: password mismatch."
+      continue
+    else
+      CRYPT_PASSWORD="${tmp1}"
+      is_invalid=false
+    fi
+  done
 }
 
 function add_user {

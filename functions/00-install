@@ -568,7 +568,7 @@ CHARSET="UTF-8"
 function ask_locale {
   local res
 
-  res="$(sed -n "s,^#\?\ \?\([a-z]\+\)\(_[A-Z]\+\)\?\(.*\),\1\2\3,p" /etc/locale.gen | \
+  res="$(sed -n "s,^#\?\ \?\([[:alnum:]\.@_\-]\+\)\ \([[:alnum:]\-]\+\)\ *$,\1 \2,p" /etc/locale.gen | \
          fzf --layout=reverse --scroll-off=5 \
              --header="Select locale ('ESC' for default: ${LOCALE})" || true)"
   clear

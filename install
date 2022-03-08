@@ -105,6 +105,7 @@ function main {
   "${dir}"/utils/genfstab -U /mnt >> /mnt/etc/fstab
   TIMEZONE="${TIMEZONE}" chroot /mnt /bin/bash -c "set_timezone"
   LOCALE="${LOCALE}" CHARSET="${CHARSET}" chroot /mnt /bin/bash -c "set_locale"
+  KBLAYOUT="us" chroot /mnt /bin/bash -c "set_keyboard"
 
   cp "sources/${RELEASE}-sources.list" "/mnt/etc/apt/sources.list"
   chroot /mnt /bin/bash -c "update_mirrorlist"

@@ -590,6 +590,11 @@ function set_locale {
 }
 export -f set_locale
 
+function set_keyboard {
+  sed -i "s/^\(XKBLAYOUT=\)\".*\"/\1\"${KBLAYOUT}\"/g" /etc/default/keyboard
+}
+export -f set_keyboard
+
 HOST_NAME="Debian"
 function ask_hostname {
   local tmp

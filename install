@@ -148,8 +148,9 @@ function main {
 #
 
 check_root
-install_dependencies
 check_network
+sync_repos
+install_dependencies
 
 #
 # GO!!!

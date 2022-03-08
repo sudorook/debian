@@ -121,6 +121,15 @@ function check_uninstalled {
   done
 }
 
+function sync_repos {
+  show_header "Synchronizing repos."
+  if [ ${EUID} -eq 0 ]; then
+    apt update
+  else
+    sudo apt update
+  fi
+}
+
 function install_post_dependencies {
   show_header "Checking post-installation dependencies."
   local package
@@ -147,7 +156,6 @@ function install_dependencies {
   done < "${install}"
   if "${state}"; then return; fi
 
-  apt-get update
   local package
   while read -r package; do
     if ! dpkg -s "${package}" > /dev/null 2>&1; then

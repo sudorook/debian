@@ -546,7 +546,7 @@ function ask_timezone {
   local res
 
   res="$(timedatectl list-timezones | \
-         fzf --layout=reverse --scroll-off=5 --header-first \
+         fzf --layout=reverse \
              --header="Select time zone ('ESC' for default: ${TIMEZONE})" || true)"
   clear
 
@@ -569,7 +569,7 @@ function ask_locale {
   local res
 
   res="$(sed -n "s,^#\?\ \?\([[:alnum:]\.@_\-]\+\)\ \([[:alnum:]\-]\+\)\ *$,\1 \2,p" /etc/locale.gen | \
-         fzf --layout=reverse --scroll-off=5 \
+         fzf --layout=reverse \
              --header="Select locale ('ESC' for default: ${LOCALE})" || true)"
   clear
 

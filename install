@@ -94,7 +94,9 @@ function main {
   format_partitions
 
   mount_install
-  debootstrap --arch amd64 "${RELEASE}" /mnt https://deb.debian.org/debian
+  debootstrap \
+    --include=locales \
+    --arch amd64 "${RELEASE}" /mnt https://deb.debian.org/debian
   mkdir -p /mnt/run/udev
   for fs in proc sys dev dev/pts run/udev; do
     mount --bind /$fs /mnt/$fs

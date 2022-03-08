@@ -583,9 +583,10 @@ function ask_locale {
 }
 
 function set_locale {
-  apt install -y locales
-  locale-gen "${LOCALE}"
-  dpkg-reconfigure locales
+  sed -i "/^#\ \?${LOCALE} ${CHARSET}/s/^#\ \?//" /etc/locale.gen
+  locale-gen
+  echo "LANG=${LOCALE}" > /etc/locale.conf
+  echo "KEYMAP=${LOCALE}" > /etc/vconsole.conf
 }
 export -f set_locale
 

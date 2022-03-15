@@ -63,6 +63,8 @@ command -v R >/dev/null 2>&1 && {
 command -v beet >/dev/null 2>&1 && {
   if [ -f "/usr/share/bash-completion/completions/beet" ]; then
     source "/usr/share/bash-completion/completions/beet"
+  elif [ -f "${HOME}/.local/share/bash-completion/completions/beet" ]; then
+    source "${HOME}/.local/share/bash-completion/completions/beet"
   else
     eval "$(beet completion)"
   fi

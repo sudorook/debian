@@ -73,8 +73,11 @@ command -v beet >/dev/null 2>&1 && {
 # custom scripts
 export PATH="${PATH}:${HOME}/.scripts"
 
-# local binaries
+# local executables
 export PATH="${HOME}/.local/bin:${PATH}"
+
+# local libraries
+export LD_LIBRARY_PATH="${HOME}/.local/lib:/usr/local/lib:${LD_LIBRARY_PATH}"
 
 
 #

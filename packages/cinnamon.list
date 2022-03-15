@@ -1,4 +1,5 @@
 cinnamon
+gammastep
 gnome-keyring
 gnome-terminal
 lightdm
@@ -6,8 +7,6 @@ lightdm-gtk-greeter
 nemo-fileroller
 network-manager
 python3-xdg
-redshift
-redshift-gtk
 xdg-user-dirs
 xdg-user-dirs-gtk
 xdg-utils

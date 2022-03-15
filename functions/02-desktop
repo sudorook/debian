@@ -47,7 +47,7 @@ function install_gnome {
 
 cinnamon="${dir}/packages/cinnamon.list"
 lightdmconf="/etc/lightdm/lightdm.conf"
-redshiftconf="${dir}/configs/redshift.conf"
+gammastepini="${dir}/configs/gammastep.ini"
 function install_cinnamon {
   show_header "Setting up cinnamon desktop environment."
   check_installed "${cinnamon}"
@@ -66,14 +66,17 @@ function install_cinnamon {
     local tmp
     local lat
     local lon
-    tmp="$(/usr/lib/geoclue-2.0/demos/where-am-i -t 20)"
-    lat="$(echo "$tmp" | \
-           sed -n "s/^Latitude: \+\([-0-9\.]\+\)°$/\1/p" | head -n 1)"
-    lon="$(echo "$tmp" | \
-           sed -n "s/^Longitude: \+\([-0-9\.]\+\)°$/\1/p" | head -n 1)"
-    sed -e "s,^lat=.*,lat=${lat},g" "${redshiftconf}" | \
-      sed -e "s,^lon=.*,lon=${lon},g" > \
-      "${HOME}/.config/redshift.conf"
+    tmp="$(/usr/lib/geoclue-2.0/demos/where-am-i -t 10 -a 4)"
+    if [[ -n "${tmp}" ]]; then
+      lat="$(echo "$tmp" | \
+             sed -n "s/^Latitude: \+\([-0-9\.]\+\)°$/\1/p" | head -n 1)"
+      lon="$(echo "$tmp" | \
+             sed -n "s/^Longitude: \+\([-0-9\.]\+\)°$/\1/p" | head -n 1)"
+      sed -e "s,^lat=.*,lat=${lat},g" -e "s,^lon=.*,lon=${lon},g" \
+        "${gammastepini}" > "${HOME}/.config/gammastep/gammastep.conf"
+    else
+      cp "${gammastepini}" "${HOME}/.config/gammastep/gammastep.conf"
+    fi
   fi
 
   xdg-user-dirs-update

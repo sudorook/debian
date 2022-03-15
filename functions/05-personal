@@ -475,7 +475,7 @@ function install_scripts {
   show_info "Setting up battery notifications."
   mkdir -p "${autostartdir}"
   sed -e "s,@misc-scripts@,${scriptdir},g" "${batterydaemon}" \
-    > "${autostartdir}/Battery Watchdog.desktop"
+    > "${autostartdir}/battery-watchdog.desktop"
 }
 
 function select_desktop_theme {

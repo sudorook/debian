@@ -1,10 +1,13 @@
 [Desktop Entry]
-Type=Application
+Version=1.0
+Name[en_US]=Battery Watchdog
+GenericName[en_US]=Battery level indicator using libnotify
+Comment[en_US]=Monitor battery level and display notifications
 Exec=@misc-scripts@/battery-notify
-X-GNOME-Autostart-enabled=true
+Terminal=false
+Type=Application
+StartupNotify=false
 NoDisplay=false
 Hidden=false
-Name[en_US]=Battery Watchdog
-Comment[en_US]=Monitor battery level and display notifications.
 X-GNOME-Autostart-Delay=0
 X-GNOME-Autostart-enabled=true

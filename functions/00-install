@@ -387,7 +387,7 @@ function set_partitions {
   fi
 
   if is_size_nonzero "${PARTITIONS["share"]}"; then
-    sgdisk_opts="${sgdisk_opts} --new=${part_count}:0:+${PARTITIONS["share"]} --typecode=${part_count}:8300"
+    sgdisk_opts="${sgdisk_opts} --new=${part_count}:0:+${PARTITIONS["share"]} --typecode=${part_count}:0700" # 8300 for ext4
     SHARE_PARTITION="/dev/${DEVICE}${part_count}"
     part_count=$(( part_count + 1 ))
   fi

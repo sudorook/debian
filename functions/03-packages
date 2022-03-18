@@ -74,6 +74,9 @@ function install_dev {
   check_fail
   show_success "Development packages installed."
 
+  show_info "Setting Git global defaults."
+  git config --global init.defaultBranch master
+
   show_info "Installing npmrc."
   cp -f "${npmrc}" "${HOME}/.npmrc"
 

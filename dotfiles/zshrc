@@ -144,10 +144,9 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 test -f /usr/share/zsh-antigen/antigen.zsh && {
   source /usr/share/zsh-antigen/antigen.zsh
 
-  # custom fishy theme
-  antigen bundle sudorook/fishy-lite plugins/git
-  antigen bundle sudorook/fishy-lite plugins/battery
-  antigen theme sudorook/fishy-lite themes/fishy
+  # powerlevel10k theme
+  antigen theme romkatv/powerlevel10k
+  source "${HOME}/.p10k.zsh"
 
   # fish-like syntax highlighting
   antigen bundle zsh-users/zsh-completions

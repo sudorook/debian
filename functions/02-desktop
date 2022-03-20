@@ -35,9 +35,6 @@ function install_gnome {
 
   extensiondir=${HOME}/.local/share/gnome-shell/extensions
   mkdir -p "${extensiondir}"
-  show_info "Downloading 'No Topleft Hot Corner' GNOME extension."
-  git clone https://github.com/HROMANO/nohotcorner \
-    "${HOME}/.local/share/gnome-shell/extensions/nohotcorner@azuri.free.fr"
   show_info "Downloading 'Desktop Icons' GNOME extension."
   git clone https://gitlab.com/rastersoft/desktop-icons-ng \
     "${HOME}/.local/share/gnome-shell/extensions/ding@rastersoft.com"

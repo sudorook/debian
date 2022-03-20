@@ -129,7 +129,7 @@ function install_games {
 }
 
 kvm="${dir}/packages/kvm.list"
-qemuconf="/etc/libvirt/qemu.conf"
+# qemuconf="/etc/libvirt/qemu.conf"
 function install_kvm {
   show_header "Installing KVM."
   check_installed "${kvm}"
@@ -139,13 +139,14 @@ function install_kvm {
   show_info "Adding $(whoami) to kvm and libvirt groups."
   sudo usermod -aG kvm,libvirt "$(whoami)"
 
-  # show_info "Edit group permissions in ${qemuconf}"
-  # kvmgid="$(getent group | grep kvm | cut -d":" -f3)"
+  # show_info "Enable dynamic ownership for qemu."
   # sudo sed -i "s/^#dynamic_ownership/dynamic_ownership/g" "${qemuconf}"
-  # sudo sed -i "s/^group=\"[0-9]*\"/group=\"${kvmgid}\"/g" "${qemuconf}"
-  # show_warning "Manually enable 'cgroup_device_acl' and add"
-  # show_warning "'/dev/dri/renderD128' to the list so that the virt-manager GUI"
-  # show_warning "allows setting 3d acceleration."
+
+  # show_info "Set libvirt user to 'kvm' group in ${qemuconf}"
+  # sudo sed -i "s/^group = \".*\"/group = \"kvm\"/g" "${qemuconf}"
+  # show_warning \
+  #   "Manually enable 'cgroup_device_acl' and add '/dev/dri/renderD128'" \
+  #   "to the list so that the virt-manager GUI allows setting 3d acceleration."
 
   sudo systemctl enable libvirtd
   sudo systemctl start libvirtd

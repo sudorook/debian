@@ -76,7 +76,7 @@ function install_firewall {
 
 tor="${dir}/packages/tor.list"
 function install_tor {
-  show_header "Installing tor."
+  show_header "Installing Tor programs."
   check_installed "${tor}"
   check_fail
   show_success "Tor installed."

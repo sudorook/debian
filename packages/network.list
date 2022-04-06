@@ -2,4 +2,5 @@ iwd
 network-manager-openvpn
 network-manager-openvpn-gnome
 openssh-server
+wireguard-tools
 wireless-tools

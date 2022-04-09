@@ -82,7 +82,7 @@ function megapurge {
   sudo sh -c 'apt autoremove -y && apt autoclean -y && apt clean -y && journalctl --rotate && journalctl --vacuum-time=1s'
 }
 
-function alias_bg {
+function make_silent {
   command -v "${1}" >/dev/null && {
     local cmd
     local bin
@@ -92,14 +92,22 @@ function alias_bg {
   }
 }
 
-alias_bg eog
-alias_bg evince
-alias_bg gimp
-alias_bg gitg
-alias_bg gitk
-alias_bg inkscape
+function run_silent {
+  command -v "${1}" >/dev/null && {
+    local bin="${1}"
+    local args=(${@:2})
+    (${bin} ${args[@]} >/dev/null 2>&1 &!);
+  }
+}
 
-unset -f alias_bg
+make_silent eog
+make_silent evince
+make_silent gimp
+make_silent gitg
+make_silent gitk
+make_silent inkscape
+
+unset -f make_silent
 
 { command -v yt-dlp && ! command -v youtube-dl; } >/dev/null 2>&1 \
   && alias youtube-dl='yt-dlp '

@@ -50,3 +50,4 @@ button-layout='appmenu:minimize,maximize,close'
 
 [org/gnome/desktop/interface]
 clock-format='12h'
+enable-hot-corners=false

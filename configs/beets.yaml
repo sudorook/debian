@@ -9,6 +9,7 @@ fetchart:
   cautious: true
   minwidth: 720
   maxwidth: 1440
+  quality: 85
   enforce_ratio: yes
   sources: filesystem coverart amazon albumart wikipedia google fanarttv
 

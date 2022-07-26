@@ -30,6 +30,7 @@ function install_android {
 
 apps="${dir}/packages/apps.list"
 mpvconfig="${dir}/configs/mpv.conf"
+mpvinputconfig="${dir}/configs/mpv-input.conf"
 libaoconf="/etc/libao.conf"
 function install_apps {
   show_header "Installing desktop applications."
@@ -39,7 +40,8 @@ function install_apps {
 
   show_info "Copying mpv config."
   mkdir -p "${HOME}/.config/mpv"
-  cp -f "${mpvconfig}" "${HOME}/.config/mpv"
+  cp -f "${mpvconfig}" "${HOME}/.config/mpv/mpv.conf"
+  cp -f "${mpvinputconfig}" "${HOME}/.config/mpv/input.conf"
 
   show_info "Updating xdg settings to open HTML files in Firefox."
   xdg-mime default firefox.desktop text/html

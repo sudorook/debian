@@ -258,12 +258,12 @@ function set_gdm_theme {
         "${gtkthemedir}/gnome-shell/gnome-shell-theme.gresource.xml"
     elif [[ "${gtktheme}" =~ ^Arc ]]; then
       if [[ "${gtktheme}" =~ Dark ]]; then
-        [ -f "${gtkthemedir}/arc-dark/gnome-shell/gnome-shell-theme-dark.gresource" ] && \
-          sudo cp -f "${gtkthemedir}/Arc-Dark/gnome-shell/gnome-shell-theme-dark.gresource" \
+        [ -f "${gtkthemedir}/gnome-shell/gnome-shell-theme-dark.gresource" ] && \
+          sudo cp -f "${gtkthemedir}/gnome-shell/gnome-shell-theme-dark.gresource" \
             "/usr/share/gnome-shell/gnome-shell-theme.gresource"
       else
-        [ -f "${gtkthemedir}/arc/gnome-shell/gnome-shell-theme.gresource" ] && \
-          sudo cp -f "${gtkthemedir}/Arc/gnome-shell/gnome-shell-theme.gresource" \
+        [ -f "${gtkthemedir}/gnome-shell/gnome-shell-theme.gresource" ] && \
+          sudo cp -f "${gtkthemedir}/gnome-shell/gnome-shell-theme.gresource" \
             "/usr/share/gnome-shell/gnome-shell-theme.gresource"
       fi
     else

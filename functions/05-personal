@@ -240,7 +240,7 @@ function set_gdm_theme {
       return
     fi
     show_header "Setting GDM login theme to ${gtktheme}."
-    sudo cp -r "/usr/share/gnome-shell" "/usr/share/gnome-shell-$(date +%Y%m%d)"
+    sudo cp -r "/usr/share/gnome-shell" "/usr/share/gnome-shell-$(date +%Y%m%d-%H%M%S)"
     if [[ "${gtktheme}" =~ ^Adapta ]] || [[ "${gtktheme}" =~ ^Plata ]]; then
       sudo cp -rf \
         ${gtkthemedir}/gnome-shell/* \

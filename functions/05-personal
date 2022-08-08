@@ -258,13 +258,15 @@ function set_gdm_theme {
         "${gtkthemedir}/gnome-shell/gnome-shell-theme.gresource.xml"
     elif [[ "${gtktheme}" =~ ^Arc ]]; then
       if [[ "${gtktheme}" =~ Dark ]]; then
-        [ -f "${gtkthemedir}/gnome-shell/gnome-shell-theme-dark.gresource" ] && \
+        if [ -f "${gtkthemedir}/gnome-shell/gnome-shell-theme-dark.gresource" ]; then
           sudo cp -f "${gtkthemedir}/gnome-shell/gnome-shell-theme-dark.gresource" \
             "/usr/share/gnome-shell/gnome-shell-theme.gresource"
+        fi
       else
-        [ -f "${gtkthemedir}/gnome-shell/gnome-shell-theme.gresource" ] && \
+        if [ -f "${gtkthemedir}/gnome-shell/gnome-shell-theme.gresource" ]; then
           sudo cp -f "${gtkthemedir}/gnome-shell/gnome-shell-theme.gresource" \
             "/usr/share/gnome-shell/gnome-shell-theme.gresource"
+        fi
       fi
     else
       show_warning "${gtktheme@Q} is unsupported."

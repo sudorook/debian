@@ -380,53 +380,95 @@ function set_partitions {
   sgdisk_opts="${sgdisk_opts} --new=1:0:+1MiB --typecode=1:ef02"
   part_count=2
 
+  local is_nvme=false
+  if [[ "${DEVICE}" =~ ^nvme ]]; then
+    is_nvme=true
+  fi
+
   if [[ "${MAKE_EFI_PARTITION}" = "yes" ]]; then
     sgdisk_opts="${sgdisk_opts} --new=2:0:+500MiB --typecode=${part_count}:ef00"
-    EFI_PARTITION="/dev/${DEVICE}${part_count}"
+    if "${is_nvme}"; then
+      EFI_PARTITION="/dev/${DEVICE}p${part_count}"
+    else
+      EFI_PARTITION="/dev/${DEVICE}${part_count}"
+    fi
     part_count=$(( part_count + 1 ))
   fi
 
   if is_size_nonzero "${PARTITIONS["share"]}"; then
     sgdisk_opts="${sgdisk_opts} --new=${part_count}:0:+${PARTITIONS["share"]} --typecode=${part_count}:0700" # 8300 for ext4
-    SHARE_PARTITION="/dev/${DEVICE}${part_count}"
+    if "${is_nvme}"; then
+      SHARE_PARTITION="/dev/${DEVICE}p${part_count}"
+    else
+      SHARE_PARTITION="/dev/${DEVICE}${part_count}"
+    fi
     part_count=$(( part_count + 1 ))
   fi
 
   case "${SCHEME}" in
     "LVM on LUKS")
       sgdisk_opts="${sgdisk_opts} --new=${part_count}:0:0 --typecode=${part_count}:8309"
-      ROOT_PARTITION="/dev/${DEVICE}${part_count}"
-      CRYPT_PARTITION="/dev/${DEVICE}${part_count}"
+      if "${is_nvme}"; then
+        ROOT_PARTITION="/dev/${DEVICE}p${part_count}"
+        CRYPT_PARTITION="/dev/${DEVICE}p${part_count}"
+      else
+        ROOT_PARTITION="/dev/${DEVICE}${part_count}"
+        CRYPT_PARTITION="/dev/${DEVICE}${part_count}"
+      fi
       part_count=$(( part_count + 1 ))
       ;;
     "LVM")
       sgdisk_opts="${sgdisk_opts} --new=${part_count}:0:0 --typecode=${part_count}:8e00"
-      ROOT_PARTITION="/dev/${DEVICE}${part_count}"
+      if "${is_nvme}"; then
+        ROOT_PARTITION="/dev/${DEVICE}p${part_count}"
+      else
+        ROOT_PARTITION="/dev/${DEVICE}${part_count}"
+      fi
       part_count=$(( part_count + 1 ))
       ;;
     "Plain")
       if is_size_nonzero "${PARTITIONS["swap"]}"; then
         sgdisk_opts="${sgdisk_opts} --new=${part_count}:0:+${PARTITIONS["swap"]} --typecode=${part_count}:8200"
-        SWAP_PARTITION="/dev/${DEVICE}${part_count}"
+        if "${is_nvme}"; then
+          SWAP_PARTITION="/dev/${DEVICE}p${part_count}"
+        else
+          SWAP_PARTITION="/dev/${DEVICE}${part_count}"
+        fi
         part_count=$(( part_count + 1 ))
       fi
       if is_size_nonzero "${PARTITIONS["root"]}"; then
         if  [[ "${PARTITIONS["root"]}" = "fill" ]]; then
           sgdisk_opts="${sgdisk_opts} --new=${part_count}:0:0 --typecode=${part_count}:8300"
-          ROOT_PARTITION="/dev/${DEVICE}${part_count}"
+          if "${is_nvme}"; then
+            ROOT_PARTITION="/dev/${DEVICE}p${part_count}"
+          else
+            ROOT_PARTITION="/dev/${DEVICE}${part_count}"
+          fi
           part_count=$(( part_count + 1 ))
         else
           sgdisk_opts="${sgdisk_opts} --new=${part_count}:0:+${PARTITIONS["root"]} --typecode=${part_count}:8300"
-          ROOT_PARTITION="/dev/${DEVICE}${part_count}"
+          if "${is_nvme}"; then
+            ROOT_PARTITION="/dev/${DEVICE}p${part_count}"
+          else
+            ROOT_PARTITION="/dev/${DEVICE}${part_count}"
+          fi
           part_count=$(( part_count + 1 ))
           if is_size_nonzero "${PARTITIONS["home"]}"; then
             if  [[ "${PARTITIONS["home"]}" = "fill" ]]; then
               sgdisk_opts="${sgdisk_opts} --new=${part_count}:0:0 --typecode=${part_count}:8300"
-              HOME_PARTITION="/dev/${DEVICE}${part_count}"
+              if "${is_nvme}"; then
+                HOME_PARTITION="/dev/${DEVICE}p${part_count}"
+              else
+                HOME_PARTITION="/dev/${DEVICE}${part_count}"
+              fi
               part_count=$(( part_count + 1 ))
             else
               sgdisk_opts="${sgdisk_opts} --new=${part_count}:0:+${PARTITIONS["home"]} --typecode=${part_count}:8300"
-              HOME_PARTITION="/dev/${DEVICE}${part_count}"
+              if "${is_nvme}"; then
+                HOME_PARTITION="/dev/${DEVICE}p${part_count}"
+              else
+                HOME_PARTITION="/dev/${DEVICE}${part_count}"
+              fi
               part_count=$(( part_count + 1 ))
             fi
           fi

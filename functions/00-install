@@ -380,14 +380,14 @@ function set_partitions {
   sgdisk_opts="${sgdisk_opts} --new=1:0:+1MiB --typecode=1:ef02"
   part_count=2
 
-  local is_nvme=false
-  if [[ "${DEVICE}" =~ ^nvme ]]; then
-    is_nvme=true
+  local add_p=false
+  if [[ "${DEVICE}" =~ [[:digit:]]$ ]]; then
+    add_p=true
   fi
 
   if [[ "${MAKE_EFI_PARTITION}" = "yes" ]]; then
     sgdisk_opts="${sgdisk_opts} --new=2:0:+500MiB --typecode=${part_count}:ef00"
-    if "${is_nvme}"; then
+    if "${add_p}"; then
       EFI_PARTITION="/dev/${DEVICE}p${part_count}"
     else
       EFI_PARTITION="/dev/${DEVICE}${part_count}"
@@ -397,7 +397,7 @@ function set_partitions {
 
   if is_size_nonzero "${PARTITIONS["share"]}"; then
     sgdisk_opts="${sgdisk_opts} --new=${part_count}:0:+${PARTITIONS["share"]} --typecode=${part_count}:0700" # 8300 for ext4
-    if "${is_nvme}"; then
+    if "${add_p}"; then
       SHARE_PARTITION="/dev/${DEVICE}p${part_count}"
     else
       SHARE_PARTITION="/dev/${DEVICE}${part_count}"
@@ -408,7 +408,7 @@ function set_partitions {
   case "${SCHEME}" in
     "LVM on LUKS")
       sgdisk_opts="${sgdisk_opts} --new=${part_count}:0:0 --typecode=${part_count}:8309"
-      if "${is_nvme}"; then
+      if "${add_p}"; then
         ROOT_PARTITION="/dev/${DEVICE}p${part_count}"
         CRYPT_PARTITION="/dev/${DEVICE}p${part_count}"
       else
@@ -419,7 +419,7 @@ function set_partitions {
       ;;
     "LVM")
       sgdisk_opts="${sgdisk_opts} --new=${part_count}:0:0 --typecode=${part_count}:8e00"
-      if "${is_nvme}"; then
+      if "${add_p}"; then
         ROOT_PARTITION="/dev/${DEVICE}p${part_count}"
       else
         ROOT_PARTITION="/dev/${DEVICE}${part_count}"
@@ -429,7 +429,7 @@ function set_partitions {
     "Plain")
       if is_size_nonzero "${PARTITIONS["swap"]}"; then
         sgdisk_opts="${sgdisk_opts} --new=${part_count}:0:+${PARTITIONS["swap"]} --typecode=${part_count}:8200"
-        if "${is_nvme}"; then
+        if "${add_p}"; then
           SWAP_PARTITION="/dev/${DEVICE}p${part_count}"
         else
           SWAP_PARTITION="/dev/${DEVICE}${part_count}"
@@ -439,7 +439,7 @@ function set_partitions {
       if is_size_nonzero "${PARTITIONS["root"]}"; then
         if  [[ "${PARTITIONS["root"]}" = "fill" ]]; then
           sgdisk_opts="${sgdisk_opts} --new=${part_count}:0:0 --typecode=${part_count}:8300"
-          if "${is_nvme}"; then
+          if "${add_p}"; then
             ROOT_PARTITION="/dev/${DEVICE}p${part_count}"
           else
             ROOT_PARTITION="/dev/${DEVICE}${part_count}"
@@ -447,7 +447,7 @@ function set_partitions {
           part_count=$(( part_count + 1 ))
         else
           sgdisk_opts="${sgdisk_opts} --new=${part_count}:0:+${PARTITIONS["root"]} --typecode=${part_count}:8300"
-          if "${is_nvme}"; then
+          if "${add_p}"; then
             ROOT_PARTITION="/dev/${DEVICE}p${part_count}"
           else
             ROOT_PARTITION="/dev/${DEVICE}${part_count}"
@@ -456,7 +456,7 @@ function set_partitions {
           if is_size_nonzero "${PARTITIONS["home"]}"; then
             if  [[ "${PARTITIONS["home"]}" = "fill" ]]; then
               sgdisk_opts="${sgdisk_opts} --new=${part_count}:0:0 --typecode=${part_count}:8300"
-              if "${is_nvme}"; then
+              if "${add_p}"; then
                 HOME_PARTITION="/dev/${DEVICE}p${part_count}"
               else
                 HOME_PARTITION="/dev/${DEVICE}${part_count}"
@@ -464,7 +464,7 @@ function set_partitions {
               part_count=$(( part_count + 1 ))
             else
               sgdisk_opts="${sgdisk_opts} --new=${part_count}:0:+${PARTITIONS["home"]} --typecode=${part_count}:8300"
-              if "${is_nvme}"; then
+              if "${add_p}"; then
                 HOME_PARTITION="/dev/${DEVICE}p${part_count}"
               else
                 HOME_PARTITION="/dev/${DEVICE}${part_count}"

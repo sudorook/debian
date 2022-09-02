@@ -6,7 +6,7 @@ dos2unix
 dosfstools
 encfs
 ethtool
-exfat-utils
+exfatprogs
 gddrescue
 gdisk
 gnupg

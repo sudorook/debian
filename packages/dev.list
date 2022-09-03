@@ -59,6 +59,7 @@ libopenblas-dev
 libsparsehash-dev
 libsuperlu-dev
 libxml2-dev
+meson
 mkvtoolnix
 nodejs
 npm

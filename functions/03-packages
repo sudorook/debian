@@ -43,8 +43,18 @@ function install_apps {
   cp -f "${mpvconfig}" "${HOME}/.config/mpv/mpv.conf"
   cp -f "${mpvinputconfig}" "${HOME}/.config/mpv/input.conf"
 
-  show_info "Updating xdg settings to open HTML files in Firefox."
+  show_info "Setting application MIME associations."
   xdg-mime default firefox.desktop text/html
+  xdg-mime default org.gnome.Evince.desktop application/pdf
+  xdg-mime default org.gnome.eog.desktop image/bmp
+  xdg-mime default org.gnome.eog.desktop image/gif
+  xdg-mime default org.gnome.eog.desktop image/jpg
+  xdg-mime default org.gnome.eog.desktop image/jpeg
+  xdg-mime default org.gnome.eog.desktop image/png
+  xdg-mime default org.gnome.eog.desktop image/svg+xml
+  xdg-mime default org.gnome.eog.desktop image/tiff
+  xdg-mime default transmission-gtk.desktop application/x-bittorrent
+  xdg-mime default transmission-gtk.desktop x-scheme-handler/magnet
 
   # Should always pass because gufw is in the app list.
   if command -v ufw >/dev/null; then
@@ -342,6 +352,9 @@ function install_vim {
   git config --global diff.tool vimdiff
   git config --global merge.tool vimdiff
   git config --global --add difftool.prompt false
+
+  show_info "Setting some Vim MIME associations."
+  xdg-mime default vim.desktop text/plain
 
   show_info "Install local wordlist."
   mkdir -p "${HOME}/.vim/spell"

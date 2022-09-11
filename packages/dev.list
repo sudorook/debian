@@ -36,6 +36,7 @@ hugo
 intltool
 ipython3
 jekyll
+jq
 julia
 jupyter-client
 jupyter-core

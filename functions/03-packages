@@ -32,6 +32,7 @@ apps="${dir}/packages/apps.list"
 mpvconfig="${dir}/configs/mpv.conf"
 mpvinputconfig="${dir}/configs/mpv-input.conf"
 libaoconf="/etc/libao.conf"
+keepassxcini="${dir}/configs/keepassxc.ini"
 function install_apps {
   show_header "Installing desktop applications."
   check_installed "${apps}"
@@ -55,6 +56,10 @@ function install_apps {
   xdg-mime default org.gnome.eog.desktop image/tiff
   xdg-mime default transmission-gtk.desktop application/x-bittorrent
   xdg-mime default transmission-gtk.desktop x-scheme-handler/magnet
+
+  show_info "Copying keepassxc config."
+  mkdir -p "${HOME}/.config/keepassxc"
+  cp -f "${keepassxcini}" "${HOME}/.config/keepassxc/"
 
   # Should always pass because gufw is in the app list.
   if command -v ufw >/dev/null; then

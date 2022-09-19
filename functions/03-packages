@@ -112,7 +112,7 @@ function install_dev {
 
   if ! [[ -e "${vimpack}/Nvim-R" ]]; then
     show_info "Installing Nvim-R."
-    git clone https://github.com/jalvesaq/Nvim-R "${vimpack}/Nvim-R"
+    git clone https://github.com/jalvesaq/Nvim-R.git "${vimpack}/Nvim-R"
   fi
 }
 

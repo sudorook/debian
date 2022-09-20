@@ -100,6 +100,14 @@ function install_dev {
   show_info "Installing Rprofile."
   cp -f "${rprofile}" "${HOME}/.Rprofile"
 
+  show_info "Setting up local lib dirs."
+  mkdir -p "${HOME}/.local/lib"
+  if [ -d "${HOME}/.local/lib64" ]; then
+    mv "${HOME}/.local/lib64/*" "${HOME}/.local/lib/"
+    rmdir "${HOME}/.local/lib64"
+  fi
+  ln -s "${HOME}/.local/lib" "${HOME}/.local/lib64"
+
   show_info "Installing R packages."
   check_installed "${r}"
 

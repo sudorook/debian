@@ -77,7 +77,7 @@ export PATH="${PATH}:${HOME}/.scripts"
 export PATH="${HOME}/.local/bin:${PATH}"
 
 # local libraries
-export LD_LIBRARY_PATH="${HOME}/.local/lib:/usr/local/lib:${LD_LIBRARY_PATH}"
+export LD_LIBRARY_PATH="${HOME}/.local/lib64:${HOME}/.local/lib32:${HOME}/.local/lib:/usr/local/lib64:/usr/local/lib32:/usr/local/lib:${LD_LIBRARY_PATH}"
 
 
 #

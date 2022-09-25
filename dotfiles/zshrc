@@ -49,6 +49,7 @@ command -v R >/dev/null 2>&1 && {
   fi
 }
 
+# zsh
 if [ -d ${HOME}/.local/share/zsh/site-functions ]; then
   fpath=(${HOME}/.local/share/zsh/site-functions "${fpath[@]}")
 fi

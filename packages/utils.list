@@ -13,7 +13,6 @@ gnupg
 hfsprogs
 libbcprov-java
 libcommons-lang3-java
-libnotify-bin
 lm-sensors
 mtools
 net-tools

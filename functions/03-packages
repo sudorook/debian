@@ -130,11 +130,17 @@ function install_dev {
 }
 
 extra="${dir}/packages/extra.list"
+ytdlconf="${dir}/configs/ytdl.conf"
 function install_extra {
   show_header "Installing extra desktop applications."
   check_installed "${extra}"
   check_fail
   show_success "Extra applications installed."
+
+  show_info "Installing yt-dlp/youtube-dl config."
+  mkdir -p "${HOME}/.config/yt-dlp"
+  ln -s "${HOME}/.config/yt-dlp" "${HOME}/.config/youtube-dl"
+  cp -f "${ytdlconf}" "${HOME}/.config/yt-dlp/config"
 }
 
 printer="${dir}/packages/printer.list"

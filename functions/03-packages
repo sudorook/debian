@@ -57,6 +57,13 @@ function install_apps {
   xdg-mime default transmission-gtk.desktop application/x-bittorrent
   xdg-mime default transmission-gtk.desktop x-scheme-handler/magnet
 
+  if [[ ${XDG_SESSION_TYPE,,} =~ wayland ]]; then
+    show_info "Setting environment variables for Firefox to use Wayland and VA-API."
+    mkdir -p "${HOME}/.config/environment.d"
+    echo MOZ_ENABLE_WAYLAND=1 > "${HOME}/.config/environment.d/envvars.conf"
+    echo MOZ_WAYLAND_USE_VAAPI=1 > "${HOME}/.config/environment.d/envvars.conf"
+  fi
+
   show_info "Copying keepassxc config."
   mkdir -p "${HOME}/.config/keepassxc"
   cp -f "${keepassxcini}" "${HOME}/.config/keepassxc/"

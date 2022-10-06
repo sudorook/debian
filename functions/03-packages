@@ -60,8 +60,10 @@ function install_apps {
   if [[ ${XDG_SESSION_TYPE,,} =~ wayland ]]; then
     show_info "Setting environment variables for Firefox to use Wayland and VA-API."
     mkdir -p "${HOME}/.config/environment.d"
-    echo MOZ_ENABLE_WAYLAND=1 > "${HOME}/.config/environment.d/envvars.conf"
-    echo MOZ_WAYLAND_USE_VAAPI=1 > "${HOME}/.config/environment.d/envvars.conf"
+    set_config_key_value \
+      "${HOME}/.config/environment.d/envvars.conf" "MOZ_ENABLE_WAYLAND" "1"
+    set_config_key_value \
+      "${HOME}/.config/environment.d/envvars.conf" "MOZ_WAYLAND_USE_VAAPI" "1"
   fi
 
   show_info "Copying keepassxc config."

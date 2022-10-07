@@ -4,7 +4,6 @@ cpio
 dmidecode
 dos2unix
 dosfstools
-encfs
 ethtool
 exfatprogs
 gddrescue

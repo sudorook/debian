@@ -47,6 +47,7 @@ switch-windows-backward=['<Shift><Alt>Tab']
 [org/gnome/desktop/wm/preferences]
 audible-bell=false
 button-layout='appmenu:minimize,maximize,close'
+num-workspaces=4
 
 [org/gnome/desktop/interface]
 clock-format='12h'

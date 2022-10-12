@@ -1,6 +1,7 @@
 bc
 cryptsetup
 debootstrap
+dosfstools
 fzf
 gdisk
 lvm2

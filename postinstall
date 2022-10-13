@@ -224,8 +224,8 @@ function main {
 # Check if dependencies are installed and if network is working
 #
 
-install_sudo
 check_user
+install_sudo
 check_network
 check_debian_release
 install_post_dependencies

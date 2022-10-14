@@ -112,10 +112,14 @@ function install_dev {
   show_info "Setting up local lib dirs."
   mkdir -p "${HOME}/.local/lib"
   if [ -d "${HOME}/.local/lib64" ]; then
-    mv "${HOME}/.local/lib64/*" "${HOME}/.local/lib/"
-    rmdir "${HOME}/.local/lib64"
+    if  ! [ -h "${HOME}/.local/lib64" ]; then
+      mv "${HOME}/.local/lib64/"* "${HOME}/.local/lib/"
+      rmdir "${HOME}/.local/lib64"
+    fi
+  elif [ -d "${HOME}/.local/lib64" ]; then
+    mv "${HOME}/.local/lib64" "${HOME}/.local/lib64.bak"
   fi
-  ln -s "${HOME}/.local/lib" "${HOME}/.local/lib64"
+  ln -sf "${HOME}/.local/lib" "${HOME}/.local/lib64"
 
   show_info "Installing R packages."
   check_installed "${r}"

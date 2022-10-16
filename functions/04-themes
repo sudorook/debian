@@ -268,6 +268,9 @@ function set_qtcompat {
   cp -f "${qt5ctconf}" "${HOME}/.config/qt5ct"
   cp -f "${qt6ctconf}" "${HOME}/.config/qt6ct"
   export QT_QPA_PLATFORMTHEME=qt5ct
+  # Note: QT_QPA_PLATFORMTHEME is added to the environment by
+  # '/etc/X11/Xsession.d/99qt5ct', which was installed as part of qt5ct
+  # (Debian-specific).
 }
 
 function 04-themes {

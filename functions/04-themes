@@ -264,13 +264,27 @@ qt5ctconf="${dir}/configs/qt5ct.conf"
 qt6ctconf="${dir}/configs/qt5ct.conf"  # re-use qt5ct config for qt6ct
 function set_qtcompat {
   show_info "Copying qt5ct config."
-  mkdir -p "${HOME}/.config/qt5ct" "${HOME}/.config/qt6ct"
+  mkdir -p "${HOME}/.config/qt5ct"
   cp -f "${qt5ctconf}" "${HOME}/.config/qt5ct"
-  cp -f "${qt6ctconf}" "${HOME}/.config/qt6ct"
   export QT_QPA_PLATFORMTHEME=qt5ct
   # Note: QT_QPA_PLATFORMTHEME is added to the environment by
   # '/etc/X11/Xsession.d/99qt5ct', which was installed as part of qt5ct
   # (Debian-specific).
+
+  if command -v qmake6 >/dev/null; then
+    show_info "Installing qt6gtk2 for Qt6-GTK theme comsistency."
+    git clone https://github.com/trialuser02/qt6gtk2.git
+    pushd qt6gtk2 >/dev/null
+    qmake6
+    make -j"$(nproc)"
+    sudo make install
+    popd >/dev/null
+    rm -rf qt6gtk2
+  fi
+
+  show_info "Copying qt6ct config."
+  mkdir -p "${HOME}/.config/qt6ct"
+  cp -f "${qt6ctconf}" "${HOME}/.config/qt6ct"
 }
 
 function 04-themes {

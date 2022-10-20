@@ -67,7 +67,7 @@ function install_arc_gtk {
   meson_options="${meson_options%,}"
   rm -rf arc-theme
   git clone -b tweak --depth 1 \
-    https://github.com/sudorook/arc-theme arc-theme
+    https://github.com/sudorook/arc-theme.git arc-theme
   cd arc-theme || exit
   meson setup --prefix=/usr/local \
     -Dtransparency=true \
@@ -104,7 +104,7 @@ function install_adapta_gtk {
   fi
   rm -rf adapta-gtk-theme
   git clone -b tweak --depth 1 \
-    https://github.com/sudorook/adapta-gtk-theme adapta-gtk-theme
+    https://github.com/sudorook/adapta-gtk-theme.git adapta-gtk-theme
   cd adapta-gtk-theme || exit
   ./autogen.sh \
     --prefix=/usr/local \
@@ -150,7 +150,7 @@ function install_plata_gtk {
   fi
   rm -rf plata-theme
   git clone -b tweak --depth 1 \
-    https://gitlab.com/sudorook/plata-theme plata-theme
+    https://gitlab.com/sudorook/plata-theme.git plata-theme
   cd plata-theme || exit
   ./autogen.sh --prefix=/usr/local \
     --with-selection_color=#4877B1 \
@@ -181,7 +181,7 @@ function install_materia_gtk {
   show_header "Downloading, building, and installing the Materia GTK theme."
   rm -rf materia-theme
   git clone -b tweak --depth 1 \
-    https://github.com/sudorook/materia-theme materia-theme
+    https://github.com/sudorook/materia-theme.git materia-theme
   cd materia-theme || exit
   mkdir -p _build
   meson _build -Dprefix=/usr/local
@@ -202,7 +202,7 @@ function install_fonts {
 
 function install_papirus_icons {
   show_header "Downloading and installing the Papirus icon theme."
-  git clone -b tweak --depth 1 https://github.com/sudorook/papirus-icon-theme \
+  git clone -b tweak --depth 1 https://github.com/sudorook/papirus-icon-theme.git \
     papirus-icon-theme
   cd papirus-icon-theme || exit
 
@@ -213,7 +213,7 @@ function install_papirus_icons {
 
 function install_vim_theme {
   show_header "Installing Vim theme."
-  git clone --depth 1 https://github.com/sudorook/colorific.vim colorific.vim
+  git clone --depth 1 https://github.com/sudorook/colorific.vim.git colorific.vim
   cd colorific.vim || exit
   ./install
   cd ..
@@ -239,7 +239,7 @@ function install_thunderbird_theme {
   fi
 
   git clone \
-    https://github.com/spymastermatt/thunderbird-monterail \
+    https://github.com/spymastermatt/thunderbird-monterail.git \
     "${thunderbird}/chrome"
 
   local userchrome=${thunderbird}/chrome/userChrome.css
@@ -249,7 +249,7 @@ function install_thunderbird_theme {
 
 function install_timed_backgrounds {
   show_header "Installing timed backgrounds."
-  git clone --depth 1 https://github.com/sudorook/timed-backgrounds \
+  git clone --depth 1 https://github.com/sudorook/timed-backgrounds.git \
     timed-backgrounds
   cd timed-backgrounds || exit
   ./autogen.sh

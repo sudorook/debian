@@ -470,7 +470,7 @@ function install_scripts {
   if [ -d "${HOME}/.scripts" ]; then
     git -C "${HOME}/.scripts" pull
   else
-    git clone https://github.com/sudorook/misc-scripts "${scriptdir}"
+    git clone https://github.com/sudorook/misc-scripts.git "${scriptdir}"
   fi
   show_success "Installed."
 

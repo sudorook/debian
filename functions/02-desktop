@@ -36,7 +36,7 @@ function install_gnome {
   extensiondir=${HOME}/.local/share/gnome-shell/extensions
   mkdir -p "${extensiondir}"
   show_info "Downloading 'Desktop Icons' GNOME extension."
-  git clone https://gitlab.com/rastersoft/desktop-icons-ng \
+  git clone https://gitlab.com/rastersoft/desktop-icons-ng.git \
     "${HOME}/.local/share/gnome-shell/extensions/ding@rastersoft.com"
 
   show_info "Done."

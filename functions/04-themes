@@ -241,6 +241,8 @@ function install_thunderbird_theme {
   git clone \
     https://github.com/spymastermatt/thunderbird-monterail.git \
     "${thunderbird}/chrome"
+  show_info "Enable legacy stylesheets in Thunderbird config editor:"
+  show_info "  toolkit.legacyUserProfileCustomizations.stylesheets = true"
 
   local userchrome=${thunderbird}/chrome/userChrome.css
   sed -i 's|^\(\s*\)/\*--default-font: var(--light-sans-font); .*$|\1--default-font: var(--system-font);|g' "${userchrome}"

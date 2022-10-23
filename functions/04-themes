@@ -275,7 +275,7 @@ function set_qtcompat {
 
   if command -v qmake6 >/dev/null; then
     show_info "Installing qt6gtk2 for Qt6-GTK theme comsistency."
-    git clone https://github.com/trialuser02/qt6gtk2.git
+    git clone --depth 1 https://github.com/trialuser02/qt6gtk2.git
     pushd qt6gtk2 >/dev/null
     qmake6
     make -j"$(nproc)"

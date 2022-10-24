@@ -471,6 +471,7 @@ function install_scripts {
     git -C "${HOME}/.scripts" pull
   else
     git clone https://github.com/sudorook/misc-scripts.git "${scriptdir}"
+    show_info "Be sure to populate ${scriptdir}/globals."
   fi
   show_success "Installed."
 

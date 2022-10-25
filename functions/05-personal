@@ -196,6 +196,9 @@ function set_gtk_theme {
     gnome-extensions enable "user-theme@gnome-shell-extensions.gcampax.github.com" || true
     gsettings set org.gnome.shell.extensions.user-theme name "'${gtktheme}'"
   fi
+  set_config_key_value "${HOME}/.xprofile" "export GTK_THEME" "${gtktheme}"
+  set_config_key_value \
+    "${HOME}/.config/environment.d/envvars.conf" "GTK_THEME" "${gtktheme}"
 }
 
 lightdmgtkconf="/etc/lightdm/lightdm-gtk-greeter.conf"

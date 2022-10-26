@@ -233,18 +233,19 @@ function install_thunderbird_theme {
   fi
 
   show_header "Installing Monterail theme for Thunderbird."
-  if [ -d "${thunderbird}/chrome" ]; then
+  if [ -d "${HOME}/.thunderbird/${thunderbird}/chrome" ]; then
     show_info "${thunderbird}/chrome already exists. Backing up and replacing."
-    mv "${thunderbird}/chrome" "${thunderbird}/chrome.${RANDOM}.bak"
+    mv "${HOME}/.thunderbird/${thunderbird}/chrome" \
+      "${HOME}/.thunderbird/${thunderbird}/chrome.$(date +%Y%m%d-%H%M%S).bak"
   fi
 
   git clone \
     https://github.com/spymastermatt/thunderbird-monterail.git \
-    "${thunderbird}/chrome"
+    "${HOME}/.thunderbird/${thunderbird}/chrome"
   show_info "Enable legacy stylesheets in Thunderbird config editor:"
   show_info "  toolkit.legacyUserProfileCustomizations.stylesheets = true"
 
-  local userchrome=${thunderbird}/chrome/userChrome.css
+  local userchrome=${HOME}/.thunderbird/${thunderbird}/chrome/userChrome.css
   sed -i 's|^\(\s*\)/\*--default-font: var(--light-sans-font); .*$|\1--default-font: var(--system-font);|g' "${userchrome}"
   show_success "Done."
 }

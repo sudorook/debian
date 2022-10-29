@@ -193,11 +193,19 @@ function install_materia_gtk {
 }
 
 fonts="${dir}/packages/fonts.list"
+localfontdir="${HOME}/.fonts"
 function install_fonts {
   show_header "Installing fonts."
   check_installed "${fonts}"
   check_fail
   show_success "Fonts installed."
+
+  show_info "Downloading Nerd-patched Ubuntu Mono font."
+  mkdir -p "${localfontdir}"
+  wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2/UbuntuMono.zip
+  unzip UbuntuMono.zip
+  mv UbuntuMono/*.ttf "${localfontdir}/"
+  rm -r UbuntuMono
 }
 
 function install_papirus_icons {

@@ -30,7 +30,7 @@ for file in "${PKGDIR}"/*; do
   basename "${file}"
 
   while read -r package; do
-    if apt-cache search --names-only ^"${package//+/\\\+}"$ >/dev/null; then
+    if apt-cache search --names-only ^"${package//+/\\\+}"$ | grep -q "${package//+/\\\+}"; then
       echo -e "\033[1;35m✓\033[0m" "${package}"
     else
       MISSING=true

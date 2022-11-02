@@ -110,7 +110,7 @@ function check_installed {
 
 function check_uninstalled {
   local package
-  for package in "${@}"; do
+  while read -r package; do
     if dpkg -s "${package}" >/dev/null 2>&1; then
       show_listitem "Purging ${package}."
       sudo apt-get -y purge "${package}"
@@ -118,7 +118,7 @@ function check_uninstalled {
     else
       show_warning "Package ${package} is not installed. Skipping."
     fi
-  done
+  done < "${1}"
 }
 
 function sync_repos {

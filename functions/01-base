@@ -210,7 +210,7 @@ function purge_packages {
   show_header "Purging unwanted packaged often installed by default."
   check_uninstalled "${purge}"
   check_fail
-  show_success "Base packages installed."
+  show_success "Unwanted packages purged."
 }
 
 function update_packages {

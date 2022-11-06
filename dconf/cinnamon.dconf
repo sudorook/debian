@@ -35,6 +35,7 @@ horizontal-scrolling=true
 locate-pointer=true
 
 [org/cinnamon/muffin]
+attach-modal-dialogs=true
 placement-mode='automatic'
 workspace-cycle=true
 
@@ -50,6 +51,7 @@ autorun-never=true
 fade-on-mouseover=false
 
 [org/cinnamon/desktop/interface]
+gtk-overlay-scrollbars=true
 clock-use-24h=false
 
 [org/cinnamon/desktop/privacy]
@@ -70,6 +72,9 @@ unplug-enabled=true
 [org/cinnamon/desktop/sound]
 volume-sound-file='/usr/share/sounds/freedesktop/stereo/audio-volume-change.oga'
 volume-sound-enabled=true
+
+[org/cinnamon/desktop/wm/preferences]
+button-layout=':minimize,maximize,close'
 
 [org/gnome/desktop/wm/preferences]
 audible-bell=false

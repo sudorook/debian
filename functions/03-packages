@@ -256,6 +256,10 @@ function install_music {
   show_info "Copying beets config."
   mkdir -p "${beetsdir}"
   cp -f "${beetsconf}" "${beetsdir}/config.yaml"
+  if ! [ -f /usr/share/bash-completion/completions/beet ]; then
+    mkdir -p "${HOME}/.local/share/bash-completion/completions"
+    beet completion > "${HOME}/.local/share/bash-completion/completions/beet"
+  fi
 
   show_info "Copying mpd config and enabling systemd user service."
   mkdir -p "${mpddir}"

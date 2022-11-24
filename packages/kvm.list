@@ -6,6 +6,5 @@ libvirt-daemon
 netcat-openbsd
 nftables
 ovmf
-qemu
-qemu-kvm
+qemu-system
 virt-manager

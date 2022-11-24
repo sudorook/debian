@@ -6,8 +6,6 @@ texlive-extra-utils
 texlive-fonts-extra
 texlive-font-utils
 texlive-formats-extra
-texlive-generic-extra
-texlive-generic-recommended
 texlive-latex-extra
 texlive-luatex
 texlive-publishers

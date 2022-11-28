@@ -26,17 +26,17 @@ set -eu
 PKGDIR=../packages
 MISSING=false
 
-for file in "${PKGDIR}"/*; do
-  basename "${file}"
+for FILE in "${PKGDIR}"/*; do
+  basename "${FILE}"
 
-  while read -r package; do
-    if apt-cache search --names-only ^"${package//+/\\\+}"$ | grep -q "${package}"; then
-      echo -e "\033[1;35m✓\033[0m" "${package}"
+  while read -r PACKAGE; do
+    if apt-cache search --names-only ^"${PACKAGE//+/\\\+}"$ | grep -q "${PACKAGE}"; then
+      echo -e "\033[1;35m✓\033[0m" "${PACKAGE}"
     else
       MISSING=true
-      echo -e "\033[1;31m✗ ${package}\033[m"
+      echo -e "\033[1;31m✗ ${PACKAGE}\033[m"
     fi
-  done < "${file}"
+  done < "${FILE}"
 
   echo
 done

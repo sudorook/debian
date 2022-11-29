@@ -38,11 +38,7 @@ ipython3
 jekyll
 jq
 julia
-jupyter-client
-jupyter-core
-jupyter-nbconvert
-jupyter-nbformat
-jupyter-notebook
+jupyter
 libarmadillo-dev
 libarpack++2-dev
 libarpack2-dev

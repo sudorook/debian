@@ -396,8 +396,11 @@ function install_vim {
 
   show_info "Install local wordlist."
   mkdir -p "${HOME}/.vim/spell"
-  git clone --depth 1 https://github.com/sudorook/wordlist.vim.git wordlist.vim
-  pushd wordlist.vim >/dev/null
+  local tmdir
+  tmpdir="$(mktemp -d)"
+  git clone --depth 1 \
+    https://github.com/sudorook/wordlist.vim.git "${tmpdir}"
+  pushd "${tmpdir}" >/dev/null
   ./build
   if [ -f "${HOME}/.vim/spell/en.utf-8.add" ]; then
     show_info "Wordlist already exists in ${HOME}/.vim/spell/. Appending."
@@ -406,7 +409,7 @@ function install_vim {
     ./install
   fi
   popd >/dev/null
-  rm -rf wordlist.vim
+  rm -rf "${tmpdir}"
   show_success "Wordlist installed in ${HOME}/.vim/spell."
   show_info "To use the wordlist, add the following to you vimrc:"
   show_info "  set spelllang=en"

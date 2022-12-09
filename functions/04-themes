@@ -38,6 +38,7 @@ function install_arc_gtk {
   show_header "Downloading, building, and installing the Arc GTK theme."
   local meson_options=""
   local meson_gresource="false"
+  local tmpdir
   if dpkg -s gnome-shell >/dev/null 2>&1; then
     meson_options="${meson_options}gnome-shell,"
     meson_gresource="true"
@@ -65,10 +66,10 @@ function install_arc_gtk {
     meson_options="${meson_options}xfwm,"
   fi
   meson_options="${meson_options%,}"
-  rm -rf arc-theme
+  tmpdir="$(mktemp -d)"
   git clone -b tweak --depth 1 \
-    https://github.com/sudorook/arc-theme.git arc-theme
-  cd arc-theme || exit
+    https://github.com/sudorook/arc-theme.git "${tmpdir}"
+  pushd "${tmpdir}" >/dev/null
   meson setup --prefix=/usr/local \
     -Dtransparency=true \
     -Dgnome_shell_gresource="${meson_gresource}" \
@@ -76,14 +77,15 @@ function install_arc_gtk {
     _build/
   meson compile -C _build/
   sudo meson install -C _build/
-  cd ..
-  rm -rf arc-theme
+  popd >/dev/null
+  rm -rf "${tmpdir}"
   show_success "Arc theme installed."
 }
 
 function install_adapta_gtk {
   show_header "Downloading, building, and installing the Adapta GTK theme."
   local autotools_options=
+  local tmpdir
   if ! dpkg -s gnome-shell > /dev/null 2>&1; then
     autotools_options="${autotools_options} --disable-gnome "
   fi
@@ -102,10 +104,10 @@ function install_adapta_gtk {
   if ! dpkg -s xfce4-session > /dev/null 2>&1; then
     autotools_options="${autotools_options} --disable-xfce "
   fi
-  rm -rf adapta-gtk-theme
+  tmpdir="$(mktemp -d)"
   git clone -b tweak --depth 1 \
-    https://github.com/sudorook/adapta-gtk-theme.git adapta-gtk-theme
-  cd adapta-gtk-theme || exit
+    https://github.com/sudorook/adapta-gtk-theme.git "${tmpdir}"
+  pushd "${tmpdir}" >/dev/null
   ./autogen.sh \
     --prefix=/usr/local \
     --with-selection_color=#00A2B4 \
@@ -122,14 +124,15 @@ function install_adapta_gtk {
   if [ -d /usr/share/gtksourceview-3.0/styles/ ]; then
     sudo cp -f extra/gedit/adapta.xml /usr/share/gtksourceview-3.0/styles/
   fi
-  cd ..
-  rm -rf adapta-gtk-theme
+  popd >/dev/null
+  rm -rf "${tmpdir}"
   show_success "Adapta theme installed."
 }
 
 function install_plata_gtk {
   show_header "Downloading, building, and installing the Plata GTK theme."
   local autotools_options=
+  local tmpdir
   if ! dpkg -s gnome-shell > /dev/null 2>&1; then
     autotools_options="${autotools_options} --disable-gnome "
   fi
@@ -148,10 +151,10 @@ function install_plata_gtk {
   if ! dpkg -s xfce4-session > /dev/null 2>&1; then
     autotools_options="${autotools_options} --disable-xfce "
   fi
-  rm -rf plata-theme
+  tmpdir="$(mktemp -d)"
   git clone -b tweak --depth 1 \
-    https://gitlab.com/sudorook/plata-theme.git plata-theme
-  cd plata-theme || exit
+    https://gitlab.com/sudorook/plata-theme.git "${tmpdir}"
+  pushd "${tmpdir}" >/dev/null
   ./autogen.sh --prefix=/usr/local \
     --with-selection_color=#4877B1 \
     --with-accent_color=#4877B1 \
@@ -172,23 +175,24 @@ function install_plata_gtk {
       src/extra/gtksourceview/plata-dark.xml \
       /usr/share/gtksourceview-3.0/styles/
   fi
-  cd ..
-  rm -rf plata-theme
+  popd >/dev/null
+  rm -rf "${tmpdir}"
   show_success "Plata theme installed."
 }
 
 function install_materia_gtk {
+  local tmpdir
   show_header "Downloading, building, and installing the Materia GTK theme."
-  rm -rf materia-theme
+  tmpdir="$(mktemp -d)"
   git clone -b tweak --depth 1 \
-    https://github.com/sudorook/materia-theme.git materia-theme
-  cd materia-theme || exit
+    https://github.com/sudorook/materia-theme.git "${tmpdir}"
+  pushd "${tmpdir}" >/dev/null
   mkdir -p _build
   meson _build -Dprefix=/usr/local
   meson compile -C _build
   sudo meson install -C _build
-  cd ..
-  rm -rf materia-theme
+  popd >/dev/null
+  rm -rf "${tmpdir}"
   show_success "Materia theme installed."
 }
 
@@ -210,22 +214,25 @@ function install_fonts {
 
 function install_papirus_icons {
   show_header "Downloading and installing the Papirus icon theme."
-  git clone -b tweak --depth 1 https://github.com/sudorook/papirus-icon-theme.git \
-    papirus-icon-theme
-  cd papirus-icon-theme || exit
-
+  local tmpdir
+  tmpdir="$(mktemp -d)"
+  git clone -b tweak --depth 1 \
+    https://github.com/sudorook/papirus-icon-theme.git "${tmpdir}"
+  pushd "${tmpdir}" >/dev/null
   sudo make PREFIX=/usr/local -j"$(nproc)" install
-  cd ..
-  rm -rf papirus-icon-theme
+  popd >/dev/null
+  rm -rf "${tmpdir}"
 }
 
 function install_vim_theme {
   show_header "Installing Vim theme."
-  git clone --depth 1 https://github.com/sudorook/colorific.vim.git colorific.vim
-  cd colorific.vim || exit
+  local tmpdir
+  tmpdir="$(mktemp -d)"
+  git clone --depth 1 https://github.com/sudorook/colorific.vim.git "${tmpdir}"
+  pushd "${tmpdir}" >/dev/null
   ./install
-  cd ..
-  rm -rf colorific.vim
+  popd >/dev/null
+  rm -rf "${tmpdir}"
   show_success "Theme installed."
 }
 
@@ -260,14 +267,16 @@ function install_thunderbird_theme {
 
 function install_timed_backgrounds {
   show_header "Installing timed backgrounds."
-  git clone --depth 1 https://github.com/sudorook/timed-backgrounds.git \
-    timed-backgrounds
-  cd timed-backgrounds || exit
+  local tmpdir
+  tmpdir="$(mktemp -d)"
+  git clone --depth 1 \
+    https://github.com/sudorook/timed-backgrounds.git "${tmpdir}"
+  pushd "${tmpdir}" >/dev/null
   ./autogen.sh
   make -j"$(nproc)"
   sudo make install
-  cd ../
-  rm -rf timed-backgrounds/
+  popd >/dev/null
+  rm -rf "${tmpdir}"
   show_success "Backgrounds installed."
 }
 
@@ -283,14 +292,16 @@ function set_qtcompat {
   # (Debian-specific).
 
   if command -v qmake6 >/dev/null; then
+    local tmpdir
     show_info "Installing qt6gtk2 for Qt6-GTK theme comsistency."
-    git clone --depth 1 https://github.com/trialuser02/qt6gtk2.git
-    pushd qt6gtk2 >/dev/null
+    tmpdir="$(mktemp -d)"
+    git clone --depth 1 https://github.com/trialuser02/qt6gtk2.git "${tmpdir}"
+    pushd "${tmpdir}" >/dev/null
     qmake6
     make -j"$(nproc)"
     sudo make install
     popd >/dev/null
-    rm -rf qt6gtk2
+    rm -rf "${tmpdir}"
   fi
 
   show_info "Copying qt6ct config."

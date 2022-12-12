@@ -110,10 +110,10 @@ function install_adapta_gtk {
   pushd "${tmpdir}" >/dev/null
   ./autogen.sh \
     --prefix=/usr/local \
-    --with-selection_color=#00A2B4 \
-    --with-accent_color=#00B4CB \
-    --with-suggestion_color=#00A2B4 \
-    --with-destruction_color=#F44336 \
+    --with-selection_color="#00A2B4" \
+    --with-accent_color="#00B4CB" \
+    --with-suggestion_color="#00A2B4" \
+    --with-destruction_color="#F44336" \
     ${autotools_options} \
     --enable-parallel
   make -j"$(nproc)"
@@ -156,10 +156,10 @@ function install_plata_gtk {
     https://gitlab.com/sudorook/plata-theme.git "${tmpdir}"
   pushd "${tmpdir}" >/dev/null
   ./autogen.sh --prefix=/usr/local \
-    --with-selection_color=#4877B1 \
-    --with-accent_color=#4877B1 \
-    --with-suggestion_color=#5294E2 \
-    --with-destruction_color=#F44336 \
+    --with-selection_color="#4877B1" \
+    --with-accent_color="#4877B1" \
+    --with-suggestion_color="#5294E2" \
+    --with-destruction_color="#F44336" \
     ${autotools_options} \
     --enable-gtk_next \
     --enable-parallel

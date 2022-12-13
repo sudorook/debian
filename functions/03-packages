@@ -314,6 +314,7 @@ function install_torbrowser {
     local torbrowser_package
     local torbrowser_url="https://www.torproject.org/dist/torbrowser"
     local arch
+    local tmpdir
 
     show_info "Downloading Tor developers' GPG key."
     gpg --auto-key-locate nodefault,wkd --locate-keys torbrowser@torproject.org
@@ -328,6 +329,8 @@ function install_torbrowser {
     fi
 
     show_info "Downloading release tarball."
+    tmpdir="$(mktemp -d)"
+    pushd "${tmpdir}" >/dev/null
     wget "${torbrowser_url}/${torbrowser_version}/${torbrowser_package}"
     wget "${torbrowser_url}/${torbrowser_version}/${torbrowser_package}.asc"
     show_info "Extracting..."
@@ -336,7 +339,10 @@ function install_torbrowser {
 
     show_info "Putting things into place..."
     mkdir -p "${local_applications}"
-    rm -rf "${torbrowser_path}"
+    if [ -d "${torbrowser_path}" ]; then
+      show_warning "Backing up and replacing existing Tor Browser installation."
+      mv "${torbrowser_path}" "${torbrowser_path}.$(date +%Y%m%d-%k%M%S)"
+    fi
     mv tor-browser_en-US "${torbrowser_path}"
     cp -f "${torbrowser_path}/start-tor-browser.desktop" "${local_applications}/"
     chmod -x "${local_applications}/start-tor-browser.desktop"
@@ -347,9 +353,8 @@ function install_torbrowser {
       "${local_applications}/start-tor-browser.desktop"
     update-desktop-database "${local_applications}"
 
-    show_info "Cleaning up..."
-    rm -f "${torbrowser_package}"
-    rm -f "${torbrowser_package}.asc"
+    popd >/dev/null
+    rm -r "${tmpdir}"
     show_success "Tor browser installed."
   else
     show_info "Skipping..."

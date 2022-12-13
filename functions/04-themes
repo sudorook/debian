@@ -206,10 +206,14 @@ function install_fonts {
 
   show_info "Downloading Nerd-patched Ubuntu Mono font."
   mkdir -p "${localfontdir}"
+  local tmpdir
+  tmpdir="$(mktemp -d)"
+  pushd "${tmpdir}" >/dev/null
   wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2/UbuntuMono.zip
   unzip UbuntuMono.zip
   mv UbuntuMono/*.ttf "${localfontdir}/"
-  rm -r UbuntuMono
+  popd >/dev/null
+  rm -r "${tmpdir}"
 }
 
 function install_papirus_icons {

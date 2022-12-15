@@ -58,6 +58,8 @@ libsuperlu-dev
 libxml2-dev
 meson
 mkvtoolnix
+musl-dev
+musl-tools
 nodejs
 npm
 pandoc

@@ -156,7 +156,7 @@ function main {
           install_plata_gtk
           install_fonts
           install_papirus_icons
-          install_vim_theme
+          install_colorific_themes
           # install_thunderbird_theme
           install_timed_backgrounds
           set_qtcompat

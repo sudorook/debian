@@ -228,8 +228,8 @@ function install_papirus_icons {
   rm -rf "${tmpdir}"
 }
 
-function install_vim_theme {
-  show_header "Installing Vim theme."
+function install_colorific_themes {
+  show_header "Installing themes for alacritty, gitk, kitty, Neovim, tmux, and Vim."
   local tmpdir
   tmpdir="$(mktemp -d)"
   git clone --depth 1 https://github.com/sudorook/colorific.vim.git "${tmpdir}"
@@ -237,7 +237,7 @@ function install_vim_theme {
   ./install
   popd >/dev/null
   rm -rf "${tmpdir}"
-  show_success "Theme installed."
+  show_success "Themes installed."
 }
 
 thunderbirdprofile="${HOME}/.thunderbird/profiles.ini"
@@ -326,7 +326,7 @@ function 04-themes {
     "Materia (GTK)"
     "Fonts"
     "Papirus (icons)"
-    "Vim theme"
+    "Colorific themes"
     "Thunderbird theme"
     "Timed backgrounds")
   select option in "${options[@]}"; do
@@ -341,7 +341,7 @@ function 04-themes {
         install_plata_gtk
         install_fonts
         install_papirus_icons
-        install_vim_theme
+        install_colorific_themes
         install_thunderbird_theme
         install_timed_backgrounds
         set_qtcompat
@@ -383,8 +383,8 @@ function 04-themes {
         install_papirus_icons
         show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
         ;;
-      "Vim theme")
-        install_vim_theme
+      "Colorific themes")
+        install_colorific_themes
         show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
         ;;
       "Thunderbird theme")

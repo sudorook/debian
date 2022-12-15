@@ -39,6 +39,10 @@ function install_gnome {
   git clone https://gitlab.com/rastersoft/desktop-icons-ng.git \
     "${HOME}/.local/share/gnome-shell/extensions/ding@rastersoft.com"
 
+  show_info "Setting kitty as default terminal."
+  sudo update-alternatives --set x-terminal-emulator /usr/bin/kitty
+  gsettings set org.gnome.desktop.default-applications.terminal exec '/usr/bin/x-terminal-emulator'
+
   show_info "Done."
 }
 
@@ -87,6 +91,10 @@ function install_cinnamon {
     "s/^#greeter-hide-users=false/greeter-hide-users=false/g" \
     "${lightdmconf}"
   show_info "Done."
+
+  show_info "Setting kitty as default terminal."
+  sudo update-alternatives --set x-terminal-emulator /usr/bin/kitty
+  gsettings set org.cinnamon.desktop.default-applications.terminal exec '/usr/bin/x-terminal-emulator'
 }
 
 function 02-desktop {

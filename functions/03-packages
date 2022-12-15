@@ -31,6 +31,7 @@ function install_android {
 apps="${dir}/packages/apps.list"
 mpvconfig="${dir}/configs/mpv.conf"
 mpvinputconfig="${dir}/configs/mpv-input.conf"
+kittyconfig="${dir}/configs/kitty.conf"
 libaoconf="/etc/libao.conf"
 keepassxcini="${dir}/configs/keepassxc.ini"
 function install_apps {
@@ -43,6 +44,16 @@ function install_apps {
   mkdir -p "${HOME}/.config/mpv"
   cp -f "${mpvconfig}" "${HOME}/.config/mpv/mpv.conf"
   cp -f "${mpvinputconfig}" "${HOME}/.config/mpv/input.conf"
+
+  show_info "Copying kitty config."
+  mkdir -p "${HOME}/.config/kitty"
+  cp -f "${kittyconfig}" "${HOME}/.config/kitty/"
+
+  if ! [[ -e "${vimpack}/kitty.vim" ]]; then
+    show_info "Installing kitty.vim for Vim syntax highlighting."
+    git clone https://github.com/sudorook/kitty.vim.git \
+      "${vimpack}/kitty.vim"
+  fi
 
   show_info "Setting application MIME associations."
   xdg-mime default firefox.desktop text/html

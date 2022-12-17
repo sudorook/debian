@@ -21,7 +21,7 @@
 dir="$(dirname "$0")"
 
 # Globals
-gtktheme="Plata-Noir-Compact"
+gtktheme="Arc-Dark"
 icontheme="Papirus-Dark"
 font="Roboto"
 

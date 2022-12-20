@@ -66,6 +66,7 @@ function install_selinux {
     show_info "Updating systemd-boot kernel command line(s)."
     local cmdline
     local efidir
+    local entry
     efidir="$(bootctl -p)"
     for entry in "${efidir}"/loader/entries/*.conf; do
       cmdline="$(sed -n "s/^options\s\+\(.*\)/\1/p" "${entry}")"
@@ -120,6 +121,7 @@ function 01-misc {
     "Laptop tools"
     "SELinux"
     "zsh")
+  local option
   select option in "${options[@]}"; do
     case $option in
       "Back")

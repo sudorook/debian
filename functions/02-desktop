@@ -102,6 +102,7 @@ function 02-desktop {
   show_info "Main\n ${endbranch} Desktop (Hit ENTER to see options again.)"
 
   local options=("Back" "All" "GNOME" "Cinnamon")
+  local option
   select option in "${options[@]}"; do
     case $option in
       "Back")

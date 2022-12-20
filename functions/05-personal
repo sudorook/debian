@@ -29,6 +29,7 @@ function select_system_font {
   show_question "Select a font family:"
 
   local options=("Back" "Noto" "Roboto")
+  local option
   select option in "${options[@]}"; do
     case ${option} in
       "Back")
@@ -380,6 +381,7 @@ function invert_brightness {
   fi
   if [[ "$(sudo bootctl is-installed)" = yes ]]; then
     local cmdline
+    local entry
     for entry in "$(bootctl -p)"/loader/entries/*.conf; do
       cmdline=$(sed -n "s/^options\s\+\(.*\)/\1/p" "${entry}")
       if [[ ${cmdline} =~ i915.invert_brightness= ]]; then
@@ -421,6 +423,7 @@ function enable_intel_iommu {
     fi
     if [[ "$(sudo bootctl is-installed)" = yes ]]; then
       local cmdline
+      local entry
       for entry in "$(bootctl -p)"/loader/entries/*.conf; do
         cmdline=$(sed -n "s/^options\s\+\(.*\)/\1/p" "${entry}")
         if [[ ${cmdline} =~ intel_iommu= ]]; then
@@ -511,6 +514,7 @@ function select_desktop_theme {
     "Plata-Lumine-Compact"
     "Plata-Noir"
     "Plata-Noir-Compact")
+  local option
   select option in "${options[@]}"; do
     case $option in
       "Back")
@@ -798,6 +802,7 @@ function select_icon_theme {
     "Papirus-Dark"
     "Papirus-Adapta"
     "Papirus-Adapta-Nokto")
+  local option
   select option in "${options[@]}"; do
     case $option in
       "Back")
@@ -919,6 +924,7 @@ function 05-personal {
     "Disable PulseAudio suspend"
     "Disable 802.11n"
     "Add scripts")
+  local option
   select option in "${options[@]}"; do
     case $option in
       "Back")

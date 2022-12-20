@@ -490,6 +490,7 @@ function 03-packages {
     "VirtualBox (host)"
     "VirtualBox (guest)"
     "Wine")
+  local option
   select option in "${options[@]}"; do
     case $option in
       "Back")

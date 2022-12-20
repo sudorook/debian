@@ -126,6 +126,7 @@ function 03-network {
     "Firewall"
     "Install Tor"
     "Tunnel apt over Tor")
+  local option
   select option in "${options[@]}"; do
     case $option in
       "Back")

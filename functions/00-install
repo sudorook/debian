@@ -43,11 +43,12 @@ export -f is_size_nonzero
 RELEASE=
 function ask_release {
   show_question "Select Debian release:"
-  options=("Back" \
-           "Buster (oldstable)" \
-           "Bullseye (stable)" \
-           "Bookworm (testing)" \
-           "Sid (unstable)")
+  local options=("Back" \
+                 "Buster (oldstable)" \
+                 "Bullseye (stable)" \
+                 "Bookworm (testing)" \
+                 "Sid (unstable)")
+  local option
   select option in "${options[@]}"; do
     case $option in
       "Back")
@@ -77,6 +78,7 @@ DEVICE=
 function ask_device {
   show_header "Device for installation:"
   local disks
+  local disk
   local result
   disks=($(lsblk | grep disk | cut -d' ' -f1 | tr '\n' ' '))
   select disk in "${disks[@]}"; do
@@ -127,6 +129,7 @@ function ask_bootmode {
   show_header "Boot system:"
   if [ -e /sys/firmware/efi ]; then
     local options=("Back" "GRUB" "systemd-boot" "EFISTUB")
+    local option
     select option in "${options[@]}"; do
       case "${option}" in
         "Back")

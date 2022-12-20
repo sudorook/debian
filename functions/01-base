@@ -105,6 +105,7 @@ function upgrade_debian_release {
 
   show_question "Upgrade Debian release?"
   local options=("Back" "Buster" "Bullseye" "Bookworm" "Sid")
+  local option
   select option in "${options[@]}"; do
     case $option in
       "Back")
@@ -289,6 +290,7 @@ function 01-base {
     "Upgrade Debian release"
     "Sudo insults"
     "Disable system beep")
+  local option
   select option in "${options[@]}"; do
     case $option in
       "Back")

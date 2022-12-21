@@ -32,6 +32,7 @@ rsync
 screen
 signify-openbsd
 squashfs-tools
+stress
 s-tui
 time
 tmux

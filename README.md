@@ -250,7 +250,7 @@ Automatically install (without prompting) packages and configs.
 
 #### 8) Themes
 ```
-1) Back                 5) Plata (GTK)         9) Vim theme
+1) Back                 5) Plata (GTK)         9) Colorific themes
 2) All                  6) Materia (GTK )      10) Thunderbird theme
 3) Arc (GTK)            7) Fonts               11) Timed backgrounds
 4) Adapta (GTK)         8) Papirus (icons)
@@ -272,7 +272,8 @@ Automatically install (without prompting) packages and configs.
 
 8) Install tweaked version of Papirus icon theme.
 
-9) Set the default Vim theme to [colorific](https://github.com/sudorook/colorific.vim).
+9) Install [colorific themes](https://github.com/sudorook/colorific.vim) for
+   alacritty, gitk, kitty, Neovim, tmux, and Vim.
 
 10) Install the [Monterail theme](https://github.com/spymastermatt/thunderbird-monterail)
     for Thunderbird.

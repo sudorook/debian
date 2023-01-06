@@ -215,6 +215,7 @@ function set_config_key_value {
     fi
   else
     show_warning "${file@Q} does not exist. Creating new."
+    mkdir -p "$(dirname "${file}")"
     echo "${key}=${value}" > "${file}"
   fi
 }

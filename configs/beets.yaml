@@ -1,8 +1,8 @@
 paths:
   default: $albumartist/$album%aunique{}/$track $albumartist - $title
 
-plugins: fetchart edit embedart mpdupdate replaygain types smartplaylist
-         lastgenre missing duplicates scrub info
+plugins: fetchart edit embedart mpdupdate types smartplaylist lastgenre missing
+         duplicates scrub info
 
 fetchart:
   auto: true
@@ -16,10 +16,6 @@ fetchart:
 mpd:
   host: localhost
   port: 6600
-
-replaygain:
-  auto: no
-  backend: bs1770gain
 
 types:
   rating: int

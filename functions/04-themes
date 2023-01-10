@@ -70,7 +70,7 @@ function install_arc_gtk {
   git clone -b tweak --depth 1 \
     https://github.com/sudorook/arc-theme.git "${tmpdir}"
   pushd "${tmpdir}" >/dev/null
-  meson setup --prefix=/usr/local \
+  meson setup --prefix=/usr \
     -Dtransparency=true \
     -Dgnome_shell_gresource="${meson_gresource}" \
     -Dthemes="${meson_options}" \
@@ -109,7 +109,7 @@ function install_adapta_gtk {
     https://github.com/sudorook/adapta-gtk-theme.git "${tmpdir}"
   pushd "${tmpdir}" >/dev/null
   ./autogen.sh \
-    --prefix=/usr/local \
+    --prefix=/usr \
     --with-selection_color="#00A2B4" \
     --with-accent_color="#00B4CB" \
     --with-suggestion_color="#00A2B4" \
@@ -155,7 +155,7 @@ function install_plata_gtk {
   git clone -b tweak --depth 1 \
     https://gitlab.com/sudorook/plata-theme.git "${tmpdir}"
   pushd "${tmpdir}" >/dev/null
-  ./autogen.sh --prefix=/usr/local \
+  ./autogen.sh --prefix=/usr \
     --with-selection_color="#4877B1" \
     --with-accent_color="#4877B1" \
     --with-suggestion_color="#5294E2" \
@@ -188,7 +188,7 @@ function install_materia_gtk {
     https://github.com/sudorook/materia-theme.git "${tmpdir}"
   pushd "${tmpdir}" >/dev/null
   mkdir -p _build
-  meson _build -Dprefix=/usr/local
+  meson _build -Dprefix=/usr
   meson compile -C _build
   sudo meson install -C _build
   popd >/dev/null
@@ -223,7 +223,7 @@ function install_papirus_icons {
   git clone -b tweak --depth 1 \
     https://github.com/sudorook/papirus-icon-theme.git "${tmpdir}"
   pushd "${tmpdir}" >/dev/null
-  sudo make PREFIX=/usr/local -j"$(nproc)" install
+  sudo make PREFIX=/usr -j"$(nproc)" install
   popd >/dev/null
   rm -rf "${tmpdir}"
 }

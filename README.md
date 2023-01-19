@@ -162,8 +162,7 @@ Automatically install (without prompting) packages and configs.
 
 5) Install and activate SELinux.
 
-6) Install `zsh`, [fishy-lite](https://github.com/sudorook/fishy-lite), and
-   change default shell to `zsh`.
+6) Install `zsh`, fish-like plugins, nerd fonts, and powerlevel10k theme.
 
 #### 5) Desktop environment
 ```

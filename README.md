@@ -282,14 +282,15 @@ Automatically install (without prompting) packages and configs.
 
 #### 9) Personalization
 ```
-1) Back                              9) Import application dconf
-2) All                              10) Import GNOME terminal profiles
-3) Select system font               11) Enable autologin
-4) Select icon theme                12) Invert brightness (i915)
-5) Select desktop theme             13) Enable IOMMU (Intel)
-6) Set dark GTK                     14) Disable PulseAudio suspend
-7) Import Cinnamon dconf            15) Disable 802.11n
-8) Import GNOME dconf               16) Add scripts
+1) Back                             10) Import application dconf
+2) All                              11) Import GNOME terminal profiles
+3) Select system font               12) Enable autologin
+4) Select icon theme                13) Invert brightness (i915)
+5) Select desktop theme             14) Enable IOMMU (Intel)
+6) Set dark GTK                     15) Disable PulseAudio suspend
+7) Select login shell               16) Disable 802.11n
+8) Import Cinnamon dconf            17) Add scripts
+9) Import GNOME dconf
 ```
 
 3) Select the system font. (Noto or Roboto)
@@ -300,24 +301,26 @@ Automatically install (without prompting) packages and configs.
 
 6) Set applications to prefer the dark theme.
 
-7) Import pre-defined dconf settings for Cinnamon.
+7) Select default login shell (Bash or Zsh).
 
-8) Import pre-defined dconf settings for GNOME.
+8) Import pre-defined dconf settings for Cinnamon.
 
-9) Import pre-defined dconf settings for applications.
+9) Import pre-defined dconf settings for GNOME.
 
-10) Import terminal profiles (Light/Dark) via dconf.
+10) Import pre-defined dconf settings for applications.
 
-11) Enable autologin for the current user.
+11) Import terminal profiles (Light/Dark) via dconf.
 
-12) Invert brightness via kernel command line options in the GRUB prompt.
+12) Enable autologin for the current user.
 
-13) Enable Intel IOMMU for the i915 graphics driver. Helps fix blank displays
+13) Invert brightness via kernel command line options in the GRUB prompt.
+
+14) Enable Intel IOMMU for the i915 graphics driver. Helps fix blank displays
     for Haswell CPUs running kernels >=5.7.
 
-14) Disable PulseAudio suspend (suspend can sometimes cause weird buzzing).
+15) Disable PulseAudio suspend (suspend can sometimes cause weird buzzing).
 
-15) Disable 802.11n networking in iwlwifi. May help speed up poor 802.11ac
+16) Disable 802.11n networking in iwlwifi. May help speed up poor 802.11ac
     connections.
 
-16) Download and install [general utility scripts](https://github.com/sudorook/misc-scripts).
+17) Download and install [general utility scripts](https://github.com/sudorook/misc-scripts).

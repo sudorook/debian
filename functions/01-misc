@@ -36,11 +36,6 @@ function install_zsh {
 
   show_info "Copying powerlevel10k config."
   cp -f "${p10krc}" "${HOME}/.p10k.zsh"
-
-  if ! test "$(getent passwd "$(whoami)" | grep "zsh")"; then
-    show_info "Changing login shell to zsh. Provide your password."
-    chsh -s /bin/zsh
-  fi
 }
 
 selinux="${dir}/packages/selinux.list"

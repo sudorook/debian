@@ -280,6 +280,83 @@ function set_gdm_theme {
   fi
 }
 
+bashrc="${dir}/dotfiles/bashrc"
+bashprofile="${dir}/dotfiles/bash_profile"
+function set_bash_shell {
+  if ! test "$(getent passwd "$(whoami)" | grep "bash")"; then
+    show_info "Changing login shell to Bash. Provide your password."
+    chsh -s /bin/bash
+
+    show_info "Installing bash_profile."
+    if [ -f "${HOME}/.bash_profile" ]; then
+      show_info "Backing up exising bash profile."
+      mv -v "${HOME}/.bash_profile" \
+        "${HOME}/.bash_profile_$(date +%Y%m%d-%k%M%S).bak"
+    fi
+    cp "${bashprofile}" "${HOME}/.bash_profile"
+
+    show_info "Installing bashrc."
+    if [ -f "${HOME}/.bashrc" ]; then
+      show_info "Backing up exising bashrc."
+      mv -v "${HOME}/.bashrc" \
+        "${HOME}/.bashrc_$(date +%Y%m%d-%k%M%S).bak"
+    fi
+    cp "${bashrc}" "${HOME}/.bashrc"
+  fi
+}
+
+zshrc="${dir}/dotfiles/zshrc"
+p10krc="${dir}/dotfiles/p10k"
+function set_zsh_shell {
+  if ! test "$(getent passwd "$(whoami)" | grep "zsh")"; then
+    show_info "Changing login shell to Zsh. Provide your password."
+    chsh -s /bin/zsh
+
+    mkdir -p "${HOME}/.local/share/zsh/site-functions"
+
+    show_info "Copying zshrc."
+    if [ -f "${HOME}/.zshrc" ]; then
+      show_info "Backing up exising zshrc."
+      mv -v "${HOME}/.zshrc" \
+        "${HOME}/.zshrc_$(date +%Y%m%d-%k%M%S).bak"
+    fi
+    cp "${zshrc}" "${HOME}/.zshrc"
+
+    show_info "Copying powerlevel10k config."
+    if [ -f "${HOME}/.p10k.zsh" ]; then
+      show_info "Backing up exising powerlevel10k config."
+      mv -v "${HOME}/.p10k.zsh" \
+        "${HOME}/.p10k.zsh_$(date +%Y%m%d-%k%M%S).bak"
+    fi
+    cp "${p10krc}" "${HOME}/.p10k.zsh"
+  fi
+}
+
+function set_login_shell {
+  local options=(
+    "Back"
+    "bash"
+    "zsh"
+  )
+  local option
+  select option in "${options[@]}"; do
+    case $option in
+      "Back")
+        return
+        break
+        ;;
+      "bash")
+        set_bash_shell
+        break
+        ;;
+      "zsh")
+        set_zsh_shell
+        break
+        ;;
+    esac
+  done
+}
+
 gtksettings="${HOME}/.config/gtk-3.0/settings.ini"
 function set_dark_gtk {
   show_header "Setting global dark theme for gtk applications."
@@ -914,6 +991,7 @@ function 05-personal {
     "Select icon theme"
     "Select desktop theme"
     "Set dark GTK"
+    "Select login shell"
     "Import Cinnamon dconf"
     "Import GNOME dconf"
     "Import application dconf"
@@ -937,6 +1015,7 @@ function 05-personal {
         set_lightdm_theme
         set_gdm_theme
         set_dark_gtk
+        set_login_shell
         import_cinnamon_dconf
         import_gnome_dconf
         import_apps_dconf
@@ -963,6 +1042,10 @@ function 05-personal {
         ;;
       "Set dark GTK")
         set_dark_gtk
+        show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
+        ;;
+      "Select login shell")
+        set_login_shell
         show_info "Main\n ${endbranch} Personal (Hit ENTER to see options again.)"
         ;;
       "Import Cinnamon dconf")

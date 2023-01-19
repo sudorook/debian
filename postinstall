@@ -168,6 +168,8 @@ function main {
           set_lightdm_theme
           set_gdm_theme
           set_dark_gtk
+          # set_bash_shell
+          set_zsh_shell
           import_cinnamon_dconf
           # import_gnome_dconf
           import_apps_dconf

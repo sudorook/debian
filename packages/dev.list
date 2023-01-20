@@ -10,6 +10,7 @@ clang-tidy
 clang-tools
 cmake
 cppcheck
+crystal
 csstidy
 cucumber
 cython3

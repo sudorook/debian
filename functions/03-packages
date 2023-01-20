@@ -105,6 +105,7 @@ r="${dir}/packages/r.list"
 npmrc="${dir}/dotfiles/npmrc"
 rprofile="${dir}/dotfiles/Rprofile"
 vimpack="${HOME}/.vim/pack/dist/start"
+cargotoml="${dir}/configs/cargo.toml"
 function install_dev {
   show_header "Installing languages, libraries, and tools for development."
   check_installed "${dev}"
@@ -134,6 +135,14 @@ function install_dev {
 
   show_info "Installing R packages."
   check_installed "${r}"
+
+  show_info "Setting cargo to use crates from package repository."
+  mkdir -p "${HOME}/.cargo"
+  if [ -f "${HOME}/.cargo/config.toml" ]; then
+    mv "${HOME}/.cargo/config.toml" \
+      "${HOME}/.cargo/config.toml-$(date +%Y%m%d-%k%M%S).bak"
+  fi
+  cp "${cargotoml}" "${HOME}/.cargo/config.toml"
 
   show_info "Setting default clang-format style."
   clang-format -style=mozilla -dump-config > "${HOME}/.clang-format"

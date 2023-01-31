@@ -98,8 +98,8 @@ function main {
     --include=locales,keyboard-configuration,cryptsetup,cryptsetup-initramfs \
     --arch amd64 "${RELEASE}" /mnt https://deb.debian.org/debian
   mkdir -p /mnt/run/udev
-  for fs in proc sys dev dev/pts run/udev; do
-    mount --bind /$fs /mnt/$fs
+  for FS in proc sys dev dev/pts run/udev; do
+    mount --bind /${FS} /mnt/${FS}
   done
 
   "${dir}"/utils/genfstab -U /mnt >> /mnt/etc/fstab

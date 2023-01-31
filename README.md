@@ -5,8 +5,8 @@ e.g. installing a DE, packages, and config files. They are intended for
 Cinnamon or GNOME desktop environments.
 
 **Note:** While the post-installation scripts could be used for Ubuntu, some
-packages have different names than in the Debian repositories, so this script
-may not work for all packages.
+packages have different names than their counterparts in the Debian
+repositories, so this script may not work for all packages.
 
 Requirements:
 1. `wget`

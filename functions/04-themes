@@ -188,7 +188,7 @@ function install_materia_gtk {
     https://github.com/sudorook/materia-theme.git "${tmpdir}"
   pushd "${tmpdir}" >/dev/null
   mkdir -p _build
-  meson _build -Dprefix=/usr
+  meson setup -Dprefix=/usr _build
   meson compile -C _build
   sudo meson install -C _build
   popd >/dev/null

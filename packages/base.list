@@ -1,6 +1,7 @@
 apt-transport-https
 bash-completion
 curl
+debian-reference-en
 linux-base
 lsb-release
 make

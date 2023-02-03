@@ -33,6 +33,7 @@ rsync
 screen
 signify-openbsd
 squashfs-tools
+sshfs
 stress
 s-tui
 time

@@ -421,7 +421,7 @@ function install_vim {
 
   show_info "Install local wordlist."
   mkdir -p "${HOME}/.vim/spell"
-  local tmdir
+  local tmpdir
   tmpdir="$(mktemp -d)"
   git clone --depth 1 \
     https://github.com/sudorook/wordlist.vim.git "${tmpdir}"

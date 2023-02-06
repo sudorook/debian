@@ -155,22 +155,6 @@ function set_icon_theme {
     show_info "Setting GNOME icon theme to ${icontheme}."
     gsettings set org.gnome.desktop.interface icon-theme "'${icontheme}'"
   fi
-
-  if [[ "${icontheme}" =~ "Papirus" ]]; then
-    show_info "Creating Projects/ and Sync/ and setting gvfs metadata."
-    mkdir -p "${HOME}/Projects"
-    gio set "${HOME}/Projects/" -t string \
-      metadata::custom-icon-name folder-development
-    mkdir -p "${HOME}/Sync"
-    gio set "${HOME}/Sync/" -t string \
-      metadata::custom-icon-name folder-cloud
-  fi
-
-  show_info "Disabling Templates/ and Public/ folders."
-  sudo sed -i "s/^TEMPLATES/#TEMPLATES/g" ${xdgdefaultconf}
-  sudo sed -i "s/^PUBLICSHARE/#PUBLICSHARE/g" ${xdgdefaultconf}
-  rm -rf "${HOME}/Templates"
-  rm -rf "${HOME}/Public"
 }
 
 function set_gtk_theme {

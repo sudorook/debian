@@ -21,17 +21,16 @@
 dir="$(dirname "$0")"
 
 gnome="${dir}/packages/gnome.list"
+xdgdefaultconf="/etc/xdg/user-dirs.defaults"
 function install_gnome {
   show_header "Setting up GNOME desktop environment."
   check_installed "${gnome}"
   check_fail
   show_success "GNOME installed."
 
-  show_info "Putting things into place."
   if ! test ${DESKTOP_SESSION+x}; then
     export DESKTOP_SESSION="gnome"
   fi
-  xdg-user-dirs-update
 
   extensiondir=${HOME}/.local/share/gnome-shell/extensions
   mkdir -p "${extensiondir}"
@@ -43,22 +42,38 @@ function install_gnome {
   sudo update-alternatives --set x-terminal-emulator /usr/bin/kitty
   gsettings set org.gnome.desktop.default-applications.terminal exec '/usr/bin/x-terminal-emulator'
 
-  show_info "Done."
+  show_info "Creating Projects/ and Sync/ and setting gvfs icon metadata."
+  mkdir -p "${HOME}/Projects"
+  mkdir -p "${HOME}/Sync"
+  gio set "${HOME}/Projects/" -t string metadata::custom-icon-name folder-development
+  gio set "${HOME}/Sync/" -t string metadata::custom-icon-name folder-cloud
+
+  show_info "Disabling Templates/ and Public/ directories."
+  sudo sed -i "s/^TEMPLATES/#TEMPLATES/g" "${xdgdefaultconf}"
+  sudo sed -i "s/^PUBLICSHARE/#PUBLICSHARE/g" "${xdgdefaultconf}"
+  rmdir --ignore-fail-on-non-empty "${HOME}/Templates"
+  rmdir --ignore-fail-on-non-empty "${HOME}/Public"
+  xdg-user-dirs-update
 }
 
 cinnamon="${dir}/packages/cinnamon.list"
 lightdmconf="/etc/lightdm/lightdm.conf"
 gammastepini="${dir}/configs/gammastep.ini"
+xdgdefaultconf="/etc/xdg/user-dirs.defaults"
 function install_cinnamon {
   show_header "Setting up cinnamon desktop environment."
   check_installed "${cinnamon}"
   check_fail
   show_success "Cinnamon installed."
 
-  show_info "Putting things into place."
   if ! test ${DESKTOP_SESSION+x}; then
     export DESKTOP_SESSION="cinnamon"
   fi
+
+  show_info "Setting up LightDM greeter."
+  sudo sed -i \
+    "s/^#greeter-hide-users=false/greeter-hide-users=false/g" \
+    "${lightdmconf}"
 
   # Get latitude and longitude using GeoClue2 for Gammastep.
   show_info "Setting Gammastep config."
@@ -82,17 +97,22 @@ function install_cinnamon {
     cp "${gammastepini}" "${HOME}/.config/gammastep/config.ini"
   fi
 
-  xdg-user-dirs-update
-
-  show_info "Setting up LightDM greeter."
-  sudo sed -i \
-    "s/^#greeter-hide-users=false/greeter-hide-users=false/g" \
-    "${lightdmconf}"
-  show_info "Done."
-
   show_info "Setting kitty as default terminal."
   sudo update-alternatives --set x-terminal-emulator /usr/bin/kitty
   gsettings set org.cinnamon.desktop.default-applications.terminal exec '/usr/bin/x-terminal-emulator'
+
+  show_info "Creating Projects/ and Sync/ and setting gvfs icon metadata."
+  mkdir -p "${HOME}/Projects"
+  mkdir -p "${HOME}/Sync"
+  gio set "${HOME}/Projects/" -t string metadata::custom-icon-name folder-development
+  gio set "${HOME}/Sync/" -t string metadata::custom-icon-name folder-cloud
+
+  show_info "Disabling Templates/ and Public/ directories."
+  sudo sed -i "s/^TEMPLATES/#TEMPLATES/g" "${xdgdefaultconf}"
+  sudo sed -i "s/^PUBLICSHARE/#PUBLICSHARE/g" "${xdgdefaultconf}"
+  rmdir --ignore-fail-on-non-empty "${HOME}/Templates"
+  rmdir --ignore-fail-on-non-empty "${HOME}/Public"
+  xdg-user-dirs-update
 }
 
 function 02-desktop {

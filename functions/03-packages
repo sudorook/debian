@@ -172,7 +172,9 @@ function install_extra {
 
   show_info "Installing yt-dlp/youtube-dl config."
   mkdir -p "${HOME}/.config/yt-dlp"
-  ln -s "${HOME}/.config/yt-dlp" "${HOME}/.config/youtube-dl"
+  if ! [ -e "${HOME}/.config/youtube-dl" ]; then
+    ln -s "${HOME}/.config/yt-dlp" "${HOME}/.config/youtube-dl"
+  fi
   cp -f "${ytdlconf}" "${HOME}/.config/yt-dlp/config"
 }
 

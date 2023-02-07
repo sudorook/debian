@@ -154,6 +154,7 @@ function main {
           install_arc_gtk
           # install_adapta_gtk
           # install_plata_gtk
+          # install_materia_gtk
           install_fonts
           install_papirus_icons
           install_colorific_themes

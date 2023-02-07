@@ -51,8 +51,8 @@ function install_gnome {
   show_info "Disabling Templates/ and Public/ directories."
   sudo sed -i "s/^TEMPLATES/#TEMPLATES/g" "${xdgdefaultconf}"
   sudo sed -i "s/^PUBLICSHARE/#PUBLICSHARE/g" "${xdgdefaultconf}"
-  rmdir --ignore-fail-on-non-empty "${HOME}/Templates"
-  rmdir --ignore-fail-on-non-empty "${HOME}/Public"
+  [ -d "${HOME}/Templates" ] && rmdir --ignore-fail-on-non-empty "${HOME}/Templates"
+  [ -d "${HOME}/Public" ] && rmdir --ignore-fail-on-non-empty "${HOME}/Public"
   xdg-user-dirs-update
 }
 
@@ -110,8 +110,8 @@ function install_cinnamon {
   show_info "Disabling Templates/ and Public/ directories."
   sudo sed -i "s/^TEMPLATES/#TEMPLATES/g" "${xdgdefaultconf}"
   sudo sed -i "s/^PUBLICSHARE/#PUBLICSHARE/g" "${xdgdefaultconf}"
-  rmdir --ignore-fail-on-non-empty "${HOME}/Templates"
-  rmdir --ignore-fail-on-non-empty "${HOME}/Public"
+  [ -d "${HOME}/Templates" ] && rmdir --ignore-fail-on-non-empty "${HOME}/Templates"
+  [ -d "${HOME}/Public" ] && rmdir --ignore-fail-on-non-empty "${HOME}/Public"
   xdg-user-dirs-update
 }
 

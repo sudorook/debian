@@ -2,7 +2,7 @@ paths:
   default: $albumartist/$album%aunique{}/$track $albumartist - $title
 
 plugins: fetchart edit embedart mpdupdate types smartplaylist lastgenre missing
-         duplicates scrub info
+         duplicates scrub info mbsync
 
 fetchart:
   auto: true

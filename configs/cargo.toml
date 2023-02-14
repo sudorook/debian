@@ -1,0 +1,10 @@
+[net]
+offline = true
+
+[source]
+
+[source.crates-io]
+replace-with = "debian"
+
+[source.debian]
+directory = "/usr/share/cargo/registry"

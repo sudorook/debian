@@ -628,10 +628,12 @@ function ask_locale {
 }
 
 function set_locale {
+  local keymap
   sed -i "/^#\ \?${LOCALE} ${CHARSET}/s/^#\ \?//" /etc/locale.gen
   locale-gen
   echo "LANG=${LOCALE}" > /etc/locale.conf
-  echo "KEYMAP=${LOCALE}" > /etc/vconsole.conf
+  keymap="$(echo "${LOCALE}" | sed -n "s/\([a-z]\+\)_\([A-Z]\+\)[@\ \.].*/\2/p")"
+  echo "KEYMAP=${keymap,,}" > /etc/vconsole.conf
 }
 export -f set_locale
 

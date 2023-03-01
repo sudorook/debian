@@ -352,7 +352,7 @@ function install_torbrowser {
 
     show_info "Downloading release tarball."
     tmpdir="$(mktemp -d)"
-    pushd "${tmpdir}" >/dev/null
+    pushd "${tmpdir}" >/dev/null || exit
     wget "${torbrowser_url}/${torbrowser_version}/${torbrowser_package}"
     wget "${torbrowser_url}/${torbrowser_version}/${torbrowser_package}.asc"
     show_info "Extracting..."
@@ -375,7 +375,7 @@ function install_torbrowser {
       "${local_applications}/start-tor-browser.desktop"
     update-desktop-database "${local_applications}"
 
-    popd >/dev/null
+    popd >/dev/null || exit
     rm -r "${tmpdir}"
     show_success "Tor browser installed."
   else
@@ -427,7 +427,7 @@ function install_vim {
   tmpdir="$(mktemp -d)"
   git clone --depth 1 \
     https://github.com/sudorook/wordlist.vim.git "${tmpdir}"
-  pushd "${tmpdir}" >/dev/null
+  pushd "${tmpdir}" >/dev/null || exit
   ./build
   if [ -f "${HOME}/.vim/spell/en.utf-8.add" ]; then
     show_info "Wordlist already exists in ${HOME}/.vim/spell/. Appending."
@@ -435,7 +435,7 @@ function install_vim {
   else
     ./install
   fi
-  popd >/dev/null
+  popd >/dev/null || exit
   rm -rf "${tmpdir}"
   show_success "Wordlist installed in ${HOME}/.vim/spell."
   show_info "To use the wordlist, add the following to you vimrc:"

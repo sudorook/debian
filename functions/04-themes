@@ -69,7 +69,7 @@ function install_arc_gtk {
   tmpdir="$(mktemp -d)"
   git clone -b tweak --depth 1 \
     https://github.com/sudorook/arc-theme.git "${tmpdir}"
-  pushd "${tmpdir}" >/dev/null
+  pushd "${tmpdir}" >/dev/null || exit
   meson setup --prefix=/usr \
     -Dtransparency=true \
     -Dgnome_shell_gresource="${meson_gresource}" \
@@ -77,7 +77,7 @@ function install_arc_gtk {
     _build/
   meson compile -C _build/
   sudo meson install -C _build/
-  popd >/dev/null
+  popd >/dev/null || exit
   rm -rf "${tmpdir}"
   show_success "Arc theme installed."
 }
@@ -107,7 +107,7 @@ function install_adapta_gtk {
   tmpdir="$(mktemp -d)"
   git clone -b tweak --depth 1 \
     https://github.com/sudorook/adapta-gtk-theme.git "${tmpdir}"
-  pushd "${tmpdir}" >/dev/null
+  pushd "${tmpdir}" >/dev/null || exit
   ./autogen.sh \
     --prefix=/usr \
     --with-selection_color="#00A2B4" \
@@ -124,7 +124,7 @@ function install_adapta_gtk {
   if [ -d /usr/share/gtksourceview-3.0/styles/ ]; then
     sudo cp -f extra/gedit/adapta.xml /usr/share/gtksourceview-3.0/styles/
   fi
-  popd >/dev/null
+  popd >/dev/null || exit
   rm -rf "${tmpdir}"
   show_success "Adapta theme installed."
 }
@@ -154,7 +154,7 @@ function install_plata_gtk {
   tmpdir="$(mktemp -d)"
   git clone -b tweak --depth 1 \
     https://gitlab.com/sudorook/plata-theme.git "${tmpdir}"
-  pushd "${tmpdir}" >/dev/null
+  pushd "${tmpdir}" >/dev/null || exit
   ./autogen.sh --prefix=/usr \
     --with-selection_color="#4877B1" \
     --with-accent_color="#4877B1" \
@@ -175,7 +175,7 @@ function install_plata_gtk {
       src/extra/gtksourceview/plata-dark.xml \
       /usr/share/gtksourceview-3.0/styles/
   fi
-  popd >/dev/null
+  popd >/dev/null || exit
   rm -rf "${tmpdir}"
   show_success "Plata theme installed."
 }
@@ -186,12 +186,12 @@ function install_materia_gtk {
   tmpdir="$(mktemp -d)"
   git clone -b tweak --depth 1 \
     https://github.com/sudorook/materia-theme.git "${tmpdir}"
-  pushd "${tmpdir}" >/dev/null
+  pushd "${tmpdir}" >/dev/null || exit
   mkdir -p _build
   meson setup -Dprefix=/usr _build
   meson compile -C _build
   sudo meson install -C _build
-  popd >/dev/null
+  popd >/dev/null || exit
   rm -rf "${tmpdir}"
   show_success "Materia theme installed."
 }
@@ -208,11 +208,11 @@ function install_fonts {
   mkdir -p "${localfontdir}"
   local tmpdir
   tmpdir="$(mktemp -d)"
-  pushd "${tmpdir}" >/dev/null
+  pushd "${tmpdir}" >/dev/null || exit
   wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2/UbuntuMono.zip
   unzip UbuntuMono.zip
   mv UbuntuMono/*.ttf "${localfontdir}/"
-  popd >/dev/null
+  popd >/dev/null || exit
   rm -r "${tmpdir}"
 }
 
@@ -222,9 +222,9 @@ function install_papirus_icons {
   tmpdir="$(mktemp -d)"
   git clone -b tweak --depth 1 \
     https://github.com/sudorook/papirus-icon-theme.git "${tmpdir}"
-  pushd "${tmpdir}" >/dev/null
+  pushd "${tmpdir}" >/dev/null || exit
   sudo make PREFIX=/usr -j"$(nproc)" install
-  popd >/dev/null
+  popd >/dev/null || exit
   rm -rf "${tmpdir}"
 }
 
@@ -233,9 +233,9 @@ function install_colorific_themes {
   local tmpdir
   tmpdir="$(mktemp -d)"
   git clone --depth 1 https://github.com/sudorook/colorific.vim.git "${tmpdir}"
-  pushd "${tmpdir}" >/dev/null
+  pushd "${tmpdir}" >/dev/null || exit
   ./install
-  popd >/dev/null
+  popd >/dev/null || exit
   rm -rf "${tmpdir}"
   show_success "Themes installed."
 }
@@ -275,11 +275,11 @@ function install_timed_backgrounds {
   tmpdir="$(mktemp -d)"
   git clone --depth 1 \
     https://github.com/sudorook/timed-backgrounds.git "${tmpdir}"
-  pushd "${tmpdir}" >/dev/null
+  pushd "${tmpdir}" >/dev/null || exit
   ./autogen.sh
   make -j"$(nproc)"
   sudo make install
-  popd >/dev/null
+  popd >/dev/null || exit
   rm -rf "${tmpdir}"
   show_success "Backgrounds installed."
 }
@@ -300,11 +300,11 @@ function set_qtcompat {
     show_info "Installing qt6gtk2 for Qt6-GTK theme comsistency."
     tmpdir="$(mktemp -d)"
     git clone --depth 1 https://github.com/trialuser02/qt6gtk2.git "${tmpdir}"
-    pushd "${tmpdir}" >/dev/null
+    pushd "${tmpdir}" >/dev/null || exit
     qmake6
     make -j"$(nproc)"
     sudo make install
-    popd >/dev/null
+    popd >/dev/null || exit
     rm -rf "${tmpdir}"
   fi
 

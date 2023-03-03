@@ -178,6 +178,14 @@ function install_extra {
   cp -f "${ytdlconf}" "${HOME}/.config/yt-dlp/config"
 }
 
+pipewire="${dir}/packages/pipewire.lsit"
+function install_pipewire {
+  show_header "Installing PipeWire A/V processor."
+  check_installed "${pipewire}"
+  check_fail
+  show_success "Printing applications installed."
+}
+
 printer="${dir}/packages/printer.list"
 function install_printing {
   show_header "Installing CPUS and printer firmware."
@@ -495,6 +503,7 @@ function 03-packages {
     "MinGW"
     "Music"
     "Printing"
+    "PipeWire"
     "TeX Live"
     "Tor browser"
     "Vim"
@@ -513,6 +522,7 @@ function 03-packages {
         install_codecs
         install_dev
         install_extra
+        install_pipewire
         install_printing
         install_games
         install_kvm
@@ -570,6 +580,10 @@ function 03-packages {
         ;;
       "Music")
         install_music
+        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        ;;
+      "PipeWire")
+        install_pipewire
         show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
         ;;
       "Printing")

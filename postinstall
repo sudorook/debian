@@ -141,6 +141,7 @@ function main {
           install_messaging
           # install_mingw
           install_music
+          install_pipewire
           install_printing
           install_texlive
           # install_torbrowser
@@ -167,18 +168,20 @@ function main {
           set_icon_theme
           set_gtk_theme
           set_lightdm_theme
-          set_gdm_theme
+          # set_gdm_theme
+          # set_sddm_theme
           set_dark_gtk
           # set_bash_shell
           set_zsh_shell
           import_cinnamon_dconf
           # import_gnome_dconf
+          # import_kde_settings
           import_apps_dconf
           import_terminal_dconf
           enable_autologin
           # invert_brightness
           # enable_intel_iommu
-          disable_pulseaudio_suspend
+          # disable_pulseaudio_suspend
           disable_11n
           install_scripts
 

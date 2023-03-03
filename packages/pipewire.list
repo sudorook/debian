@@ -1,0 +1,7 @@
+gstreamer1.0-pipewire
+pipewire
+pipewire-alsa
+pipewire-jack
+pipewire-libcamera
+pipewire-pulse
+pipewire-v4l2

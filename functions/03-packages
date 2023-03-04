@@ -451,6 +451,52 @@ function install_vim {
   show_info "  set spellfile=\$HOME/.vim/spell/en.utf-8.add"
 }
 
+nvim="${dir}/packages/neovim.list"
+nvimrc="${dir}/dotfiles/vimrc"
+function install_neovim {
+  show_header "Installing Neovim and Neovim plugins."
+  check_installed "${nvim}"
+  check_fail
+  show_success "Neovim and Neovim plugins installed."
+
+  show_info "Installing init.vim"
+  mkdir -p "${HOME}/.config/nvim"
+  cp -f "${nvimrc}" "${HOME}/.config/nvim/init.vim"
+  show_success "init.vim installed."
+
+  show_info "Setting Neovim as default tool for git diffs and merges."
+  # 00-check makes sure the git is installed, so no need for checks here.
+  git config --global diff.tool "nvim -d"
+  git config --global merge.tool "nvim -d"
+  git config --global --add difftool.prompt false
+
+  if command -v xdg-mime >/dev/null 2>&1; then
+    show_info "Setting Neovim MIME associations."
+    xdg-mime default nvim.desktop text/plain
+  fi
+
+  show_info "Install local wordlist."
+  mkdir -p "${HOME}/.config/nvim/spell"
+  local tmpdir
+  tmpdir="$(mktemp -d)"
+  git clone --depth 1 \
+    https://github.com/sudorook/wordlist.vim.git "${tmpdir}"
+  pushd "${tmpdir}" >/dev/null || exit
+  ./build
+  if [ -f "${HOME}/.config/nvim/spell/en.utf-8.add" ]; then
+    show_info "Wordlist already exists in ${HOME}/.config/nvim/spell/. Appending."
+    ./append
+  else
+    ./install
+  fi
+  popd >/dev/null || exit
+  rm -rf "${tmpdir}"
+  show_success "Wordlist installed in ${HOME}/.config/nvim/spell."
+  show_info "To use the wordlist, add the following to you vimrc:"
+  show_info "  set spelllang=en"
+  show_info "  set spellfile=\$HOME/.vim/spell/en.utf-8.add"
+}
+
 virtualbox="${dir}/packages/virtualbox.list"
 function install_virtualbox {
   show_header "Installing VirtualBox."
@@ -507,6 +553,7 @@ function 03-packages {
     "TeX Live"
     "Tor browser"
     "Vim"
+    "Neovim"
     "VirtualBox (host)"
     "VirtualBox (guest)"
     "Wine")
@@ -533,6 +580,7 @@ function 03-packages {
         install_texlive
         install_torbrowser
         install_vim
+        install_neovim
         install_virtualbox
         install_virtualbox_guest
         install_wine
@@ -600,6 +648,10 @@ function 03-packages {
         ;;
       "Vim")
         install_vim
+        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        ;;
+      "Neovim")
+        install_neovim
         show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
         ;;
       "VirtualBox (host)")

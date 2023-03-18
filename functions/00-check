@@ -93,6 +93,8 @@ function check_debian_release {
 function check_installed {
   local package
   while read -r package; do
+    [ -z "${package}" ] && continue
+
     # Check if package is installed already before installing.
     if dpkg -s "${package}" >/dev/null 2>&1; then
       show_listitem "${package} package already installed. Skipping."
@@ -111,6 +113,8 @@ function check_installed {
 function check_uninstalled {
   local package
   while read -r package; do
+    [ -z "${package}" ] && continue
+
     if dpkg -s "${package}" >/dev/null 2>&1; then
       show_listitem "Purging ${package}."
       sudo apt-get -y purge "${package}"

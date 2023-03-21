@@ -403,7 +403,8 @@ function import_terminal_dconf {
 gdmconf="/etc/gdm3/daemon.conf" # Debian uses gdm3 instead of gdm
 lightdmconf="/etc/lightdm/lightdm.conf"
 function enable_autologin {
-  show_header "Enabling automatic login for ${USER}."
+  show_header "Enabling automatic login for ${USER@Q}."
+  local is_autologin_set=false
   if dpkg -s gdm3 > /dev/null 2>&1; then
     show_info "Log in as ${USER@Q} via GDM."
     ! [ -f ${gdmconf} ] && sudo touch ${gdmconf}
@@ -414,14 +415,20 @@ function enable_autologin {
       sudo sed -i "s/^AutomaticLogin=.*$/AutomaticLogin=${USER}/g" ${gdmconf}
       sudo sed -i "s/^AutomaticLoginEnable=.*$/AutomaticLoginEnable=true/g" ${gdmconf}
     fi
+    is_autologin_set=true
   fi
   if dpkg -s lightdm > /dev/null 2>&1; then
     show_info "Log in as ${USER@Q} via LightDM."
     sudo sed -i "s/^#autologin-user=/autologin-user=/g" ${lightdmconf}
     sudo sed -i "s/^#autologin-user-timeout=/autologin-user-timeout=/g" ${lightdmconf}
     sudo sed -i "s/^autologin-user=.*$/autologin-user=${USER}/g" ${lightdmconf}
+    is_autologin_set=true
   fi
-  show_success "Autologin enabled."
+  if "${is_autologin_set}"; then
+    show_success "Autologin enabled."
+  else
+    show_warning "Failed to detect display manager. Autologin not enabled."
+  fi
 }
 
 grubdefault="/etc/default/grub"

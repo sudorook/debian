@@ -133,9 +133,11 @@ function main {
           # Install useful packages
           # install_android
           install_apps
+          # install_apps_kde
           install_codecs
           install_dev
           install_extra
+          # install_extra_kde
           # install_games
           # install_kvm
           # install_kvm_guest

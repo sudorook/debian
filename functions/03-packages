@@ -92,6 +92,48 @@ function install_apps {
   sudo sh -c "echo 'default_driver=pulse' > ${libaoconf}"
 }
 
+appskde="${dir}/packages/apps-kde.list"
+mpvconfig="${dir}/configs/mpv.conf"
+mpvinputconfig="${dir}/configs/mpv-input.conf"
+kittyconfig="${dir}/configs/kitty.conf"
+libaoconf="/etc/libao.conf"
+keepassxcini="${dir}/configs/keepassxc.ini"
+function install_apps_kde {
+  show_header "Installing KDE desktop applications."
+  check_installed "${appskde}"
+  check_fail
+  show_success "Applications installed."
+
+  show_info "Copying mpv config."
+  mkdir -p "${HOME}/.config/mpv"
+  cp -f "${mpvconfig}" "${HOME}/.config/mpv/mpv.conf"
+  cp -f "${mpvinputconfig}" "${HOME}/.config/mpv/input.conf"
+
+  show_info "Copying kitty config."
+  mkdir -p "${HOME}/.config/kitty"
+  cp -f "${kittyconfig}" "${HOME}/.config/kitty/"
+
+  if ! [[ -e "${vimpack}/kitty.vim" ]]; then
+    show_info "Installing kitty.vim for Vim syntax highlighting."
+    git clone https://github.com/sudorook/kitty.vim.git \
+      "${vimpack}/kitty.vim"
+    "${vimpack}/kitty.vim/./build" >/dev/null # in case kitty rules are outdated
+  fi
+
+  if [[ ${XDG_SESSION_TYPE,,} =~ wayland ]]; then
+    show_info "Setting environment variables for Firefox to use Wayland and VA-API."
+    mkdir -p "${HOME}/.config/environment.d"
+    set_config_key_value \
+      "${HOME}/.config/environment.d/envvars.conf" "MOZ_ENABLE_WAYLAND" "1"
+    set_config_key_value \
+      "${HOME}/.config/environment.d/envvars.conf" "MOZ_WAYLAND_USE_VAAPI" "1"
+  fi
+
+  show_info "Copying keepassxc config."
+  mkdir -p "${HOME}/.config/keepassxc"
+  cp -f "${keepassxcini}" "${HOME}/.config/keepassxc/"
+}
+
 codecs="${dir}/packages/codecs.list"
 function install_codecs {
   show_header "Installing codecs."
@@ -178,7 +220,23 @@ function install_extra {
   cp -f "${ytdlconf}" "${HOME}/.config/yt-dlp/config"
 }
 
-pipewire="${dir}/packages/pipewire.lsit"
+extrakde="${dir}/packages/extra-kde.list"
+ytdlconf="${dir}/configs/ytdl.conf"
+function install_extra_kde {
+  show_header "Installing extra KDE desktop applications."
+  check_installed "${extrakde}"
+  check_fail
+  show_success "Extra applications installed."
+
+  show_info "Installing yt-dlp/youtube-dl config."
+  mkdir -p "${HOME}/.config/yt-dlp"
+  if ! [ -e "${HOME}/.config/youtube-dl" ]; then
+    ln -s "${HOME}/.config/yt-dlp" "${HOME}/.config/youtube-dl"
+  fi
+  cp -f "${ytdlconf}" "${HOME}/.config/yt-dlp/config"
+}
+
+pipewire="${dir}/packages/pipewire.list"
 function install_pipewire {
   show_header "Installing PipeWire A/V processor."
   check_installed "${pipewire}"
@@ -539,9 +597,11 @@ function 03-packages {
     "All"
     "Android tools"
     "General applications"
+    "General KDE applications"
     "Codecs"
     "Development"
     "Extra applications"
+    "Extra KDE applications"
     "Emulators"
     "KVM (host)"
     "KVM (guest)"
@@ -566,9 +626,11 @@ function 03-packages {
       "All")
         install_android
         install_apps
+        install_apps_kde
         install_codecs
         install_dev
         install_extra
+        install_extra_kde
         install_pipewire
         install_printing
         install_games
@@ -594,6 +656,10 @@ function 03-packages {
         install_apps
         show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
         ;;
+      "General KDE applications")
+        install_apps_kde
+        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        ;;
       "Codecs")
         install_codecs
         show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
@@ -604,6 +670,10 @@ function 03-packages {
         ;;
       "Extra applications")
         install_extra
+        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        ;;
+      "Extra KDE applications")
+        install_extra_kde
         show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
         ;;
       "Emulators")

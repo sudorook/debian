@@ -81,13 +81,6 @@ function install_apps {
   mkdir -p "${HOME}/.config/keepassxc"
   cp -f "${keepassxcini}" "${HOME}/.config/keepassxc/"
 
-  # Should always pass because gufw is in the app list.
-  if command -v ufw >/dev/null; then
-    show_info "Enabling Syncthing firewall rules."
-    sudo ufw allow syncthing
-    sudo ufw allow syncthing-gui
-  fi
-
   show_info "Configuring ${libaoconf} to use PulseAudio instead of ALSA."
   sudo sh -c "echo 'default_driver=pulse' > ${libaoconf}"
 }

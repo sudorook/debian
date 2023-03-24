@@ -67,9 +67,27 @@ function install_firewall {
   check_fail
   show_success "Firewall packages installed."
 
-  show_info "Enabling ufw."
+  show_info "Setting ufw firewall rules."
   sudo ufw default deny
-  sudo ufw allow Transmission
+
+  if dpkg -s syncthing >/dev/null 2>&1; then
+    sudo ufw allow syncthing
+    sudo ufw allow syncthing-gui
+  fi
+
+  if dpkg -s kdeconnect >/dev/null 2>&1; then
+    sudo ufw allow 'KDE Connect'
+  fi
+
+  if dpkg -s transmission-cli >/dev/null 2>&1; then
+    sudo ufw allow Transmission
+  elif dpkg -s transmission-qt >/dev/null 2>&1; then
+    sudo ufw allow Transmission
+  elif dpkg -s transmission-gtk >/dev/null 2>&1; then
+    sudo ufw allow Transmission
+  fi
+
+  show_info "Enabling ufw."
   sudo ufw enable
   sudo systemctl enable ufw
 }

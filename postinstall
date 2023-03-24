@@ -122,6 +122,7 @@ function main {
           # Install a desktop environment
           # install_gnome
           install_cinnamon
+          # install_kde
 
           # Set up network configuration
           install_network

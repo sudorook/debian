@@ -115,11 +115,53 @@ function install_cinnamon {
   xdg-user-dirs-update
 }
 
+kde="${dir}/packages/kde.list"
+xdgdefaultconf="/etc/xdg/user-dirs.defaults"
+function install_kde {
+  show_header "Setting up KDE desktop environment."
+  check_installed "${kde}"
+  check_fail
+  show_success "KDE installed."
+
+  if ! test ${DESKTOP_SESSION+x}; then
+    export DESKTOP_SESSION="plasma"
+  fi
+
+  # Set flag to enable KDE dialog boxes for GTK applications.
+  set_config_key_value \
+    "${HOME}/.config/environment.d/envvars.conf" "GTK_USE_PORTAL" "1"
+  set_config_key_value "${HOME}/.xprofile" "export GTK_USE_PORTAL" "1"
+
+  # show_info "Setting firefox-esr as default browser."
+  # kwriteconfig5 --file kdeglobals --group "General" --key "BrowserApplication" "firefox-esr.desktop"
+
+  show_info "Setting kitty as default terminal."
+  kwriteconfig5 --file kdeglobals --group "General" --key "TerminalApplication" "kitty"
+  kwriteconfig5 --file kdeglobals --group "General" --key "TerminalService" "kitty.desktop"
+
+  # Add Ctrl+Alt+T launcher for kitty
+  kwriteconfig5 --file kglobalshortcutsrc --group "kitty.desktop" --key "_k_friendly_name" "kitty"
+  kwriteconfig5 --file kglobalshortcutsrc --group "kitty.desktop" --key "_launch" "Ctrl+Alt+T,none,kitty"
+
+  show_info "Creating Projects/ and Sync/ and setting kio icon metadata."
+  mkdir -p "${HOME}/Projects"
+  mkdir -p "${HOME}/Sync"
+  kwriteconfig5 --file "${HOME}/Projects/.directory" --group 'Desktop Entry' --key 'Icon' 'folder-development'
+  kwriteconfig5 --file "${HOME}/Sync/.directory" --group 'Desktop Entry' --key 'Icon' 'folder-cloud'
+
+  show_info "Disabling Templates/ and Public/ directories."
+  sudo sed -i "s/^TEMPLATES/#TEMPLATES/g" "${xdgdefaultconf}"
+  sudo sed -i "s/^PUBLICSHARE/#PUBLICSHARE/g" "${xdgdefaultconf}"
+  [ -d "${HOME}/Templates" ] && rmdir --ignore-fail-on-non-empty "${HOME}/Templates"
+  [ -d "${HOME}/Public" ] && rmdir --ignore-fail-on-non-empty "${HOME}/Public"
+  xdg-user-dirs-update
+}
+
 function 02-desktop {
   show_question "Desktop: what do you want to install?"
   show_info "Main\n ${endbranch} Desktop (Hit ENTER to see options again.)"
 
-  local options=("Back" "All" "GNOME" "Cinnamon")
+  local options=("Back" "All" "GNOME" "Cinnamon" "KDE")
   local option
   select option in "${options[@]}"; do
     case $option in
@@ -129,6 +171,7 @@ function 02-desktop {
       "All")
         install_gnome
         install_cinnamon
+        install_kde
         show_info "Main\n ${endbranch} Desktop (Hit ENTER to see options again.)"
         ;;
       "GNOME")
@@ -137,6 +180,10 @@ function 02-desktop {
         ;;
       "Cinnamon")
         install_cinnamon
+        show_info "Main\n ${endbranch} Desktop (Hit ENTER to see options again.)"
+        ;;
+      "KDE")
+        install_kde
         show_info "Main\n ${endbranch} Desktop (Hit ENTER to see options again.)"
         ;;
       *)

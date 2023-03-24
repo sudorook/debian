@@ -22,7 +22,7 @@ dir="$(dirname "$0")"
 
 npmrc="${dir}/dotfiles/npmrc"
 themes="${dir}/packages/themes.list"
-function install_theme_deps {
+function install_theme_deps_gtk {
   show_header "Installing theme dependencies."
   check_installed "${themes}"
   check_fail
@@ -32,6 +32,14 @@ function install_theme_deps {
     show_info "Installing npmrc."
     cp -f "${npmrc}" "${HOME}/.npmrc"
   fi
+}
+
+themeskde="${dir}/packages/themes-kde.list"
+function install_theme_deps_kde {
+  show_header "Installing KDE theme dependencies."
+  check_installed "${themeskde}"
+  check_fail
+  show_success "Theme dependencies installed."
 }
 
 function install_arc_gtk {
@@ -80,6 +88,19 @@ function install_arc_gtk {
   popd >/dev/null || exit
   rm -rf "${tmpdir}"
   show_success "Arc theme installed."
+}
+
+function install_arc_kde {
+  show_header "Downloading, building, and installing the Arc KDE theme."
+  local tmpdir
+  tmpdir="$(mktemp -d)"
+  git clone -b tweak --depth 1 \
+    https://github.com/sudorook/arc-kde.git "${tmpdir}"
+  pushd "${tmpdir}" >/dev/null || exit
+  sudo make install
+  popd >/dev/null || exit
+  rm -rf "${tmpdir}"
+  show_success "Arc KDE theme installed."
 }
 
 function install_adapta_gtk {
@@ -194,6 +215,19 @@ function install_materia_gtk {
   popd >/dev/null || exit
   rm -rf "${tmpdir}"
   show_success "Materia theme installed."
+}
+
+function install_materia_kde {
+  local tmpdir
+  show_header "Downloading, building, and installing the Materia KDE theme."
+  tmpdir="$(mktemp -d)"
+  git clone -b tweak --depth 1 \
+    https://github.com/sudorook/materia-kde.git "${tmpdir}"
+  pushd "${tmpdir}" >/dev/null || exit
+  sudo make install
+  popd >/dev/null || exit
+  rm -rf "${tmpdir}"
+  show_success "Materia KDE theme installed."
 }
 
 fonts="${dir}/packages/fonts.list"
@@ -321,9 +355,11 @@ function 04-themes {
     "Back"
     "All"
     "Arc (GTK)"
+    "Arc (KDE)"
     "Adapta (GTK)"
     "Plata (GTK)"
     "Materia (GTK)"
+    "Materia (KDE)"
     "Fonts"
     "Papirus (icons)"
     "Colorific themes"
@@ -336,11 +372,14 @@ function 04-themes {
         break
         ;;
       "All")
-        install_theme_deps
+        install_theme_deps_gtk
+        install_theme_deps_kde
         install_arc_gtk
+        install_arc_kde
         install_adapta_gtk
         install_plata_gtk
         install_materia_gtk
+        install_materia_kde
         install_fonts
         install_papirus_icons
         install_colorific_themes
@@ -350,31 +389,37 @@ function 04-themes {
         show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
         ;;
       "Arc (GTK)")
-        show_info "Installing dependencies for building themes."
-        install_theme_deps
+        install_theme_deps_gtk
         install_arc_gtk
         set_qtcompat
         show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
         ;;
+      "Arc (KDE)")
+        install_theme_deps_kde
+        install_arc_kde
+        show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
+        ;;
       "Adapta (GTK)")
-        show_info "Installing dependencies for building themes."
-        install_theme_deps
+        install_theme_deps_gtk
         install_adapta_gtk
         set_qtcompat
         show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
         ;;
       "Plata (GTK)")
-        show_info "Installing dependencies for building themes."
-        install_theme_deps
+        install_theme_deps_gtk
         install_plata_gtk
         set_qtcompat
         show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
         ;;
       "Materia (GTK)")
-        show_info "Installing dependencies for building themes."
-        install_theme_deps
+        install_theme_deps_gtk
         install_materia_gtk
         set_qtcompat
+        show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
+        ;;
+      "Materia (KDE)")
+        install_theme_deps_kde
+        install_materia_kde
         show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
         ;;
       "Fonts")

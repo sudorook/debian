@@ -98,6 +98,7 @@ SCHEME=
 function ask_partition_scheme {
   show_header "Parition scheme:"
   local options=("Back" "LVM on LUKS" "LVM" "Plain")
+  local option
   select option in "${options[@]}"; do
     case "${option}" in
       "Back")

@@ -1,5 +1,6 @@
 apt-transport-https
 bash-completion
+console-setup
 curl
 debian-reference-en
 linux-base

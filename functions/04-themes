@@ -243,9 +243,9 @@ function install_fonts {
   local tmpdir
   tmpdir="$(mktemp -d)"
   pushd "${tmpdir}" >/dev/null || exit
-  wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2/UbuntuMono.zip
+  wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.3.0/UbuntuMono.zip
   unzip UbuntuMono.zip
-  mv UbuntuMono/*.ttf "${localfontdir}/"
+  mv "Ubuntu Mono"*.ttf "${localfontdir}/"
   popd >/dev/null || exit
   rm -r "${tmpdir}"
 }

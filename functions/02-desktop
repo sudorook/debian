@@ -164,7 +164,7 @@ function 02-desktop {
   local options=("Back" "All" "GNOME" "Cinnamon" "KDE")
   local option
   select option in "${options[@]}"; do
-    case $option in
+    case "${option}" in
       "Back")
         break
         ;;

@@ -367,7 +367,7 @@ function 04-themes {
     "Timed backgrounds")
   local option
   select option in "${options[@]}"; do
-    case $option in
+    case "${option}" in
       "Back")
         break
         ;;

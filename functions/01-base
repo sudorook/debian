@@ -107,7 +107,7 @@ function upgrade_debian_release {
   local options=("Back" "Buster" "Bullseye" "Bookworm" "Sid")
   local option
   select option in "${options[@]}"; do
-    case $option in
+    case "${option}" in
       "Back")
         break
         ;;
@@ -292,7 +292,7 @@ function 01-base {
     "Disable system beep")
   local option
   select option in "${options[@]}"; do
-    case $option in
+    case "${option}" in
       "Back")
         break
         ;;

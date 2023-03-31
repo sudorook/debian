@@ -118,7 +118,7 @@ function 01-misc {
     "zsh")
   local option
   select option in "${options[@]}"; do
-    case $option in
+    case "${option}" in
       "Back")
         break
         ;;

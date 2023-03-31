@@ -612,7 +612,7 @@ function 03-packages {
     "Wine")
   local option
   select option in "${options[@]}"; do
-    case $option in
+    case "${option}" in
       "Back")
         break
         ;;

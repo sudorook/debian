@@ -94,7 +94,7 @@ function main {
     "Themes"
     "Personalization")
   select option in "${options[@]}"; do
-    case $option in
+    case "${option}" in
       "Quit")
         show_success "I hope this was as fun for you as it was for me."
         break

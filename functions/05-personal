@@ -521,7 +521,7 @@ function disable_pulseaudio_suspend {
   if [ -f ${pulseconfig} ]; then
     sudo sed -i "s/^load-module module-suspend-on-idle$/#load-module module-suspend-on-idle/g" ${pulseconfig}
   else
-    show_warning "PulseAudio config file missing. Exiting."
+    show_warning "PulseAudio config file missing. Skipping."
   fi
 }
 

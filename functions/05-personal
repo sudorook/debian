@@ -679,6 +679,7 @@ function import_kde_settings {
 
   show_info "Adjusting gwenview default settings."
   kwriteconfig5 --file gwenviewrc --group "ImageView" --key "AnimationMethod" "DocumentView::NoAnimation"
+  kwriteconfig5 --file gwenviewrc --group "ImageView" --key "EnlargeSmallerImages" "true"
 
   # Because the Wayland protocol does not allow for global keylogging needed to
   # detect global shorcuts, shortcut handling for Plasma wayland is built

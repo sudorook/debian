@@ -2,6 +2,7 @@ acpi
 aptitude
 bc
 cpio
+cryfs
 dmidecode
 dos2unix
 dosfstools

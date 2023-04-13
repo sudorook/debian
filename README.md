@@ -32,7 +32,7 @@ Windows / MacOS for USB drive installations.
 The rough partition scheme is:
 ```
 1. BIOS compatibility parition, empty if GRUB not used (1 MiB)
-2. EFI partition (500 MiB)
+2. EFI partition (512 MiB)
 3. Share partition (optional)
 4. Debian system (Plain / LVM / LUKS-encrypted partitions or volumes)
    - swap

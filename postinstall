@@ -131,6 +131,7 @@ function main {
           # use_onion_repos
 
           # Install useful packages
+          install_3d_accel
           # install_android
           install_apps
           # install_apps_kde

@@ -20,6 +20,14 @@
 
 dir="$(dirname "$0")"
 
+accel="${dir}/packages/3d-accel.list"
+function install_3d_accel {
+  show_header "Installing mesa/vulkan packages for 3D acceleration."
+  check_installed "${accel}"
+  check_fail
+  show_success "Video acceleration packages installed."
+}
+
 android="${dir}/packages/android.list"
 function install_android {
   show_header "Installing tools for Android devices."
@@ -588,6 +596,7 @@ function 03-packages {
   local options=(
     "Back"
     "All"
+    "3D acceleration"
     "Android tools"
     "General applications"
     "General KDE applications"
@@ -617,6 +626,7 @@ function 03-packages {
         break
         ;;
       "All")
+        install_3d_accel
         install_android
         install_apps
         install_apps_kde
@@ -640,6 +650,10 @@ function 03-packages {
         install_virtualbox_guest
         install_wine
         show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        ;;
+      "3D acceleration")
+        install_3d_accel
+        show_info "Main\n ${endbranch} Misc (Hit ENTER to see options again.)"
         ;;
       "Android tools")
         install_android

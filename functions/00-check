@@ -92,6 +92,7 @@ function check_debian_release {
 
 function check_installed {
   local package
+  local to_install=()
   while read -r package; do
     [ -z "${package}" ] && continue
 
@@ -101,13 +102,13 @@ function check_installed {
     else
       # First check if the package exists in the repos.
       if ! (apt-cache showsrc "${package}" 2>&1 | grep -q "W: "); then
-        show_listitem "Installing ${package}."
-        sudo apt-get -y install "${package}"
+        to_install+=("${package}")
       else
         show_warning "Package ${package} does not exist in the repos. Skipping."
       fi
     fi
   done < "${1}"
+  [ "${#to_install}" -gt 0 ] && sudo apt-get -y install "${to_install[@]}"
 }
 
 function check_uninstalled {

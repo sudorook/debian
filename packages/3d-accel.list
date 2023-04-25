@@ -1,7 +1,7 @@
-intel-media-driver
-libva-utils
+intel-media-va-driver
 mesa-utils
 mesa-va-drivers
 mesa-vdpau-drivers
 mesa-vulkan-drivers
+vainfo
 vulkan-tools

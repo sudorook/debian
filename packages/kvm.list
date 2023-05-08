@@ -7,4 +7,5 @@ netcat-openbsd
 nftables
 ovmf
 qemu-system
+swtpm
 virt-manager

@@ -3,6 +3,7 @@ aptitude
 bc
 cpio
 cryfs
+dmg2img
 dmidecode
 dos2unix
 dosfstools

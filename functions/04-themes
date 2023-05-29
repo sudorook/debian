@@ -231,23 +231,19 @@ function install_materia_kde {
 }
 
 fonts="${dir}/packages/fonts.list"
-localfontdir="${HOME}/.fonts"
 function install_fonts {
   show_header "Installing fonts."
   check_installed "${fonts}"
   check_fail
   show_success "Fonts installed."
 
-  show_info "Downloading Nerd-patched Ubuntu Mono font."
-  mkdir -p "${localfontdir}"
-  local tmpdir
+  show_info "Downloading Jambo fonts."
   tmpdir="$(mktemp -d)"
+  git clone --depth 1 https://github.com/sudorook/fonts-jambo.git "${tmpdir}"
   pushd "${tmpdir}" >/dev/null || exit
-  wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.3.3/UbuntuMono.zip
-  unzip UbuntuMono.zip
-  mv "Ubuntu Mono"*.ttf "${localfontdir}/"
+  ./install
   popd >/dev/null || exit
-  rm -r "${tmpdir}"
+  rm -rf "${tmpdir}"
 }
 
 function install_papirus_icons {

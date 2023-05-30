@@ -79,11 +79,20 @@ function set_system_font {
         gsettings set org.cinnamon.desktop.interface font-name "'Roboto 10.3'"
         gsettings set org.nemo.desktop font "'Roboto 10.3'"
         gsettings set org.gnome.desktop.interface document-font-name "'Roboto 10.3'"
-        if dpkg -s fonts-ubuntu >/dev/null 2>&1; then
-          gsettings set org.gnome.desktop.interface monospace-font-name "'Ubuntu Mono 12.7'"
+
+        # monospace font
+        if fc-list | grep -q "Jambo.*Mono"; then
+          gsettings set org.gnome.desktop.interface monospace-font-name "'Jambo Mono 12.7'"
         else
-          show_warning "Ubuntu font family missing..."
+          show_warning "Jambo Mono font not found. Falling back to Ubuntu Mono."
+          if dpkg -s fonts-ubuntu >/dev/null 2>&1; then
+            gsettings set org.gnome.desktop.interface monospace-font-name "'Ubuntu Mono 12.7'"
+          else
+            show_warning "Ubuntu font family missing..."
+          fi
         fi
+
+        # titlebar font
         gsettings set org.cinnamon.desktop.wm.preferences titlebar-font "'Roboto Medium 10.3'"
       fi
 
@@ -94,10 +103,17 @@ function set_system_font {
         gsettings set org.gnome.desktop.wm.preferences titlebar-font "'Roboto Medium 10.3'"
         gsettings set org.gnome.desktop.interface document-font-name "'Roboto 10.3'"
         gsettings set org.gnome.desktop.interface font-name "'Roboto 10.3'"
-        if dpkg -s fonts-ubuntu >/dev/null 2>&1; then
-          gsettings set org.gnome.desktop.interface monospace-font-name "'Ubuntu Mono 12.7'"
+
+        # monospace font
+        if fc-list | grep -q "Jambo.*Mono"; then
+          gsettings set org.gnome.desktop.interface monospace-font-name "'Jambo Mono 12.7'"
         else
-          show_warning "Ubuntu font family missing. Skipping monospace font."
+          show_warning "Jambo Mono font not found. Falling back to Ubuntu Mono."
+          if dpkg -s fonts-ubuntu >/dev/null 2>&1; then
+            gsettings set org.gnome.desktop.interface monospace-font-name "'Ubuntu Mono 12.7'"
+          else
+            show_warning "Ubuntu font family missing..."
+          fi
         fi
       fi
 
@@ -107,10 +123,15 @@ function set_system_font {
         kwriteconfig5 --file kdeglobals --group "General" --key "smallestReadableFont" "Roboto,8,-1,5,50,0,0,0,0,0"
         kwriteconfig5 --file kdeglobals --group "General" --key "toolBarFont" "Roboto,10,-1,5,50,0,0,0,0,0"
         kwriteconfig5 --file kdeglobals --group "WM" --key "activeFont" "Roboto,10,-1,5,50,0,0,0,0,0"
-        if dpkg -s fonts-ubuntu > /dev/null 2>&1; then
-          kwriteconfig5 --file kdeglobals --group "General" --key "fixed" "Ubuntu Mono,11,-1,5,50,0,0,0,0,0"
+        if fc-list | grep -q "Jambo.*Mono"; then
+          kwriteconfig5 --file kdeglobals --group "General" --key "fixed" "Jambo Mono,10,-1,5,50,0,0,0,0,0"
         else
-          show_warning "Ubuntu font family missing..."
+          show_warning "Jambo Mono font not found. Falling back to Ubuntu Mono."
+          if dpkg -s fonts-ubuntu > /dev/null 2>&1; then
+            kwriteconfig5 --file kdeglobals --group "General" --key "fixed" "Ubuntu Mono,10,-1,5,50,0,0,0,0,0"
+          else
+            show_warning "Ubuntu font family missing..."
+          fi
         fi
         if qdbus org.kde.KWin >/dev/null; then
           qdbus org.kde.KWin /KWin reconfigure
@@ -130,11 +151,20 @@ function set_system_font {
         gsettings set org.cinnamon.desktop.interface font-name "'Noto Sans 10.3'"
         gsettings set org.nemo.desktop font "'Noto Sans 10.3'"
         gsettings set org.gnome.desktop.interface document-font-name "'Noto Sans 10.3'"
-        if dpkg -s fonts-ubuntu >/dev/null 2>&1; then
-          gsettings set org.gnome.desktop.interface monospace-font-name "'Ubuntu Mono 12.7'"
+
+        # monospace font
+        if fc-list | grep -q "Jambo.*Mono"; then
+          gsettings set org.gnome.desktop.interface monospace-font-name "'Jambo Mono 12.7'"
         else
-          show_warning "Ubuntu font family missing..."
+          show_warning "Jambo Mono font not found. Falling back to Ubuntu Mono."
+          if dpkg -s fonts-ubuntu >/dev/null 2>&1; then
+            gsettings set org.gnome.desktop.interface monospace-font-name "'Ubuntu Mono 12.7'"
+          else
+            show_warning "Ubuntu font family missing..."
+          fi
         fi
+
+        # titlebar font
         gsettings set org.cinnamon.desktop.wm.preferences titlebar-font "'Noto Sans Medium 10.3'"
       fi
 
@@ -145,10 +175,17 @@ function set_system_font {
         gsettings set org.gnome.desktop.wm.preferences titlebar-font "'Noto Sans Medium 10.3'"
         gsettings set org.gnome.desktop.interface document-font-name "'Noto Sans 10.3'"
         gsettings set org.gnome.desktop.interface font-name "'Noto Sans 10.3'"
-        if dpkg -s fonts-ubuntu >/dev/null 2>&1; then
-          gsettings set org.gnome.desktop.interface monospace-font-name "'Ubuntu Mono 12.7'"
+
+        # monospace font
+        if fc-list | grep -q "Jambo.*Mono"; then
+          gsettings set org.gnome.desktop.interface monospace-font-name "'Jambo Mono 12.7'"
         else
-          show_warning "Ubuntu font family missing..."
+          show_warning "Jambo Mono font not found. Falling back to Ubuntu Mono."
+          if dpkg -s fonts-ubuntu >/dev/null 2>&1; then
+            gsettings set org.gnome.desktop.interface monospace-font-name "'Ubuntu Mono 12.7'"
+          else
+            show_warning "Ubuntu font family missing..."
+          fi
         fi
       fi
 
@@ -158,10 +195,15 @@ function set_system_font {
         kwriteconfig5 --file kdeglobals --group "General" --key "smallestReadableFont" "Noto Sans,8,-1,5,50,0,0,0,0,0"
         kwriteconfig5 --file kdeglobals --group "General" --key "toolBarFont" "Noto Sans,10,-1,5,50,0,0,0,0,0"
         kwriteconfig5 --file kdeglobals --group "WM" --key "activeFont" "Noto Sans,10,-1,5,50,0,0,0,0,0"
-        if dpkg -s fonts-ubuntu > /dev/null 2>&1; then
-          kwriteconfig5 --file kdeglobals --group "General" --key "fixed" "Ubuntu Mono,11,-1,5,50,0,0,0,0,0"
+        if fc-list | grep -q "Jambo.*Mono"; then
+          kwriteconfig5 --file kdeglobals --group "General" --key "fixed" "Jambo Mono,10,-1,5,50,0,0,0,0,0"
         else
-          show_warning "Ubuntu font family missing..."
+          show_warning "Jambo Mono font not found. Falling back to Ubuntu Mono."
+          if dpkg -s fonts-ubuntu > /dev/null 2>&1; then
+            kwriteconfig5 --file kdeglobals --group "General" --key "fixed" "Ubuntu Mono,10,-1,5,50,0,0,0,0,0"
+          else
+            show_warning "Ubuntu font family missing..."
+          fi
         fi
         if qdbus org.kde.KWin >/dev/null; then
           qdbus org.kde.KWin /KWin reconfigure

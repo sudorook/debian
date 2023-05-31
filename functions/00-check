@@ -68,7 +68,7 @@ function check_debian_release {
      ! [[ "${release}" == "bullseye" ]] && \
      ! [[ "${release}" == "buster" ]] && \
      ! [[ "${release}" == "sid" ]]; then
-    show_warning "Currently running ${release}"
+    show_warning "Currently running ${release@Q}"
     read -r -p $'\033[1;34mSwitch to bullseye (i.e. stable)? (y/N) \033[0m' response
     if [[ "${response}" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
       echo "Updating sources.list."
@@ -86,7 +86,7 @@ function check_debian_release {
       show_warning "This script is not intended for $(lsb_release -sc)."
     fi
   else
-    show_success "Now running ${release}."
+    show_success "Now running ${release@Q}."
   fi
 }
 
@@ -98,13 +98,13 @@ function check_installed {
 
     # Check if package is installed already before installing.
     if dpkg -s "${package}" >/dev/null 2>&1; then
-      show_listitem "${package} package already installed. Skipping."
+      show_listitem "${package@Q} already installed. Skipping."
     else
       # First check if the package exists in the repos.
       if ! (apt-cache showsrc "${package}" 2>&1 | grep -q "W: "); then
         to_install+=("${package}")
       else
-        show_warning "Package ${package} does not exist in the repos. Skipping."
+        show_warning "${package@Q} does not exist in the repos. Skipping."
       fi
     fi
   done < "${1}"
@@ -117,11 +117,11 @@ function check_uninstalled {
     [ -z "${package}" ] && continue
 
     if dpkg -s "${package}" >/dev/null 2>&1; then
-      show_listitem "Purging ${package}."
+      show_listitem "Purging ${package@Q}."
       sudo apt-get -y purge "${package}"
       sudo apt-get -y autoremove
     else
-      show_warning "Package ${package} is not installed. Skipping."
+      show_warning "${package@Q} is not installed. Skipping."
     fi
   done < "${1}"
 }
@@ -140,12 +140,12 @@ function install_post_dependencies {
   local package
   while read -r package; do
     if ! dpkg -s "${package}" > /dev/null 2>&1; then
-      show_info "${package} is needed for this script."
+      show_info "${package@Q} is needed for this script."
       sudo apt-get -y install "${package}"
       check_fail $?
-      show_success "${package} now installed."
+      show_success "${package@Q} now installed."
     else
-      show_success "${package} is already installed."
+      show_success "${package@Q} is already installed."
     fi
   done < "${deps}"
 }
@@ -164,12 +164,12 @@ function install_dependencies {
   local package
   while read -r package; do
     if ! dpkg -s "${package}" > /dev/null 2>&1; then
-      show_info "${package} is needed for this script."
+      show_info "${package@Q} is needed for this script."
       apt-get -y install "${package}"
       check_fail $?
-      show_success "${package} now installed."
+      show_success "${package@Q} now installed."
     else
-      show_success "${package} is already installed."
+      show_success "${package@Q} is already installed."
     fi
   done < "${install}"
 }

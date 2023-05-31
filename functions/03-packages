@@ -89,7 +89,7 @@ function install_apps {
   mkdir -p "${HOME}/.config/keepassxc"
   cp -f "${keepassxcini}" "${HOME}/.config/keepassxc/"
 
-  show_info "Configuring ${libaoconf} to use PulseAudio instead of ALSA."
+  show_info "Configuring ${libaoconf@Q} to use PulseAudio instead of ALSA."
   sudo sh -c "echo 'default_driver=pulse' > ${libaoconf}"
 }
 
@@ -275,7 +275,7 @@ function install_kvm {
   # show_info "Enable dynamic ownership for qemu."
   # sudo sed -i "s/^#dynamic_ownership/dynamic_ownership/g" "${qemuconf}"
 
-  # show_info "Set libvirt user to 'kvm' group in ${qemuconf}"
+  # show_info "Set libvirt user to 'kvm' group in ${qemuconf@Q}"
   # sudo sed -i "s/^group = \".*\"/group = \"kvm\"/g" "${qemuconf}"
   # show_warning \
   #   "Manually enable 'cgroup_device_acl' and add '/dev/dri/renderD128'" \
@@ -387,7 +387,7 @@ function install_torbrowser {
   local response
   local install_torbrowser
   if [ -d "${torbrowser_path}" ]; then
-    show_warning "Tor browser is already installed in ${torbrowser_path}."
+    show_warning "Tor browser is already installed in ${torbrowser_path@Q}."
     response=$(ask_question "Replace? (y/N)")
     if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
       install_torbrowser=true
@@ -453,6 +453,7 @@ function install_torbrowser {
 vim="${dir}/packages/vim.list"
 vimrc="${dir}/dotfiles/vimrc"
 vimpack="${HOME}/.vim/pack/dist/start"
+vimspell="${HOME}/.vim/spell"
 function install_vim {
   show_header "Installing Vim and Vim plugins."
   check_installed "${vim}"
@@ -489,22 +490,22 @@ function install_vim {
   fi
 
   show_info "Install local wordlist."
-  mkdir -p "${HOME}/.vim/spell"
+  mkdir -p "${vimspell}"
   local tmpdir
   tmpdir="$(mktemp -d)"
   git clone --depth 1 \
     https://github.com/sudorook/wordlist.vim.git "${tmpdir}"
   pushd "${tmpdir}" >/dev/null || exit
   ./build
-  if [ -f "${HOME}/.vim/spell/en.utf-8.add" ]; then
-    show_info "Wordlist already exists in ${HOME}/.vim/spell/. Appending."
+  if [ -f "${vimspell}/en.utf-8.add" ]; then
+    show_info "Wordlist already exists in ${vimspell@Q}. Appending."
     ./append
   else
     ./install
   fi
   popd >/dev/null || exit
   rm -rf "${tmpdir}"
-  show_success "Wordlist installed in ${HOME}/.vim/spell."
+  show_success "Wordlist installed in ${vimspell@Q}."
   show_info "To use the wordlist, add the following to you vimrc:"
   show_info "  set spelllang=en"
   show_info "  set spellfile=\$HOME/.vim/spell/en.utf-8.add"
@@ -512,6 +513,7 @@ function install_vim {
 
 nvim="${dir}/packages/neovim.list"
 nvimrc="${dir}/dotfiles/vimrc"
+nvimspell="${HOME}/.config/nvim/spell"
 function install_neovim {
   show_header "Installing Neovim and Neovim plugins."
   check_installed "${nvim}"
@@ -535,22 +537,22 @@ function install_neovim {
   fi
 
   show_info "Install local wordlist."
-  mkdir -p "${HOME}/.config/nvim/spell"
+  mkdir -p "${nvimspell}"
   local tmpdir
   tmpdir="$(mktemp -d)"
   git clone --depth 1 \
     https://github.com/sudorook/wordlist.vim.git "${tmpdir}"
   pushd "${tmpdir}" >/dev/null || exit
   ./build
-  if [ -f "${HOME}/.config/nvim/spell/en.utf-8.add" ]; then
-    show_info "Wordlist already exists in ${HOME}/.config/nvim/spell/. Appending."
+  if [ -f "${nvimspell}/en.utf-8.add" ]; then
+    show_info "Wordlist already exists in ${nvimspell@Q}. Appending."
     ./append
   else
     ./install
   fi
   popd >/dev/null || exit
   rm -rf "${tmpdir}"
-  show_success "Wordlist installed in ${HOME}/.config/nvim/spell."
+  show_success "Wordlist installed in ${nvimspell@Q}."
   show_info "To use the wordlist, add the following to you vimrc:"
   show_info "  set spelllang=en"
   show_info "  set spellfile=\$HOME/.vim/spell/en.utf-8.add"

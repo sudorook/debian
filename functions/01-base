@@ -245,7 +245,7 @@ function disable_beep {
       sudo sh -c "echo 'blacklist snd_pcsp' >> ${pcspkr_blacklist}"
     fi
   fi
-  show_success "Blacklisted in ${pcspkr_blacklist}."
+  show_success "Blacklisted in ${pcspkr_blacklist@Q}."
 
   show_info "Disabling gtk2 and gtk3 error-bell."
   if [ -f "${gtk2conf}" ]; then

@@ -53,7 +53,7 @@ function select_system_font {
         break
         ;;
       *)
-        show_error "Font ${option} not supported."
+        show_error "Font ${option@Q} not supported."
         exit 3
         ;;
     esac
@@ -211,7 +211,7 @@ function set_system_font {
       fi
       ;;
     *)
-      show_error "Font ${font} not supported."
+      show_error "Font ${font@Q} not supported."
       exit 3
       ;;
   esac
@@ -369,10 +369,10 @@ function set_gdm_theme {
     elif [[ -d "/usr/share/themes/${gtktheme}" ]]; then
       gtkthemedir="/usr/share/themes/${gtktheme}"
     else
-      show_warning "GTK theme ${gtktheme} not found. Skipping."
+      show_warning "GTK theme ${gtktheme@Q} not found. Skipping."
       return
     fi
-    show_header "Setting GDM login theme to ${gtktheme}."
+    show_header "Setting GDM login theme to ${gtktheme@Q}."
     sudo cp -r "/usr/share/gnome-shell" "/usr/share/gnome-shell-$(date +%Y%m%d-%H%M%S)"
     if [[ "${gtktheme}" =~ ^Adapta ]] || [[ "${gtktheme}" =~ ^Plata ]]; then
       sudo cp -rf \
@@ -931,19 +931,19 @@ function disable_11n {
       show_info "11n_disable=1 flag is already set."
     fi
   fi
-  show_success "802.11n networking disabled in ${iwlwificonf}."
+  show_success "802.11n networking disabled in ${iwlwificonf@Q}."
 }
 
 autostartdir="${HOME}/.config/autostart"
 scriptdir="${HOME}/.scripts"
 batterydaemon="${dir}/daemons/battery.desktop"
 function install_scripts {
-  show_header "Installing misc. scripts to the ${HOME}/.scripts folder."
+  show_header "Installing misc. scripts to the ${scriptdir@Q} folder."
   if [ -d "${HOME}/.scripts" ]; then
     git -C "${HOME}/.scripts" pull
   else
     git clone https://github.com/sudorook/misc-scripts.git "${scriptdir}"
-    show_info "Be sure to populate ${scriptdir}/globals."
+    show_info "Be sure to populate '${scriptdir}/globals'."
   fi
   show_success "Installed."
 

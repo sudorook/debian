@@ -232,6 +232,7 @@ function install_materia_kde {
 
 fonts="${dir}/packages/fonts.list"
 function install_fonts {
+  local tmpdir
   show_header "Installing fonts."
   check_installed "${fonts}"
   check_fail

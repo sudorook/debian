@@ -1,9 +1,9 @@
-deb https://deb.debian.org/debian bookworm main
-deb-src https://deb.debian.org/debian bookworm main
+deb https://deb.debian.org/debian bookworm main non-free-firmware
+deb-src https://deb.debian.org/debian bookworm main non-free-firmware
 
-deb https://deb.debian.org/debian-security bookworm-security main
-deb-src https://deb.debian.org/debian-security bookworm-security main
+deb https://deb.debian.org/debian-security/ bookworm-security main non-free-firmware
+deb-src https://deb.debian.org/debian-security/ bookworm-security main non-free-firmware
 
 # bookworm-updates, previously known as 'volatile'
-deb https://deb.debian.org/debian bookworm-updates main
-deb-src https://deb.debian.org/debian bookworm-updates main
+deb https://deb.debian.org/debian bookworm-updates main non-free-firmware
+deb-src https://deb.debian.org/debian bookworm-updates main non-free-firmware

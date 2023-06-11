@@ -13,6 +13,7 @@ set smartindent
 set incsearch
 set hlsearch
 set showmatch
+set mouse=
 set wildmenu
 set wildignore=*.o,*~,*.pyc,*.lo
 set spelllang=en
@@ -50,7 +51,7 @@ endif
 set background=dark
 
 "encryption
-set cm=blowfish
+"set cm=blowfish
 
 "pathogen
 "execute pathogen#infect()

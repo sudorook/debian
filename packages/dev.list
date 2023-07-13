@@ -145,6 +145,7 @@ musl-tools
 nodejs
 npm
 pandoc
+pipx
 pkg-config
 pylint
 python3-biopython

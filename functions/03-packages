@@ -412,9 +412,9 @@ function install_torbrowser {
                          sed -n 's,^ \+<a class="downloadLink" href="/dist/torbrowser/\([0-9\.]\+\)/tor-browser-linux.*">,\1,p')
     arch=$(uname -m)
     if [ "${arch:(-2)}" = "86" ]; then
-      torbrowser_package=tor-browser-linux32-${torbrowser_version}_en-US.tar.xz
+      torbrowser_package=tor-browser-linux32-${torbrowser_version}_ALL.tar.xz
     elif [ "${arch:(-2)}" = "64" ]; then
-      torbrowser_package=tor-browser-linux64-${torbrowser_version}_en-US.tar.xz
+      torbrowser_package=tor-browser-linux64-${torbrowser_version}_ALL.tar.xz
     fi
 
     show_info "Downloading release tarball."

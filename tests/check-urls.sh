@@ -50,7 +50,7 @@ function check_url_torbrowser {
   torbrowser_version=$(curl -s https://www.torproject.org/download/ | \
                        sed -n 's,^ \+<a class="downloadLink" href="/dist/torbrowser/\([0-9\.]\+\)/tor-browser-linux.*">,\1,p')
   for arch in "32" "64"; do
-    local torbrowser_package="tor-browser-linux${arch}-${torbrowser_version}_en-US.tar.xz"
+    local torbrowser_package="tor-browser-linux${arch}-${torbrowser_version}_ALL.tar.xz"
     if try_wget "${torbrowser_url}/${torbrowser_version}/${torbrowser_package}"; then
       show_success "${torbrowser_url}/${torbrowser_version}/${torbrowser_package}"
     else

@@ -152,6 +152,7 @@ function install_post_dependencies {
 
 function install_dependencies {
   show_header "Checking installation dependencies."
+
   local state=true
   local exe
   while read -r exe; do

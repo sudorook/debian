@@ -106,7 +106,10 @@ make_silent evince
 make_silent gimp
 make_silent gitg
 make_silent gitk
+make_silent gwenview
 make_silent inkscape
+make_silent krita
+make_silent okular
 
 unset -f make_silent
 

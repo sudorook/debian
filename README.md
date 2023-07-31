@@ -74,10 +74,10 @@ Installation options will be queries as the script runs.
 4) EFISTUB
 ```
 
-2) Installs GRUB, BIOS version of no EFI firmware is detected. Otherwise, the
+2) Installs GRUB, BIOS version if no EFI firmware is detected. Otherwise, the
    EFI version is installed.
 3) systemd-boot (previously gummiboot) installs kernels in `/boot` and copies
-   them over to `/efi`. Systemd path hoods are also installed to update kernel
+   them over to `/efi`. SystemD path hooks are also installed to update kernel
    images and microcode in `/efi` after updates.
 4) Not supported yet...
 

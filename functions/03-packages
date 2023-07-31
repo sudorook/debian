@@ -61,6 +61,14 @@ function install_apps {
     show_info "Installing kitty.vim for Vim syntax highlighting."
     git clone https://github.com/sudorook/kitty.vim.git \
       "${vimpack}/kitty.vim"
+
+    local kitty_version
+    kitty_version="$(kitty --version | sed -n "s/kitty \([0-9\.]\+\) created by Kovid Goyal/\1/p")"
+    if git -C "${vimpack}/kitty.vim" rev-parse "v${kitty_version}" >/dev/null 2>&1; then
+      git -C "${vimpack}/kitty.vim" checkout "v${kitty_version}"
+    else
+      ./"${vimpack}"/kitty.vim/build >/dev/null
+    fi
   fi
 
   show_info "Setting application MIME associations."

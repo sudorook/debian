@@ -12,6 +12,7 @@ Requirements:
 1. `wget`
 2. `git`
 3. `sudo`
+4. `fzf`
 
 ## Install
 

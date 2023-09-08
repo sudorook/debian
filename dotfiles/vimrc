@@ -18,6 +18,8 @@ set wildmenu
 set wildignore=*.o,*~,*.pyc,*.lo
 set spelllang=en
 set spellfile=$HOME/.vim/spell/en.utf-8.add
+set undofile
+set undodir=$HOME/.vim/undo
 set encoding=utf-8
 filetype plugin indent on
 syntax on

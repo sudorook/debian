@@ -4,7 +4,6 @@ deb-src https://deb.debian.org/debian bullseye main
 deb https://deb.debian.org/debian-security bullseye-security main
 deb-src https://deb.debian.org/debian-security bullseye-security main
 
-# bullseye-updates, previously known as 'volatile'
 deb https://deb.debian.org/debian bullseye-updates main
 deb-src https://deb.debian.org/debian bullseye-updates main
 

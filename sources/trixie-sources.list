@@ -1,0 +1,8 @@
+deb https://deb.debian.org/debian trixie main non-free-firmware
+deb-src https://deb.debian.org/debian trixie main non-free-firmware
+
+deb https://deb.debian.org/debian-security trixie-security main non-free-firmware
+deb-src https://deb.debian.org/debian-security trixie-security main non-free-firmware
+
+deb https://deb.debian.org/debian trixie-updates main non-free-firmware
+deb-src https://deb.debian.org/debian trixie-updates main non-free-firmware

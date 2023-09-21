@@ -66,7 +66,7 @@ function check_debian_release {
   release=$(lsb_release -sc)
   if ! [[ "${release}" == "bookworm" ]] && \
      ! [[ "${release}" == "bullseye" ]] && \
-     ! [[ "${release}" == "buster" ]] && \
+     ! [[ "${release}" == "trixie" ]] && \
      ! [[ "${release}" == "sid" ]]; then
     show_warning "Currently running ${release@Q}"
     read -r -p $'\033[1;34mSwitch to bullseye (i.e. stable)? (y/N) \033[0m' response

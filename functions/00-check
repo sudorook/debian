@@ -59,32 +59,16 @@ function check_fail {
   fi
 }
 
-srclist="/etc/apt/sources.list"
 function check_debian_release {
-  show_header "Checking currently set Debian release."
+  show_header "Checking current Debian release."
   local release
   release=$(lsb_release -sc)
   if ! [[ "${release}" == "bookworm" ]] && \
      ! [[ "${release}" == "bullseye" ]] && \
      ! [[ "${release}" == "trixie" ]] && \
      ! [[ "${release}" == "sid" ]]; then
-    show_warning "Currently running ${release@Q}"
-    read -r -p $'\033[1;34mSwitch to bullseye (i.e. stable)? (y/N) \033[0m' response
-    if [[ "${response}" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
-      echo "Updating sources.list."
-      sudo sed -i "/deb cdrom/d" ${srclist}
-      sudo sed -i "/# *$/d" ${srclist}
-      sudo sed -i "s/${release}/bullseye/g" ${srclist}
-      sudo sh -c "apt-get update && \
-        apt-get -y upgrade && \
-        apt-get -y dist-upgrade \
-        apt-get -y autoremove \
-        apt-get -y autoclean \
-        update-grub"
-      show_info "Reboot your system after major updates."
-    else
-      show_warning "This script is not intended for $(lsb_release -sc)."
-    fi
+    show_warning "This script is not intended for Debian ${release@Q}."
+    exit 1
   else
     show_success "Now running ${release@Q}."
   fi

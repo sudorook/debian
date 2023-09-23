@@ -42,6 +42,9 @@ command -v npm >/dev/null 2>&1 && {
 # R
 command -v R >/dev/null 2>&1 && {
   R_LIBS_USER="${HOME}/.R/$(R --version | sed -n "s/^R version \([0-9\.]*\) .*/\1/p")"
+  if ! [ -d "${R_LIBS_USER}" ]; then
+    mkdir -p "${R_LIBS_USER}"
+  fi
   export R_LIBS_USER
   alias R='R --no-save '
   if [ -d /usr/share/mathjax ]; then

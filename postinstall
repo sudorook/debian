@@ -168,7 +168,6 @@ function main {
           install_fonts
           install_papirus_icons
           install_colorific_themes
-          # install_thunderbird_theme
           install_timed_backgrounds
           set_qtcompat
 

@@ -271,35 +271,6 @@ function install_colorific_themes {
   show_success "Themes installed."
 }
 
-thunderbirdprofile="${HOME}/.thunderbird/profiles.ini"
-function install_thunderbird_theme {
-  local thunderbird
-  if [ -f "${thunderbirdprofile}" ]; then
-    thunderbird="$(grep -A 1 "^\[Install" "${thunderbirdprofile}" | \
-                   sed -n "s/^Default=\(.*\)/\1/p")"
-  else
-    show_warning "Thunderbird profile missing. Skipping."
-    return
-  fi
-
-  show_header "Installing Monterail theme for Thunderbird."
-  if [ -d "${HOME}/.thunderbird/${thunderbird}/chrome" ]; then
-    show_info "'${thunderbird}/chrome' already exists. Backing up and replacing."
-    mv "${HOME}/.thunderbird/${thunderbird}/chrome" \
-      "${HOME}/.thunderbird/${thunderbird}/chrome.$(date +%Y%m%d-%H%M%S).bak"
-  fi
-
-  git clone \
-    https://github.com/spymastermatt/thunderbird-monterail.git \
-    "${HOME}/.thunderbird/${thunderbird}/chrome"
-  show_info "Enable legacy stylesheets in Thunderbird config editor:"
-  show_info "  toolkit.legacyUserProfileCustomizations.stylesheets = true"
-
-  local userchrome=${HOME}/.thunderbird/${thunderbird}/chrome/userChrome.css
-  sed -i 's|^\(\s*\)/\*--default-font: var(--light-sans-font); .*$|\1--default-font: var(--system-font);|g' "${userchrome}"
-  show_success "Done."
-}
-
 function install_timed_backgrounds {
   show_header "Installing timed backgrounds."
   local tmpdir
@@ -360,7 +331,6 @@ function 04-themes {
     "Fonts"
     "Papirus (icons)"
     "Colorific themes"
-    "Thunderbird theme"
     "Timed backgrounds")
   local option
   select option in "${options[@]}"; do
@@ -380,7 +350,6 @@ function 04-themes {
         install_fonts
         install_papirus_icons
         install_colorific_themes
-        install_thunderbird_theme
         install_timed_backgrounds
         set_qtcompat
         show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
@@ -429,10 +398,6 @@ function 04-themes {
         ;;
       "Colorific themes")
         install_colorific_themes
-        show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
-        ;;
-      "Thunderbird theme")
-        install_thunderbird_theme
         show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
         ;;
       "Timed backgrounds")

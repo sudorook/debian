@@ -273,8 +273,8 @@ Automatically install (without prompting) packages and configs.
 #### 8) Themes
 ```
 1) Back                 6) Plata (GTK)        11) Colorific themes
-2) All                  7) Materia (GTK)      12) Thunderbird theme
-3) Arc (GTK)            8) Materia (KDE)      13) Timed backgrounds
+2) All                  7) Materia (GTK)      12) Timed backgrounds
+3) Arc (GTK)            8) Materia (KDE)
 4) Arc (KDE)            9) Fonts
 5) Adapta (GTK)        10) Papirus (icons)
 ```
@@ -304,10 +304,7 @@ Automatically install (without prompting) packages and configs.
 11) Install [colorific themes](https://github.com/sudorook/colorific.vim) for
    alacritty, gitk, kitty, Neovim, tmux, and Vim.
 
-12) Install the [Monterail theme](https://github.com/spymastermatt/thunderbird-monterail)
-    for Thunderbird.
-
-13) Install [timed backgrounds](https://github.com/sudorook/timed-backgrounds)
+12) Install [timed backgrounds](https://github.com/sudorook/timed-backgrounds)
     where transitions from day to night match sunrise/sunset times.
 
 #### 9) Personalization

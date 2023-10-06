@@ -1,5 +1,4 @@
 beets
-clementine
 ffmpeg
 imagemagick
 mpc
@@ -10,3 +9,4 @@ python3-mpd
 python3-mutagen
 python3-pylast
 python3-requests
+strawberry

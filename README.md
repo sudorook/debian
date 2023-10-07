@@ -201,19 +201,15 @@ Automatically install (without prompting) packages and configs.
 
 #### 7) Applications
 ```
- 1) Back                      14) Messaging
- 2) All                       15) MinGW
- 3) 3D acceleration           16) Music
- 4) Android tools             17) Printing
- 5) General applications      18) PipeWire
- 6) General KDE applications  19) TeX Live
- 7) Codecs                    20) Tor browser
- 8) Development               21) Vim
- 9) Extra applications        22) Neovim
-10) Extra KDE applications    23) VirtualBox (host)
-11) Emulators                 24) VirtualBox (guest)
-12) KVM (host)                25) Wine
-13) KVM (guest)
+1) Back                       10) Extra applications       19) PipeWire
+2) All                        11) Extra KDE applications   20) TeX Live
+3) 3D acceleration            12) Emulators                21) Tor browser
+4) Android tools              13) KVM (host)               22) Vim
+5) General applications       14) KVM (guest)              23) Neovim
+6) General KDE applications   15) Messaging                24) VirtualBox (host)
+7) Codecs                     16) MinGW                    25) VirtualBox (guest)
+8) Containers                 17) Music                    26) Wine
+9) Development                18) Printing
 ```
 
 3) Install 3D video acceleration packages in
@@ -229,45 +225,47 @@ Automatically install (without prompting) packages and configs.
 
 7) Install GStreamer plugins for handing various media codecs.
 
-8) Install packages for programming and software development.
+8) Install container packages (conatinerd, LXC, Nomad, Podman).
 
-9) Install extra, less used applications from [extra.list](packages/extra.list).
+9) Install packages for programming and software development.
 
-10) Install extra KDE (Qt) applications from [extra-kde.list](packages/extra-kde.list).
+10) Install extra, less used applications from [extra.list](packages/extra.list).
 
-11) Install game system emulators.
+11) Install extra KDE (Qt) applications from [extra-kde.list](packages/extra-kde.list).
 
-12) Install Virt-Manager and tools for using KVM virtualization.
+12) Install game system emulators.
 
-13) Install packages for Linux guests to enable host-to-guest sharing and
+13) Install Virt-Manager and tools for using KVM virtualization.
+
+14) Install packages for Linux guests to enable host-to-guest sharing and
     adjustable display resolution.
 
-14) Install IRC, email, and other messaging clients.
+15) Install IRC, email, and other messaging clients.
 
-15) Install MinGW for Windows/Linux cross-platform compilation.
+16) Install MinGW for Windows/Linux cross-platform compilation.
 
-16) Install applications for playing music (`mpd`, `ncmcpp`, `clementine`),
+17) Install applications for playing music (`mpd`, `ncmcpp`, `clementine`),
     computing replaygain (`ffmpeg`), tagging metadata (`beets`), and using
     Pandora (`pianobar`).
 
-17) Install CUPS, drivers, and applications for handling printers.
+18) Install CUPS, drivers, and applications for handling printers.
 
-18) Install PipeWire for A/V handling (replaces PulseAudio, ALSA, etc.).
+19) Install PipeWire for A/V handling (replaces PulseAudio, ALSA, etc.).
 
-19) Install TeX libraries and Font Awesome icons.
+20) Install TeX libraries and Font Awesome icons.
 
-20) Download and install the Tor browser. Edits the application launcher icon
+21) Download and install the Tor browser. Edits the application launcher icon
     to look for "browser-tor".
 
-21) Install `vim` and `vim-plugins` and then set the user vimrc.
+22) Install `vim` and `vim-plugins` and then set the user vimrc.
 
-22) Install `neovim` and then set the user init.vim.
+23) Install `neovim` and then set the user init.vim.
 
-23) Install VirtualBox and kernel modules (dkms) for running it (host).
+24) Install VirtualBox and kernel modules (dkms) for running it (host).
 
-24) Install kernel modules (dkms) and tools for VirtualBox guests.
+25) Install kernel modules (dkms) and tools for VirtualBox guests.
 
-25) Install Wine not-emulator, along with the Mono and browser and some audio
+26) Install Wine not-emulator, along with the Mono and browser and some audio
     libraries.
 
 #### 8) Themes

@@ -151,6 +151,14 @@ function install_codecs {
   show_success "Codecs installed."
 }
 
+containers="${dir}/packages/containers.list"
+function install_containers {
+  show_header "Installing container packages (containerd, LXC, Nomad, Podman)."
+  check_installed "${containers}"
+  check_fail
+  show_success "Container packages installed."
+}
+
 dev="${dir}/packages/dev.list"
 r="${dir}/packages/r.list"
 npmrc="${dir}/dotfiles/npmrc"
@@ -611,6 +619,7 @@ function 03-packages {
     "General applications"
     "General KDE applications"
     "Codecs"
+    "Containers"
     "Development"
     "Extra applications"
     "Extra KDE applications"
@@ -641,6 +650,7 @@ function 03-packages {
         install_apps
         install_apps_kde
         install_codecs
+        install_containers
         install_dev
         install_extra
         install_extra_kde
@@ -679,6 +689,10 @@ function 03-packages {
         ;;
       "Codecs")
         install_codecs
+        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        ;;
+      "Containers")
+        install_containers
         show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
         ;;
       "Development")

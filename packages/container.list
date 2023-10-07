@@ -1,0 +1,12 @@
+buildah
+conatinerd
+containernetworking-plugins
+fuse-overlayfs
+lxc
+nomad
+nomad-driver-lxc
+nomad-driver-podman
+podman
+podman-compose
+podman-docker
+skopeo

@@ -137,6 +137,7 @@ function main {
           install_apps
           # install_apps_kde
           install_codecs
+          install_containers
           install_dev
           install_extra
           # install_extra_kde

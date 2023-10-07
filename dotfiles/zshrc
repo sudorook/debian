@@ -5,7 +5,11 @@
 #
 
 export BROWSER="firefox"
-export EDITOR="vim"
+if command -v nvim >/dev/null 2>&1; then
+  export EDITOR="nvim"
+elif command -v vim >/dev/null 2>&1; then
+  export EDITOR="vim"
+fi
 export SUDO_EDITOR="${EDITOR}"
 export VISUAL="${EDITOR}"
 
@@ -71,7 +75,13 @@ export LD_LIBRARY_PATH="${HOME}/.local/lib:/usr/local/lib:${LD_LIBRARY_PATH}"
 # Set zsh aliases
 #
 
-alias vi='vim '
+if command -v nvim >/dev/null 2>&1; then
+  alias vi='nvim '
+  alias vim='nvim '
+  alias vimdiff='nvim -d '
+elif command -v vim >/dev/null 2>&1; then
+  alias vi='vim '
+fi
 alias sudo='sudo '
 alias scp='noglob scp'
 alias grep='grep --color=auto'

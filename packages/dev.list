@@ -183,3 +183,4 @@ tidy
 tk
 uncrustify
 yamllint
+yq

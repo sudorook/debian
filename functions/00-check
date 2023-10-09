@@ -160,6 +160,10 @@ function install_dependencies {
 }
 
 function install_sudo {
+  if ! command -v dpkg >/dev/null; then
+    show_error "dpkg not installed. Exiting."
+    exit
+  fi
   if ! dpkg -s sudo > /dev/null 2>&1; then
     show_header "sudo is needed for this script."
     show_info "Installing sudo via root (enter root password):"

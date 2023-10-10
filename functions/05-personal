@@ -17,7 +17,6 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-
 dir="$(dirname "$0")"
 
 # Globals
@@ -67,7 +66,7 @@ function set_system_font {
 
   case "${font}" in
     "Roboto")
-      if dpkg -s cinnamon >/dev/null 2>&1; then
+      if dpkg -s cinnamon > /dev/null 2>&1; then
         show_info "Setting fonts for Cinnamon desktop environment."
 
         # screensaver fonts
@@ -85,7 +84,7 @@ function set_system_font {
           gsettings set org.gnome.desktop.interface monospace-font-name "'Jambo Mono 9.3'"
         else
           show_warning "Jambo Mono font not found. Falling back to Ubuntu Mono."
-          if dpkg -s fonts-ubuntu >/dev/null 2>&1; then
+          if dpkg -s fonts-ubuntu > /dev/null 2>&1; then
             gsettings set org.gnome.desktop.interface monospace-font-name "'Ubuntu Mono 10.9'"
           else
             show_warning "Ubuntu font family missing..."
@@ -96,7 +95,7 @@ function set_system_font {
         gsettings set org.cinnamon.desktop.wm.preferences titlebar-font "'Roboto Medium 10.3'"
       fi
 
-      if dpkg -s gnome-shell >/dev/null 2>&1; then
+      if dpkg -s gnome-shell > /dev/null 2>&1; then
         show_info "Setting fonts for GNOME environment."
 
         # desktop environment fonts
@@ -109,7 +108,7 @@ function set_system_font {
           gsettings set org.gnome.desktop.interface monospace-font-name "'Jambo Mono 9.3'"
         else
           show_warning "Jambo Mono font not found. Falling back to Ubuntu Mono."
-          if dpkg -s fonts-ubuntu >/dev/null 2>&1; then
+          if dpkg -s fonts-ubuntu > /dev/null 2>&1; then
             gsettings set org.gnome.desktop.interface monospace-font-name "'Ubuntu Mono 10.9'"
           else
             show_warning "Ubuntu font family missing..."
@@ -117,7 +116,7 @@ function set_system_font {
         fi
       fi
 
-      if dpkg -s plasma-desktop >/dev/null 2>&1; then
+      if dpkg -s plasma-desktop > /dev/null 2>&1; then
         kwriteconfig5 --file kdeglobals --group "General" --key "font" "Roboto,10,-1,5,50,0,0,0,0,0"
         kwriteconfig5 --file kdeglobals --group "General" --key "menuFont" "Roboto,10,-1,5,50,0,0,0,0,0"
         kwriteconfig5 --file kdeglobals --group "General" --key "smallestReadableFont" "Roboto,8,-1,5,50,0,0,0,0,0"
@@ -133,13 +132,13 @@ function set_system_font {
             show_warning "Ubuntu font family missing..."
           fi
         fi
-        if qdbus org.kde.KWin >/dev/null; then
+        if qdbus org.kde.KWin > /dev/null; then
           qdbus org.kde.KWin /KWin reconfigure
         fi
       fi
       ;;
     "Noto")
-      if dpkg -s cinnamon >/dev/null 2>&1; then
+      if dpkg -s cinnamon > /dev/null 2>&1; then
         show_info "Setting fonts for Cinnamon desktop environment."
 
         # screensaver fonts
@@ -157,7 +156,7 @@ function set_system_font {
           gsettings set org.gnome.desktop.interface monospace-font-name "'Jambo Mono 10.4'"
         else
           show_warning "Jambo Mono font not found. Falling back to Ubuntu Mono."
-          if dpkg -s fonts-ubuntu >/dev/null 2>&1; then
+          if dpkg -s fonts-ubuntu > /dev/null 2>&1; then
             gsettings set org.gnome.desktop.interface monospace-font-name "'Ubuntu Mono 11.7'"
           else
             show_warning "Ubuntu font family missing..."
@@ -181,7 +180,7 @@ function set_system_font {
           gsettings set org.gnome.desktop.interface monospace-font-name "'Jambo Mono 10.4'"
         else
           show_warning "Jambo Mono font not found. Falling back to Ubuntu Mono."
-          if dpkg -s fonts-ubuntu >/dev/null 2>&1; then
+          if dpkg -s fonts-ubuntu > /dev/null 2>&1; then
             gsettings set org.gnome.desktop.interface monospace-font-name "'Ubuntu Mono 11.7'"
           else
             show_warning "Ubuntu font family missing..."
@@ -189,7 +188,7 @@ function set_system_font {
         fi
       fi
 
-      if dpkg -s plasma-shell >/dev/null 2>&1; then
+      if dpkg -s plasma-shell > /dev/null 2>&1; then
         kwriteconfig5 --file kdeglobals --group "General" --key "font" "Noto Sans,10,-1,5,50,0,0,0,0,0"
         kwriteconfig5 --file kdeglobals --group "General" --key "menuFont" "Noto Sans,10,-1,5,50,0,0,0,0,0"
         kwriteconfig5 --file kdeglobals --group "General" --key "smallestReadableFont" "Noto Sans,8,-1,5,50,0,0,0,0,0"
@@ -205,7 +204,7 @@ function set_system_font {
             show_warning "Ubuntu font family missing..."
           fi
         fi
-        if qdbus org.kde.KWin >/dev/null; then
+        if qdbus org.kde.KWin > /dev/null; then
           qdbus org.kde.KWin /KWin reconfigure
         fi
       fi
@@ -262,9 +261,9 @@ function set_gtk_theme {
     gsettings set org.gnome.shell.extensions.user-theme name "'${gtktheme}'"
   fi
 
-  if dpkg -s plasma-desktop >/dev/null 2>&1; then
+  if dpkg -s plasma-desktop > /dev/null 2>&1; then
     show_info "Setting Plasma GTK theme to ${gtktheme@Q}."
-    if qdbus org.kde.GtkConfig >/dev/null; then
+    if qdbus org.kde.GtkConfig > /dev/null; then
       qdbus org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "${gtktheme}"
     fi
   fi
@@ -283,13 +282,13 @@ function set_plasma_theme {
       kwriteconfig5 --file kdeglobals --group "KDE" --key "widgetStyle" "kvantum"
       kvantummanager --set Arc
       ;;
-    arcdark|arc-dark)
+    arcdark | arc-dark)
       plasma-apply-lookandfeel -a com.github.sudorook.arc-dark
       qdbus org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Arc-Dark"
       kwriteconfig5 --file kdeglobals --group "KDE" --key "widgetStyle" "kvantum"
       kvantummanager --set ArcDark
       ;;
-    arc-darker|arcdarker)
+    arc-darker | arcdarker)
       plasma-apply-lookandfeel -a com.github.sudorook.arc-darker
       qdbus org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Arc-Darker"
       kwriteconfig5 --file kdeglobals --group "KDE" --key "widgetStyle" "kvantum"
@@ -300,12 +299,12 @@ function set_plasma_theme {
       qdbus org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Breeze"
       kwriteconfig5 --file kdeglobals --group "KDE" --key "widgetStyle" "Breeze"
       ;;
-    breeze-dark|breezedark)
+    breeze-dark | breezedark)
       plasma-apply-lookandfeel -a org.kde.breezedark.desktop
       qdbus org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Breeze"
       kwriteconfig5 --file kdeglobals --group "KDE" --key "widgetStyle" "Breeze"
       ;;
-    breeze-twilight|breezetwilight)
+    breeze-twilight | breezetwilight)
       plasma-apply-lookandfeel -a org.kde.breezetwilight.desktop
       qdbus org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Breeze"
       kwriteconfig5 --file kdeglobals --group "KDE" --key "widgetStyle" "Breeze"
@@ -316,13 +315,13 @@ function set_plasma_theme {
       kwriteconfig5 --file kdeglobals --group "KDE" --key "widgetStyle" "kvantum"
       kvantummanager --set Materia
       ;;
-    materiadark|materia-dark)
+    materiadark | materia-dark)
       plasma-apply-lookandfeel -a com.github.sudorook.materia-dark
       qdbus org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Materia-dark"
       kwriteconfig5 --file kdeglobals --group "KDE" --key "widgetStyle" "kvantum"
       kvantummanager --set MateriaDark
       ;;
-    materialight|materia-light)
+    materialight | materia-light)
       plasma-apply-lookandfeel -a com.github.sudorook.materia-light
       qdbus org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Materia-light"
       kwriteconfig5 --file kdeglobals --group "KDE" --key "widgetStyle" "kvantum"
@@ -429,8 +428,7 @@ function set_sddm_theme {
             sudo kwriteconfig5 --file "${sddmconf}" --group Theme --key Font "Roboto,10,-1,5,50,0,0,0,0,0"
           fi
           ;;
-        *)
-          ;;
+        *) ;;
       esac
     fi
   else
@@ -522,7 +520,7 @@ gtksettings="${HOME}/.config/gtk-3.0/settings.ini"
 function set_dark_gtk {
   show_header "Setting global dark theme for gtk applications."
   local isgtkdark
-  if grep ^gtk-application-prefer-dark-theme= "${gtksettings}" >/dev/null 2>&1; then
+  if grep ^gtk-application-prefer-dark-theme= "${gtksettings}" > /dev/null 2>&1; then
     isgtkdark=$(grep ^gtk-application-prefer-dark-theme= "${gtksettings}" | cut -d"=" -f2)
     if test "${isgtkdark}"; then
       show_info "Desktop is already set to use dark GTK variants."
@@ -736,16 +734,16 @@ function import_kde_settings {
   # See: https://blog.martin-graesslin.com/blog/2015/06/global-shortcut-handling-in-a-plasma-wayland-session/
   case "${DESKTOP_SESSION:-}" in
     plasma)
-      if qdbus org.kde.KWin >/dev/null; then
+      if qdbus org.kde.KWin > /dev/null; then
         qdbus org.kde.KWin /KWin reconfigure
       fi
-      kquitapp5 kglobalaccel || \
-        killall kglobalaccel5 && \
-        sleep 2s && \
-        nohup kstart5 kglobalaccel5 --window --windowclass >/dev/null 2>&1
+      kquitapp5 kglobalaccel ||
+        killall kglobalaccel5 &&
+        sleep 2s &&
+        nohup kstart5 kglobalaccel5 --window --windowclass > /dev/null 2>&1
       ;;
     plasmawayland)
-      if qdbus org.kde.KWin >/dev/null; then
+      if qdbus org.kde.KWin > /dev/null; then
         qdbus org.kde.KWin /KWin reconfigure
       fi
       kwin_wayland --replace
@@ -927,7 +925,7 @@ function disable_11n {
     sudo sh -c "echo 'options iwlwifi 11n_disable=1' >> ${iwlwificonf}"
   else
     if ! find /etc/modprobe.d/ -type f \
-         -exec grep "^options iwlwifi .*11n_disable=1.*" {} + >/dev/null 2>&1; then
+         -exec grep "^options iwlwifi .*11n_disable=1.*" {} + > /dev/null 2>&1; then
       sudo sh -c "echo 'options iwlwifi 11n_disable=1' >> ${iwlwificonf}"
     else
       show_info "11n_disable=1 flag is already set."
@@ -1005,9 +1003,9 @@ function select_gtk_theme {
         fi
         ;;
       "Arc")
-        if [ -d /usr/share/themes/Arc ] || \
-           [ -d /usr/local/share/themes/Arc ] || \
-           [ -d "${HOME}/.local/share/themes/Arc" ] || \
+        if [ -d /usr/share/themes/Arc ] ||
+           [ -d /usr/local/share/themes/Arc ] ||
+           [ -d "${HOME}/.local/share/themes/Arc" ] ||
            [ -d "${HOME}/.themes/Arc" ]; then
           gtktheme="Arc"
           break
@@ -1016,9 +1014,9 @@ function select_gtk_theme {
         fi
         ;;
       "Arc-Darker")
-        if [ -d /usr/share/themes/Arc-Darker ] || \
-           [ -d /usr/local/share/themes/Arc-Darker ] || \
-           [ -d "${HOME}/.local/share/themes/Arc-Darker" ] || \
+        if [ -d /usr/share/themes/Arc-Darker ] ||
+           [ -d /usr/local/share/themes/Arc-Darker ] ||
+           [ -d "${HOME}/.local/share/themes/Arc-Darker" ] ||
            [ -d "${HOME}/.themes/Arc-Darker" ]; then
           gtktheme="Arc-Darker"
           break
@@ -1027,9 +1025,9 @@ function select_gtk_theme {
         fi
         ;;
       "Arc-Dark")
-        if [ -d /usr/share/themes/Arc-Dark ] || \
-           [ -d /usr/local/share/themes/Arc-Dark ] || \
-           [ -d "${HOME}/.local/share/themes/Arc-Dark" ] || \
+        if [ -d /usr/share/themes/Arc-Dark ] ||
+           [ -d /usr/local/share/themes/Arc-Dark ] ||
+           [ -d "${HOME}/.local/share/themes/Arc-Dark" ] ||
            [ -d "${HOME}/.themes/Arc-Dark" ]; then
           gtktheme="Arc-Dark"
           break
@@ -1038,9 +1036,9 @@ function select_gtk_theme {
         fi
         ;;
       "Arc-Lighter")
-        if [ -d /usr/share/themes/Arc-Lighter ] || \
-           [ -d /usr/local/share/themes/Arc-Lighter ] || \
-           [ -d "${HOME}/.local/share/themes/Arc-Lighter" ] || \
+        if [ -d /usr/share/themes/Arc-Lighter ] ||
+           [ -d /usr/local/share/themes/Arc-Lighter ] ||
+           [ -d "${HOME}/.local/share/themes/Arc-Lighter" ] ||
            [ -d "${HOME}/.themes/Arc-Lighter" ]; then
           gtktheme="Arc-Lighter"
           break
@@ -1049,9 +1047,9 @@ function select_gtk_theme {
         fi
         ;;
       "Adapta")
-        if [ -d /usr/share/themes/Adapta ] || \
-           [ -d /usr/local/share/themes/Adapta ] || \
-           [ -d "${HOME}/.local/share/themes/Adapta" ] || \
+        if [ -d /usr/share/themes/Adapta ] ||
+           [ -d /usr/local/share/themes/Adapta ] ||
+           [ -d "${HOME}/.local/share/themes/Adapta" ] ||
            [ -d "${HOME}/.themes/Adapta" ]; then
           gtktheme="Adapta"
           break
@@ -1060,9 +1058,9 @@ function select_gtk_theme {
         fi
         ;;
       "Adapta-Eta")
-        if [ -d /usr/share/themes/Adapta-Eta ] || \
-           [ -d /usr/local/share/themes/Adapta-Eta ] || \
-           [ -d "${HOME}/.local/share/themes/Adapta-Eta" ] || \
+        if [ -d /usr/share/themes/Adapta-Eta ] ||
+           [ -d /usr/local/share/themes/Adapta-Eta ] ||
+           [ -d "${HOME}/.local/share/themes/Adapta-Eta" ] ||
            [ -d "${HOME}/.themes/Adapta-Eta" ]; then
           gtktheme="Adapta-Eta"
           break
@@ -1071,9 +1069,9 @@ function select_gtk_theme {
         fi
         ;;
       "Adapta-Nokto")
-        if [ -d /usr/share/themes/Adapta-Nokto ] || \
-           [ -d /usr/local/share/themes/Adapta-Nokto ] || \
-           [ -d "${HOME}/.local/share/themes/Adapta-Nokto" ] || \
+        if [ -d /usr/share/themes/Adapta-Nokto ] ||
+           [ -d /usr/local/share/themes/Adapta-Nokto ] ||
+           [ -d "${HOME}/.local/share/themes/Adapta-Nokto" ] ||
            [ -d "${HOME}/.themes/Adapta-Nokto" ]; then
           gtktheme="Adapta-Nokto"
           break
@@ -1082,9 +1080,9 @@ function select_gtk_theme {
         fi
         ;;
       "Adapta-Nokto-Eta")
-        if [ -d /usr/share/themes/Adapta-Nokto-Eta ] || \
-           [ -d /usr/local/share/themes/Adapta-Nokto-Eta ] || \
-           [ -d "${HOME}/.local/share/themes/Adapta-Nokto-Eta" ] || \
+        if [ -d /usr/share/themes/Adapta-Nokto-Eta ] ||
+           [ -d /usr/local/share/themes/Adapta-Nokto-Eta ] ||
+           [ -d "${HOME}/.local/share/themes/Adapta-Nokto-Eta" ] ||
            [ -d "${HOME}/.themes/Adapta-Nokto-Eta" ]; then
           gtktheme="Adapta-Nokto-Eta"
           break
@@ -1093,9 +1091,9 @@ function select_gtk_theme {
         fi
         ;;
       "Materia")
-        if [ -d /usr/share/themes/Materia ] || \
-           [ -d /usr/local/share/themes/Materia ] || \
-           [ -d "${HOME}/.local/share/themes/Materia" ] || \
+        if [ -d /usr/share/themes/Materia ] ||
+           [ -d /usr/local/share/themes/Materia ] ||
+           [ -d "${HOME}/.local/share/themes/Materia" ] ||
            [ -d "${HOME}/.themes/Materia" ]; then
           gtktheme="Materia"
           break
@@ -1104,9 +1102,9 @@ function select_gtk_theme {
         fi
         ;;
       "Materia-compact")
-        if [ -d /usr/share/themes/Materia-compact ] || \
-           [ -d /usr/local/share/themes/Materia-compact ] || \
-           [ -d "${HOME}/.local/share/themes/Materia-compact" ] || \
+        if [ -d /usr/share/themes/Materia-compact ] ||
+           [ -d /usr/local/share/themes/Materia-compact ] ||
+           [ -d "${HOME}/.local/share/themes/Materia-compact" ] ||
            [ -d "${HOME}/.themes/Materia-compact" ]; then
           gtktheme="Materia-compact"
           break
@@ -1115,9 +1113,9 @@ function select_gtk_theme {
         fi
         ;;
       "Materia-light")
-        if [ -d /usr/share/themes/Materia-light ] || \
-           [ -d /usr/local/share/themes/Materia-light ] || \
-           [ -d "${HOME}/.local/share/themes/Materia-light" ] || \
+        if [ -d /usr/share/themes/Materia-light ] ||
+           [ -d /usr/local/share/themes/Materia-light ] ||
+           [ -d "${HOME}/.local/share/themes/Materia-light" ] ||
            [ -d "${HOME}/.themes/Materia-light" ]; then
           gtktheme="Materia-light"
           break
@@ -1126,9 +1124,9 @@ function select_gtk_theme {
         fi
         ;;
       "Materia-light-compact")
-        if [ -d /usr/share/themes/Materia-light-compact ] || \
-           [ -d /usr/local/share/themes/Materia-light-compact ] || \
-           [ -d "${HOME}/.local/share/themes/Materia-light-compact" ] || \
+        if [ -d /usr/share/themes/Materia-light-compact ] ||
+           [ -d /usr/local/share/themes/Materia-light-compact ] ||
+           [ -d "${HOME}/.local/share/themes/Materia-light-compact" ] ||
            [ -d "${HOME}/.themes/Materia-light-compact" ]; then
           gtktheme="Materia-light-compact"
           break
@@ -1137,9 +1135,9 @@ function select_gtk_theme {
         fi
         ;;
       "Materia-dark")
-        if [ -d /usr/share/themes/Materia-dark ] || \
-           [ -d /usr/local/share/themes/Materia-dark ] || \
-           [ -d "${HOME}/.local/share/themes/Materia-dark" ] || \
+        if [ -d /usr/share/themes/Materia-dark ] ||
+           [ -d /usr/local/share/themes/Materia-dark ] ||
+           [ -d "${HOME}/.local/share/themes/Materia-dark" ] ||
            [ -d "${HOME}/.themes/Materia-dark" ]; then
           gtktheme="Materia-dark"
           break
@@ -1148,9 +1146,9 @@ function select_gtk_theme {
         fi
         ;;
       "Materia-dark-compact")
-        if [ -d /usr/share/themes/Materia-dark-compact ] || \
-           [ -d /usr/local/share/themes/Materia-dark-compact ] || \
-           [ -d "${HOME}/.local/share/themes/Materia-dark-compact" ] || \
+        if [ -d /usr/share/themes/Materia-dark-compact ] ||
+           [ -d /usr/local/share/themes/Materia-dark-compact ] ||
+           [ -d "${HOME}/.local/share/themes/Materia-dark-compact" ] ||
            [ -d "${HOME}/.themes/Materia-dark-compact" ]; then
           gtktheme="Materia-dark-compact"
           break
@@ -1159,9 +1157,9 @@ function select_gtk_theme {
         fi
         ;;
       "Plata")
-        if [ -d /usr/share/themes/Plata ] || \
-           [ -d /usr/local/share/themes/Plata ] || \
-           [ -d "${HOME}/.local/share/themes/Plata" ] || \
+        if [ -d /usr/share/themes/Plata ] ||
+           [ -d /usr/local/share/themes/Plata ] ||
+           [ -d "${HOME}/.local/share/themes/Plata" ] ||
            [ -d "${HOME}/.themes/Plata" ]; then
           gtktheme="Plata"
           break
@@ -1170,9 +1168,9 @@ function select_gtk_theme {
         fi
         ;;
       "Plata-Compact")
-        if [ -d /usr/share/themes/Plata-Compact ] || \
-           [ -d /usr/local/share/themes/Plata-Compact ] || \
-           [ -d "${HOME}/.local/share/themes/Plata-Compact" ] || \
+        if [ -d /usr/share/themes/Plata-Compact ] ||
+           [ -d /usr/local/share/themes/Plata-Compact ] ||
+           [ -d "${HOME}/.local/share/themes/Plata-Compact" ] ||
            [ -d "${HOME}/.themes/Plata-Compact" ]; then
           gtktheme="Plata-Compact"
           break
@@ -1181,9 +1179,9 @@ function select_gtk_theme {
         fi
         ;;
       "Plata-Lumine")
-        if [ -d /usr/share/themes/Plata-Lumine ] || \
-           [ -d /usr/local/share/themes/Plata-Lumine ] || \
-           [ -d "${HOME}/.local/share/themes/Plata-Lumine" ] || \
+        if [ -d /usr/share/themes/Plata-Lumine ] ||
+           [ -d /usr/local/share/themes/Plata-Lumine ] ||
+           [ -d "${HOME}/.local/share/themes/Plata-Lumine" ] ||
            [ -d "${HOME}/.themes/Plata-Lumine" ]; then
           gtktheme="Plata-Lumine"
           break
@@ -1192,9 +1190,9 @@ function select_gtk_theme {
         fi
         ;;
       "Plata-Lumine-Compact")
-        if [ -d /usr/share/themes/Plata-Lumine-Compact ] || \
-           [ -d /usr/local/share/themes/Plata-Lumine-Compact ] || \
-           [ -d "${HOME}/.local/share/themes/Plata-Lumine-Compact" ] || \
+        if [ -d /usr/share/themes/Plata-Lumine-Compact ] ||
+           [ -d /usr/local/share/themes/Plata-Lumine-Compact ] ||
+           [ -d "${HOME}/.local/share/themes/Plata-Lumine-Compact" ] ||
            [ -d "${HOME}/.themes/Plata-Lumine-Compact" ]; then
           gtktheme="Plata-Lumine-Compact"
           break
@@ -1203,9 +1201,9 @@ function select_gtk_theme {
         fi
         ;;
       "Plata-Noir")
-        if [ -d /usr/share/themes/Plata-Noir ] || \
-           [ -d /usr/local/share/themes/Plata-Noir ] || \
-           [ -d "${HOME}/.local/share/themes/Plata-Noir" ] || \
+        if [ -d /usr/share/themes/Plata-Noir ] ||
+           [ -d /usr/local/share/themes/Plata-Noir ] ||
+           [ -d "${HOME}/.local/share/themes/Plata-Noir" ] ||
            [ -d "${HOME}/.themes/Plata-Noir" ]; then
           gtktheme="Plata-Noir"
           break
@@ -1214,9 +1212,9 @@ function select_gtk_theme {
         fi
         ;;
       "Plata-Noir-Compact")
-        if [ -d /usr/share/themes/Plata-Noir-Compact ] || \
-           [ -d /usr/local/share/themes/Plata-Noir-Compact ] || \
-           [ -d "${HOME}/.local/share/themes/Plata-Noir-Compact" ] || \
+        if [ -d /usr/share/themes/Plata-Noir-Compact ] ||
+           [ -d /usr/local/share/themes/Plata-Noir-Compact ] ||
+           [ -d "${HOME}/.local/share/themes/Plata-Noir-Compact" ] ||
            [ -d "${HOME}/.themes/Plata-Noir-Compact" ]; then
           gtktheme="Plata-Noir-Compact"
           break
@@ -1256,7 +1254,7 @@ function select_plasma_theme {
         return
         ;;
       "Arc")
-        if [ -d /usr/share/plasma/look-and-feel/com.github.sudorook.arc/ ] || \
+        if [ -d /usr/share/plasma/look-and-feel/com.github.sudorook.arc/ ] ||
            [ -d /usr/local/share/plasma/look-and-feel/com.github.sudorook.arc/ ]; then
           plasmatheme="Arc"
           gtktheme="Arc"
@@ -1266,7 +1264,7 @@ function select_plasma_theme {
         fi
         ;;
       "Arc-Darker")
-        if [ -d /usr/share/plasma/look-and-feel/com.github.sudorook.arc-darker ] || \
+        if [ -d /usr/share/plasma/look-and-feel/com.github.sudorook.arc-darker ] ||
            [ -d /usr/local/share/plasma/look-and-feel/com.github.sudorook.arc-darker ]; then
           plasmatheme="Arc-Darker"
           gtktheme="Arc-Dark"
@@ -1276,7 +1274,7 @@ function select_plasma_theme {
         fi
         ;;
       "Arc-Dark")
-        if [ -d /usr/share/plasma/look-and-feel/com.github.sudorook.arc-dark ] || \
+        if [ -d /usr/share/plasma/look-and-feel/com.github.sudorook.arc-dark ] ||
            [ -d /usr/local/share/plasma/look-and-feel/com.github.sudorook.arc-dark ]; then
           plasmatheme="Arc-Dark"
           gtktheme="Arc-Dark"
@@ -1286,7 +1284,7 @@ function select_plasma_theme {
         fi
         ;;
       "Breeze")
-        if [ -d /usr/share/plasma/look-and-feel/org.kde.breeze.desktop ] || \
+        if [ -d /usr/share/plasma/look-and-feel/org.kde.breeze.desktop ] ||
            [ -d /usr/local/share/plasma/look-and-feel/org.kde.breeze.desktop ]; then
           plasmatheme="breeze"
           gtktheme="Breeze"
@@ -1296,7 +1294,7 @@ function select_plasma_theme {
         fi
         ;;
       "Breeze-dark")
-        if [ -d /usr/share/plasma/look-and-feel/org.kde.breezedark.desktop ] || \
+        if [ -d /usr/share/plasma/look-and-feel/org.kde.breezedark.desktop ] ||
            [ -d /usr/local/share/plasma/look-and-feel/org.kde.breezedark.desktop ]; then
           plasmatheme="breeze-dark"
           gtktheme="Breeze"
@@ -1306,7 +1304,7 @@ function select_plasma_theme {
         fi
         ;;
       "Breeze-twilight")
-        if [ -d /usr/share/plasma/look-and-feel/org.kde.breezetwilight.desktop ] || \
+        if [ -d /usr/share/plasma/look-and-feel/org.kde.breezetwilight.desktop ] ||
            [ -d /usr/local/share/plasma/look-and-feel/org.kde.breezetwilight.desktop ]; then
           plasmatheme="breeze-twilight"
           gtktheme="Breeze"
@@ -1316,7 +1314,7 @@ function select_plasma_theme {
         fi
         ;;
       "Materia")
-        if [ -d /usr/share/plasma/desktoptheme/Materia ] || \
+        if [ -d /usr/share/plasma/desktoptheme/Materia ] ||
            [ -d /usr/local/share/plasma/desktoptheme/Materia ]; then
           plasmatheme="Materia"
           gtktheme="Materia"
@@ -1326,7 +1324,7 @@ function select_plasma_theme {
         fi
         ;;
       "Materia-light")
-        if [ -d /usr/share/plasma/desktoptheme/Materia-light ] || \
+        if [ -d /usr/share/plasma/desktoptheme/Materia-light ] ||
            [ -d /usr/local/share/plasma/desktoptheme/Materia-light ]; then
           plasmatheme="Materia-light"
           gtktheme="Materia-light"
@@ -1336,7 +1334,7 @@ function select_plasma_theme {
         fi
         ;;
       "Materia-dark")
-        if [ -d /usr/share/plasma/desktoptheme/Materia-dark ] || \
+        if [ -d /usr/share/plasma/desktoptheme/Materia-dark ] ||
            [ -d /usr/local/share/plasma/desktoptheme/Materia-dark ]; then
           plasmatheme="Materia-dark"
           gtktheme="Materia-dark"
@@ -1393,9 +1391,9 @@ function select_icon_theme {
         fi
         ;;
       "Papirus")
-        if [ -d /usr/share/icons/Papirus ] || \
-           [ -d /usr/local/share/icons/Papirus ] || \
-           [ -d "${HOME}/.local/share/icons/Papirus" ] || \
+        if [ -d /usr/share/icons/Papirus ] ||
+           [ -d /usr/local/share/icons/Papirus ] ||
+           [ -d "${HOME}/.local/share/icons/Papirus" ] ||
            [ -d "${HOME}/.icons/Papirus" ]; then
           icontheme="Papirus"
           break
@@ -1404,9 +1402,9 @@ function select_icon_theme {
         fi
         ;;
       "ePapirus")
-        if [ -d /usr/share/icons/ePapirus ] || \
-           [ -d /usr/local/share/icons/ePapirus ] || \
-           [ -d "${HOME}/.local/share/icons/ePapirus" ] || \
+        if [ -d /usr/share/icons/ePapirus ] ||
+           [ -d /usr/local/share/icons/ePapirus ] ||
+           [ -d "${HOME}/.local/share/icons/ePapirus" ] ||
            [ -d "${HOME}/.icons/ePapirus" ]; then
           icontheme="ePapirus"
           break
@@ -1415,9 +1413,9 @@ function select_icon_theme {
         fi
         ;;
       "ePapirus-Dark")
-        if [ -d /usr/share/icons/ePapirus-Dark ] || \
-           [ -d /usr/local/share/icons/ePapirus-Dark ] || \
-           [ -d "${HOME}/.local/share/icons/ePapirus-Dark" ] || \
+        if [ -d /usr/share/icons/ePapirus-Dark ] ||
+           [ -d /usr/local/share/icons/ePapirus-Dark ] ||
+           [ -d "${HOME}/.local/share/icons/ePapirus-Dark" ] ||
            [ -d "${HOME}/.icons/ePapirus-Dark" ]; then
           icontheme="ePapirus-Dark"
           break
@@ -1426,9 +1424,9 @@ function select_icon_theme {
         fi
         ;;
       "Papirus-Light")
-        if [ -d /usr/share/icons/Papirus-Light ] || \
-           [ -d /usr/local/share/icons/Papirus-Light ] || \
-           [ -d "${HOME}/.local/share/icons/Papirus-Light" ] || \
+        if [ -d /usr/share/icons/Papirus-Light ] ||
+           [ -d /usr/local/share/icons/Papirus-Light ] ||
+           [ -d "${HOME}/.local/share/icons/Papirus-Light" ] ||
            [ -d "${HOME}/.icons/Papirus-Light" ]; then
           icontheme="Papirus-Light"
           break
@@ -1437,9 +1435,9 @@ function select_icon_theme {
         fi
         ;;
       "Papirus-Dark")
-        if [ -d /usr/share/icons/Papirus-Dark ] || \
-           [ -d /usr/local/share/icons/Papirus-Dark ] || \
-           [ -d "${HOME}/.local/share/icons/Papirus-Dark" ] || \
+        if [ -d /usr/share/icons/Papirus-Dark ] ||
+           [ -d /usr/local/share/icons/Papirus-Dark ] ||
+           [ -d "${HOME}/.local/share/icons/Papirus-Dark" ] ||
            [ -d "${HOME}/.icons/Papirus-Dark" ]; then
           icontheme="Papirus-Dark"
           break
@@ -1448,9 +1446,9 @@ function select_icon_theme {
         fi
         ;;
       "Papirus-Adapta")
-        if [ -d /usr/share/icons/Papirus-Adapta ] || \
-           [ -d /usr/local/share/icons/Papirus-Adapta ] || \
-           [ -d "${HOME}/.local/share/icons/Papirus-Adapta" ] || \
+        if [ -d /usr/share/icons/Papirus-Adapta ] ||
+           [ -d /usr/local/share/icons/Papirus-Adapta ] ||
+           [ -d "${HOME}/.local/share/icons/Papirus-Adapta" ] ||
            [ -d "${HOME}/.icons/Papirus-Adapta" ]; then
           icontheme="Papirus-Adapta"
           break
@@ -1459,9 +1457,9 @@ function select_icon_theme {
         fi
         ;;
       "Papirus-Adapta-Nokto")
-        if [ -d /usr/share/icons/Papirus-Adapta-Nokto ] || \
-           [ -d /usr/local/share/icons/Papirus-Adapta-Nokto ] || \
-           [ -d "${HOME}/.local/share/icons/Papirus-Adapta-Nokto" ] || \
+        if [ -d /usr/share/icons/Papirus-Adapta-Nokto ] ||
+           [ -d /usr/local/share/icons/Papirus-Adapta-Nokto ] ||
+           [ -d "${HOME}/.local/share/icons/Papirus-Adapta-Nokto" ] ||
            [ -d "${HOME}/.icons/Papirus-Adapta-Nokto" ]; then
           icontheme="Papirus-Adapta-Nokto"
           break

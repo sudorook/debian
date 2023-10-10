@@ -17,7 +17,6 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-
 dir="$(dirname "$0")"
 deps="${dir}/packages/deps.list"
 install="${dir}/packages/install.list"
@@ -63,9 +62,9 @@ function check_debian_release {
   show_header "Checking current Debian release."
   local release
   release=$(lsb_release -sc)
-  if ! [[ "${release}" == "bookworm" ]] && \
-     ! [[ "${release}" == "bullseye" ]] && \
-     ! [[ "${release}" == "trixie" ]] && \
+  if ! [[ "${release}" == "bookworm" ]] &&
+     ! [[ "${release}" == "bullseye" ]] &&
+     ! [[ "${release}" == "trixie" ]] &&
      ! [[ "${release}" == "sid" ]]; then
     show_warning "This script is not intended for Debian ${release@Q}."
     exit 1
@@ -81,7 +80,7 @@ function check_installed {
     [ -z "${package}" ] && continue
 
     # Check if package is installed already before installing.
-    if dpkg -s "${package}" >/dev/null 2>&1; then
+    if dpkg -s "${package}" > /dev/null 2>&1; then
       show_listitem "${package@Q} already installed. Skipping."
     else
       # First check if the package exists in the repos.
@@ -100,7 +99,7 @@ function check_uninstalled {
   while read -r package; do
     [ -z "${package}" ] && continue
 
-    if dpkg -s "${package}" >/dev/null 2>&1; then
+    if dpkg -s "${package}" > /dev/null 2>&1; then
       show_listitem "Purging ${package@Q}."
       sudo apt-get -y purge "${package}"
       sudo apt-get -y autoremove
@@ -140,7 +139,7 @@ function install_dependencies {
   local state=true
   local exe
   while read -r exe; do
-    if ! command -v "${exe}" >/dev/null; then
+    if ! command -v "${exe}" > /dev/null; then
       state=false
     fi
   done < "${install}"
@@ -160,7 +159,7 @@ function install_dependencies {
 }
 
 function install_sudo {
-  if ! command -v dpkg >/dev/null; then
+  if ! command -v dpkg > /dev/null; then
     show_error "dpkg not installed. Exiting."
     exit
   fi
@@ -188,7 +187,7 @@ function install_sudo {
 function check_network {
   show_header "Checking network connection."
 
-  if wget -q --tries=10 --timeout=20 --spider https://debian.org >/dev/null; then
+  if wget -q --tries=10 --timeout=20 --spider https://debian.org > /dev/null; then
     show_success "Network is working."
   else
     show_error "Cannot start network connection."

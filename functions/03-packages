@@ -17,7 +17,6 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-
 dir="$(dirname "$0")"
 
 accel="${dir}/packages/3d-accel.list"
@@ -64,10 +63,10 @@ function install_apps {
 
     local kitty_version
     kitty_version="$(kitty --version | sed -n "s/kitty \([0-9\.]\+\) created by Kovid Goyal/\1/p")"
-    if git -C "${vimpack}/kitty.vim" rev-parse "v${kitty_version}" >/dev/null 2>&1; then
+    if git -C "${vimpack}/kitty.vim" rev-parse "v${kitty_version}" > /dev/null 2>&1; then
       git -C "${vimpack}/kitty.vim" checkout "v${kitty_version}"
     else
-      ./"${vimpack}"/kitty.vim/build >/dev/null
+      ./"${vimpack}"/kitty.vim/build > /dev/null
     fi
   fi
 
@@ -126,7 +125,7 @@ function install_apps_kde {
     show_info "Installing kitty.vim for Vim syntax highlighting."
     git clone https://github.com/sudorook/kitty.vim.git \
       "${vimpack}/kitty.vim"
-    "${vimpack}/kitty.vim/./build" >/dev/null # in case kitty rules are outdated
+    "${vimpack}/kitty.vim/./build" > /dev/null # in case kitty rules are outdated
   fi
 
   if [[ ${XDG_SESSION_TYPE,,} =~ wayland ]]; then
@@ -303,7 +302,7 @@ function install_kvm {
 
 kvmguest="${dir}/packages/kvm-guest.list"
 function install_kvm_guest {
-  if grep "^flags.*\ hypervisor" /proc/cpuinfo >/dev/null 2>&1; then
+  if grep "^flags.*\ hypervisor" /proc/cpuinfo > /dev/null 2>&1; then
     show_header "Installing tools for KVM guests."
     check_installed "${kvmguest}"
     check_fail
@@ -424,7 +423,7 @@ function install_torbrowser {
     show_info "Downloading Tor developers' GPG key."
     gpg --auto-key-locate nodefault,wkd --locate-keys torbrowser@torproject.org
 
-    torbrowser_version=$(curl https://www.torproject.org/download/ | \
+    torbrowser_version=$(curl https://www.torproject.org/download/ |
                          sed -n 's,^ \+<a class="downloadLink" href="/dist/torbrowser/\([0-9\.]\+\)/tor-browser-linux.*">,\1,p')
     arch=$(uname -m)
     if [ "${arch:(-2)}" = "86" ]; then
@@ -435,7 +434,7 @@ function install_torbrowser {
 
     show_info "Downloading release tarball."
     tmpdir="$(mktemp -d)"
-    pushd "${tmpdir}" >/dev/null || exit
+    pushd "${tmpdir}" > /dev/null || exit
     wget "${torbrowser_url}/${torbrowser_version}/${torbrowser_package}"
     wget "${torbrowser_url}/${torbrowser_version}/${torbrowser_package}.asc"
     show_info "Extracting..."
@@ -458,7 +457,7 @@ function install_torbrowser {
       "${local_applications}/start-tor-browser.desktop"
     update-desktop-database "${local_applications}"
 
-    popd >/dev/null || exit
+    popd > /dev/null || exit
     rm -r "${tmpdir}"
     show_success "Tor browser installed."
   else
@@ -500,7 +499,7 @@ function install_vim {
   git config --global merge.tool vimdiff
   git config --global --add difftool.prompt false
 
-  if command -v xdg-mime >/dev/null 2>&1; then
+  if command -v xdg-mime > /dev/null 2>&1; then
     show_info "Setting Vim MIME associations."
     xdg-mime default vim.desktop text/plain
   fi
@@ -511,7 +510,7 @@ function install_vim {
   tmpdir="$(mktemp -d)"
   git clone --depth 1 \
     https://github.com/sudorook/wordlist.vim.git "${tmpdir}"
-  pushd "${tmpdir}" >/dev/null || exit
+  pushd "${tmpdir}" > /dev/null || exit
   ./build
   if [ -f "${vimspell}/en.utf-8.add" ]; then
     show_info "Wordlist already exists in ${vimspell@Q}. Appending."
@@ -519,7 +518,7 @@ function install_vim {
   else
     ./install
   fi
-  popd >/dev/null || exit
+  popd > /dev/null || exit
   rm -rf "${tmpdir}"
   show_success "Wordlist installed in ${vimspell@Q}."
   show_info "To use the wordlist, add the following to you vimrc:"
@@ -547,7 +546,7 @@ function install_neovim {
   git config --global merge.tool "nvim -d"
   git config --global --add difftool.prompt false
 
-  if command -v xdg-mime >/dev/null 2>&1; then
+  if command -v xdg-mime > /dev/null 2>&1; then
     show_info "Setting Neovim MIME associations."
     xdg-mime default nvim.desktop text/plain
   fi
@@ -558,7 +557,7 @@ function install_neovim {
   tmpdir="$(mktemp -d)"
   git clone --depth 1 \
     https://github.com/sudorook/wordlist.vim.git "${tmpdir}"
-  pushd "${tmpdir}" >/dev/null || exit
+  pushd "${tmpdir}" > /dev/null || exit
   ./build
   if [ -f "${nvimspell}/en.utf-8.add" ]; then
     show_info "Wordlist already exists in ${nvimspell@Q}. Appending."
@@ -566,7 +565,7 @@ function install_neovim {
   else
     ./install
   fi
-  popd >/dev/null || exit
+  popd > /dev/null || exit
   rm -rf "${tmpdir}"
   show_success "Wordlist installed in ${nvimspell@Q}."
   show_info "To use the wordlist, add the following to you vimrc:"
@@ -589,7 +588,7 @@ function install_virtualbox {
 
 virtualboxguest="${dir}/packages/virtualbox-guest.list"
 function install_virtualbox_guest {
-  if grep "^flags.*\ hypervisor" /proc/cpuinfo >/dev/null 2>&1; then
+  if grep "^flags.*\ hypervisor" /proc/cpuinfo > /dev/null 2>&1; then
     show_header "Installing packages for VirtualBox guests."
     check_installed "${virtualboxguest}"
     check_fail

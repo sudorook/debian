@@ -17,7 +17,6 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-
 dir="$(dirname "$0")"
 
 base="${dir}/packages/base.list"
@@ -45,7 +44,7 @@ srclist="/etc/apt/sources.list"
 function install_firmware {
   local release
   release=$(lsb_release -sc)
-  if ! grep non-free "${srclist}" >/dev/null 2>&1; then
+  if ! grep non-free "${srclist}" > /dev/null 2>&1; then
     show_warning "non-free repos need to be enabled first."
   else
     show_header "Installing non-free firmware."
@@ -59,7 +58,7 @@ srclist="/etc/apt/sources.list"
 function enable_contrib_repos {
   local release
   release=$(lsb_release -sc)
-  if ! grep contrib "${srclist}" >/dev/null 2>&1; then
+  if ! grep contrib "${srclist}" > /dev/null 2>&1; then
     show_info "Enabling contrib repos."
     sudo sed -i "s,\(.* ${release} main.*\)$,\1 contrib,g" ${srclist}
     sudo sed -i "s,\(.* ${release}-updates main.*\)$,\1 contrib,g" ${srclist}
@@ -74,7 +73,7 @@ srclist="/etc/apt/sources.list"
 function enable_nonfree-firmware_repos {
   local release
   release=$(lsb_release -sc)
-  if ! grep non-free-firmware "${srclist}" >/dev/null 2>&1; then
+  if ! grep non-free-firmware "${srclist}" > /dev/null 2>&1; then
     show_info "Enabling non-free-firmware repos."
     sudo sed -i "s,\(.* ${release} main.*\)$,\1 non-free-firmware,g" ${srclist}
     sudo sed -i "s,\(.* ${release}-updates main.*\)$,\1 non-free-firmware,g" ${srclist}
@@ -89,7 +88,7 @@ srclist="/etc/apt/sources.list"
 function enable_nonfree_repos {
   local release
   release=$(lsb_release -sc)
-  if ! grep non-free "${srclist}" >/dev/null 2>&1; then
+  if ! grep non-free "${srclist}" > /dev/null 2>&1; then
     show_info "Enabling non-free repos."
     sudo sed -i "s,\(.* ${release} main.*\)$,\1 non-free,g" ${srclist}
     sudo sed -i "s,\(.* ${release}-updates main.*\)$,\1 non-free,g" ${srclist}
@@ -132,8 +131,8 @@ function upgrade_debian_release {
       "Buster")
         if [[ "${release}" == "buster" ]]; then
           show_warning "Already set to ${release}."
-        elif [[ "${release}" == "bullseye" ]] || \
-             [[ "${release}" == "bookworm" ]] || \
+        elif [[ "${release}" == "bullseye" ]] ||
+             [[ "${release}" == "bookworm" ]] ||
              [[ "${release}" == "sid" ]]; then
           show_warning "Downgrades not possible."
         else
@@ -147,7 +146,7 @@ function upgrade_debian_release {
       "Bullseye")
         if [[ "${release}" == "bullseye" ]]; then
           show_warning "Already set to ${release}."
-        elif [[ "${release}" == "bookworm" ]] || \
+        elif [[ "${release}" == "bookworm" ]] ||
              [[ "${release}" == "sid" ]]; then
           show_warning "Downgrades not possible."
         else
@@ -161,7 +160,7 @@ function upgrade_debian_release {
       "Bookworm")
         if [[ "${release}" == "bookworm" ]]; then
           show_warning "Already set to ${release}."
-        elif [[ "${release}" == "trixie" ]] || \
+        elif [[ "${release}" == "trixie" ]] ||
              [[ "${release}" == "sid" ]]; then
           show_warning "Downgrades not possible."
         else
@@ -204,15 +203,15 @@ function upgrade_debian_release {
   done
 
   if [ "${is_upgraded}" == true ]; then
-    [ "${is_contrib}" == true ] && \
-      sudo sed -i "s,\(.* ${release} main.*\)$,\1 contrib,g" ${srclist} && \
+    [ "${is_contrib}" == true ] &&
+      sudo sed -i "s,\(.* ${release} main.*\)$,\1 contrib,g" ${srclist} &&
       sudo sed -i "s,\(.* ${release}-updates main.*\)$,\1 contrib,g" ${srclist}
-    [ "${is_nonfree}" == true ] && \
-      sudo sed -i "s,\(.* ${release} main.*\)$,\1 non-free,g" ${srclist} && \
+    [ "${is_nonfree}" == true ] &&
+      sudo sed -i "s,\(.* ${release} main.*\)$,\1 non-free,g" ${srclist} &&
       sudo sed -i "s,\(.* ${release}-updates main.*\)$,\1 non-free,g" ${srclist}
-    [ "${is_onion}" == true ] && \
+    [ "${is_onion}" == true ] &&
       sudo sed -i "s,https://deb.debian.org,tor+http://vwakviie2ienjx6t.onion,g" ${srclist}
-    [ "${is_onion}" == true ] && \
+    [ "${is_onion}" == true ] &&
       sudo sed -i "s,https://security.debian.org/,tor+http://sgvtcaew4bxjd7ln.onion/debian-security/,g" ${srclist}
 
     sudo sh -c "apt-get update && \
@@ -228,7 +227,7 @@ function upgrade_debian_release {
 
 function enable_sudo_insults {
   # Customize sudo to insult incorrect password attempts
-  if ! sudo grep "^Defaults\s\+insults" /etc/sudoers >/dev/null 2>&1; then
+  if ! sudo grep "^Defaults\s\+insults" /etc/sudoers > /dev/null 2>&1; then
     show_info "Enabling sudo insults."
     sudo sh -c 'cat /etc/sudoers | \
                 sed -e "/^Defaults\tsecure_path/a Defaults\tinsults" | \
@@ -269,11 +268,11 @@ function disable_beep {
     sudo sh -c "echo 'blacklist snd_pcsp' >> ${pcspkr_blacklist}"
   else
     if ! find /etc/modprobe.d/ -type f \
-         -exec grep "blacklist pcspkr" {} + >/dev/null 2>&1; then
+         -exec grep "blacklist pcspkr" {} + > /dev/null 2>&1; then
       sudo sh -c "echo 'blacklist pcspkr' >> ${pcspkr_blacklist}"
     fi
     if ! find /etc/modprobe.d/ -type f \
-         -exec grep "blacklist snd_pcsp" {} + >/dev/null 2>&1; then
+         -exec grep "blacklist snd_pcsp" {} + > /dev/null 2>&1; then
       sudo sh -c "echo 'blacklist snd_pcsp' >> ${pcspkr_blacklist}"
     fi
   fi
@@ -281,7 +280,7 @@ function disable_beep {
 
   show_info "Disabling gtk2 and gtk3 error-bell."
   if [ -f "${gtk2conf}" ]; then
-    if grep "^gtk-error-bell=" "${gtk2conf}" >/dev/null 2>&1; then
+    if grep "^gtk-error-bell=" "${gtk2conf}" > /dev/null 2>&1; then
       sed -i "s/^gtk-error-bell=.*$/gtk-error-bell=0/g" "${gtk2conf}"
     else
       echo "gtk-error-bell=0" >> "${gtk2conf}"
@@ -291,9 +290,9 @@ function disable_beep {
     echo "gtk-error-bell=0" >> "${gtk2conf}"
   fi
   if [ -f "${gtk3conf}" ]; then
-    if grep "^gtk-error-bell=" "${gtk3conf}" >/dev/null 2>&1; then
+    if grep "^gtk-error-bell=" "${gtk3conf}" > /dev/null 2>&1; then
       sed -i "s/^gtk-error-bell=.*$/gtk-error-bell=0/g" "${gtk3conf}"
-    elif grep "^[Settings]" "${gtk3conf}" >/dev/null 2>&1; then
+    elif grep "^[Settings]" "${gtk3conf}" > /dev/null 2>&1; then
       sed -i "/^[Settings]$/a gtk-error-bell=0" "${gtk3conf}"
     else
       echo "[Settings]" >> "${gtk3conf}"

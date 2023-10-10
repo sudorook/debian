@@ -17,7 +17,6 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-
 dir="$(dirname "$0")"
 
 networking="${dir}/packages/network.list"
@@ -70,20 +69,20 @@ function install_firewall {
   show_info "Setting ufw firewall rules."
   sudo ufw default deny
 
-  if dpkg -s syncthing >/dev/null 2>&1; then
+  if dpkg -s syncthing > /dev/null 2>&1; then
     sudo ufw allow syncthing
     sudo ufw allow syncthing-gui
   fi
 
-  if dpkg -s kdeconnect >/dev/null 2>&1; then
+  if dpkg -s kdeconnect > /dev/null 2>&1; then
     sudo ufw allow 'KDE Connect'
   fi
 
-  if dpkg -s transmission-cli >/dev/null 2>&1; then
+  if dpkg -s transmission-cli > /dev/null 2>&1; then
     sudo ufw allow Transmission
-  elif dpkg -s transmission-qt >/dev/null 2>&1; then
+  elif dpkg -s transmission-qt > /dev/null 2>&1; then
     sudo ufw allow Transmission
-  elif dpkg -s transmission-gtk >/dev/null 2>&1; then
+  elif dpkg -s transmission-gtk > /dev/null 2>&1; then
     sudo ufw allow Transmission
   fi
 
@@ -109,21 +108,23 @@ function use_onion_repos {
   show_header "Tunneling apt over tor for Debian $(lsb_release -sc)."
 
   local is_contrib
-  grep -q contrib ${srclist}; is_contrib=$?
+  grep -q contrib ${srclist}
+  is_contrib=$?
   local is_nonfree
-  grep -q non-free ${srclist}; is_nonfree=$?
+  grep -q non-free ${srclist}
+  is_nonfree=$?
 
   local release
   release=$(lsb_release -sc)
   sudo cp -f ${srclist} ${srclist}.${RANDOM}.bak
   sudo cp -f "${dir}/sources/${release}-sources.list" ${srclist}
 
-  [ ${is_contrib} == 0 ] && \
-    sudo sed -i "s,\(.* ${release} main.*\)$,\1 contrib,g" ${srclist} && \
+  [ ${is_contrib} == 0 ] &&
+    sudo sed -i "s,\(.* ${release} main.*\)$,\1 contrib,g" ${srclist} &&
     sudo sed -i "s,\(.* ${release}-updates main.*\)$,\1 contrib,g" ${srclist}
     sudo sed -i "s,\(.* ${release}-backports main.*\)$,\1 contrib,g" ${srclist}
-  [ ${is_nonfree} == 0 ] && \
-    sudo sed -i "s,\(.* ${release} main.*\)$,\1 non-free,g" ${srclist} && \
+  [ ${is_nonfree} == 0 ] &&
+    sudo sed -i "s,\(.* ${release} main.*\)$,\1 non-free,g" ${srclist} &&
     sudo sed -i "s,\(.* ${release}-updates main.*\)$,\1 non-free,g" ${srclist}
     sudo sed -i "s,\(.* ${release}-backports main.*\)$,\1 non-free,g" ${srclist}
   sudo sed -i "s,https://deb.debian.org,tor+http://vwakviie2ienjx6t.onion,g" ${srclist}

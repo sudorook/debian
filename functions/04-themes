@@ -17,7 +17,6 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-
 dir="$(dirname "$0")"
 
 npmrc="${dir}/dotfiles/npmrc"
@@ -47,37 +46,37 @@ function install_arc_gtk {
   local meson_options=""
   local meson_gresource="false"
   local tmpdir
-  if dpkg -s gnome-shell >/dev/null 2>&1; then
+  if dpkg -s gnome-shell > /dev/null 2>&1; then
     meson_options="${meson_options}gnome-shell,"
     meson_gresource="true"
   fi
-  if dpkg -s cinnamon >/dev/null 2>&1; then
+  if dpkg -s cinnamon > /dev/null 2>&1; then
     meson_options="${meson_options}cinnamon,"
     meson_gresource="true"
   fi
-  if dpkg -s libgtk-2-common >/dev/null 2>&1; then
+  if dpkg -s libgtk-2-common > /dev/null 2>&1; then
     meson_options="${meson_options}gtk2,"
   fi
-  if dpkg -s libgtk-3-common >/dev/null 2>&1; then
+  if dpkg -s libgtk-3-common > /dev/null 2>&1; then
     meson_options="${meson_options}gtk3,"
   fi
-  if dpkg -s libgtk-4-common >/dev/null 2>&1; then
+  if dpkg -s libgtk-4-common > /dev/null 2>&1; then
     meson_options="${meson_options}gtk4,"
   fi
-  if dpkg -s metacity >/dev/null 2>&1; then
+  if dpkg -s metacity > /dev/null 2>&1; then
     meson_options="${meson_options}metacity,"
   fi
-  if dpkg -s plank >/dev/null 2>&1; then
+  if dpkg -s plank > /dev/null 2>&1; then
     meson_options="${meson_options}plank,"
   fi
-  if dpkg -s xfwm4 >/dev/null 2>&1; then
+  if dpkg -s xfwm4 > /dev/null 2>&1; then
     meson_options="${meson_options}xfwm,"
   fi
   meson_options="${meson_options%,}"
   tmpdir="$(mktemp -d)"
   git clone -b tweak --depth 1 \
     https://github.com/sudorook/arc-theme.git "${tmpdir}"
-  pushd "${tmpdir}" >/dev/null || exit
+  pushd "${tmpdir}" > /dev/null || exit
   meson setup --prefix=/usr \
     -Dtransparency=true \
     -Dgnome_shell_gresource="${meson_gresource}" \
@@ -85,7 +84,7 @@ function install_arc_gtk {
     _build/
   meson compile -C _build/
   sudo meson install -C _build/
-  popd >/dev/null || exit
+  popd > /dev/null || exit
   rm -rf "${tmpdir}"
   show_success "Arc theme installed."
 }
@@ -96,9 +95,9 @@ function install_arc_kde {
   tmpdir="$(mktemp -d)"
   git clone -b tweak --depth 1 \
     https://github.com/sudorook/arc-kde.git "${tmpdir}"
-  pushd "${tmpdir}" >/dev/null || exit
+  pushd "${tmpdir}" > /dev/null || exit
   sudo make install
-  popd >/dev/null || exit
+  popd > /dev/null || exit
   rm -rf "${tmpdir}"
   show_success "Arc KDE theme installed."
 }
@@ -128,7 +127,7 @@ function install_adapta_gtk {
   tmpdir="$(mktemp -d)"
   git clone -b tweak --depth 1 \
     https://github.com/sudorook/adapta-gtk-theme.git "${tmpdir}"
-  pushd "${tmpdir}" >/dev/null || exit
+  pushd "${tmpdir}" > /dev/null || exit
   ./autogen.sh \
     --prefix=/usr \
     --with-selection_color="#00A2B4" \
@@ -145,7 +144,7 @@ function install_adapta_gtk {
   if [ -d /usr/share/gtksourceview-3.0/styles/ ]; then
     sudo cp -f extra/gedit/adapta.xml /usr/share/gtksourceview-3.0/styles/
   fi
-  popd >/dev/null || exit
+  popd > /dev/null || exit
   rm -rf "${tmpdir}"
   show_success "Adapta theme installed."
 }
@@ -175,7 +174,7 @@ function install_plata_gtk {
   tmpdir="$(mktemp -d)"
   git clone -b tweak --depth 1 \
     https://gitlab.com/sudorook/plata-theme.git "${tmpdir}"
-  pushd "${tmpdir}" >/dev/null || exit
+  pushd "${tmpdir}" > /dev/null || exit
   ./autogen.sh --prefix=/usr \
     --with-selection_color="#4877B1" \
     --with-accent_color="#4877B1" \
@@ -196,7 +195,7 @@ function install_plata_gtk {
       src/extra/gtksourceview/plata-dark.xml \
       /usr/share/gtksourceview-3.0/styles/
   fi
-  popd >/dev/null || exit
+  popd > /dev/null || exit
   rm -rf "${tmpdir}"
   show_success "Plata theme installed."
 }
@@ -207,12 +206,12 @@ function install_materia_gtk {
   tmpdir="$(mktemp -d)"
   git clone -b tweak --depth 1 \
     https://github.com/sudorook/materia-theme.git "${tmpdir}"
-  pushd "${tmpdir}" >/dev/null || exit
+  pushd "${tmpdir}" > /dev/null || exit
   mkdir -p _build
   meson setup -Dprefix=/usr _build
   meson compile -C _build
   sudo meson install -C _build
-  popd >/dev/null || exit
+  popd > /dev/null || exit
   rm -rf "${tmpdir}"
   show_success "Materia theme installed."
 }
@@ -223,9 +222,9 @@ function install_materia_kde {
   tmpdir="$(mktemp -d)"
   git clone -b tweak --depth 1 \
     https://github.com/sudorook/materia-kde.git "${tmpdir}"
-  pushd "${tmpdir}" >/dev/null || exit
+  pushd "${tmpdir}" > /dev/null || exit
   sudo make install
-  popd >/dev/null || exit
+  popd > /dev/null || exit
   rm -rf "${tmpdir}"
   show_success "Materia KDE theme installed."
 }
@@ -241,9 +240,9 @@ function install_fonts {
   show_info "Downloading Jambo fonts."
   tmpdir="$(mktemp -d)"
   git clone --depth 1 https://github.com/sudorook/fonts-jambo.git "${tmpdir}"
-  pushd "${tmpdir}" >/dev/null || exit
+  pushd "${tmpdir}" > /dev/null || exit
   ./install
-  popd >/dev/null || exit
+  popd > /dev/null || exit
   rm -rf "${tmpdir}"
 }
 
@@ -253,9 +252,9 @@ function install_papirus_icons {
   tmpdir="$(mktemp -d)"
   git clone -b tweak --depth 1 \
     https://github.com/sudorook/papirus-icon-theme.git "${tmpdir}"
-  pushd "${tmpdir}" >/dev/null || exit
+  pushd "${tmpdir}" > /dev/null || exit
   sudo make PREFIX=/usr -j"$(nproc)" install
-  popd >/dev/null || exit
+  popd > /dev/null || exit
   rm -rf "${tmpdir}"
 }
 
@@ -264,9 +263,9 @@ function install_colorific_themes {
   local tmpdir
   tmpdir="$(mktemp -d)"
   git clone --depth 1 https://github.com/sudorook/colorific.vim.git "${tmpdir}"
-  pushd "${tmpdir}" >/dev/null || exit
+  pushd "${tmpdir}" > /dev/null || exit
   ./install
-  popd >/dev/null || exit
+  popd > /dev/null || exit
   rm -rf "${tmpdir}"
   show_success "Themes installed."
 }
@@ -277,11 +276,11 @@ function install_timed_backgrounds {
   tmpdir="$(mktemp -d)"
   git clone --depth 1 \
     https://github.com/sudorook/timed-backgrounds.git "${tmpdir}"
-  pushd "${tmpdir}" >/dev/null || exit
+  pushd "${tmpdir}" > /dev/null || exit
   ./autogen.sh
   make -j"$(nproc)"
   sudo make install
-  popd >/dev/null || exit
+  popd > /dev/null || exit
   rm -rf "${tmpdir}"
   show_success "Backgrounds installed."
 }
@@ -297,16 +296,16 @@ function set_qtcompat {
   # '/etc/X11/Xsession.d/99qt5ct', which was installed as part of qt5ct
   # (Debian-specific).
 
-  if command -v qmake6 >/dev/null; then
+  if command -v qmake6 > /dev/null; then
     local tmpdir
     show_info "Installing qt6gtk2 for Qt6-GTK theme comsistency."
     tmpdir="$(mktemp -d)"
     git clone --depth 1 https://github.com/trialuser02/qt6gtk2.git "${tmpdir}"
-    pushd "${tmpdir}" >/dev/null || exit
+    pushd "${tmpdir}" > /dev/null || exit
     qmake6
     make -j"$(nproc)"
     sudo make install
-    popd >/dev/null || exit
+    popd > /dev/null || exit
     rm -rf "${tmpdir}"
   fi
 

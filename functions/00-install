@@ -17,7 +17,6 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-
 dir="$(dirname "$0")"
 
 VG=vg
@@ -26,12 +25,12 @@ export VG
 export LV
 
 function is_size_nonzero {
-  if [[ "${1}" != "0" ]] && \
-     [[ "${1}" != "0G" ]] && \
-     [[ "${1}" != "0GiB" ]] && \
-     [[ "${1}" != "0GB" ]] && \
-     [[ "${1}" != "0Gb" ]] && \
-     [[ "${1}" != "[N|n][O|o]" ]] && \
+  if [[ "${1}" != "0" ]] &&
+     [[ "${1}" != "0G" ]] &&
+     [[ "${1}" != "0GiB" ]] &&
+     [[ "${1}" != "0GB" ]] &&
+     [[ "${1}" != "0Gb" ]] &&
+     [[ "${1}" != "[N|n][O|o]" ]] &&
      [[ "${1}" != "[N|n][ONE|one]" ]]; then
     return 0
   else
@@ -43,10 +42,10 @@ export -f is_size_nonzero
 RELEASE=
 function ask_release {
   show_question "Select Debian release:"
-  local options=("Back" \
-                 "Bullseye (oldstable)" \
-                 "Bookworm (stable)" \
-                 "Trixie (testing)" \
+  local options=("Back"
+                 "Bullseye (oldstable)"
+                 "Bookworm (stable)"
+                 "Trixie (testing)"
                  "Sid (unstable)")
   local option
   select option in "${options[@]}"; do
@@ -72,6 +71,7 @@ function ask_release {
         ;;
     esac
   done
+  export RELEASE
 }
 
 DEVICE=
@@ -273,12 +273,12 @@ function get_base2 {
   value="$(echo "${value} / 1024^${exp}" | bc)"
 
   case "${exp}" in
-    1) suffix="KiB";;
-    2) suffix="MiB";;
-    3) suffix="GiB";;
-    4) suffix="TiB";;
-    5) suffix="PiB";;
-    6) echo "${exp} --- huh?" && exit 3;;
+    1) suffix="KiB" ;;
+    2) suffix="MiB" ;;
+    3) suffix="GiB" ;;
+    4) suffix="TiB" ;;
+    5) suffix="PiB" ;;
+    6) echo "${exp} --- huh?" && exit 3 ;;
   esac
 
   echo "${value}${suffix}"
@@ -295,12 +295,12 @@ function get_base10 {
   value="$(echo "${value} / 1000^${exp}" | bc)"
 
   case "${exp}" in
-    1) suffix="k";;
-    2) suffix="M";;
-    3) suffix="G";;
-    4) suffix="T";;
-    5) suffix="P";;
-    6) echo "${exp} --- huh?" && exit 3;;
+    1) suffix="k" ;;
+    2) suffix="M" ;;
+    3) suffix="G" ;;
+    4) suffix="T" ;;
+    5) suffix="P" ;;
+    6) echo "${exp} --- huh?" && exit 3 ;;
   esac
 
   echo "${value}${suffix}"
@@ -396,7 +396,7 @@ function set_partitions {
     else
       EFI_PARTITION="/dev/${DEVICE}${part_count}"
     fi
-    part_count=$(( part_count + 1 ))
+    part_count=$((part_count + 1))
   fi
 
   if is_size_nonzero "${PARTITIONS["share"]}"; then
@@ -406,7 +406,7 @@ function set_partitions {
     else
       SHARE_PARTITION="/dev/${DEVICE}${part_count}"
     fi
-    part_count=$(( part_count + 1 ))
+    part_count=$((part_count + 1))
   fi
 
   case "${SCHEME}" in
@@ -419,7 +419,7 @@ function set_partitions {
         ROOT_PARTITION="/dev/${DEVICE}${part_count}"
         CRYPT_PARTITION="/dev/${DEVICE}${part_count}"
       fi
-      part_count=$(( part_count + 1 ))
+      part_count=$((part_count + 1))
       ;;
     "LVM")
       sgdisk_opts="${sgdisk_opts} --new=${part_count}:0:0 --typecode=${part_count}:8e00"
@@ -428,7 +428,7 @@ function set_partitions {
       else
         ROOT_PARTITION="/dev/${DEVICE}${part_count}"
       fi
-      part_count=$(( part_count + 1 ))
+      part_count=$((part_count + 1))
       ;;
     "Plain")
       if is_size_nonzero "${PARTITIONS["swap"]}"; then
@@ -438,7 +438,7 @@ function set_partitions {
         else
           SWAP_PARTITION="/dev/${DEVICE}${part_count}"
         fi
-        part_count=$(( part_count + 1 ))
+        part_count=$((part_count + 1))
       fi
       if is_size_nonzero "${PARTITIONS["root"]}"; then
         if  [[ "${PARTITIONS["root"]}" = "fill" ]]; then
@@ -448,7 +448,7 @@ function set_partitions {
           else
             ROOT_PARTITION="/dev/${DEVICE}${part_count}"
           fi
-          part_count=$(( part_count + 1 ))
+          part_count=$((part_count + 1))
         else
           sgdisk_opts="${sgdisk_opts} --new=${part_count}:0:+${PARTITIONS["root"]} --typecode=${part_count}:8300"
           if "${add_p}"; then
@@ -456,7 +456,7 @@ function set_partitions {
           else
             ROOT_PARTITION="/dev/${DEVICE}${part_count}"
           fi
-          part_count=$(( part_count + 1 ))
+          part_count=$((part_count + 1))
           if is_size_nonzero "${PARTITIONS["home"]}"; then
             if  [[ "${PARTITIONS["home"]}" = "fill" ]]; then
               sgdisk_opts="${sgdisk_opts} --new=${part_count}:0:0 --typecode=${part_count}:8300"
@@ -465,7 +465,7 @@ function set_partitions {
               else
                 HOME_PARTITION="/dev/${DEVICE}${part_count}"
               fi
-              part_count=$(( part_count + 1 ))
+              part_count=$((part_count + 1))
             else
               sgdisk_opts="${sgdisk_opts} --new=${part_count}:0:+${PARTITIONS["home"]} --typecode=${part_count}:8300"
               if "${add_p}"; then
@@ -473,7 +473,7 @@ function set_partitions {
               else
                 HOME_PARTITION="/dev/${DEVICE}${part_count}"
               fi
-              part_count=$(( part_count + 1 ))
+              part_count=$((part_count + 1))
             fi
           fi
         fi
@@ -491,13 +491,13 @@ function format_partitions {
   case "${SCHEME}" in
     "LVM on LUKS")
       if [[ "${BOOTMODE}" = "GRUB" ]]; then
-        echo -n "${CRYPT_PASSWORD}" | \
+        echo -n "${CRYPT_PASSWORD}" |
           cryptsetup luksFormat --type luks1 "${CRYPT_PARTITION}" --batch-mode --key-file -
       else
-        echo -n "${CRYPT_PASSWORD}" | \
+        echo -n "${CRYPT_PASSWORD}" |
           cryptsetup luksFormat "${CRYPT_PARTITION}" --batch-mode --key-file -
       fi
-      echo -n "${CRYPT_PASSWORD}" | \
+      echo -n "${CRYPT_PASSWORD}" |
         cryptsetup luksOpen "${CRYPT_PARTITION}" ${LV} --batch-mode --key-file -
 
       pvcreate /dev/mapper/${LV}
@@ -591,7 +591,7 @@ TIMEZONE="UTC"
 function ask_timezone {
   local res
 
-  res="$(timedatectl list-timezones | \
+  res="$(timedatectl list-timezones |
          fzf --layout=reverse \
              --header="Select time zone ('ESC' for default: ${TIMEZONE})" || true)"
   clear
@@ -614,7 +614,7 @@ CHARSET="UTF-8"
 function ask_locale {
   local res
 
-  res="$(sed -n "s,^#\?\ \?\([[:alnum:]\.@_\-]\+\)\ \([[:alnum:]\-]\+\)\ *$,\1 \2,p" /etc/locale.gen | \
+  res="$(sed -n "s,^#\?\ \?\([[:alnum:]\.@_\-]\+\)\ \([[:alnum:]\-]\+\)\ *$,\1 \2,p" /etc/locale.gen |
          fzf --layout=reverse \
              --header="Select locale ('ESC' for default: ${LOCALE})" || true)"
   clear
@@ -667,7 +667,7 @@ function ask_username {
   while "${is_invalid}"; do
     tmp="$(ask_question "User name (default: ${USER_NAME})")"
     if [ -n "${tmp}" ]; then
-      if (( "${#tmp}" > 16 )); then
+      if (("${#tmp}" > 16)); then
         show_error "ERROR: user name ${tmp@Q} greater than 16 characters."
         tmp=
         continue
@@ -759,7 +759,7 @@ export -f disable_root
 # export -f install_ucode
 
 function install_gummiboot {
-  if command -v bootctl >/dev/null 2>&1; then
+  if command -v bootctl > /dev/null 2>&1; then
     apt install -y efibootmgr
 
     local root_uuid
@@ -783,7 +783,7 @@ function install_gummiboot {
         fi
 
         # add entry to /etc/crypttab
-        if grep "${crypt_uuid}" /etc/crypttab >/dev/null 2>&1; then
+        if grep "${crypt_uuid}" /etc/crypttab > /dev/null 2>&1; then
           sed -i "s|\([a-zA-Z0-9_-]\+\)\(\s\+\)UUID=${crypt_uuid}\(\s\+\)none\(\s\+\)\([A-Za-z0-9_\-\=,]\+\)|\1\2UUID=${crypt_uuid}\3none\4luks,discard|g" /etc/crypttab
         else
           echo "${LV}	UUID=${crypt_uuid}	none	luks,discard" >> /etc/crypttab
@@ -819,18 +819,18 @@ function install_gummiboot {
 
     cp -af "/boot/${kernel}" "/boot/${kernel/vmlinuz/initrd.img}" /boot/efi/
     {
-      echo "default	${outfile}";
-      echo "timeout	1";
-      echo "console-mode	max";
-      echo "editor	no";
-    }> /boot/efi/loader/loader.conf
+      echo "default	${outfile}"
+      echo "timeout	1"
+      echo "console-mode	max"
+      echo "editor	no"
+    } > /boot/efi/loader/loader.conf
 
     {
-      echo "title	Debian, linux-${version}";
-      echo "linux	/${kernel}";
-      echo "initrd	/${kernel/vmlinuz/initrd.img}";
-      echo "options	${cmdline}";
-    }> "/boot/efi/loader/entries/${outfile}"
+      echo "title	Debian, linux-${version}"
+      echo "linux	/${kernel}"
+      echo "initrd	/${kernel/vmlinuz/initrd.img}"
+      echo "options	${cmdline}"
+    } > "/boot/efi/loader/entries/${outfile}"
   fi
 
   # rebuild the kernel(s)
@@ -873,7 +873,7 @@ function install_grub {
     sed -i "s|^GRUB_CMDLINE_LINUX=[\"\"]*|GRUB_CMDLINE_LINUX=\"${cmdline}\"|g" /etc/default/grub
   fi
 
-  if grep "^#GRUB_ENABLE_CRYPTODISK" /etc/default/grub >/dev/null 2>&1; then
+  if grep "^#GRUB_ENABLE_CRYPTODISK" /etc/default/grub > /dev/null 2>&1; then
     sed -i "s/^#GRUB_ENABLE_CRYPTODISK/GRUB_ENABLE_CRYPTODISK/g" /etc/default/grub
   else
     sed -i "/^GRUB_CMDLINE_LINUX=/a GRUB_ENABLE_CRYPTODISK=y" /etc/default/grub
@@ -898,12 +898,12 @@ function make_luks_key {
   crypt_key_path="/etc/${crypt_key}"
   dd bs=512 count=4 if=/dev/urandom of=${crypt_key_path} && sync
   chmod 400 ${crypt_key_path}
-  echo -n "${CRYPT_PASSWORD}" | \
+  echo -n "${CRYPT_PASSWORD}" |
     cryptsetup luksAddKey "${CRYPT_PARTITION}" --key-file=- --batch-mode "${crypt_key_path}" --key-slot 1
 
   # add key to /etc/crypttab
   crypt_uuid="$(lsblk -dno UUID "${CRYPT_PARTITION}")"
-  if grep "${crypt_uuid}" /etc/crypttab >/dev/null 2>&1; then
+  if grep "${crypt_uuid}" /etc/crypttab > /dev/null 2>&1; then
     sed -i "s|\([a-zA-Z0-9_-]\+\)\(\s\+\)UUID=${crypt_uuid}\(\s\+\)none\(\s\+\)\([A-Za-z0-9_\-\=,]\+\)|\1\2UUID=${crypt_uuid}\3/${crypt_key}\4luks,discard,key-slot=1,keyscript=/bin/cat|g" /etc/crypttab
   else
     echo "${LV}	UUID=${crypt_uuid}	/${crypt_key}	luks,discard,key-slot=1,keyscript=/bin/cat" >> /etc/crypttab

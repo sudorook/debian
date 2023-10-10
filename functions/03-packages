@@ -497,7 +497,7 @@ function install_vim {
   # 00-check makes sure the git is installed, so no need for checks here.
   git config --global diff.tool vimdiff
   git config --global merge.tool vimdiff
-  git config --global --add difftool.prompt false
+  git config --global difftool.prompt false
 
   if command -v xdg-mime > /dev/null 2>&1; then
     show_info "Setting Vim MIME associations."
@@ -544,7 +544,7 @@ function install_neovim {
   # 00-check makes sure the git is installed, so no need for checks here.
   git config --global diff.tool "nvim -d"
   git config --global merge.tool "nvim -d"
-  git config --global --add difftool.prompt false
+  git config --global difftool.prompt false
 
   if command -v xdg-mime > /dev/null 2>&1; then
     show_info "Setting Neovim MIME associations."

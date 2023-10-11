@@ -17,31 +17,33 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-dir="$(dirname "$0")"
+DIR="$(dirname "$0")"
 
-accel="${dir}/packages/3d-accel.list"
 function install_3d_accel {
+  local accel="${DIR}/packages/3d-accel.list"
   show_header "Installing mesa/vulkan packages for 3D acceleration."
   check_installed "${accel}"
   check_fail
   show_success "Video acceleration packages installed."
 }
 
-android="${dir}/packages/android.list"
 function install_android {
+  local android="${DIR}/packages/android.list"
   show_header "Installing tools for Android devices."
   check_installed "${android}"
   check_fail
   show_success "Android tools installed."
 }
 
-apps="${dir}/packages/apps.list"
-mpvconfig="${dir}/configs/mpv.conf"
-mpvinputconfig="${dir}/configs/mpv-input.conf"
-kittyconfig="${dir}/configs/kitty.conf"
-libaoconf="/etc/libao.conf"
-keepassxcini="${dir}/configs/keepassxc.ini"
 function install_apps {
+  local apps="${DIR}/packages/apps.list"
+  local mpvconfig="${DIR}/configs/mpv.conf"
+  local mpvinputconfig="${DIR}/configs/mpv-input.conf"
+  local kittyconfig="${DIR}/configs/kitty.conf"
+  local libaoconf="/etc/libao.conf"
+  local keepassxcini="${DIR}/configs/keepassxc.ini"
+  local vimpack="${HOME}/.vim/pack/dist/start"
+
   show_header "Installing desktop applications."
   check_installed "${apps}"
   check_fail
@@ -100,13 +102,15 @@ function install_apps {
   sudo sh -c "echo 'default_driver=pulse' > ${libaoconf}"
 }
 
-appskde="${dir}/packages/apps-kde.list"
-mpvconfig="${dir}/configs/mpv.conf"
-mpvinputconfig="${dir}/configs/mpv-input.conf"
-kittyconfig="${dir}/configs/kitty.conf"
-libaoconf="/etc/libao.conf"
-keepassxcini="${dir}/configs/keepassxc.ini"
 function install_apps_kde {
+  local appskde="${DIR}/packages/apps-kde.list"
+  local mpvconfig="${DIR}/configs/mpv.conf"
+  local mpvinputconfig="${DIR}/configs/mpv-input.conf"
+  local kittyconfig="${DIR}/configs/kitty.conf"
+  local libaoconf="/etc/libao.conf"
+  local keepassxcini="${DIR}/configs/keepassxc.ini"
+  local vimpack="${HOME}/.vim/pack/dist/start"
+
   show_header "Installing KDE desktop applications."
   check_installed "${appskde}"
   check_fail
@@ -142,29 +146,30 @@ function install_apps_kde {
   cp -f "${keepassxcini}" "${HOME}/.config/keepassxc/"
 }
 
-codecs="${dir}/packages/codecs.list"
 function install_codecs {
+  local codecs="${DIR}/packages/codecs.list"
   show_header "Installing codecs."
   check_installed "${codecs}"
   check_fail
   show_success "Codecs installed."
 }
 
-containers="${dir}/packages/containers.list"
 function install_containers {
+  local containers="${DIR}/packages/containers.list"
   show_header "Installing container packages (containerd, LXC, Nomad, Podman)."
   check_installed "${containers}"
   check_fail
   show_success "Container packages installed."
 }
 
-dev="${dir}/packages/dev.list"
-r="${dir}/packages/r.list"
-npmrc="${dir}/dotfiles/npmrc"
-rprofile="${dir}/dotfiles/Rprofile"
-vimpack="${HOME}/.vim/pack/dist/start"
-cargotoml="${dir}/configs/cargo.toml"
 function install_dev {
+  local dev="${DIR}/packages/dev.list"
+  local r="${DIR}/packages/r.list"
+  local npmrc="${DIR}/dotfiles/npmrc"
+  local rprofile="${DIR}/dotfiles/Rprofile"
+  local vimpack="${HOME}/.vim/pack/dist/start"
+  local cargotoml="${DIR}/configs/cargo.toml"
+
   show_header "Installing languages, libraries, and tools for development."
   check_installed "${dev}"
   check_fail
@@ -220,9 +225,10 @@ function install_dev {
   fi
 }
 
-extra="${dir}/packages/extra.list"
-ytdlconf="${dir}/configs/ytdl.conf"
 function install_extra {
+  local extra="${DIR}/packages/extra.list"
+  local ytdlconf="${DIR}/configs/ytdl.conf"
+
   show_header "Installing extra desktop applications."
   check_installed "${extra}"
   check_fail
@@ -236,9 +242,10 @@ function install_extra {
   cp -f "${ytdlconf}" "${HOME}/.config/yt-dlp/config"
 }
 
-extrakde="${dir}/packages/extra-kde.list"
-ytdlconf="${dir}/configs/ytdl.conf"
 function install_extra_kde {
+  local extrakde="${DIR}/packages/extra-kde.list"
+  local ytdlconf="${DIR}/configs/ytdl.conf"
+
   show_header "Installing extra KDE desktop applications."
   check_installed "${extrakde}"
   check_fail
@@ -252,33 +259,34 @@ function install_extra_kde {
   cp -f "${ytdlconf}" "${HOME}/.config/yt-dlp/config"
 }
 
-pipewire="${dir}/packages/pipewire.list"
 function install_pipewire {
+  local pipewire="${DIR}/packages/pipewire.list"
   show_header "Installing PipeWire A/V processor."
   check_installed "${pipewire}"
   check_fail
   show_success "Printing applications installed."
 }
 
-printer="${dir}/packages/printer.list"
 function install_printing {
+  local printer="${DIR}/packages/printer.list"
   show_header "Installing CPUS and printer firmware."
   check_installed "${printer}"
   check_fail
   show_success "Printing applications installed."
 }
 
-games="${dir}/packages/games.list"
 function install_games {
+  local games="${DIR}/packages/games.list"
   show_header "Installing game emulators."
   check_installed "${games}"
   check_fail
   show_success "Emulators installed."
 }
 
-kvm="${dir}/packages/kvm.list"
 # qemuconf="/etc/libvirt/qemu.conf"
 function install_kvm {
+  local kvm="${DIR}/packages/kvm.list"
+
   show_header "Installing KVM."
   check_installed "${kvm}"
   check_fail
@@ -300,8 +308,8 @@ function install_kvm {
   sudo systemctl start libvirtd
 }
 
-kvmguest="${dir}/packages/kvm-guest.list"
 function install_kvm_guest {
+  local kvmguest="${DIR}/packages/kvm-guest.list"
   if grep "^flags.*\ hypervisor" /proc/cpuinfo > /dev/null 2>&1; then
     show_header "Installing tools for KVM guests."
     check_installed "${kvmguest}"
@@ -315,9 +323,10 @@ function install_kvm_guest {
   fi
 }
 
-message="${dir}/packages/message.list"
-weechatdir="${HOME}/.weechat"
 function install_messaging {
+  local message="${DIR}/packages/message.list"
+  local weechatdir="${HOME}/.weechat"
+
   show_header "Installing messaging applications."
   check_installed "${message}"
   check_fail
@@ -336,22 +345,23 @@ function install_messaging {
   show_success "wee-slack plugin installed."
 }
 
-mingw="${dir}/packages/mingw.list"
 function install_mingw {
+  local mingw="${DIR}/packages/mingw.list"
   show_header "Installing MinGW for cross-platform compilation."
   check_installed "${mingw}"
   check_fail
   show_success "MinGW installed."
 }
 
-music="${dir}/packages/music.list"
-beetsconf="${dir}/configs/beets.yaml"
-beetsdir="${HOME}/.config/beets"
-mpdconf="${dir}/configs/mpd.conf"
-mpddir="${HOME}/.config/mpd"
-ncmpcppconf="${dir}/configs/ncmpcpp.conf"
-ncmpcppdir="${HOME}/.ncmpcpp"
 function install_music {
+  local music="${DIR}/packages/music.list"
+  local beetsconf="${DIR}/configs/beets.yaml"
+  local beetsdir="${HOME}/.config/beets"
+  local mpdconf="${DIR}/configs/mpd.conf"
+  local mpddir="${HOME}/.config/mpd"
+  local ncmpcppconf="${DIR}/configs/ncmpcpp.conf"
+  local ncmpcppdir="${HOME}/.ncmpcpp"
+
   show_header "Installing music applications."
   check_installed "${music}"
   check_fail
@@ -380,8 +390,9 @@ function install_music {
   cp -f "${ncmpcppconf}" "${ncmpcppdir}/config"
 }
 
-texlive="${dir}/packages/texlive.list"
 function install_texlive {
+  local texlive="${DIR}/packages/texlive.list"
+
   show_header "Installing TeX Live."
   check_installed "${texlive}"
   check_fail
@@ -394,9 +405,10 @@ function install_texlive {
   sudo sed -i "s,^TEXMFHOME = .*$,TEXMFHOME = ~/.texmf,g" "${texmfconfig}"
 }
 
-torbrowser_path="${HOME}/.local/share/tor-browser"
-local_applications="${HOME}/.local/share/applications"
 function install_torbrowser {
+  local torbrowser_path="${HOME}/.local/share/tor-browser"
+  local local_applications="${HOME}/.local/share/applications"
+
   show_header "Installing Tor browser."
 
   local response
@@ -426,15 +438,16 @@ function install_torbrowser {
     torbrowser_version=$(curl https://www.torproject.org/download/ |
                          sed -n 's,^ \+<a class="downloadLink" href="/dist/torbrowser/\([0-9\.]\+\)/tor-browser-linux.*">,\1,p')
     arch=$(uname -m)
-    if [ "${arch:(-2)}" = "86" ]; then
+    if [ "${arch: -2}" = "86" ]; then
       torbrowser_package=tor-browser-linux32-${torbrowser_version}_ALL.tar.xz
-    elif [ "${arch:(-2)}" = "64" ]; then
+    elif [ "${arch: -2}" = "64" ]; then
       torbrowser_package=tor-browser-linux64-${torbrowser_version}_ALL.tar.xz
     fi
 
     show_info "Downloading release tarball."
     tmpdir="$(mktemp -d)"
     pushd "${tmpdir}" > /dev/null || exit
+
     wget "${torbrowser_url}/${torbrowser_version}/${torbrowser_package}"
     wget "${torbrowser_url}/${torbrowser_version}/${torbrowser_package}.asc"
     show_info "Extracting..."
@@ -453,7 +466,7 @@ function install_torbrowser {
     sed -i \
       -e "s,^Name=.*,Name=Tor Browser,g" \
       -e "s,^Icon=.*,Icon=browser-tor,g" \
-      -e "s,^Exec=.*,Exec=sh -c '\"${torbrowser_path}/Browser/start-tor-browser\" --detach || ([ !  -x \"${torbrowser_path}/Browser/start-tor-browser\" ] \&\& \"\$(dirname \"\$*\")\"/Browser/start-tor-browser --detach)' dummy %k,g" \
+      -e "s,^Exec=.*,Exec=sh -c '\"${torbrowser_path}/Browser/start-tor-browser\" --detach || ([ ! -x \"${torbrowser_path}/Browser/start-tor-browser\" ] \&\& \"\$(dirname \"\$*\")\"/Browser/start-tor-browser --detach)' dummy %k,g" \
       "${local_applications}/start-tor-browser.desktop"
     update-desktop-database "${local_applications}"
 
@@ -465,11 +478,12 @@ function install_torbrowser {
   fi
 }
 
-vim="${dir}/packages/vim.list"
-vimrc="${dir}/dotfiles/vimrc"
-vimpack="${HOME}/.vim/pack/dist/start"
-vimspell="${HOME}/.vim/spell"
 function install_vim {
+  local vim="${DIR}/packages/vim.list"
+  local vimrc="${DIR}/dotfiles/vimrc"
+  local vimpack="${HOME}/.vim/pack/dist/start"
+  local vimspell="${HOME}/.vim/spell"
+
   show_header "Installing Vim and Vim plugins."
   check_installed "${vim}"
   check_fail
@@ -526,10 +540,11 @@ function install_vim {
   show_info "  set spellfile=\$HOME/.vim/spell/en.utf-8.add"
 }
 
-nvim="${dir}/packages/neovim.list"
-nvimrc="${dir}/dotfiles/vimrc"
-nvimspell="${HOME}/.config/nvim/spell"
 function install_neovim {
+  local nvim="${DIR}/packages/neovim.list"
+  local nvimrc="${DIR}/dotfiles/vimrc"
+  local nvimspell="${HOME}/.config/nvim/spell"
+
   show_header "Installing Neovim and Neovim plugins."
   check_installed "${nvim}"
   check_fail
@@ -573,8 +588,9 @@ function install_neovim {
   show_info "  set spellfile=\$HOME/.vim/spell/en.utf-8.add"
 }
 
-virtualbox="${dir}/packages/virtualbox.list"
 function install_virtualbox {
+  local virtualbox="${DIR}/packages/virtualbox.list"
+
   show_header "Installing VirtualBox."
   check_installed "${virtualbox}"
   check_fail
@@ -586,8 +602,8 @@ function install_virtualbox {
   fi
 }
 
-virtualboxguest="${dir}/packages/virtualbox-guest.list"
 function install_virtualbox_guest {
+  local virtualboxguest="${DIR}/packages/virtualbox-guest.list"
   if grep "^flags.*\ hypervisor" /proc/cpuinfo > /dev/null 2>&1; then
     show_header "Installing packages for VirtualBox guests."
     check_installed "${virtualboxguest}"
@@ -598,8 +614,8 @@ function install_virtualbox_guest {
   fi
 }
 
-wine="${dir}/packages/wine.list"
 function install_wine {
+  local wine="${DIR}/packages/wine.list"
   show_header "Installing wine."
   check_installed "${wine}"
   check_fail
@@ -608,7 +624,7 @@ function install_wine {
 
 function 03-packages {
   show_question "Applications: what do you want to install?"
-  show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+  show_info "Main\n ${ENDBRANCH} Apps (Hit ENTER to see options again.)"
 
   local options=(
     "Back"
@@ -668,103 +684,103 @@ function 03-packages {
         install_virtualbox
         install_virtualbox_guest
         install_wine
-        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Apps (Hit ENTER to see options again.)"
         ;;
       "3D acceleration")
         install_3d_accel
-        show_info "Main\n ${endbranch} Misc (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Misc (Hit ENTER to see options again.)"
         ;;
       "Android tools")
         install_android
-        show_info "Main\n ${endbranch} Misc (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Misc (Hit ENTER to see options again.)"
         ;;
       "General applications")
         install_apps
-        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Apps (Hit ENTER to see options again.)"
         ;;
       "General KDE applications")
         install_apps_kde
-        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Apps (Hit ENTER to see options again.)"
         ;;
       "Codecs")
         install_codecs
-        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Apps (Hit ENTER to see options again.)"
         ;;
       "Containers")
         install_containers
-        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Apps (Hit ENTER to see options again.)"
         ;;
       "Development")
         install_dev
-        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Apps (Hit ENTER to see options again.)"
         ;;
       "Extra applications")
         install_extra
-        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Apps (Hit ENTER to see options again.)"
         ;;
       "Extra KDE applications")
         install_extra_kde
-        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Apps (Hit ENTER to see options again.)"
         ;;
       "Emulators")
         install_games
-        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Apps (Hit ENTER to see options again.)"
         ;;
       "KVM (host)")
         install_kvm
-        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Apps (Hit ENTER to see options again.)"
         ;;
       "KVM (guest)")
         install_kvm_guest
-        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Apps (Hit ENTER to see options again.)"
         ;;
       "Messaging")
         install_messaging
-        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Apps (Hit ENTER to see options again.)"
         ;;
       "MinGW")
         install_mingw
-        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Apps (Hit ENTER to see options again.)"
         ;;
       "Music")
         install_music
-        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Apps (Hit ENTER to see options again.)"
         ;;
       "PipeWire")
         install_pipewire
-        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Apps (Hit ENTER to see options again.)"
         ;;
       "Printing")
         install_printing
-        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Apps (Hit ENTER to see options again.)"
         ;;
       "TeX Live")
         install_texlive
-        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Apps (Hit ENTER to see options again.)"
         ;;
       "Tor browser")
         install_torbrowser
-        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Apps (Hit ENTER to see options again.)"
         ;;
       "Vim")
         install_vim
-        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Apps (Hit ENTER to see options again.)"
         ;;
       "Neovim")
         install_neovim
-        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Apps (Hit ENTER to see options again.)"
         ;;
       "VirtualBox (host)")
         install_virtualbox
-        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Apps (Hit ENTER to see options again.)"
         ;;
       "VirtualBox (guest)")
         install_virtualbox_guest
-        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Apps (Hit ENTER to see options again.)"
         ;;
       "Wine")
         install_wine
-        show_info "Main\n ${endbranch} Apps (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Apps (Hit ENTER to see options again.)"
         ;;
       *)
         show_warning "Invalid option."

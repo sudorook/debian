@@ -18,7 +18,7 @@ set -euo pipefail
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-dir="$(dirname "$0")"
+DIR="$(dirname "$0")"
 
 #
 # Fancy color output
@@ -37,6 +37,7 @@ show_question() {
   echo -e $'\033[1;34m'"$*"$'\033[0m'
 }
 ask_question() {
+  local var
   read -r -p $'\033[1;34m'"$* "$'\033[0m' var
   echo "${var}"
 }
@@ -63,14 +64,14 @@ export -f show_listitem
 # Source the functions
 #
 
-. "${dir}"/functions/00-check
-. "${dir}"/functions/01-base
-. "${dir}"/functions/01-misc
-. "${dir}"/functions/02-desktop
-. "${dir}"/functions/03-network
-. "${dir}"/functions/03-packages
-. "${dir}"/functions/04-themes
-. "${dir}"/functions/05-personal
+. "${DIR}"/functions/00-check
+. "${DIR}"/functions/01-base
+. "${DIR}"/functions/01-misc
+. "${DIR}"/functions/02-desktop
+. "${DIR}"/functions/03-network
+. "${DIR}"/functions/03-packages
+. "${DIR}"/functions/04-themes
+. "${DIR}"/functions/05-personal
 
 #
 # Define main select wrapper
@@ -89,6 +90,7 @@ function main {
     "Applications"
     "Themes"
     "Personalization")
+  local option
   select option in "${options[@]}"; do
     case "${option}" in
       "Quit")

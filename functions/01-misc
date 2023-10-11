@@ -18,12 +18,13 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-dir="$(dirname "$0")"
+DIR="$(dirname "$0")"
 
-zsh="${dir}/packages/zsh.list"
-zshrc="${dir}/dotfiles/zshrc"
-p10krc="${dir}/dotfiles/p10k"
 function install_zsh {
+  local zsh="${DIR}/packages/zsh.list"
+  local zshrc="${DIR}/dotfiles/zshrc"
+  local p10krc="${DIR}/dotfiles/p10k"
+
   show_header "Installing zsh."
   check_installed "${zsh}"
   check_fail
@@ -38,8 +39,9 @@ function install_zsh {
   cp -f "${p10krc}" "${HOME}/.p10k.zsh"
 }
 
-selinux="${dir}/packages/selinux.list"
 function install_selinux {
+  local selinux="${DIR}/packages/selinux.list"
+
   show_header "Installing SELinux and setting rules."
   check_installed "${selinux}"
   check_fail
@@ -79,9 +81,10 @@ function install_selinux {
     "'enforcing=1' to the kernel command line."
 }
 
-utils="${dir}/packages/utils.list"
-tmuxconfig="${dir}/dotfiles/tmux.conf"
 function install_utils {
+  local utils="${DIR}/packages/utils.list"
+  local tmuxconfig="${DIR}/dotfiles/tmux.conf"
+
   show_header "Installing general utilities."
   check_installed "${utils}"
   check_fail
@@ -91,8 +94,9 @@ function install_utils {
   cp -f "${tmuxconfig}" "${HOME}/.tmux.conf"
 }
 
-laptop="${dir}/packages/laptop.list"
 function install_laptop {
+  local laptop="${DIR}/packages/laptop.list"
+
   show_header "Installing laptop utilities."
   check_installed "${laptop}"
   check_fail
@@ -107,7 +111,7 @@ function install_laptop {
 
 function 01-misc {
   show_question "Misc: what do you want to install?"
-  show_info "Main\n ${endbranch} Misc (Hit ENTER to see options again.)"
+  show_info "Main\n ${ENDBRANCH} Misc (Hit ENTER to see options again.)"
 
   local options=(
     "Back"
@@ -127,27 +131,27 @@ function 01-misc {
         install_laptop
         install_selinux
         install_zsh
-        show_info "Main\n ${endbranch} Misc (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Misc (Hit ENTER to see options again.)"
         ;;
       "Linux utilities")
         install_utils
-        show_info "Main\n ${endbranch} Misc (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Misc (Hit ENTER to see options again.)"
         ;;
       "Laptop tools")
         install_laptop
-        show_info "Main\n ${endbranch} Misc (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Misc (Hit ENTER to see options again.)"
         ;;
       "SELinux")
         install_selinux
-        show_info "Main\n ${endbranch} Misc (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Misc (Hit ENTER to see options again.)"
         ;;
       "zsh")
         install_zsh
-        show_info "Main\n ${endbranch} Misc (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Misc (Hit ENTER to see options again.)"
         ;;
       *)
         show_warning "Invalid option."
-        show_info "Main\n ${endbranch} Misc (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Misc (Hit ENTER to see options again.)"
         ;;
     esac
   done

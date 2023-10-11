@@ -17,11 +17,12 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-dir="$(dirname "$0")"
+DIR="$(dirname "$0")"
 
-npmrc="${dir}/dotfiles/npmrc"
-themes="${dir}/packages/themes.list"
 function install_theme_deps_gtk {
+  local npmrc="${DIR}/dotfiles/npmrc"
+  local themes="${DIR}/packages/themes.list"
+
   show_header "Installing theme dependencies."
   check_installed "${themes}"
   check_fail
@@ -33,8 +34,8 @@ function install_theme_deps_gtk {
   fi
 }
 
-themeskde="${dir}/packages/themes-kde.list"
 function install_theme_deps_kde {
+  local themeskde="${DIR}/packages/themes-kde.list"
   show_header "Installing KDE theme dependencies."
   check_installed "${themeskde}"
   check_fail
@@ -229,8 +230,8 @@ function install_materia_kde {
   show_success "Materia KDE theme installed."
 }
 
-fonts="${dir}/packages/fonts.list"
 function install_fonts {
+  local fonts="${DIR}/packages/fonts.list"
   local tmpdir
   show_header "Installing fonts."
   check_installed "${fonts}"
@@ -285,9 +286,9 @@ function install_timed_backgrounds {
   show_success "Backgrounds installed."
 }
 
-qt5ctconf="${dir}/configs/qt5ct.conf"
-qt6ctconf="${dir}/configs/qt5ct.conf"  # re-use qt5ct config for qt6ct
 function set_qtcompat {
+  local qt5ctconf="${DIR}/configs/qt5ct.conf"
+  local qt6ctconf="${DIR}/configs/qt5ct.conf"  # re-use qt5ct config for qt6ct
   show_info "Copying qt5ct config."
   mkdir -p "${HOME}/.config/qt5ct"
   cp -f "${qt5ctconf}" "${HOME}/.config/qt5ct"
@@ -316,7 +317,7 @@ function set_qtcompat {
 
 function 04-themes {
   show_question "Themes: what do you want to install?"
-  show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
+  show_info "Main\n ${ENDBRANCH} Themes (Hit ENTER to see options again.)"
 
   local options=(
     "Back"
@@ -351,57 +352,57 @@ function 04-themes {
         install_colorific_themes
         install_timed_backgrounds
         set_qtcompat
-        show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Themes (Hit ENTER to see options again.)"
         ;;
       "Arc (GTK)")
         install_theme_deps_gtk
         install_arc_gtk
         set_qtcompat
-        show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Themes (Hit ENTER to see options again.)"
         ;;
       "Arc (KDE)")
         install_theme_deps_kde
         install_arc_kde
-        show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Themes (Hit ENTER to see options again.)"
         ;;
       "Adapta (GTK)")
         install_theme_deps_gtk
         install_adapta_gtk
         set_qtcompat
-        show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Themes (Hit ENTER to see options again.)"
         ;;
       "Plata (GTK)")
         install_theme_deps_gtk
         install_plata_gtk
         set_qtcompat
-        show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Themes (Hit ENTER to see options again.)"
         ;;
       "Materia (GTK)")
         install_theme_deps_gtk
         install_materia_gtk
         set_qtcompat
-        show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Themes (Hit ENTER to see options again.)"
         ;;
       "Materia (KDE)")
         install_theme_deps_kde
         install_materia_kde
-        show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Themes (Hit ENTER to see options again.)"
         ;;
       "Fonts")
         install_fonts
-        show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Themes (Hit ENTER to see options again.)"
         ;;
       "Papirus (icons)")
         install_papirus_icons
-        show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Themes (Hit ENTER to see options again.)"
         ;;
       "Colorific themes")
         install_colorific_themes
-        show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Themes (Hit ENTER to see options again.)"
         ;;
       "Timed backgrounds")
         install_timed_backgrounds
-        show_info "Main\n ${endbranch} Themes (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Themes (Hit ENTER to see options again.)"
         ;;
       *)
         show_warning "Invalid option."

@@ -17,11 +17,12 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-dir="$(dirname "$0")"
+DIR="$(dirname "$0")"
 
-networking="${dir}/packages/network.list"
-nmconf="/etc/NetworkManager/NetworkManager.conf"
 function install_network {
+  local networking="${DIR}/packages/network.list"
+  local nmconf="/etc/NetworkManager/NetworkManager.conf"
+
   show_header "Setting up networking."
   check_installed "${networking}"
   check_fail
@@ -43,9 +44,10 @@ function install_network {
     /etc/ssh/sshd_config
 }
 
-discovery="${dir}/packages/discover.list"
-nsconf="/etc/nsswitch.conf"
 function install_discovery {
+  local discovery="${DIR}/packages/discover.list"
+  local nsconf="/etc/nsswitch.conf"
+
   show_header "Setting up local network discovery."
   check_installed "${discovery}"
   check_fail
@@ -59,8 +61,9 @@ function install_discovery {
   sudo systemctl start avahi-daemon.service
 }
 
-firewall="${dir}/packages/firewall.list"
 function install_firewall {
+  local firewall="${DIR}/packages/firewall.list"
+
   show_header "Setting up firewall."
   check_installed "${firewall}"
   check_fail
@@ -91,8 +94,9 @@ function install_firewall {
   sudo systemctl enable ufw
 }
 
-tor="${dir}/packages/tor.list"
 function install_tor {
+  local tor="${DIR}/packages/tor.list"
+
   show_header "Installing Tor programs."
   check_installed "${tor}"
   check_fail
@@ -103,8 +107,9 @@ function install_tor {
   sudo systemctl start tor
 }
 
-srclist="/etc/apt/sources.list"
 function use_onion_repos {
+  local srclist="/etc/apt/sources.list"
+
   show_header "Tunneling apt over tor for Debian $(lsb_release -sc)."
 
   local is_contrib
@@ -117,7 +122,7 @@ function use_onion_repos {
   local release
   release=$(lsb_release -sc)
   sudo cp -f ${srclist} ${srclist}.${RANDOM}.bak
-  sudo cp -f "${dir}/sources/${release}-sources.list" ${srclist}
+  sudo cp -f "${DIR}/sources/${release}-sources.list" ${srclist}
 
   [ ${is_contrib} == 0 ] &&
     sudo sed -i "s,\(.* ${release} main.*\)$,\1 contrib,g" ${srclist} &&
@@ -135,7 +140,7 @@ function use_onion_repos {
 
 function 03-network {
   show_question "Network: what do you want to install?"
-  show_info "Main\n ${endbranch} Network (Hit ENTER to see options again.)"
+  show_info "Main\n ${ENDBRANCH} Network (Hit ENTER to see options again.)"
 
   local options=(
     "Back"
@@ -157,28 +162,28 @@ function 03-network {
         install_firewall
         install_tor
         use_onion_repos
-        show_info "Main\n ${endbranch} Network (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Network (Hit ENTER to see options again.)"
         ;;
       "Networking")
         install_network
-        show_info "Main\n ${endbranch} Network (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Network (Hit ENTER to see options again.)"
         ;;
       "Local discovery")
         install_discovery
-        show_info "Main\n ${endbranch} Network (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Network (Hit ENTER to see options again.)"
         ;;
       "Firewall")
         install_firewall
-        show_info "Main\n ${endbranch} Network (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Network (Hit ENTER to see options again.)"
         ;;
       "Install Tor")
         install_tor
-        show_info "Main\n ${endbranch} Network (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Network (Hit ENTER to see options again.)"
         ;;
       "Tunnel apt over Tor")
         install_tor
         use_onion_repos
-        show_info "Main\n ${endbranch} Network (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Network (Hit ENTER to see options again.)"
         ;;
       *)
         show_warning "Invalid option."

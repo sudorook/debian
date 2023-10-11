@@ -17,7 +17,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-dir="$(dirname "$0")"
+DIR="$(dirname "$0")"
 
 VG=vg
 LV=lvm
@@ -552,7 +552,7 @@ function format_partitions {
       fi
       ;;
     # "Plain")
-    #   part_count=$(( part_count + 1 ))
+    #   part_count=$((part_count + 1))
     #   ;;
   esac
 

@@ -17,12 +17,13 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-dir="$(dirname "$0")"
+DIR="$(dirname "$0")"
 
-base="${dir}/packages/base.list"
-bashrc="${dir}/dotfiles/bashrc"
-bashprofile="${dir}/dotfiles/bash_profile"
 function install_base {
+  local base="${DIR}/packages/base.list"
+  local bashrc="${DIR}/dotfiles/bashrc"
+  local bashprofile="${DIR}/dotfiles/bash_profile"
+
   show_header "Installing base packages and their config files."
   check_installed "${base}"
   check_fail
@@ -39,9 +40,9 @@ function install_base {
   show_success "Installed bashrc."
 }
 
-firmware="${dir}/packages/firmware.list"
-srclist="/etc/apt/sources.list"
 function install_firmware {
+  local firmware="${DIR}/packages/firmware.list"
+  local srclist="/etc/apt/sources.list"
   local release
   release=$(lsb_release -sc)
   if ! grep non-free "${srclist}" > /dev/null 2>&1; then
@@ -54,8 +55,8 @@ function install_firmware {
   fi
 }
 
-srclist="/etc/apt/sources.list"
 function enable_contrib_repos {
+  local srclist="/etc/apt/sources.list"
   local release
   release=$(lsb_release -sc)
   if ! grep contrib "${srclist}" > /dev/null 2>&1; then
@@ -69,8 +70,8 @@ function enable_contrib_repos {
   fi
 }
 
-srclist="/etc/apt/sources.list"
 function enable_nonfree-firmware_repos {
+  local srclist="/etc/apt/sources.list"
   local release
   release=$(lsb_release -sc)
   if ! grep non-free-firmware "${srclist}" > /dev/null 2>&1; then
@@ -84,8 +85,8 @@ function enable_nonfree-firmware_repos {
   fi
 }
 
-srclist="/etc/apt/sources.list"
 function enable_nonfree_repos {
+  local srclist="/etc/apt/sources.list"
   local release
   release=$(lsb_release -sc)
   if ! grep non-free "${srclist}" > /dev/null 2>&1; then
@@ -99,13 +100,14 @@ function enable_nonfree_repos {
   fi
 }
 
-srclist="/etc/apt/sources.list"
-busterlist="${dir}/sources/buster-sources.list"
-bullseyelist="${dir}/sources/bullseye-sources.list"
-bookwormlist="${dir}/sources/bookworm-sources.list"
-trixielist="${dir}/sources/trixie-sources.list"
-sidlist="${dir}/sources/sid-sources.list"
 function upgrade_debian_release {
+  local srclist="/etc/apt/sources.list"
+  local busterlist="${DIR}/sources/buster-sources.list"
+  local bullseyelist="${DIR}/sources/bullseye-sources.list"
+  local bookwormlist="${DIR}/sources/bookworm-sources.list"
+  local trixielist="${DIR}/sources/trixie-sources.list"
+  local sidlist="${DIR}/sources/sid-sources.list"
+
   # check how current sources.list is configured.
   local is_onion
   local is_contrib
@@ -237,8 +239,8 @@ function enable_sudo_insults {
   fi
 }
 
-purge="${dir}/packages/purge.list"
 function purge_packages {
+  local purge="${DIR}/packages/purge.list"
   show_header "Purging unwanted packaged often installed by default."
   check_uninstalled "${purge}"
   check_fail
@@ -257,10 +259,11 @@ function update_packages {
   show_success "Packages updated."
 }
 
-pcspkr_blacklist="/etc/modprobe.d/nobeep.conf"
-gtk2conf="${HOME}/.gtkrc-2.0"
-gtk3conf="${HOME}/.config/gtk-3.0/settings.ini"
 function disable_beep {
+  local pcspkr_blacklist="/etc/modprobe.d/nobeep.conf"
+  local gtk2conf="${HOME}/.gtkrc-2.0"
+  local gtk3conf="${HOME}/.config/gtk-3.0/settings.ini"
+
   show_header "Disable PC speaker beep."
   show_info "Blacklisting pcspkr and snd_pcsp kernel modules."
   if ! [ "$(ls -A /etc/modprobe.d/)" ]; then
@@ -307,7 +310,7 @@ function disable_beep {
 
 function 01-base {
   show_question "Base: what do you want to install?"
-  show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
+  show_info "Main\n ${ENDBRANCH} Base (Hit ENTER to see options again.)"
 
   local options=(
     "Back"
@@ -338,52 +341,52 @@ function 01-base {
         enable_nonfree-firmware_repos
         enable_sudo_insults
         disable_beep
-        show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Base (Hit ENTER to see options again.)"
         break
         ;;
       "Base packages")
         install_base
-        show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Base (Hit ENTER to see options again.)"
         ;;
       "Purge packages")
         purge_packages
-        show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Base (Hit ENTER to see options again.)"
         ;;
       "Firmware")
         install_firmware
-        show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Base (Hit ENTER to see options again.)"
         ;;
       "Updates")
         update_packages
-        show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Base (Hit ENTER to see options again.)"
         ;;
       "Enable contrib")
         enable_contrib_repos
-        show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Base (Hit ENTER to see options again.)"
         ;;
       "Enable non-free")
         enable_nonfree_repos
-        show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Base (Hit ENTER to see options again.)"
         ;;
       "Enable non-free-firmware")
         enable_nonfree-firmware_repos
-        show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Base (Hit ENTER to see options again.)"
         ;;
       "Upgrade Debian release")
         upgrade_debian_release
-        show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Base (Hit ENTER to see options again.)"
         ;;
       "Sudo insults")
         enable_sudo_insults
-        show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Base (Hit ENTER to see options again.)"
         ;;
       "Disable system beep")
         disable_beep
-        show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Base (Hit ENTER to see options again.)"
         ;;
       *)
         show_warning "Invalid option."
-        show_info "Main\n ${endbranch} Base (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Base (Hit ENTER to see options again.)"
         ;;
     esac
   done

@@ -18,7 +18,7 @@ set -euo pipefail
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-dir="$(dirname "$0")"
+DIR="$(dirname "$0")"
 
 #
 # Fancy color output
@@ -37,6 +37,7 @@ show_question() {
   echo -e $'\033[1;34m'"$*"$'\033[0m'
 }
 ask_question() {
+  local var
   read -r -p $'\033[1;34m'"$* "$'\033[0m' var
   echo "${var}"
 }
@@ -63,8 +64,8 @@ export -f show_listitem
 # Source the functions
 #
 
-. "${dir}"/functions/00-check
-. "${dir}"/functions/00-install
+. "${DIR}"/functions/00-check
+. "${DIR}"/functions/00-install
 
 #
 # Define main select wrapper
@@ -98,7 +99,7 @@ function main {
     mount --bind /${FS} /mnt/${FS}
   done
 
-  "${dir}"/utils/genfstab -U /mnt >> /mnt/etc/fstab
+  "${DIR}"/utils/genfstab -U /mnt >> /mnt/etc/fstab
   TIMEZONE="${TIMEZONE}" chroot /mnt /bin/bash -c "set_timezone"
   LOCALE="${LOCALE}" CHARSET="${CHARSET}" chroot /mnt /bin/bash -c "set_locale"
   KBLAYOUT="us" chroot /mnt /bin/bash -c "set_keyboard"
@@ -124,12 +125,12 @@ function main {
     mkdir -p /mnt/etc/initramfs/post-update.d/
     mkdir -p /mnt/etc/systemd/system/
 
-    cp -af "${dir}/hooks/update-systemd-boot" /mnt/etc/kernel/postinst.d/
-    cp -af "${dir}/hooks/update-systemd-boot" /mnt/etc/kernel/postrm.d/
-    cp -af "${dir}/hooks/update-initrd" /mnt/etc/initramfs/post-update.d/
+    cp -af "${DIR}/hooks/update-systemd-boot" /mnt/etc/kernel/postinst.d/
+    cp -af "${DIR}/hooks/update-systemd-boot" /mnt/etc/kernel/postrm.d/
+    cp -af "${DIR}/hooks/update-initrd" /mnt/etc/initramfs/post-update.d/
     cp -af \
-      "${dir}/hooks/systemd-update-efi.path" \
-      "${dir}/hooks/systemd-update-efi.service" \
+      "${DIR}/hooks/systemd-update-efi.path" \
+      "${DIR}/hooks/systemd-update-efi.service" \
       /mnt/etc/systemd/system/
 
     SCHEME="${SCHEME}" DEVICE="${DEVICE}" \

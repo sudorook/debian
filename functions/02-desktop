@@ -17,11 +17,12 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-dir="$(dirname "$0")"
+DIR="$(dirname "$0")"
 
-gnome="${dir}/packages/gnome.list"
-xdgdefaultconf="/etc/xdg/user-dirs.defaults"
 function install_gnome {
+  local gnome="${DIR}/packages/gnome.list"
+  local xdgdefaultconf="/etc/xdg/user-dirs.defaults"
+
   show_header "Setting up GNOME desktop environment."
   check_installed "${gnome}"
   check_fail
@@ -31,7 +32,7 @@ function install_gnome {
     export DESKTOP_SESSION="gnome"
   fi
 
-  extensiondir=${HOME}/.local/share/gnome-shell/extensions
+  local extensiondir=${HOME}/.local/share/gnome-shell/extensions
   mkdir -p "${extensiondir}"
   show_info "Downloading 'Desktop Icons' GNOME extension."
   git clone https://gitlab.com/rastersoft/desktop-icons-ng.git \
@@ -55,11 +56,12 @@ function install_gnome {
   xdg-user-dirs-update
 }
 
-cinnamon="${dir}/packages/cinnamon.list"
-lightdmconf="/etc/lightdm/lightdm.conf"
-gammastepini="${dir}/configs/gammastep.ini"
-xdgdefaultconf="/etc/xdg/user-dirs.defaults"
 function install_cinnamon {
+  local cinnamon="${DIR}/packages/cinnamon.list"
+  local lightdmconf="/etc/lightdm/lightdm.conf"
+  local gammastepini="${DIR}/configs/gammastep.ini"
+  local xdgdefaultconf="/etc/xdg/user-dirs.defaults"
+
   show_header "Setting up cinnamon desktop environment."
   check_installed "${cinnamon}"
   check_fail
@@ -114,9 +116,10 @@ function install_cinnamon {
   xdg-user-dirs-update
 }
 
-kde="${dir}/packages/kde.list"
-xdgdefaultconf="/etc/xdg/user-dirs.defaults"
 function install_kde {
+  local kde="${DIR}/packages/kde.list"
+  local xdgdefaultconf="/etc/xdg/user-dirs.defaults"
+
   show_header "Setting up KDE desktop environment."
   check_installed "${kde}"
   check_fail
@@ -158,7 +161,7 @@ function install_kde {
 
 function 02-desktop {
   show_question "Desktop: what do you want to install?"
-  show_info "Main\n ${endbranch} Desktop (Hit ENTER to see options again.)"
+  show_info "Main\n ${ENDBRANCH} Desktop (Hit ENTER to see options again.)"
 
   local options=("Back" "All" "GNOME" "Cinnamon" "KDE")
   local option
@@ -171,19 +174,19 @@ function 02-desktop {
         install_gnome
         install_cinnamon
         install_kde
-        show_info "Main\n ${endbranch} Desktop (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Desktop (Hit ENTER to see options again.)"
         ;;
       "GNOME")
         install_gnome
-        show_info "Main\n ${endbranch} Desktop (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Desktop (Hit ENTER to see options again.)"
         ;;
       "Cinnamon")
         install_cinnamon
-        show_info "Main\n ${endbranch} Desktop (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Desktop (Hit ENTER to see options again.)"
         ;;
       "KDE")
         install_kde
-        show_info "Main\n ${endbranch} Desktop (Hit ENTER to see options again.)"
+        show_info "Main\n ${ENDBRANCH} Desktop (Hit ENTER to see options again.)"
         ;;
       *)
         show_warning "Invalid option."

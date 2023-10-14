@@ -187,7 +187,7 @@ function install_sudo {
 function check_network {
   show_header "Checking network connection."
 
-  if command -v wget >/dev/null 2>&1; then
+  if ! command -v wget >/dev/null 2>&1; then
     show_error "wget not installed. Exiting."
     exit 1
   fi

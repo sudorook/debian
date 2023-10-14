@@ -80,7 +80,7 @@ function set_system_font {
         gsettings set org.gnome.desktop.interface document-font-name "'Roboto 10.3'"
 
         # monospace font
-        if fc-list | grep -q "Jambo.*Mono"; then
+        if grep -q "Jambo.*Mono" <(fc-list); then
           gsettings set org.gnome.desktop.interface monospace-font-name "'Jambo Mono 9.3'"
         else
           show_warning "Jambo Mono font not found. Falling back to Ubuntu Mono."
@@ -104,7 +104,7 @@ function set_system_font {
         gsettings set org.gnome.desktop.interface font-name "'Roboto 10.3'"
 
         # monospace font
-        if fc-list | grep -q "Jambo.*Mono"; then
+        if grep -q "Jambo.*Mono" <(fc-list); then
           gsettings set org.gnome.desktop.interface monospace-font-name "'Jambo Mono 9.3'"
         else
           show_warning "Jambo Mono font not found. Falling back to Ubuntu Mono."
@@ -122,7 +122,7 @@ function set_system_font {
         kwriteconfig5 --file kdeglobals --group "General" --key "smallestReadableFont" "Roboto,8,-1,5,50,0,0,0,0,0"
         kwriteconfig5 --file kdeglobals --group "General" --key "toolBarFont" "Roboto,10,-1,5,50,0,0,0,0,0"
         kwriteconfig5 --file kdeglobals --group "WM" --key "activeFont" "Roboto,10,-1,5,50,0,0,0,0,0"
-        if fc-list | grep -q "Jambo.*Mono"; then
+        if grep -q "Jambo.*Mono" <(fc-list); then
           kwriteconfig5 --file kdeglobals --group "General" --key "fixed" "Jambo Mono,9,-1,5,50,0,0,0,0,0"
         else
           show_warning "Jambo Mono font not found. Falling back to Ubuntu Mono."
@@ -152,7 +152,7 @@ function set_system_font {
         gsettings set org.gnome.desktop.interface document-font-name "'Noto Sans 10.3'"
 
         # monospace font
-        if fc-list | grep -q "Jambo.*Mono"; then
+        if grep -q "Jambo.*Mono" <(fc-list); then
           gsettings set org.gnome.desktop.interface monospace-font-name "'Jambo Mono 10.4'"
         else
           show_warning "Jambo Mono font not found. Falling back to Ubuntu Mono."
@@ -176,7 +176,7 @@ function set_system_font {
         gsettings set org.gnome.desktop.interface font-name "'Noto Sans 10.3'"
 
         # monospace font
-        if fc-list | grep -q "Jambo.*Mono"; then
+        if grep -q "Jambo.*Mono" <(fc-list); then
           gsettings set org.gnome.desktop.interface monospace-font-name "'Jambo Mono 10.4'"
         else
           show_warning "Jambo Mono font not found. Falling back to Ubuntu Mono."
@@ -194,7 +194,7 @@ function set_system_font {
         kwriteconfig5 --file kdeglobals --group "General" --key "smallestReadableFont" "Noto Sans,8,-1,5,50,0,0,0,0,0"
         kwriteconfig5 --file kdeglobals --group "General" --key "toolBarFont" "Noto Sans,10,-1,5,50,0,0,0,0,0"
         kwriteconfig5 --file kdeglobals --group "WM" --key "activeFont" "Noto Sans,10,-1,5,50,0,0,0,0,0"
-        if fc-list | grep -q "Jambo.*Mono"; then
+        if grep -q "Jambo.*Mono" <(fc-list); then
           kwriteconfig5 --file kdeglobals --group "General" --key "fixed" "Jambo Mono,10,-1,5,50,0,0,0,0,0"
         else
           show_warning "Jambo Mono font not found. Falling back to Ubuntu Mono."

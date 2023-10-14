@@ -476,17 +476,21 @@ function set_zsh_shell {
 
     show_info "Copying zshrc."
     if [ -f "${HOME}/.zshrc" ]; then
-      show_info "Backing up exising zshrc."
-      mv -v "${HOME}/.zshrc" \
-        "${HOME}/.zshrc_$(date +%Y%m%d-%k%M%S).bak"
+      if ! cmp -s "${zshrc}" "${HOME}/.zshrc"; then
+        show_info "Backing up exising zshrc."
+        mv -v "${HOME}/.zshrc" \
+          "${HOME}/.zshrc_$(date +%Y%m%d-%k%M%S).bak"
+      fi
     fi
     cp "${zshrc}" "${HOME}/.zshrc"
 
     show_info "Copying powerlevel10k config."
     if [ -f "${HOME}/.p10k.zsh" ]; then
-      show_info "Backing up exising powerlevel10k config."
-      mv -v "${HOME}/.p10k.zsh" \
-        "${HOME}/.p10k.zsh_$(date +%Y%m%d-%k%M%S).bak"
+      if ! cmp -s "${p10krc}" "${HOME}/.p10k.zsh"; then
+        show_info "Backing up exising powerlevel10k config."
+        mv -v "${HOME}/.p10k.zsh" \
+          "${HOME}/.p10k.zsh_$(date +%Y%m%d-%k%M%S).bak"
+      fi
     fi
     cp "${p10krc}" "${HOME}/.p10k.zsh"
   else

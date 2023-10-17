@@ -441,6 +441,11 @@ function set_bash_shell {
   local bashrc="${DIR}/dotfiles/bashrc"
   local bashprofile="${DIR}/dotfiles/bash_profile"
 
+  if ! command -v bash > /dev/null 2>&1; then
+    show_warning "bash not installed. Skipping."
+    return
+  fi
+
   if ! grep -q "bash" <(getent passwd "$(whoami)"); then
     show_info "Changing login shell to Bash. Provide your password."
     chsh -s /bin/bash
@@ -455,6 +460,11 @@ function set_bash_shell {
 function set_zsh_shell {
   local zshrc="${DIR}/dotfiles/zshrc"
   local p10krc="${DIR}/dotfiles/p10k"
+
+  if ! command -v zsh > /dev/null 2>&1; then
+    show_warning "zsh not installed. Skipping."
+    return
+  fi
 
   if ! grep -q "zsh" <(getent passwd "$(whoami)"); then
     show_info "Changing login shell to Zsh. Provide your password."

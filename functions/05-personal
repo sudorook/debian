@@ -444,58 +444,29 @@ function set_bash_shell {
   if ! grep -q "bash" <(getent passwd "$(whoami)"); then
     show_info "Changing login shell to Bash. Provide your password."
     chsh -s /bin/bash
-
-    show_info "Installing bash_profile."
-    if [ -f "${HOME}/.bash_profile" ]; then
-      show_info "Backing up exising bash profile."
-      mv -v "${HOME}/.bash_profile" \
-        "${HOME}/.bash_profile_$(date +%Y%m%d-%k%M%S).bak"
-    fi
-    cp "${bashprofile}" "${HOME}/.bash_profile"
-
-    show_info "Installing bashrc."
-    if [ -f "${HOME}/.bashrc" ]; then
-      show_info "Backing up exising bashrc."
-      mv -v "${HOME}/.bashrc" \
-        "${HOME}/.bashrc_$(date +%Y%m%d-%k%M%S).bak"
-    fi
-    cp "${bashrc}" "${HOME}/.bashrc"
   else
     show_info "Default shell already set to bash."
   fi
+
+  copy_config_file "${bashprofile}" "${HOME}/.bash_profile"
+  copy_config_file "${bashrc}" "${HOME}/.bashrc"
 }
 
 function set_zsh_shell {
   local zshrc="${DIR}/dotfiles/zshrc"
   local p10krc="${DIR}/dotfiles/p10k"
+
   if ! grep -q "zsh" <(getent passwd "$(whoami)"); then
     show_info "Changing login shell to Zsh. Provide your password."
     chsh -s /bin/zsh
-
-    mkdir -p "${HOME}/.local/share/zsh/site-functions"
-
-    show_info "Copying zshrc."
-    if [ -f "${HOME}/.zshrc" ]; then
-      if ! cmp -s "${zshrc}" "${HOME}/.zshrc"; then
-        show_info "Backing up exising zshrc."
-        mv -v "${HOME}/.zshrc" \
-          "${HOME}/.zshrc_$(date +%Y%m%d-%k%M%S).bak"
-      fi
-    fi
-    cp "${zshrc}" "${HOME}/.zshrc"
-
-    show_info "Copying powerlevel10k config."
-    if [ -f "${HOME}/.p10k.zsh" ]; then
-      if ! cmp -s "${p10krc}" "${HOME}/.p10k.zsh"; then
-        show_info "Backing up exising powerlevel10k config."
-        mv -v "${HOME}/.p10k.zsh" \
-          "${HOME}/.p10k.zsh_$(date +%Y%m%d-%k%M%S).bak"
-      fi
-    fi
-    cp "${p10krc}" "${HOME}/.p10k.zsh"
   else
     show_info "Default shell already set to zsh."
   fi
+
+  mkdir -p "${HOME}/.local/share/zsh/site-functions"
+
+  copy_config_file "${zshrc}" "${HOME}/.zshrc"
+  copy_config_file "${p10krc}" "${HOME}/.p10k.zsh"
 }
 
 function set_login_shell {

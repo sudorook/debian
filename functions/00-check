@@ -217,3 +217,26 @@ function set_config_key_value {
     echo "${key}=${value}" > "${file}"
   fi
 }
+
+function copy_config_file {
+  local source="${1}"
+  local dest="${2}"
+
+  if ! [ -f "${source}" ]; then
+    show_error "${source@Q} not found. Exiting."
+    exit 1
+  fi
+
+  show_info "Copying ${source@Q} to ${dest@Q}."
+  if [ -f "${dest}" ]; then
+    if ! cmp -s "${source}" "${dest}"; then
+      show_info "Backing up existing ${dest@Q}."
+      mv -v "${dest}" "${dest}_$(date +%Y%m%d-%k%M%S).bak"
+      cp -v "${source}" "${dest}"
+    else
+      show_info "${dest} already set."
+    fi
+  else
+    cp -v "${source}" "${dest}"
+  fi
+}

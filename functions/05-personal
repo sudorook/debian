@@ -217,8 +217,6 @@ function set_system_font {
 }
 
 function set_icon_theme {
-  local xdgdefaultconf="/etc/xdg/user-dirs.defaults"
-
   show_header "Setting desktop icon theme to ${ICONTHEME@Q}."
 
   if dpkg -s cinnamon > /dev/null 2>&1; then
@@ -759,8 +757,10 @@ function enable_autologin {
   local gdmconf="/etc/gdm3/daemon.conf" # Debian uses gdm3 instead of gdm
   local lightdmconf="/etc/lightdm/lightdm.conf"
   local sddmconf="/etc/sddm.conf.d/kde_settings.conf"
+
   show_header "Enabling automatic login for ${USER@Q}."
   local is_autologin_set=false
+
   if dpkg -s gdm3 > /dev/null 2>&1; then
     show_info "Log in as ${USER@Q} via GDM."
     ! [ -f ${gdmconf} ] && sudo touch ${gdmconf}
@@ -773,6 +773,7 @@ function enable_autologin {
     fi
     is_autologin_set=true
   fi
+
   if dpkg -s lightdm > /dev/null 2>&1; then
     show_info "Log in as ${USER@Q} via LightDM."
     sudo sed -i "s/^#autologin-user=/autologin-user=/g" ${lightdmconf}
@@ -780,6 +781,7 @@ function enable_autologin {
     sudo sed -i "s/^autologin-user=.*$/autologin-user=${USER}/g" ${lightdmconf}
     is_autologin_set=true
   fi
+
   if dpkg -s sddm > /dev/null 2>&1; then
     show_info "Log in as ${USER@Q} via SDDM."
     if ! [ -d /etc/sddm.conf.d/ ]; then
@@ -804,6 +806,7 @@ function enable_autologin {
     fi
     is_autologin_set=true
   fi
+
   if "${is_autologin_set}"; then
     show_success "Autologin enabled."
   else
@@ -925,6 +928,7 @@ function install_scripts {
   local autostartdir="${HOME}/.config/autostart"
   local scriptdir="${HOME}/.scripts"
   local batterydaemon="${DIR}/daemons/battery.desktop"
+
   show_header "Installing misc. scripts to the ${scriptdir@Q} folder."
   if [ -d "${HOME}/.scripts" ]; then
     git -C "${HOME}/.scripts" pull

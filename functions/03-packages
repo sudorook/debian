@@ -283,9 +283,9 @@ function install_games {
   show_success "Emulators installed."
 }
 
-# qemuconf="/etc/libvirt/qemu.conf"
 function install_kvm {
   local kvm="${DIR}/packages/kvm.list"
+  # local qemuconf="/etc/libvirt/qemu.conf"
 
   show_header "Installing KVM."
   check_installed "${kvm}"

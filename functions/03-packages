@@ -542,18 +542,16 @@ function install_vim {
 
 function install_neovim {
   local nvim="${DIR}/packages/neovim.list"
-  local nvimrc="${DIR}/dotfiles/vimrc"
+  local nvimrc="${DIR}/dotfiles/nvimrc"
   local nvimspell="${HOME}/.config/nvim/spell"
 
-  show_header "Installing Neovim and Neovim plugins."
+  show_header "Installing Neovim."
   check_installed "${nvim}"
   check_fail
-  show_success "Neovim and Neovim plugins installed."
+  show_success "Neovim installed."
 
-  show_info "Installing init.vim"
   mkdir -p "${HOME}/.config/nvim"
-  cp -f "${nvimrc}" "${HOME}/.config/nvim/init.vim"
-  show_success "init.vim installed."
+  copy_config_file "${nvimrc}" "${HOME}/.config/nvim/init.lua"
 
   show_info "Setting Neovim as default tool for git diffs and merges."
   # 00-check makes sure the git is installed, so no need for checks here.
@@ -583,9 +581,6 @@ function install_neovim {
   popd > /dev/null || exit
   rm -rf "${tmpdir}"
   show_success "Wordlist installed in ${nvimspell@Q}."
-  show_info "To use the wordlist, add the following to you vimrc:"
-  show_info "  set spelllang=en"
-  show_info "  set spellfile=\$HOME/.vim/spell/en.utf-8.add"
 }
 
 function install_virtualbox {

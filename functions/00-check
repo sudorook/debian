@@ -89,7 +89,9 @@ function check_installed {
       fi
     fi
   done < "${1}"
-  [[ -v to_install ]] && sudo apt-get -y install "${to_install[@]}"
+  if [[ -v to_install ]]; then
+    sudo apt-get -y install "${to_install[@]}"
+  fi
 }
 
 function check_uninstalled {

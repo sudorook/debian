@@ -264,7 +264,7 @@ function install_pipewire {
   show_header "Installing PipeWire A/V processor."
   check_installed "${pipewire}"
   check_fail
-  show_success "Printing applications installed."
+  show_success "Pipewire installed."
 }
 
 function install_printing {

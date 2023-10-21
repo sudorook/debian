@@ -2,6 +2,7 @@ ark
 bleachbit
 dconf-cli
 dconf-editor
+feh
 ffmpeg
 filelight
 firefox-esr
@@ -24,6 +25,7 @@ kitty
 kitty-terminfo
 ktimer
 kwalletmanager
+libjpeg-turbo-progs
 libjxl-tools
 libreoffice-base
 libreoffice-plasma

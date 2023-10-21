@@ -3,6 +3,7 @@ dconf-cli
 dconf-editor
 eog
 evince
+feh
 ffmpeg
 firefox-esr
 gnome-disk-utility
@@ -14,6 +15,7 @@ gufw
 keepassxc
 kitty
 kitty-terminfo
+libjpeg-turbo-progs
 libreoffice-base
 mpv
 syncthing

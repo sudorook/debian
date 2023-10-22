@@ -438,10 +438,10 @@ function install_torbrowser {
     torbrowser_version=$(curl https://www.torproject.org/download/ |
                          sed -n 's,^ \+<a class="downloadLink" href="/dist/torbrowser/\([0-9\.]\+\)/tor-browser-linux.*">,\1,p')
     arch=$(uname -m)
-    if [ "${arch: -2}" = "86" ]; then
-      torbrowser_package=tor-browser-linux32-${torbrowser_version}_ALL.tar.xz
-    elif [ "${arch: -2}" = "64" ]; then
-      torbrowser_package=tor-browser-linux64-${torbrowser_version}_ALL.tar.xz
+    if [ "${arch: -2}" -eq 86 ]; then
+      torbrowser_package="tor-browser-linux32-${torbrowser_version}_ALL.tar.xz"
+    elif [ "${arch: -2}" -eq 64 ]; then
+      torbrowser_package="tor-browser-linux64-${torbrowser_version}_ALL.tar.xz"
     fi
 
     show_info "Downloading release tarball."
@@ -460,12 +460,11 @@ function install_torbrowser {
       show_warning "Backing up and replacing existing Tor Browser installation."
       mv "${torbrowser_path}" "${torbrowser_path}.$(date +%Y%m%d-%k%M%S)"
     fi
-    mv tor-browser_en-US "${torbrowser_path}"
+    mv tor-browser "${torbrowser_path}"
     cp -f "${torbrowser_path}/start-tor-browser.desktop" "${local_applications}/"
     chmod -x "${local_applications}/start-tor-browser.desktop"
     sed -i \
       -e "s,^Name=.*,Name=Tor Browser,g" \
-      -e "s,^Icon=.*,Icon=browser-tor,g" \
       -e "s,^Exec=.*,Exec=sh -c '\"${torbrowser_path}/Browser/start-tor-browser\" --detach || ([ ! -x \"${torbrowser_path}/Browser/start-tor-browser\" ] \&\& \"\$(dirname \"\$*\")\"/Browser/start-tor-browser --detach)' dummy %k,g" \
       "${local_applications}/start-tor-browser.desktop"
     update-desktop-database "${local_applications}"

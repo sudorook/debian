@@ -32,11 +32,8 @@ function install_zsh {
 
   mkdir -p "${HOME}/.local/share/zsh/site-functions"
 
-  show_info "Copying zshrc."
-  cp -f "${zshrc}" "${HOME}/.zshrc"
-
-  show_info "Copying powerlevel10k config."
-  cp -f "${p10krc}" "${HOME}/.p10k.zsh"
+  copy_config_file "${zshrc}" "${HOME}/.zshrc"
+  copy_config_file "${p10krc}" "${HOME}/.p10k.zsh"
 }
 
 function install_selinux {

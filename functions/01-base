@@ -29,15 +29,8 @@ function install_base {
   check_fail
   show_success "Base packages installed."
 
-  if ! [ -f "${HOME}/.bash_profile" ]; then
-    show_info "Installing bash_profile."
-    cp -f "${bashprofile}" "${HOME}/.bash_profile"
-    show_success "Installed bash_profile."
-  fi
-
-  show_info "Installing bashrc."
-  cp -f "${bashrc}" "${HOME}/.bashrc"
-  show_success "Installed bashrc."
+  copy_config_file "${bashprofile}" "${HOME}/.bash_profile"
+  copy_config_file "${bashrc}" "${HOME}/.bashrc"
 }
 
 function install_firmware {

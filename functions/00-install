@@ -255,7 +255,7 @@ function subtract {
   if [ "$(echo "${input1} >= ${input2}" | bc -l)" = 1 ]; then
     output="$(echo "${input1} - ${input2}" | bc -l)"
   else
-    echo "ERROR: not enough (remaining) space."
+    show_error "ERROR: not enough (remaining) space."
     exit 3
   fi
   echo "${output%.*}"

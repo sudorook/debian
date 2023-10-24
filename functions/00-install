@@ -80,7 +80,7 @@ function ask_device {
   local disks
   local disk
   local result
-  disks=($(lsblk | grep disk | cut -d' ' -f1 | tr '\n' ' '))
+  mapfile -t disks < <(lsblk -nd -o NAME)
   select disk in "${disks[@]}"; do
     if [ -z "${disk}" ]; then
       show_warning "Invalid selection. Try again."
@@ -810,8 +810,8 @@ function install_gummiboot {
     local kernel
     local version
     local outfile
-    tmp=($(ls -r /boot/vmlinuz*))
-    kernel=$(basename ${tmp[0]})
+    mapfile -t tmp < <(ls -r /boot/vmlinuz*)
+    kernel=$(basename "${tmp[0]}")
     version="${kernel/vmlinuz-/}"
     version="${version/-amd64/}"
     version="${version/-i386/}"

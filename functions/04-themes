@@ -242,7 +242,7 @@ function install_fonts {
   tmpdir="$(mktemp -d)"
   git clone --depth 1 https://github.com/sudorook/fonts-jambo.git "${tmpdir}"
   pushd "${tmpdir}" > /dev/null || exit
-  ./install
+  ./install -n
   popd > /dev/null || exit
   rm -rf "${tmpdir}"
 }

@@ -1,0 +1,5 @@
+@import url("resource:///org/gnome/theme/gnome-shell.css");
+
+stage {
+  font-size: 10pt;
+}

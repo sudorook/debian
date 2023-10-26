@@ -42,6 +42,14 @@ function install_gnome {
   sudo update-alternatives --set x-terminal-emulator /usr/bin/kitty
   gsettings set org.gnome.desktop.default-applications.terminal exec '/usr/bin/x-terminal-emulator'
 
+  show_info "Setting up gnome-shell font-size oveerrides."
+  local gnomeshellcss="${DIR}/configs/gnome-shell.css"
+  mkdir -p "${HOME}/.local/share/themes/Adwaita/gnome-shell"
+  cp "${gnomeshellcss}" "${HOME}/.local/share/themes/Adwaita/gnome-shell/gnome-shell.css"
+  pushd "${HOME}/.local/share/themes" >/dev/null || exit
+  ln -s Adwaita Adwaita-dark
+  popd >/dev/null || exit
+
   show_info "Creating Projects/ and Sync/ and setting gvfs icon metadata."
   mkdir -p "${HOME}/Projects"
   mkdir -p "${HOME}/Sync"

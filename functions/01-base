@@ -210,18 +210,15 @@ function upgrade_debian_release {
   if [ "${is_upgraded}" == true ]; then
     if [ "${is_contrib}" == true ]; then
       sudo sed -i \
-        -e "s,\(.* ${release} main.*\)$,\1 contrib,g" \
-        -e "s,\(.* ${release}-updates main.*\)$,\1 contrib,g" ${srclist}
+        '/deb/{/ contrib\(\ \|$\)/! s/$/ contrib/}' "${srclist}"
     fi
     if [ "${is_nonfree}" == true ]; then
       sudo sed -i \
-        -e "s,\(.* ${release} main.*\)$,\1 non-free,g" \
-        -e "s,\(.* ${release}-updates main.*\)$,\1 non-free,g" ${srclist}
+        '/deb/{/ non-free\(\ \|$\)/! s/$/ non-free/}' "${srclist}"
     fi
     if [ "${is_nonfreefirmware}" == true ]; then
       sudo sed -i \
-        -e "s,\(.* ${release} main.*\)$,\1 non-free-firmware,g" \
-        -e "s,\(.* ${release}-updates main.*\)$,\1 non-free-firmware,g" ${srclist}
+        '/deb/{/ non-free-firmware\(\ \|$\)/! s/$/ non-free-firmware/}' "${srclist}"
     fi
     if [ "${is_onion}" == true ]; then
       sudo sed -i \

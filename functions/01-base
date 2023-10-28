@@ -112,7 +112,7 @@ function upgrade_debian_release {
   if grep -q contrib "${srclist}"; then
     is_contrib=true
   fi
-  if grep -q non-free "${srclist}"; then
+  if grep -q 'non-free\( \|$\)' "${srclist}"; then
     is_nonfree=true
   fi
   if grep -q non-free-firmware "${srclist}"; then

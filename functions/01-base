@@ -102,12 +102,10 @@ function upgrade_debian_release {
   local sidlist="${DIR}/sources/sid-sources.list"
 
   # check how current sources.list is configured.
-  local is_onion
-  local is_contrib
-  local is_nonfree
-  local is_nonfreefirmware
-  local is_upgraded
-  local release
+  local is_onion=false
+  local is_contrib=false
+  local is_nonfree=false
+  local is_nonfreefirmware=false
   if grep -q onion "${srclist}"; then
     is_onion=true
   fi
@@ -120,7 +118,9 @@ function upgrade_debian_release {
   if grep -q non-free-firmware "${srclist}"; then
     is_nonfreefirmware=true
   fi
-  is_upgraded=false
+
+  local is_upgraded=false
+  local release
   release=$(lsb_release -sc)
 
   show_question "Upgrade Debian release?"

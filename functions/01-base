@@ -105,11 +105,21 @@ function upgrade_debian_release {
   local is_onion
   local is_contrib
   local is_nonfree
+  local is_nonfreefirmware
   local is_upgraded
   local release
-  is_onion=$(grep -q onion ${srclist} && echo $? || echo $?)
-  is_contrib=$(grep -q contrib ${srclist} && echo $? || echo $?)
-  is_nonfree=$(grep -q nonfree ${srclist} && echo $? || echo $?)
+  if grep -q onion "${srclist}"; then
+    is_onion=true
+  fi
+  if grep -q contrib "${srclist}"; then
+    is_contrib=true
+  fi
+  if grep -q non-free "${srclist}"; then
+    is_nonfree=true
+  fi
+  if grep -q non-free-firmware "${srclist}"; then
+    is_nonfreefirmware=true
+  fi
   is_upgraded=false
   release=$(lsb_release -sc)
 
@@ -198,16 +208,26 @@ function upgrade_debian_release {
   done
 
   if [ "${is_upgraded}" == true ]; then
-    [ "${is_contrib}" == true ] &&
-      sudo sed -i "s,\(.* ${release} main.*\)$,\1 contrib,g" ${srclist} &&
-      sudo sed -i "s,\(.* ${release}-updates main.*\)$,\1 contrib,g" ${srclist}
-    [ "${is_nonfree}" == true ] &&
-      sudo sed -i "s,\(.* ${release} main.*\)$,\1 non-free,g" ${srclist} &&
-      sudo sed -i "s,\(.* ${release}-updates main.*\)$,\1 non-free,g" ${srclist}
-    [ "${is_onion}" == true ] &&
-      sudo sed -i "s,https://deb.debian.org,tor+http://vwakviie2ienjx6t.onion,g" ${srclist}
-    [ "${is_onion}" == true ] &&
-      sudo sed -i "s,https://security.debian.org/,tor+http://sgvtcaew4bxjd7ln.onion/debian-security/,g" ${srclist}
+    if [ "${is_contrib}" == true ]; then
+      sudo sed -i \
+        -e "s,\(.* ${release} main.*\)$,\1 contrib,g" \
+        -e "s,\(.* ${release}-updates main.*\)$,\1 contrib,g" ${srclist}
+    fi
+    if [ "${is_nonfree}" == true ]; then
+      sudo sed -i \
+        -e "s,\(.* ${release} main.*\)$,\1 non-free,g" \
+        -e "s,\(.* ${release}-updates main.*\)$,\1 non-free,g" ${srclist}
+    fi
+    if [ "${is_nonfreefirmware}" == true ]; then
+      sudo sed -i \
+        -e "s,\(.* ${release} main.*\)$,\1 non-free-firmware,g" \
+        -e "s,\(.* ${release}-updates main.*\)$,\1 non-free-firmware,g" ${srclist}
+    fi
+    if [ "${is_onion}" == true ]; then
+      sudo sed -i \
+        -e "s,https://deb.debian.org,tor+http://vwakviie2ienjx6t.onion,g" \
+        -e "s,https://security.debian.org/,tor+http://sgvtcaew4bxjd7ln.onion/debian-security/,g" ${srclist}
+    fi
 
     sudo sh -c "apt-get update && \
       apt-get -y upgrade && \

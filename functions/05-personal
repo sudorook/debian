@@ -267,7 +267,7 @@ function set_gtk_theme {
   if dpkg -s gnome-shell > /dev/null 2>&1; then
     show_info "Setting GNOME GTK theme to ${GTKTHEME@Q}."
     gsettings set org.gnome.desktop.wm.preferences theme "'${GTKTHEME}'"
-    if [[ "${GTKTHEME}" =~ dark ]]; then
+    if [[ "${GTKTHEME,,}" =~ dark ]]; then
       gsettings set org.gnome.desktop.interface color-scheme "'prefer-dark'"
     else
       gsettings set org.gnome.desktop.interface color-scheme "'default'"

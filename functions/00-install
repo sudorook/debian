@@ -80,7 +80,7 @@ function ask_device {
   local disks
   local disk
   local result
-  mapfile -t disks < <(lsblk -nd -o NAME)
+  mapfile -t disks < <(lsblk -nd -o NAME,TYPE | sed -n "s,\(.*\)\s\+disk,\1,p")
   select disk in "${disks[@]}"; do
     if [ -z "${disk}" ]; then
       show_warning "Invalid selection. Try again."

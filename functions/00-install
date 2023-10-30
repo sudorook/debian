@@ -81,6 +81,10 @@ function ask_device {
   local disk
   local result
   mapfile -t disks < <(lsblk -nd -o NAME,TYPE | sed -n "s,\(.*\)\s\+disk,\1,p")
+  if ! [[ -v disks ]]; then
+    show_error "No disk devices found. Exiting."
+    exit 1
+  fi
   select disk in "${disks[@]}"; do
     if [ -z "${disk}" ]; then
       show_warning "Invalid selection. Try again."

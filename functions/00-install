@@ -80,7 +80,7 @@ function ask_device {
   local disks
   local disk
   local result
-  mapfile -t disks < <(lsblk -nd -o NAME,TYPE | sed -n "s,\(.*\)\s\+disk,\1,p")
+  mapfile -t disks < <(lsblk -nd -o NAME,TYPE | grep disk | cut -d' ' -f1)
   if ! [[ -v disks ]]; then
     show_error "No disk devices found. Exiting."
     exit 1

@@ -6,4 +6,5 @@ fzf
 gdisk
 lvm2
 parted
+systemd-boot
 wget

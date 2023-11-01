@@ -763,79 +763,81 @@ export -f disable_root
 # export -f install_ucode
 
 function install_gummiboot {
-  if command -v bootctl > /dev/null 2>&1; then
-    apt install -y efibootmgr
-
-    local root_uuid
-    local crypt_uuid
-    local cmdline
-
-    root_uuid=$(sed -n "s,^UUID=\(\S\+\)\s\+/\s\+.*,\1,p" /etc/fstab)
-    crypt_uuid=$(blkid | grep crypto_LUKS | sed -n 's,.* UUID="\(\S\+\)" TYPE.*,\1,p')
-
-    if [[ "${SCHEME}" =~ LVM ]]; then
-      if [ -n "${crypt_uuid}" ]; then
-        cmdline="cryptdevice=UUID=${crypt_uuid}:${LV}:allow-discards"
-        if [ -e /dev/mapper/${VG}-root ]; then
-          cmdline="${cmdline} root=/dev/mapper/${VG}-root"
-        fi
-        if [ -e /dev/mapper/${VG}-home ]; then
-          cmdline="${cmdline} home=/dev/mapper/${VG}-home"
-        fi
-        if [ -e /dev/mapper/${VG}-swap ]; then
-          cmdline="${cmdline} resume=/dev/mapper/${VG}-swap"
-        fi
-
-        # add entry to /etc/crypttab
-        if grep "${crypt_uuid}" /etc/crypttab > /dev/null 2>&1; then
-          sed -i "s|\([a-zA-Z0-9_-]\+\)\(\s\+\)UUID=${crypt_uuid}\(\s\+\)none\(\s\+\)\([A-Za-z0-9_\-\=,]\+\)|\1\2UUID=${crypt_uuid}\3none\4luks,discard|g" /etc/crypttab
-        else
-          echo "${LV}	UUID=${crypt_uuid}	none	luks,discard" >> /etc/crypttab
-        fi
-      elif [ -n "${root_uuid}" ]; then
-        cmdline="root=/dev/mapper/${VG}-root"
-      else
-        show_error "ERROR: Missing root ${root_uuid}."
-        exit 3
-      fi
-      cmdline="${cmdline} rw"
-    else
-      cmdline="rw"
-    fi
-
-    bootctl install
-    chmod +x \
-      /etc/kernel/postinst.d/update-systemd-boot \
-      /etc/kernel/postrm.d/update-systemd-boot \
-      /etc/initramfs/post-update.d/update-initrd
-    systemctl enable systemd-update-efi.path
-
-    local tmp
-    local kernel
-    local version
-    local outfile
-    mapfile -t tmp < <(ls -r /boot/vmlinuz*)
-    kernel=$(basename "${tmp[0]}")
-    version="${kernel/vmlinuz-/}"
-    version="${version/-amd64/}"
-    version="${version/-i386/}"
-    outfile="linux-${version}.conf"
-
-    cp -af "/boot/${kernel}" "/boot/${kernel/vmlinuz/initrd.img}" /boot/efi/
-    {
-      echo "default	${outfile}"
-      echo "timeout	1"
-      echo "console-mode	max"
-      echo "editor	no"
-    } > /boot/efi/loader/loader.conf
-
-    {
-      echo "title	Debian, linux-${version}"
-      echo "linux	/${kernel}"
-      echo "initrd	/${kernel/vmlinuz/initrd.img}"
-      echo "options	${cmdline}"
-    } > "/boot/efi/loader/entries/${outfile}"
+  if ! command -v bootctl > /dev/null 2>&1; then
+    apt install -y systemd-boot
   fi
+
+  apt install -y efibootmgr
+
+  local root_uuid
+  local crypt_uuid
+  local cmdline
+
+  root_uuid=$(sed -n "s,^UUID=\(\S\+\)\s\+/\s\+.*,\1,p" /etc/fstab)
+  crypt_uuid=$(blkid | grep crypto_LUKS | sed -n 's,.* UUID="\(\S\+\)" TYPE.*,\1,p')
+
+  if [[ "${SCHEME}" =~ LVM ]]; then
+    if [ -n "${crypt_uuid}" ]; then
+      cmdline="cryptdevice=UUID=${crypt_uuid}:${LV}:allow-discards"
+      if [ -e /dev/mapper/${VG}-root ]; then
+        cmdline="${cmdline} root=/dev/mapper/${VG}-root"
+      fi
+      if [ -e /dev/mapper/${VG}-home ]; then
+        cmdline="${cmdline} home=/dev/mapper/${VG}-home"
+      fi
+      if [ -e /dev/mapper/${VG}-swap ]; then
+        cmdline="${cmdline} resume=/dev/mapper/${VG}-swap"
+      fi
+
+      # add entry to /etc/crypttab
+      if grep "${crypt_uuid}" /etc/crypttab > /dev/null 2>&1; then
+        sed -i "s|\([a-zA-Z0-9_-]\+\)\(\s\+\)UUID=${crypt_uuid}\(\s\+\)none\(\s\+\)\([A-Za-z0-9_\-\=,]\+\)|\1\2UUID=${crypt_uuid}\3none\4luks,discard|g" /etc/crypttab
+      else
+        echo "${LV}	UUID=${crypt_uuid}	none	luks,discard" >> /etc/crypttab
+      fi
+    elif [ -n "${root_uuid}" ]; then
+      cmdline="root=/dev/mapper/${VG}-root"
+    else
+      show_error "ERROR: Missing root ${root_uuid}."
+      exit 3
+    fi
+    cmdline="${cmdline} rw"
+  else
+    cmdline="rw"
+  fi
+
+  bootctl install
+  chmod +x \
+    /etc/kernel/postinst.d/update-systemd-boot \
+    /etc/kernel/postrm.d/update-systemd-boot \
+    /etc/initramfs/post-update.d/update-initrd
+  systemctl enable systemd-update-efi.path
+
+  local tmp
+  local kernel
+  local version
+  local outfile
+  mapfile -t tmp < <(ls -r /boot/vmlinuz*)
+  kernel=$(basename "${tmp[0]}")
+  version="${kernel/vmlinuz-/}"
+  version="${version/-amd64/}"
+  version="${version/-i386/}"
+  outfile="linux-${version}.conf"
+
+  cp -af "/boot/${kernel}" "/boot/${kernel/vmlinuz/initrd.img}" /boot/efi/
+  {
+    echo "default	${outfile}"
+    echo "timeout	1"
+    echo "console-mode	max"
+    echo "editor	no"
+  } > /boot/efi/loader/loader.conf
+
+  {
+    echo "title	Debian, linux-${version}"
+    echo "linux	/${kernel}"
+    echo "initrd	/${kernel/vmlinuz/initrd.img}"
+    echo "options	${cmdline}"
+  } > "/boot/efi/loader/entries/${outfile}"
 
   # rebuild the kernel(s)
   update-initramfs -u -k all

@@ -92,7 +92,7 @@ function main {
 
   mount_install
   debootstrap \
-    --include=locales,keyboard-configuration,cryptsetup,cryptsetup-initramfs \
+    --include=locales,keyboard-configuration,cryptsetup,cryptsetup-initramfs,systemd-boot \
     --arch amd64 "${RELEASE}" /mnt https://deb.debian.org/debian
   mkdir -p /mnt/run/udev
   for FS in proc sys dev dev/pts run/udev; do

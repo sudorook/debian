@@ -19,8 +19,8 @@ set -eu
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-if [[ $(bootctl is-installed) = "yes" ]]; then
-  EFI_DEST_PATH="$(bootctl -p)"
+if [[ $(/usr/bin/bootctl is-installed) = "yes" ]]; then
+  EFI_DEST_PATH="$(/usr/bin/bootctl -p)"
 elif [ -d /boot/efi ]; then
   EFI_DEST_PATH=/boot/efi
 else

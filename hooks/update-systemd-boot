@@ -23,7 +23,7 @@ function get_cmdline {
   local default
   local cmdline
   local efidir
-  efidir="$(bootctl -p)"
+  efidir="$(/usr/bin/bootctl -p)"
   if [ -f "${efidir}/loader/loader.conf" ]; then
     default=$(sed -n "s/^default\s\+\(.*\)/\1/p" "${efidir}/loader/loader.conf")
     if [ -f "${efidir}/loader/entries/${default}" ]; then
@@ -38,7 +38,7 @@ function get_default {
   local current
   local new
   local efidir
-  efidir="$(bootctl -p)"
+  efidir="$(/usr/bin/bootctl -p)"
   if [ -f "${efidir}/loader/loader.conf" ]; then
     default=$(sed -n "s/^default\s\+\(.*\)/\1/p" "${efidir}/loader/loader.conf")
     current=$(sed -n "s/^linux\s\+\(.*\)/\1/p" "${efidir}/loader/entries/${default}")
@@ -78,7 +78,7 @@ function make_loader {
   local version
   local outfile
   local efidir
-  efidir="$(bootctl -p)"
+  efidir="$(/usr/bin/bootctl -p)"
   kernel="${1}"
   version="${kernel/vmlinuz-/}"
   version="${version/-amd64/}"
@@ -98,7 +98,7 @@ function make_entry {
   local cmdline
   local outfile
   local efidir
-  efidir="$(bootctl -p)"
+  efidir="$(/usr/bin/bootctl -p)"
   kernel="${1}"
   version="${kernel/vmlinuz-/}"
   version="${version/-amd64/}"
@@ -116,16 +116,16 @@ EOF
 
 function clear_entries {
   local efidir
-  efidir="$(bootctl -p)"
+  efidir="$(/usr/bin/bootctl -p)"
   find "${efidir}/loader" -type f -name "*.conf" -delete
   find "${efidir}" -type f -name "vmlinuz*" -delete
   find "${efidir}" -type f -name "initrd.img*" -delete
 }
 
-if [ "$(bootctl is-installed)" = "yes" ]; then
+if [ "$(/usr/bin/bootctl is-installed)" = "yes" ]; then
   DEFAULT="$(get_default)"
   CMDLINE="$(get_cmdline)"
-  EFIDIR="$(bootctl -p)"
+  EFIDIR="$(/usr/bin/bootctl -p)"
 
   clear_entries
   for kernel in /boot/vmlinuz*; do

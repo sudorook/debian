@@ -54,9 +54,8 @@ function enable_contrib_repos {
   release=$(lsb_release -sc)
   if ! grep contrib "${srclist}" > /dev/null 2>&1; then
     show_info "Enabling contrib repos."
-    sudo sed -i "s,\(.* ${release} main.*\)$,\1 contrib,g" ${srclist}
-    sudo sed -i "s,\(.* ${release}-updates main.*\)$,\1 contrib,g" ${srclist}
-    sudo sed -i "s,\(.* ${release}-backports main.*\)$,\1 contrib,g" ${srclist}
+    sudo sed -i \
+      '/deb/{/ contrib\(\ \|$\)/! s/$/ contrib/}' "${srclist}"
     sudo apt-get update
   else
     show_info "contrib already enabled."
@@ -69,9 +68,8 @@ function enable_nonfree-firmware_repos {
   release=$(lsb_release -sc)
   if ! grep non-free-firmware "${srclist}" > /dev/null 2>&1; then
     show_info "Enabling non-free-firmware repos."
-    sudo sed -i "s,\(.* ${release} main.*\)$,\1 non-free-firmware,g" ${srclist}
-    sudo sed -i "s,\(.* ${release}-updates main.*\)$,\1 non-free-firmware,g" ${srclist}
-    sudo sed -i "s,\(.* ${release}-backports main.*\)$,\1 non-free-firmware,g" ${srclist}
+    sudo sed -i \
+      '/deb/{/ non-free-firmware\(\ \|$\)/! s/$/ non-free-firmware/}' "${srclist}"
     sudo apt-get update
   else
     show_info "non-free-firmware already enabled."
@@ -84,9 +82,8 @@ function enable_nonfree_repos {
   release=$(lsb_release -sc)
   if ! grep 'non-free\( \|$\)' "${srclist}" > /dev/null 2>&1; then
     show_info "Enabling non-free repos."
-    sudo sed -i "s,\(.* ${release} main.*\)$,\1 non-free,g" ${srclist}
-    sudo sed -i "s,\(.* ${release}-updates main.*\)$,\1 non-free,g" ${srclist}
-    sudo sed -i "s,\(.* ${release}-backports main.*\)$,\1 non-free,g" ${srclist}
+    sudo sed -i \
+      '/deb/{/ non-free\(\ \|$\)/! s/$/ non-free/}' "${srclist}"
     sudo apt-get update
   else
     show_info "non-free already enabled."

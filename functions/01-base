@@ -135,6 +135,7 @@ function upgrade_debian_release {
           show_warning "Already set to ${release}."
         elif [[ "${release}" == "bullseye" ]] ||
              [[ "${release}" == "bookworm" ]] ||
+             [[ "${release}" == "trixie" ]] ||
              [[ "${release}" == "sid" ]]; then
           show_warning "Downgrades not possible."
         else
@@ -149,6 +150,7 @@ function upgrade_debian_release {
         if [[ "${release}" == "bullseye" ]]; then
           show_warning "Already set to ${release}."
         elif [[ "${release}" == "bookworm" ]] ||
+             [[ "${release}" == "trixie" ]] ||
              [[ "${release}" == "sid" ]]; then
           show_warning "Downgrades not possible."
         else

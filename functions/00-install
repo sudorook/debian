@@ -62,7 +62,7 @@ function ask_release {
         break
         ;;
       "Trixie (testing)")
-        RELEASE=buster
+        RELEASE=trixie
         break
         ;;
       "Sid (unstable)")

@@ -118,13 +118,11 @@ function upgrade_debian_release {
 
   local is_upgraded=false
   local release
-  release=$(lsb_release -sc)
+  release="$(lsb_release -sc)"
 
   show_question "Upgrade Debian release?"
   local options=("Back" "Buster" "Bullseye" "Bookworm" "Trixie" "Sid")
   local option
-  local release
-  release="$(lsb_release -sc)"
   select option in "${options[@]}"; do
     case "${option}" in
       "Back")

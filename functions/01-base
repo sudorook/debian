@@ -166,6 +166,12 @@ function upgrade_debian_release {
              [[ "${release}" == "sid" ]]; then
           show_warning "Downgrades not possible."
         else
+          if [[ "${release}" == "buster" ]] ||
+             [[ "${release}" == "bullseye" ]]; then
+            if [[ "${is_nonfree}" == true ]]; then
+              is_nonfreefirmware=true
+            fi
+          fi
           sudo cp -f "${srclist}" "${srclist}.${RANDOM}.bak"
           sudo cp -f "${bookwormlist}" "${srclist}"
           is_upgraded=true
@@ -179,6 +185,12 @@ function upgrade_debian_release {
         elif [[ "${release}" == "sid" ]]; then
           show_warning "Downgrades not possible."
         else
+          if [[ "${release}" == "buster" ]] ||
+             [[ "${release}" == "bullseye" ]]; then
+            if [[ "${is_nonfree}" == true ]]; then
+              is_nonfreefirmware=true
+            fi
+          fi
           sudo cp -f "${srclist}" "${srclist}.${RANDOM}.bak"
           sudo cp -f "${trixielist}" "${srclist}"
           is_upgraded=true
@@ -190,6 +202,12 @@ function upgrade_debian_release {
         if [[ "${release}" == "sid" ]]; then
           show_warning "Already set to ${release}."
         else
+          if [[ "${release}" == "buster" ]] ||
+             [[ "${release}" == "bullseye" ]]; then
+            if [[ "${is_nonfree}" == true ]]; then
+              is_nonfreefirmware=true
+            fi
+          fi
           sudo cp -f "${srclist}" "${srclist}.${RANDOM}.bak"
           sudo cp -f "${sidlist}" "${srclist}"
           is_upgraded=true

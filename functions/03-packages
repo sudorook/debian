@@ -399,10 +399,10 @@ function install_texlive {
   show_success "TeX Live installed."
 
   show_info "Changing the default local texmf path to ~/.texmf"
-  local texmfconfig
-  texmfconfig=$(kpsewhich texmf.cnf)
+  local texmfconfig="/etc/texmf/texmf.d/texmfhome.cnf"
   mkdir -p "${HOME}/.texmf"
   sudo sed -i "s,^TEXMFHOME = .*$,TEXMFHOME = ~/.texmf,g" "${texmfconfig}"
+  sudo update-texmf
 }
 
 function install_torbrowser {

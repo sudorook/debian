@@ -209,7 +209,7 @@ function set_config_key_value {
 
   if [ -f "${file}" ]; then
     if grep -q "^${key}" "${file}"; then
-      sed -i "s/^${key}=.*/${key}=${value}/g" "${file}"
+      sed -i "s,^${key}=.*,${key}=${value},g" "${file}"
     else
       echo "${key}=${value}" >> "${file}"
     fi

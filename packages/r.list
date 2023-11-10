@@ -6,6 +6,18 @@ r-cran-curl
 r-cran-data.table
 r-cran-devtools
 r-cran-expm
+r-cran-ggalluvial
+r-cran-gganimate
+r-cran-ggbeeswarm
+r-cran-ggdendro
+r-cran-ggplot.multistats
+r-cran-ggraph
+r-cran-ggridges
+r-cran-ggsci
+r-cran-ggseqlogo
+r-cran-ggsignif
+r-cran-ggtext
+r-cran-ggthemes
 r-cran-glmnet
 r-cran-gridextra
 r-cran-hdf5r
@@ -15,6 +27,7 @@ r-cran-knitr
 r-cran-mass
 r-cran-mvtnorm
 r-cran-optparse
+r-cran-patchwork
 r-cran-plyr
 r-cran-quadprog
 r-cran-rcolorbrewer

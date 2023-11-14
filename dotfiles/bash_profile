@@ -1,7 +1,3 @@
 #! /bin/bash
 
-#
-# bash profile
-#
-
-[[ -f "${HOME}/.bashrc" ]] && . "${HOME}/.bashrc"
+[[ -f "${HOME}"/.bashrc ]] && . "${HOME}"/.bashrc

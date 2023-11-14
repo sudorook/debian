@@ -131,6 +131,7 @@ function run_silent {
 
 make_silent eog
 make_silent evince
+make_silent feh
 make_silent gimp
 make_silent gitg
 make_silent gitk

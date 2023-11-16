@@ -45,9 +45,9 @@ export -f ask_question
 
 ask_secret() {
   local var
-  stty -echo
+  stty -echo echonl
   read -r -p $'\033[1;34m'"$* "$'\033[0m' var
-  stty echo
+  stty echo -echonl
   echo "${var}"
 }
 export -f ask_secret

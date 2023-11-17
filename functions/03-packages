@@ -455,8 +455,10 @@ function install_torbrowser {
       "${torbrowser_url}/${torbrowser_version}/${torbrowser_package}.asc" \
       -o "${torbrowser_package}.asc"
 
+    show_info "Verifying..."
+    gpg --verify "${torbrowser_package}"{.asc,}
+
     show_info "Extracting..."
-    gpg --verify "${torbrowser_package}.asc" "${torbrowser_package}"
     tar xf "${torbrowser_package}"
 
     show_info "Putting things into place..."

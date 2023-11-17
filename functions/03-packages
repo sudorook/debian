@@ -435,7 +435,7 @@ function install_torbrowser {
     show_info "Downloading Tor developers' GPG key."
     gpg --auto-key-locate nodefault,wkd --locate-keys torbrowser@torproject.org
 
-    torbrowser_version=$(curl https://www.torproject.org/download/ |
+    torbrowser_version=$(curl -Ls https://www.torproject.org/download/ |
                          sed -n 's,^ \+<a class="downloadLink" href="/dist/torbrowser/\([0-9\.]\+\)/tor-browser-linux.*">,\1,p')
     arch=$(uname -m)
     if [ "${arch: -2}" -eq 86 ]; then
@@ -448,8 +448,13 @@ function install_torbrowser {
     tmpdir="$(mktemp -d)"
     pushd "${tmpdir}" > /dev/null || exit
 
-    wget "${torbrowser_url}/${torbrowser_version}/${torbrowser_package}"
-    wget "${torbrowser_url}/${torbrowser_version}/${torbrowser_package}.asc"
+    curl -L \
+      "${torbrowser_url}/${torbrowser_version}/${torbrowser_package}" \
+      -o "${torbrowser_package}"
+    curl -L \
+      "${torbrowser_url}/${torbrowser_version}/${torbrowser_package}.asc" \
+      -o "${torbrowser_package}.asc"
+
     show_info "Extracting..."
     gpg --verify "${torbrowser_package}.asc" "${torbrowser_package}"
     tar xf "${torbrowser_package}"

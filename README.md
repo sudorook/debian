@@ -10,10 +10,10 @@ repositories, so this script may not work for all packages.
 
 Requirements:
 
-1. `wget`
-2. `git`
-3. `sudo`
-4. `fzf`
+1. `curl`
+2. `fzf`
+3. `git`
+4. `sudo`
 
 ## Install
 

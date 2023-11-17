@@ -248,12 +248,12 @@ function install_sudo {
 function check_network {
   show_header "Checking network connection."
 
-  if ! command -v wget > /dev/null 2>&1; then
-    show_error "wget not installed. Exiting."
+  if ! command -v curl > /dev/null 2>&1; then
+    show_error "curl not installed. Exiting."
     exit 1
   fi
 
-  if wget -q --tries=10 --timeout=20 --spider https://debian.org > /dev/null; then
+  if curl --retry 5 --retry-connrefused -Is https://debian.org > /dev/null; then
     show_success "Network is working."
   else
     show_error "Cannot start network connection."

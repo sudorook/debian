@@ -18,7 +18,6 @@ set -eu
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-
 #
 # Check that all the packages in ../packages actually exist.
 #
@@ -29,7 +28,7 @@ MISSING=false
 for FILE in "${PKGDIR}"/*; do
   basename "${FILE}"
   while read -r PACKAGE; do
-    if dpkg -s "${PACKAGE}" >/dev/null 2>&1; then
+    if dpkg -s "${PACKAGE}" > /dev/null 2>&1; then
       echo -e "\033[1;35m✓\033[0m" "${PACKAGE}"
     else
       MISSING=true

@@ -18,7 +18,6 @@ set -eu
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-
 function show_success {
   echo -e $'\033[1;35m✓ \033[0m'"$*"
 }
@@ -28,11 +27,11 @@ function show_error {
 }
 
 function try_wget {
-  wget -q --tries=5 --timeout=30 --spider "${1}" >/dev/null
+  wget -q --tries=5 --timeout=30 --spider "${1}" > /dev/null
 }
 
 function try_curl {
-  curl -ILs --retry 5 --retry-connrefused "${1}" >/dev/null
+  curl -ILs --retry 5 --retry-connrefused "${1}" > /dev/null
 }
 
 function check_url_debian {
@@ -51,7 +50,7 @@ function check_url_torbrowser {
   local torbrowser_version
   local torbrowser_url="https://www.torproject.org/dist/torbrowser"
   local missing=false
-  torbrowser_version=$(curl -Ls https://www.torproject.org/download/ | \
+  torbrowser_version=$(curl -Ls https://www.torproject.org/download/ |
                        sed -n 's,^ \+<a class="downloadLink" href="/dist/torbrowser/\([0-9\.]\+\)/tor-browser-linux.*">,\1,p')
   for arch in "32" "64"; do
     local torbrowser_package="tor-browser-linux${arch}-${torbrowser_version}_ALL.tar.xz"

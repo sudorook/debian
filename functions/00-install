@@ -943,7 +943,7 @@ export -f update_mirrorlist
 function install_packages {
   apt-get -y install \
     apt-transport-https bash-completion linux-base git man-db manpages \
-    lsb-release network-manager wget rsync iwd netselect-apt lvm2 sudo \
+    lsb-release network-manager curl rsync iwd netselect-apt lvm2 sudo \
     linux-image-amd64 linux-headers-amd64
 
   if [[ "${SCHEME}" =~ LUKS ]]; then

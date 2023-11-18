@@ -609,7 +609,9 @@ function ask_timezone {
 
 function set_timezone {
   ln -sfn "/usr/share/zoneinfo/${TIMEZONE}" /etc/localtime
-  hwclock --systohc --utc
+  if command -v hwclock >/dev/null 2>&1; then
+    hwclock --systohc --utc
+  fi
 }
 export -f set_timezone
 

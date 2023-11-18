@@ -698,12 +698,8 @@ function ask_password {
   local tmp2
   local is_invalid=true
   while "${is_invalid}"; do
-    stty -echo
-    tmp1="$(ask_question "User password")"
-    echo
-    tmp2="$(ask_question "Re-enter password")"
-    stty echo
-    echo
+    tmp1="$(ask_secret "User password")"
+    tmp2="$(ask_secret "Re-enter password")"
     if [ -z "${tmp1}" ]; then
       show_error "ERROR: no password given."
       continue
@@ -723,12 +719,8 @@ function ask_lukspass {
   local tmp2
   local is_invalid=true
   while "${is_invalid}"; do
-    stty -echo
-    tmp1="$(ask_question "LUKS decryption password")"
-    echo
-    tmp2="$(ask_question "Re-enter LUKS decription password")"
-    stty echo
-    echo
+    tmp1="$(ask_secret "LUKS decryption password")"
+    tmp2="$(ask_secret "Re-enter LUKS decription password")"
     if [ -z "${tmp1}" ]; then
       show_error "ERROR: no password given."
       continue

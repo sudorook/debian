@@ -168,6 +168,24 @@ function check_uninstalled {
   done < "${1}"
 }
 
+function check_sync_repos {
+  local last_update
+
+  # Check the pacman log to see if synchronized within the past hour. If so,
+  # return.
+  if [ -f /var/cache/apt/pkgcache.bin ]; then
+    last_update="$(stat /var/cache/apt/pkgcache.bin --format="%Y")"
+    if [ -n "${last_update}" ]; then
+      if [ "${last_update}" -gt \
+           "$(date --date="1 hour ago" +%s)" ]; then
+        return
+      fi
+    fi
+  fi
+
+  sync_repos
+}
+
 function sync_repos {
   show_header "Synchronizing repos."
   if [ ${EUID} -eq 0 ]; then

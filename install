@@ -108,7 +108,7 @@ function main {
 
 check_root
 check_network
-sync_repos
+check_sync_repos
 install_dependencies
 
 #

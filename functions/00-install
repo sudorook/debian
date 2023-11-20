@@ -416,7 +416,7 @@ function subtract {
     output="$(echo "${input1} - ${input2}" | bc -l)"
   else
     show_error "ERROR: not enough (remaining) space."
-    exit 3
+    return 1
   fi
   echo "${output%.*}"
 }
@@ -474,57 +474,108 @@ function ask_partition_sizes {
   local home
   local root
   local share
+  local all_good=false
 
-  free_size="$(lsblk -b -dno SIZE "/dev/${DEVICE}")"
+  while ! "${all_good}"; do
+    free_size="$(lsblk -b -dno SIZE "/dev/${DEVICE}")"
 
-  show_header "Specify partitiion sizes. $(get_base10 "${free_size}") ($(get_base2 "${free_size}")) available:"
-  swap=$(ask_question "Swap (default=4GiB):")
-  swap=$(sanitize_size_input "${swap}")
-  if [[ -n "${swap}" ]]; then
-    PARTITIONS["swap"]="${swap}"
-    free_size="$(subtract "${free_size}" "${swap}")"
-    show_info "$(get_base10 "${free_size}") ($(get_base2 "${free_size}")) available"
-  fi
-
-  share=$(ask_question "Share (default=0GiB):")
-  share=$(sanitize_size_input "${share}")
-  if [[ -n "${share}" ]]; then
-    PARTITIONS["share"]="${share}"
-    if [[ "${share}" = "fill" ]]; then
-      free_size="0G"
-    else
-      free_size="$(subtract "${free_size}" "${share}")"
-      show_info "$(get_base10 "${free_size}") ($(get_base2 "${free_size}")) available"
-    fi
-  fi
-
-  root=$(ask_question "Root (default=20GiB):")
-  root=$(sanitize_size_input "${root}")
-  if [[ -n "${root}" ]]; then
-    PARTITIONS["root"]="${root}"
-    if [[ "${root}" = "fill" ]]; then
-      free_size="0G"
-    else
-      free_size="$(subtract "${free_size}" "${root}")"
-      show_info "$(get_base10 "${free_size}") ($(get_base2 "${free_size}")) available"
-    fi
-  fi
-
-  if [[ "${PARTITIONS["root"]}" != "fill" ]]; then
-    home=$(ask_question "Home (default=fill):")
-    home=$(sanitize_size_input "${home}")
-    if [[ -n "${home}" ]]; then
-      PARTITIONS["home"]="${home}"
-      if [[ "${home}" = "fill" ]]; then
-        free_size="0G"
+    show_header "Specify partitiion sizes. $(get_base10 "${free_size}") ($(get_base2 "${free_size}")) available:"
+    swap=$(ask_question "Swap (default=4GiB):")
+    swap=$(sanitize_size_input "${swap}")
+    if [[ -n "${swap}" ]]; then
+      PARTITIONS["swap"]="${swap}"
+      if [[ "${swap}" = "fill" ]]; then
+        show_warning "WARNING: Leave space for the OS installation."
+        continue
       else
-        free_size="$(subtract "${free_size}" "${home}")"
-        show_info "$(get_base10 "${free_size}") ($(get_base2 "${free_size}")) available"
+        if ! free_size="$(subtract "${free_size}" "${swap}")"; then
+          show_warning "WARNING: Invalid partition size(s). Try again."
+          continue
+        fi
+      fi
+    else
+      swap="${PARTITIONS["swap"]}"
+      if ! free_size="$(subtract "${free_size}" "${swap}")"; then
+        show_warning "WARNING: Invalid partition size(s). Try again."
+        continue
       fi
     fi
-  else
-    PARTITIONS["home"]=0
-  fi
+    show_info "$(get_base10 "${free_size}") ($(get_base2 "${free_size}")) available"
+
+    share=$(ask_question "Share (default=0GiB):")
+    share=$(sanitize_size_input "${share}")
+    if [[ -n "${share}" ]]; then
+      PARTITIONS["share"]="${share}"
+      if [[ "${share}" = "fill" ]]; then
+        show_warning "WARNING: Leave space for the OS installation."
+        continue
+      else
+        if ! free_size="$(subtract "${free_size}" "${share}")"; then
+          show_warning "WARNING: Invalid partition size(s). Try again."
+          continue
+        fi
+      fi
+    else
+      share="${PARTITIONS["share"]}"
+      if ! free_size="$(subtract "${free_size}" "${share}")"; then
+        show_warning "WARNING: Invalid partition size(s). Try again."
+        continue
+      fi
+    fi
+    show_info "$(get_base10 "${free_size}") ($(get_base2 "${free_size}")) available"
+
+    root=$(ask_question "Root (default=20GiB):")
+    root=$(sanitize_size_input "${root}")
+    if [[ -n "${root}" ]]; then
+      PARTITIONS["root"]="${root}"
+      if [[ "${root}" = "fill" ]]; then
+        free_size="0G"
+      else
+        if ! free_size="$(subtract "${free_size}" "${root}")"; then
+          show_warning "WARNING: Invalid partition size(s). Try again."
+          continue
+        fi
+      fi
+    else
+      root="${PARTITIONS["root"]}"
+      if ! free_size="$(subtract "${free_size}" "${root}")"; then
+        show_warning "WARNING: Invalid partition size(s). Try again."
+        continue
+      fi
+    fi
+    show_info "$(get_base10 "${free_size}") ($(get_base2 "${free_size}")) available"
+
+    if [[ "${PARTITIONS["root"]}" != "fill" ]]; then
+      if [ "${free_size}" -lt 4883704320 ]; then
+        show_warning "WARNING: Leave >5GiB for /home partition."
+        continue
+      fi
+      home=$(ask_question "Home (default=fill):")
+      home=$(sanitize_size_input "${home}")
+      if [[ -n "${home}" ]]; then
+        PARTITIONS["home"]="${home}"
+        if [[ "${home}" = "fill" ]]; then
+          free_size="0G"
+        else
+          if ! free_size="$(subtract "${free_size}" "${home}")"; then
+            show_warning "WARNING: Invalid partition size(s). Try again."
+            continue
+          fi
+        fi
+      else
+        home="${PARTITIONS["home"]}"
+        if ! free_size="$(subtract "${free_size}" "${home}")"; then
+          show_warning "WARNING: Invalid partition size(s). Try again."
+          continue
+        fi
+      fi
+      show_info "$(get_base10 "${free_size}") ($(get_base2 "${free_size}")) available"
+    else
+      PARTITIONS["home"]=0
+    fi
+
+    all_good=true
+  done
 }
 
 EFI_PARTITION=

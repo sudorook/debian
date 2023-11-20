@@ -35,6 +35,17 @@ function main {
   ask_release
   ask_device
   ask_partition_scheme
+  case "${SCHEME}" in
+    "LVM on LUKS")
+      ask_physical_volume_name
+      ask_volume_group_name
+      ;;
+    "LVM")
+      SCHEME="LVM"
+      ask_volume_group_name
+      ;;
+    *) ;;
+  esac
   ask_bootmode
   ask_partition_sizes
 

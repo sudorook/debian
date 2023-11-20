@@ -19,11 +19,6 @@
 
 DIR="$(dirname "$0")"
 
-VG=vg
-LV=lvm
-export VG
-export LV
-
 function is_size_nonzero {
   if [[ "${1}" != "0" ]] &&
      [[ "${1}" != "0G" ]] &&
@@ -76,24 +71,185 @@ function ask_release {
 
 DEVICE=
 function ask_device {
-  show_header "Device for installation:"
   local disks
   local disk
   local result
+
+  # NOTE:lsblk returns without '/dev/' prefix.
   mapfile -t disks < <(lsblk -nd -o NAME,TYPE | grep disk | cut -d' ' -f1)
   if ! [[ -v disks ]]; then
     show_error "No disk devices found. Exiting."
     exit 1
   fi
+
+  show_header "Device for installation:"
   select disk in "${disks[@]}"; do
     if [ -z "${disk}" ]; then
       show_warning "Invalid selection. Try again."
       continue
     fi
-    result="$(ask_question "Use ${disk}? (Y/n)")"
-    if ! [[ "${result}" =~ ^([Nn]$|[Nn][Oo]) ]]; then
+    if check_disk "${disk}"; then
       DEVICE="${disk}"
       break
+      # result="$(ask_question "Use ${disk}? (Y/n)")"
+      # if ! [[ "${result}" =~ ^([Nn]$|[Nn][Oo]) ]]; then
+      #   DEVICE="${disk}"
+      #   break
+      # fi
+    fi
+  done
+}
+
+VG=vg
+function ask_volume_group_name {
+  local tmp
+  while true; do
+    tmp="$(ask_question "Volume group name (default: ${VG@Q})")"
+    if [ -n "${tmp}" ]; then
+      if ! vgs --noheadings --nosuffix "${tmp}" > /dev/null 2>&1; then
+        VG="${tmp}"
+        break
+      else
+        show_warning "Volume group ${VG@Q} already exists elsewhere. Try a different name."
+        continue
+      fi
+    else
+      if ! vgs --noheadings --nosuffix "${VG}" > /dev/null 2>&1; then
+        show_info "Defaulting vg name to ${VG@Q}."
+        break
+      else
+        show_warning "Volume group ${VG@Q} already exists elsewhere. Try a different name."
+        continue
+      fi
+    fi
+  done
+}
+export VG
+
+LV=lvm
+function ask_physical_volume_name {
+  local tmp
+  while true; do
+    tmp="$(ask_question "Physical volume name (default: ${LV@Q})")"
+    if [ -n "${tmp}" ]; then
+      if ! lvs --noheadings --nosuffix "/dev/mapper/${tmp}" > /dev/null 2>&1; then
+        LV="${tmp}"
+        break
+      else
+        show_warning "Physical volume ${LV@Q} already exists elsewhere. Try a different name."
+        continue
+      fi
+    else
+      if ! lvs --noheadings --nosuffix "/dev/mapper/${LV}" > /dev/null 2>&1; then
+        show_info "Defaulting vg name to ${LV@Q}."
+        break
+      else
+        show_warning "Physical volume ${LV@Q} already exists elsewhere. Try a different name."
+        continue
+      fi
+    fi
+  done
+}
+export LV
+
+function check_disk {
+  local disk="${1}"
+  local reply
+  if ! [ -b "/dev/${disk}" ]; then
+    show_warning "${disk@Q} not a block deice."
+    return 1
+  fi
+  if findmnt --source "/dev/${disk}" > /dev/null; then
+    show_warning "disk ${disk@Q} already mounted. Unmount and try again."
+    findmnt --source "/dev/${disk}"
+    return 1
+  fi
+  if blkid -p "/dev/${disk}" > /dev/null; then
+    show_warning "Partition scheme already exists on ${disk}."
+    reply="$(ask_question "Wipe /dev/${disk}? (y/N)")"
+    if [[ "${reply}" =~ ^[Yy]$|[Yy][Ee][Ss] ]]; then
+      unmount_disk "${disk}"
+      deactivate_lvm "${disk}"
+      sgdisk -Z "/dev/${disk}"
+      partprobe "/dev/${disk}"
+    else
+      return 1
+    fi
+  fi
+}
+
+function unmount_disk {
+  local disk="${1}"
+  local names
+  local mountpoints
+  local idx
+
+  mapfile -t names < <(lsblk -lpno NAME "/dev/${disk}")
+  mapfile -t mountpoints < <(lsblk -lpno MOUNTPOINTS "/dev/${disk}")
+
+  for idx in "${!mountpoints[@]}"; do
+    if [ -z "${mountpoints["${idx}"]}" ]; then
+      continue
+    elif [[ "${mountpoints["${idx}"]}" = '[SWAP]' ]]; then
+      swapoff "${names["${idx}"]}"
+    else
+      umount -R "${mountpoints["${idx}"]}"
+    fi
+  done
+}
+
+function deactivate_lvm {
+  local disk="${1}"
+  local names
+  local name
+  local types
+  local fstypes
+  local vgs
+  local vg
+  local idx
+
+  mapfile -t names < <(lsblk -lpno NAME "/dev/${disk}")
+  mapfile -t types < <(lsblk -lpno TYPE "/dev/${disk}")
+  mapfile -t fstypes < <(lsblk -lpno FSTYPE "/dev/${disk}")
+
+  # remove logical volumes
+  for idx in "${!names[@]}"; do
+    if [ -z "${types["${idx}"]}" ]; then
+      continue
+    elif [[ "${types["${idx}"]}" = lvm ]]; then
+      lvchange -an "${names["${idx}"]}"
+      lvremove "${names["${idx}"]}"
+    fi
+  done
+
+  # close crypt devices
+  for idx in "${!names[@]}"; do
+    if [ -z "${fstypes["${idx}"]}" ]; then
+      continue
+    elif [[ "${types["${idx}"]}" = crypt ]] &&
+         [[ "${fstypes["${idx}"]}" = LVM2_member ]]; then
+      name="${names["${idx}"]}"
+      cryptsetup close "${name}"
+    fi
+  done
+
+  # remove physical volumes and volume groups
+  for idx in "${!names[@]}"; do
+    if [ -z "${fstypes["${idx}"]}" ]; then
+      continue
+    elif [[ "${types["${idx}"]}" = part ]] &&
+         [[ "${fstypes["${idx}"]}" = LVM2_member ]]; then
+      name="${names["${idx}"]}"
+      mapfile -t vgs < <(pvs --noheadings --nosuffix -o vg_name "${name}" | xargs)
+      for vg in "${vgs[@]}"; do
+        if [ -z "${vg}" ]; then
+          continue
+        elif ! vgremove "${vg}"; then
+          show_error "Failed to remove vg ${vg@Q}"
+          exit 1
+        fi
+      done
+      pvremove "${name}"
     fi
   done
 }

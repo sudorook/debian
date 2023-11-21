@@ -780,6 +780,9 @@ function format_partitions {
   if [ -b "${HOME_PARTITION}" ]; then
     mkfs.ext4 "${HOME_PARTITION}"
   fi
+  if [ -b "${SHARE_PARTITION}" ]; then
+    mkfs.vfat -F 32 -n SHARE "${SHARE_PARTITION}"
+  fi
 }
 
 function mount_install {

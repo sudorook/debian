@@ -770,14 +770,14 @@ function format_partitions {
   if [ -b "${EFI_PARTITION}" ]; then
     mkfs.vfat -F32 "${EFI_PARTITION}"
   fi
-  if [ -e "${SWAP_PARTITION}" ]; then
+  if [ -b "${SWAP_PARTITION}" ]; then
     mkswap -L swap "${SWAP_PARTITION}"
     swapon "${SWAP_PARTITION}"
   fi
-  if [ -e "${ROOT_PARTITION}" ]; then
+  if [ -b "${ROOT_PARTITION}" ]; then
     mkfs.ext4 "${ROOT_PARTITION}"
   fi
-  if [ -e "${HOME_PARTITION}" ]; then
+  if [ -b "${HOME_PARTITION}" ]; then
     mkfs.ext4 "${HOME_PARTITION}"
   fi
 }

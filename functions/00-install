@@ -830,7 +830,8 @@ CHARSET="UTF-8"
 function ask_locale {
   local res
 
-  res="$(sed -n "s,^#\?\ \?\([[:alnum:]\.@_\-]\+\)\ \([[:alnum:]\-]\+\)\ *$,\1 \2,p" /etc/locale.gen |
+  res="$(sed -n "s,^#\?\ \?\([[:alnum:]\.@_\-]\+\)\ \([[:alnum:]\-]\+\)\ *$,\1 \2,p" \
+         /etc/locale.gen |
          fzf --layout=reverse \
              --header="Select locale ('ESC' for default: ${LOCALE})" || true)"
   clear
@@ -1088,6 +1089,7 @@ function install_grub {
   else
     sed -i "/^GRUB_CMDLINE_LINUX=/a GRUB_ENABLE_CRYPTODISK=y" /etc/default/grub
   fi
+
   if [ -e /sys/firmware/efi ]; then
     grub-install --target=i386-pc "/dev/${DEVICE}" --recheck
     grub-install "/dev/${DEVICE}" --bootloader-id=Debian --recheck

@@ -271,7 +271,7 @@ function check_network {
     exit 1
   fi
 
-  if curl --retry 5 --retry-connrefused -Is https://debian.org > /dev/null; then
+  if curl -Is --retry 5 --retry-connrefused https://debian.org > /dev/null; then
     show_success "Network is working."
   else
     show_error "Cannot start network connection."

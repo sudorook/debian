@@ -126,31 +126,31 @@ function ask_volume_group_name {
 }
 export VG
 
-LV=lvm
+PV=lvm
 function ask_physical_volume_name {
   local tmp
   while true; do
-    tmp="$(ask_question "Physical volume name (default: ${LV@Q})")"
+    tmp="$(ask_question "Physical volume name (default: ${PV@Q})")"
     if [ -n "${tmp}" ]; then
       if ! lvs --noheadings --nosuffix "/dev/mapper/${tmp}" > /dev/null 2>&1; then
-        LV="${tmp}"
+        PV="${tmp}"
         break
       else
-        show_warning "Physical volume ${LV@Q} already exists elsewhere. Try a different name."
+        show_warning "Physical volume ${PV@Q} already exists elsewhere. Try a different name."
         continue
       fi
     else
-      if ! lvs --noheadings --nosuffix "/dev/mapper/${LV}" > /dev/null 2>&1; then
-        show_info "Defaulting vg name to ${LV@Q}."
+      if ! lvs --noheadings --nosuffix "/dev/mapper/${PV}" > /dev/null 2>&1; then
+        show_info "Defaulting vg name to ${PV@Q}."
         break
       else
-        show_warning "Physical volume ${LV@Q} already exists elsewhere. Try a different name."
+        show_warning "Physical volume ${PV@Q} already exists elsewhere. Try a different name."
         continue
       fi
     fi
   done
 }
-export LV
+export PV
 
 function check_disk {
   local disk="${1}"
@@ -709,10 +709,10 @@ function format_partitions {
           cryptsetup luksFormat "${CRYPT_PARTITION}" --batch-mode --key-file -
       fi
       echo -n "${CRYPT_PASSWORD}" |
-        cryptsetup luksOpen "${CRYPT_PARTITION}" ${LV} --batch-mode --key-file -
+        cryptsetup luksOpen "${CRYPT_PARTITION}" ${PV} --batch-mode --key-file -
 
-      pvcreate /dev/mapper/${LV}
-      vgcreate ${VG} /dev/mapper/${LV}
+      pvcreate /dev/mapper/${PV}
+      vgcreate ${VG} /dev/mapper/${PV}
       if is_size_nonzero "${PARTITIONS["swap"]}"; then
         lvcreate -L "${PARTITIONS["swap"]}" ${VG} -n swap
         SWAP_PARTITION=/dev/mapper/${VG}-swap
@@ -983,7 +983,7 @@ function install_gummiboot {
 
   if [[ "${SCHEME}" =~ LVM ]]; then
     if [ -n "${crypt_uuid}" ]; then
-      cmdline="cryptdevice=UUID=${crypt_uuid}:${LV}:allow-discards"
+      cmdline="cryptdevice=UUID=${crypt_uuid}:${PV}:allow-discards"
       if [ -e /dev/mapper/${VG}-root ]; then
         cmdline="${cmdline} root=/dev/mapper/${VG}-root"
       fi
@@ -998,7 +998,7 @@ function install_gummiboot {
       if grep "${crypt_uuid}" /etc/crypttab > /dev/null 2>&1; then
         sed -i "s|\([a-zA-Z0-9_-]\+\)\(\s\+\)UUID=${crypt_uuid}\(\s\+\)none\(\s\+\)\([A-Za-z0-9_\-\=,]\+\)|\1\2UUID=${crypt_uuid}\3none\4luks,discard|g" /etc/crypttab
       else
-        echo "${LV}	UUID=${crypt_uuid}	none	luks,discard" >> /etc/crypttab
+        echo "${PV}	UUID=${crypt_uuid}	none	luks,discard" >> /etc/crypttab
       fi
     elif [ -n "${root_uuid}" ]; then
       cmdline="root=/dev/mapper/${VG}-root"
@@ -1065,7 +1065,7 @@ function install_grub {
 
   if [[ "${SCHEME}" =~ LVM ]]; then
     if [ -n "${crypt_uuid}" ]; then
-      cmdline="cryptdevice=UUID=${crypt_uuid}:${LV}:allow-discards"
+      cmdline="cryptdevice=UUID=${crypt_uuid}:${PV}:allow-discards"
       if [ -e /dev/mapper/${VG}-root ]; then
         cmdline="${cmdline} root=/dev/mapper/${VG}-root"
       fi
@@ -1118,7 +1118,7 @@ function make_luks_key {
   if grep "${crypt_uuid}" /etc/crypttab > /dev/null 2>&1; then
     sed -i "s|\([a-zA-Z0-9_-]\+\)\(\s\+\)UUID=${crypt_uuid}\(\s\+\)none\(\s\+\)\([A-Za-z0-9_\-\=,]\+\)|\1\2UUID=${crypt_uuid}\3/${crypt_key}\4luks,discard,key-slot=1,keyscript=/bin/cat|g" /etc/crypttab
   else
-    echo "${LV}	UUID=${crypt_uuid}	/${crypt_key}	luks,discard,key-slot=1,keyscript=/bin/cat" >> /etc/crypttab
+    echo "${PV}	UUID=${crypt_uuid}	/${crypt_key}	luks,discard,key-slot=1,keyscript=/bin/cat" >> /etc/crypttab
   fi
 
   # add hook to copy encrytion key to initial ramdisk

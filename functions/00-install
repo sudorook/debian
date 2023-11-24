@@ -1030,19 +1030,20 @@ function install_gummiboot {
   outfile="linux-${version}.conf"
 
   cp -af "/boot/${kernel}" "/boot/${kernel/vmlinuz/initrd.img}" /boot/efi/
-  {
-    echo "default	${outfile}"
-    echo "timeout	1"
-    echo "console-mode	max"
-    echo "editor	no"
-  } > /boot/efi/loader/loader.conf
 
-  {
-    echo "title	Debian, linux-${version}"
-    echo "linux	/${kernel}"
-    echo "initrd	/${kernel/vmlinuz/initrd.img}"
-    echo "options	${cmdline}"
-  } > "/boot/efi/loader/entries/${outfile}"
+  cat > /boot/efi/loader/loader.conf << EOF
+default	${outfile}
+timeout	1
+console-mode	max
+editor	no
+EOF
+
+  cat > /boot/efi/loader/entries/"${outfile}" << EOF
+title	Debian, linux-${version}
+linux	/${kernel}
+initrd	/${kernel/vmlinuz/initrd.img}
+options	${cmdline}
+EOF
 
   # rebuild the kernel(s)
   update-initramfs -u -k all

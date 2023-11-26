@@ -33,6 +33,7 @@ okular
 okular-extra-backends
 partitionmanager
 plasma-browser-integration
+plasma-firewall
 print-manager
 qt5-image-formats-plugins
 qt6-image-formats-plugins

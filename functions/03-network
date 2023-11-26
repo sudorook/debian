@@ -77,10 +77,6 @@ function install_firewall {
     sudo ufw allow syncthing-gui
   fi
 
-  if dpkg -s kdeconnect > /dev/null 2>&1; then
-    sudo ufw allow 'KDE Connect'
-  fi
-
   if dpkg -s transmission-cli > /dev/null 2>&1; then
     sudo ufw allow Transmission
   elif dpkg -s transmission-qt > /dev/null 2>&1; then

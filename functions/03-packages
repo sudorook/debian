@@ -155,7 +155,7 @@ function install_codecs {
 }
 
 function install_containers {
-  local containers="${DIR}/packages/containers.list"
+  local containers="${DIR}/packages/container.list"
   show_header "Installing container packages (containerd, LXC, Nomad, Podman)."
   check_installed "${containers}"
   check_fail

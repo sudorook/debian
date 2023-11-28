@@ -1,5 +1,5 @@
 buildah
-conatinerd
+containerd
 containernetworking-plugins
 fuse-overlayfs
 lxc

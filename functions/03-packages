@@ -383,7 +383,7 @@ function install_music {
   sudo systemctl stop mpd.socket
   sudo systemctl disable mpd
   sudo systemctl disable mpd.socket
-  systemctl --user enable --now mpd
+  systemctl --user enable mpd
 
   show_info "Copying ncmpcpp config."
   mkdir -p "${ncmpcppdir}"

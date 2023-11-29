@@ -71,6 +71,9 @@ function main {
   done
 
   "${DIR}"/utils/genfstab -U /mnt >> /mnt/etc/fstab
+  if [[ "${BOOTMODE}" = "systemd-boot" ]]; then
+    sed -i "/\(.*\)\s\+\/efi\s\+vfat/s/0022/0077/g" /mnt/etc/fstab
+  fi
   TIMEZONE="${TIMEZONE}" chroot /mnt /bin/bash -c "set_timezone"
   LOCALE="${LOCALE}" CHARSET="${CHARSET}" chroot /mnt /bin/bash -c "set_locale"
   KBLAYOUT="us" chroot /mnt /bin/bash -c "set_keyboard"

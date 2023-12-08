@@ -107,14 +107,6 @@ function check_root {
   fi
 }
 
-function check_fail {
-  local exitstatus=${1:-}
-  if [[ ${exitstatus} -gt 0 ]]; then
-    show_error "Error code received. Returning to main."
-    sleep 3s && main
-  fi
-}
-
 function check_debian_release {
   show_header "Checking current Debian release."
   local release
@@ -203,7 +195,6 @@ function install_post_dependencies {
     if ! dpkg -s "${package}" > /dev/null 2>&1; then
       show_info "${package@Q} is needed for this script."
       sudo apt-get -y install "${package}"
-      check_fail $?
       show_success "${package@Q} now installed."
     else
       show_success "${package@Q} is already installed."
@@ -229,7 +220,6 @@ function install_dependencies {
     if ! dpkg -s "${package}" > /dev/null 2>&1; then
       show_info "${package@Q} is needed for this script."
       apt-get -y install "${package}"
-      check_fail $?
       show_success "${package@Q} now installed."
     else
       show_success "${package@Q} is already installed."

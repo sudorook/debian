@@ -26,7 +26,6 @@ function install_base {
 
   show_header "Installing base packages and their config files."
   check_installed "${base}"
-  check_fail
   show_success "Base packages installed."
 
   copy_config_file "${bashprofile}" "${HOME}/.bash_profile"
@@ -43,7 +42,6 @@ function install_firmware {
   else
     show_header "Installing non-free firmware."
     check_installed "${firmware}"
-    check_fail
     show_success "Firmware installed."
   fi
 }
@@ -268,7 +266,6 @@ function purge_packages {
   local purge="${DIR}/packages/purge.list"
   show_header "Purging unwanted packaged often installed by default."
   check_uninstalled "${purge}"
-  check_fail
   show_success "Unwanted packages purged."
 }
 
@@ -280,7 +277,6 @@ function update_packages {
               apt-get -y autoremove && \
               apt-get -y autoclean && \
               update-grub"
-  check_fail
   show_success "Packages updated."
 }
 

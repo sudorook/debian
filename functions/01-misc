@@ -26,7 +26,6 @@ function install_zsh {
 
   show_header "Installing zsh."
   check_installed "${zsh}"
-  check_fail
   show_success "zsh installed."
 
   mkdir -p "${HOME}/.local/share/zsh/site-functions"
@@ -40,7 +39,6 @@ function install_selinux {
 
   show_header "Installing SELinux and setting rules."
   check_installed "${selinux}"
-  check_fail
   show_success "SELinux installed."
 
   show_info "Activating SELinux."
@@ -83,7 +81,6 @@ function install_utils {
 
   show_header "Installing general utilities."
   check_installed "${utils}"
-  check_fail
   show_success "Utilities installed."
 
   show_info "Installing tmux config."
@@ -95,7 +92,6 @@ function install_laptop {
 
   show_header "Installing laptop utilities."
   check_installed "${laptop}"
-  check_fail
   show_success "Laptop utilities installed."
 
   # Enable tlp on laptops.

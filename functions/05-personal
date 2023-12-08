@@ -544,7 +544,6 @@ function import_cinnamon_dconf {
   local cinnamondconf="${DIR}/dconf/cinnamon.dconf"
   show_header "Importing Cinnamon dconf settings."
   dconf load / < "${cinnamondconf}"
-  check_fail
   show_success "Cinnamon dconf settings imported."
 }
 
@@ -552,7 +551,6 @@ function import_gnome_dconf {
   local gnomedconf="${DIR}/dconf/gnome.dconf"
   show_header "Importing GNOME dconf settings."
   dconf load / < "${gnomedconf}"
-  check_fail
   show_success "GNOME dconf settings imported."
 }
 
@@ -758,7 +756,6 @@ function import_apps_dconf {
   local appsdconf="${DIR}/dconf/apps.dconf"
   show_header "Importing application dconf settings."
   dconf load / < "${appsdconf}"
-  check_fail
   show_success "Application dconf settings imported."
 }
 
@@ -766,7 +763,6 @@ function import_terminal_dconf {
   local terminaldconf="${DIR}/dconf/terminal.dconf"
   show_header "Importing terminal profiles."
   dconf load / < "${terminaldconf}"
-  check_fail
   show_success "GNOME terminal profiles imported."
 }
 

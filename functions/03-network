@@ -25,7 +25,6 @@ function install_network {
 
   show_header "Setting up networking."
   check_installed "${networking}"
-  check_fail
   show_success "Networking applications installed."
 
   show_info "Setting up MAC address randomization in Network Manager."
@@ -50,7 +49,6 @@ function install_discovery {
 
   show_header "Setting up local network discovery."
   check_installed "${discovery}"
-  check_fail
   show_success "Discovery applications installed."
 
   show_info "Enabling local hostname resolution in Avahi."
@@ -66,7 +64,6 @@ function install_firewall {
 
   show_header "Setting up firewall."
   check_installed "${firewall}"
-  check_fail
   show_success "Firewall packages installed."
 
   show_info "Setting ufw firewall rules."
@@ -95,7 +92,6 @@ function install_tor {
 
   show_header "Installing Tor programs."
   check_installed "${tor}"
-  check_fail
   show_success "Tor installed."
 
   show_info "Enabling and starting tor service."

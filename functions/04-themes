@@ -25,7 +25,6 @@ function install_theme_deps_gtk {
 
   show_header "Installing theme dependencies."
   check_installed "${themes}"
-  check_fail
   show_success "Theme dependencies installed."
 
   if ! [ -f "${npmrc}" ]; then
@@ -38,7 +37,6 @@ function install_theme_deps_kde {
   local themeskde="${DIR}/packages/themes-kde.list"
   show_header "Installing KDE theme dependencies."
   check_installed "${themeskde}"
-  check_fail
   show_success "Theme dependencies installed."
 }
 
@@ -235,7 +233,6 @@ function install_fonts {
   local tmpdir
   show_header "Installing fonts."
   check_installed "${fonts}"
-  check_fail
   show_success "Fonts installed."
 
   show_info "Downloading Jambo fonts."

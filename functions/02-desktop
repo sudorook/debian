@@ -25,7 +25,6 @@ function install_gnome {
 
   show_header "Setting up GNOME desktop environment."
   check_installed "${gnome}"
-  check_fail
   show_success "GNOME installed."
 
   if ! test ${DESKTOP_SESSION+x}; then
@@ -74,7 +73,6 @@ function install_cinnamon {
 
   show_header "Setting up cinnamon desktop environment."
   check_installed "${cinnamon}"
-  check_fail
   show_success "Cinnamon installed."
 
   if ! test ${DESKTOP_SESSION+x}; then
@@ -132,7 +130,6 @@ function install_kde {
 
   show_header "Setting up KDE desktop environment."
   check_installed "${kde}"
-  check_fail
   show_success "KDE installed."
 
   if ! test ${DESKTOP_SESSION+x}; then

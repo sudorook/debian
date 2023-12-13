@@ -197,12 +197,7 @@ function install_dev {
   check_installed "${rust}"
 
   show_info "Setting cargo to use crates from package repository."
-  mkdir -p "${HOME}/.cargo"
-  if [ -f "${HOME}/.cargo/config.toml" ]; then
-    mv "${HOME}/.cargo/config.toml" \
-      "${HOME}/.cargo/config.toml-$(date +%Y%m%d-%k%M%S).bak"
-  fi
-  cp "${cargotoml}" "${HOME}/.cargo/config.toml"
+  copy_config_file "${cargotoml}" "${HOME}/.cargo/config.toml"
 
   show_info "Setting default clang-format style."
   clang-format -style=mozilla -dump-config > "${HOME}/.clang-format"

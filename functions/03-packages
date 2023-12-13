@@ -159,6 +159,7 @@ function install_containers {
 function install_dev {
   local dev="${DIR}/packages/dev.list"
   local r="${DIR}/packages/r.list"
+  local rust="${DIR}/packages/rust.list"
   local npmrc="${DIR}/dotfiles/npmrc"
   local rprofile="${DIR}/dotfiles/Rprofile"
   local vimpack="${HOME}/.vim/pack/dist/start"
@@ -191,6 +192,9 @@ function install_dev {
 
   show_info "Installing R packages."
   check_installed "${r}"
+
+  show_info "Installing rust packages."
+  check_installed "${rust}"
 
   show_info "Setting cargo to use crates from package repository."
   mkdir -p "${HOME}/.cargo"

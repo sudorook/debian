@@ -2,7 +2,6 @@ asciidoc
 automake
 autotools-dev
 black
-bundler
 checkstyle
 clang
 clang-format
@@ -11,7 +10,6 @@ clang-tools
 cmake
 cppcheck
 csstidy
-cucumber
 cython3
 doxygen
 exuberant-ctags
@@ -33,7 +31,6 @@ hdf5-tools
 hugo
 intltool
 ipython3
-jekyll
 jq
 julia
 jupyter
@@ -84,11 +81,6 @@ python3-sklearn
 python3-urllib3
 python-dev-is-python3
 python-is-python3
-rake
-rubocop
-ruby
-ruby-aruba
-ruby-gherkin
 scour
 shellcheck
 sqlite3

@@ -52,9 +52,16 @@ function install_discovery {
   show_success "Discovery applications installed."
 
   show_info "Enabling local hostname resolution in Avahi."
-  local oldhostsline="hosts: files mymachines myhostname resolve \[!UNAVAIL=return\] dns"
-  local newhostsline="hosts: files mymachines myhostname mdns_minimal \[NOTFOUND=return\] resolve \[!UNAVAIL=return\] dns"
-  sudo sed -i "/^${oldhostsline}/s/^${oldhostsline}/${newhostsline}/g" ${nsconf}
+  if [ -f "${nsconf}" ]; then
+    if ! grep -q "^hosts: .*mdns_minimal" "${nsconf}"; then
+      sudo sed -i "/^hosts:/{s/myhostname/myhostname mdns_minimal \[NOTFOUND=return\]/g}" ${nsconf}
+    else
+      show_info "Local hostname resolution already set."
+    fi
+  else
+    show_warning "${nsconf@Q} missing. Skipping."
+    return
+  fi
   sudo systemctl enable avahi-daemon.service
   sudo systemctl start avahi-daemon.service
 }

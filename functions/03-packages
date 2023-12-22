@@ -156,14 +156,32 @@ function install_containers {
   show_success "Container packages installed."
 }
 
+function _install_r {
+  local r="${DIR}/packages/r.list"
+
+  show_info "Installing Rprofile."
+  cp -f "${rprofile}" "${HOME}/.Rprofile"
+
+  show_info "Installing R packages."
+  check_installed "${r}"
+}
+
+function _install_rust {
+  local rust="${DIR}/packages/rust.list"
+  local cargotoml="${DIR}/configs/cargo.toml"
+
+  show_info "Installing rust packages."
+  check_installed "${rust}"
+
+  show_info "Setting cargo to use crates from package repository."
+  copy_config_file "${cargotoml}" "${HOME}/.cargo/config.toml"
+}
+
 function install_dev {
   local dev="${DIR}/packages/dev.list"
-  local r="${DIR}/packages/r.list"
-  local rust="${DIR}/packages/rust.list"
   local npmrc="${DIR}/dotfiles/npmrc"
   local rprofile="${DIR}/dotfiles/Rprofile"
   local vimpack="${HOME}/.vim/pack/dist/start"
-  local cargotoml="${DIR}/configs/cargo.toml"
 
   show_header "Installing languages, libraries, and tools for development."
   check_installed "${dev}"
@@ -175,13 +193,10 @@ function install_dev {
   show_info "Installing npmrc."
   cp -f "${npmrc}" "${HOME}/.npmrc"
 
-  show_info "Installing Rprofile."
-  cp -f "${rprofile}" "${HOME}/.Rprofile"
-
   show_info "Setting up local lib dirs."
   mkdir -p "${HOME}/.local/lib"
   if [ -d "${HOME}/.local/lib64" ]; then
-    if  ! [ -h "${HOME}/.local/lib64" ]; then
+    if ! [ -h "${HOME}/.local/lib64" ]; then
       mv "${HOME}/.local/lib64/"* "${HOME}/.local/lib/"
       rmdir "${HOME}/.local/lib64"
     fi
@@ -190,17 +205,11 @@ function install_dev {
   fi
   ln -sf "${HOME}/.local/lib" "${HOME}/.local/lib64"
 
-  show_info "Installing R packages."
-  check_installed "${r}"
-
-  show_info "Installing rust packages."
-  check_installed "${rust}"
-
-  show_info "Setting cargo to use crates from package repository."
-  copy_config_file "${cargotoml}" "${HOME}/.cargo/config.toml"
-
   show_info "Setting default clang-format style."
   clang-format -style=mozilla -dump-config > "${HOME}/.clang-format"
+
+  _install_r
+  _install_rust
 
   show_info "Installing Vim packages."
   mkdir -p "${vimpack}"

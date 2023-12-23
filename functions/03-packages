@@ -226,20 +226,24 @@ function install_dev {
   fi
 }
 
-function install_extra {
-  local extra="${DIR}/packages/extra.list"
+function _configure_ytdlp {
   local ytdlconf="${DIR}/configs/ytdl.conf"
-
-  show_header "Installing extra desktop applications."
-  check_installed "${extra}"
-  show_success "Extra applications installed."
-
   show_info "Installing yt-dlp/youtube-dl config."
   mkdir -p "${HOME}/.config/yt-dlp"
   if ! [ -e "${HOME}/.config/youtube-dl" ]; then
     ln -s "${HOME}/.config/yt-dlp" "${HOME}/.config/youtube-dl"
   fi
   cp -f "${ytdlconf}" "${HOME}/.config/yt-dlp/config"
+}
+
+function install_extra {
+  local extra="${DIR}/packages/extra.list"
+
+  show_header "Installing extra desktop applications."
+  check_installed "${extra}"
+  show_success "Extra applications installed."
+
+  _configure_ytdlp
 }
 
 function install_extra_kde {
@@ -250,12 +254,7 @@ function install_extra_kde {
   check_installed "${extrakde}"
   show_success "Extra applications installed."
 
-  show_info "Installing yt-dlp/youtube-dl config."
-  mkdir -p "${HOME}/.config/yt-dlp"
-  if ! [ -e "${HOME}/.config/youtube-dl" ]; then
-    ln -s "${HOME}/.config/yt-dlp" "${HOME}/.config/youtube-dl"
-  fi
-  cp -f "${ytdlconf}" "${HOME}/.config/yt-dlp/config"
+  _configure_ytdlp
 }
 
 function install_pipewire {

@@ -283,6 +283,25 @@ function install_timed_backgrounds {
   show_success "Backgrounds installed."
 }
 
+function install_plasma_timed_backgrounds {
+  show_header "Installing timed Plasma wallpapers."
+  if ! command -v kdynamicwallpaperbuilder > /dev/null 2>&1; then
+    show_warning "Plasma5 dynamic wallpaper builder not installed. Skipping."
+    return
+  fi
+  local tmpdir
+  tmpdir="_build_wallpaper"
+  git clone --depth 1 \
+    https://github.com/sudorook/plasma5-timed-backgrounds.git "${tmpdir}"
+  pushd "${tmpdir}" > /dev/null || exit
+  ./download_images.sh
+  make -j1
+  sudo make install
+  popd > /dev/null || exit
+  rm -rf "${tmpdir}"
+  show_success "Dynamic wallpapers installed."
+}
+
 function set_qtcompat {
   local qt5ctconf="${DIR}/configs/qt5ct.conf"
   local qt6ctconf="${DIR}/configs/qt5ct.conf"  # re-use qt5ct config for qt6ct
@@ -328,7 +347,8 @@ function 04-themes {
     "Fonts"
     "Papirus (icons)"
     "Colorific themes"
-    "Timed backgrounds")
+    "Timed backgrounds"
+    "Dynamic wallpapers (Plasma)")
   local option
   select option in "${options[@]}"; do
     case "${option}" in
@@ -348,6 +368,7 @@ function 04-themes {
         install_papirus_icons
         install_colorific_themes
         install_timed_backgrounds
+        install_plasma_timed_backgrounds
         set_qtcompat
         show_info "Main\n ${ENDBRANCH} Themes (Hit ENTER to see options again.)"
         ;;
@@ -399,6 +420,10 @@ function 04-themes {
         ;;
       "Timed backgrounds")
         install_timed_backgrounds
+        show_info "Main\n ${ENDBRANCH} Themes (Hit ENTER to see options again.)"
+        ;;
+      "Dynamic wallpapers (Plasma)")
+        install_plasma_timed_backgrounds
         show_info "Main\n ${ENDBRANCH} Themes (Hit ENTER to see options again.)"
         ;;
       *)

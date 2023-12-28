@@ -306,6 +306,7 @@ function copy_config_file {
       show_info "${dest} already set."
     fi
   else
+    mkdir -p "$(dirname "${dest}")"
     cp -v "${source}" "${dest}"
   fi
 }

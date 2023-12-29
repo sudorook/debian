@@ -281,22 +281,24 @@ function install_games {
 function install_kvm {
   local kvm="${DIR}/packages/kvm.list"
   # local qemuconf="/etc/libvirt/qemu.conf"
+  local libvirtlocaldir="${HOME}/.local/libvirt"
+  local nsconf="/etc/nsswitch.conf"
 
-  show_header "Installing KVM."
+  show_header "Installing KVM virtualization packages."
   check_installed "${kvm}"
   show_success "KVM installed."
 
-  show_info "Adding $(whoami) to kvm and libvirt groups."
-  sudo usermod -aG kvm,libvirt "$(whoami)"
+  show_info "Adding $(whoami) to libvirt groups."
+  sudo usermod -aG libvirt "$(whoami)"
 
-  # show_info "Enable dynamic ownership for qemu."
-  # sudo sed -i "s/^#dynamic_ownership/dynamic_ownership/g" "${qemuconf}"
+  show_info "Creating local libvirt directories."
+  mkdir -p "${libvirtlocaldir}"/{images,share}
+  sudo chown "${USER}":libvirt-qemu "${libvirtlocaldir}/images"
 
-  # show_info "Set libvirt user to 'kvm' group in ${qemuconf@Q}"
-  # sudo sed -i "s/^group = \".*\"/group = \"kvm\"/g" "${qemuconf}"
-  # show_warning \
-  #   "Manually enable 'cgroup_device_acl' and add '/dev/dri/renderD128'" \
-  #   "to the list so that the virt-manager GUI allows setting 3d acceleration."
+  if [ -f "${nsconf}" ] && ! grep -q "^hosts: .*libvirt" "${nsconf}"; then
+    show_info "Enabling access to VMs on un-isolated bridge network."
+    sudo sed -i "/^hosts/{s/files/files libvirt libvirt_guest/g}" "${nsconf}"
+  fi
 
   sudo systemctl enable libvirtd
   sudo systemctl start libvirtd

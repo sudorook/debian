@@ -20,9 +20,9 @@
 DIR="$(dirname "$0")"
 
 # Globals
-GTKTHEME="Arc-Dark"
-PLASMATHEME="Arc-Dark"
-ICONTHEME="Papirus-Dark"
+GTKTHEME="Adwaita-dark"
+PLASMATHEME="Breeze-Dark"
+ICONTHEME="Breeze-Dark"
 FONT="Roboto"
 
 function select_system_font {

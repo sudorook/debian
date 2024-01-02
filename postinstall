@@ -109,36 +109,36 @@ function main {
           install_printing
           install_texlive
           # install_torbrowser
-          install_vim
-          # install_neovim
+          # install_vim
+          install_neovim
           # install_virtualbox
           # install_virtualbox_guest
           # install_wine
 
           # Install themes
-          install_theme_deps_gtk
+          # install_theme_deps_gtk
           # install_theme_deps_kde
-          install_arc_gtk
+          # install_arc_gtk
           # install_arc_kde
           # install_adapta_gtk
           # install_plata_gtk
           # install_materia_gtk
           # install_materia_kde
           install_fonts
-          install_papirus_icons
-          install_colorific_themes
-          install_timed_backgrounds
-          set_qtcompat
+          # install_papirus_icons
+          # install_colorific_themes
+          # install_timed_backgrounds
+          # set_qtcompat
 
           # Add my personal settings
           set_system_font
-          set_icon_theme
-          set_gtk_theme
+          # set_icon_theme
+          # set_gtk_theme
           # set_plasma_theme
-          set_lightdm_theme
+          # set_lightdm_theme
           # set_gdm_theme
           # set_sddm_theme
-          set_dark_gtk
+          # set_dark_gtk
           # set_bash_shell
           set_zsh_shell
           import_cinnamon_dconf

@@ -44,7 +44,7 @@ if (has("termguicolors"))
   set termguicolors
 endif
 if filereadable( expand("$HOME/.vim/colors/colorific.vim") )
-  let g:colorific_style='dark3'
+  let g:colorific_style='dark2'
   colorscheme colorific
   if filereadable( expand("$HOME/.vim/autoload/airline/themes/colorific.vim") )
     let g:airline_theme='colorific'

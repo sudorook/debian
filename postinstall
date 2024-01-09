@@ -63,7 +63,7 @@ function main {
         if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
           # Install base packages
           install_base
-          purge_packages
+          # purge_packages
           install_firmware
           enable_contrib_repos
           enable_nonfree_repos

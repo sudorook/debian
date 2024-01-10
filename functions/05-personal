@@ -426,11 +426,17 @@ function set_gdm_theme {
 
 function set_sddm_theme {
   local sddmconf="/etc/sddm.conf.d/kde_settings.conf"
+  local sddmtheme
+  if [[ "${PLASMATHEME}" =~ ^breeze ]]; then
+    sddmtheme=breeze
+  else
+    sddmtheme=${PLASMATHEME}
+  fi
   if dpkg -s sddm > /dev/null 2>&1; then
-    if [ -d "/usr/share/sddm/themes/${PLASMATHEME}" ]; then
-      show_header "Setting SDDM login theme to ${PLASMATHEME@Q}."
-      sudo kwriteconfig5 --file "${sddmconf}" --group Theme --key Current "${PLASMATHEME}"
-      if [[ "${PLASMATHEME,,}" =~ ^breeze ]]; then
+    if [ -d "/usr/share/sddm/themes/${sddmtheme}" ]; then
+      show_header "Setting SDDM login theme to ${sddmtheme@Q}."
+      sudo kwriteconfig5 --file "${sddmconf}" --group Theme --key Current "${sddmtheme}"
+      if [[ "${sddmtheme}" = breeze ]]; then
         sudo kwriteconfig5 --file "${sddmconf}" --group Theme --key CursorTheme "breeze_cursors"
       fi
       case "${FONT}" in
@@ -446,6 +452,8 @@ function set_sddm_theme {
           ;;
         *) ;;
       esac
+    else
+      show_warning "SDDM theme for ${PLASMATHEME@Q} not found. Skipping."
     fi
   else
     show_warning "SDDM not installed. Skipping."

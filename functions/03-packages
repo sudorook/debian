@@ -112,6 +112,8 @@ function install_apps_kde {
   check_installed "${appskde}"
   show_success "Applications installed."
 
+  _install_plasma_dynamic_wallpapers
+
   show_info "Copying mpv config."
   mkdir -p "${HOME}/.config/mpv"
   cp -f "${mpvconfig}" "${HOME}/.config/mpv/mpv.conf"
@@ -140,6 +142,48 @@ function install_apps_kde {
   show_info "Copying keepassxc config."
   mkdir -p "${HOME}/.config/keepassxc"
   cp -f "${keepassxcini}" "${HOME}/.config/keepassxc/"
+}
+
+function _install_plasma_dynamic_wallpapers {
+  local tmp
+  local ubuntu_mirror_url="https://mirrors.kernel.org/ubuntu/pool/universe/p/plasma-wallpaper-dynamic"
+  local packages=()
+  local package
+  local release
+  release="$(lsb_release -sc 2> /dev/null)"
+
+  if dpkg -s libkdynamicwallpaper4 plasma-wallpaper-dynamic > /dev/null 2>&1; then
+    show_success "Dynamic wallpapers already installed."
+    return
+  fi
+
+  case "${release}" in
+    bookworm)
+      packages=(
+        libkdynamicwallpaper4_4.4.0-0ubuntu7_amd64.deb
+        plasma-wallpaper-dynamic_4.4.0-0ubuntu7_amd64.deb
+      )
+      ;;
+    trixie)
+      packages=(
+        libkdynamicwallpaper4_4.4.0-0ubuntu9_amd64.deb
+        plasma-wallpaper-dynamic_4.4.0-0ubuntu9_amd64.deb
+      )
+      ;;
+    *)
+      return
+      ;;
+  esac
+
+  show_info "Installing Ubuntu packages for dynamic wallpapers."
+  tmp="$(mktemp -d)"
+  pushd "${tmp}" > /dev/null || exit
+  for package in "${packages[@]}"; do
+    curl -Ls -O "${ubuntu_mirror_url}/${package}"
+    sudo apt install -y "${tmp}/${package}"
+  done
+  popd > /dev/null || exit
+  rm -rf "${tmp}"
 }
 
 function install_codecs {

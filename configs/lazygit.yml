@@ -1,0 +1,6 @@
+git:
+  autoFetch: false
+  autoRefresh: false
+update:
+  method: never
+notARepository: "quit"

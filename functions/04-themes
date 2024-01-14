@@ -268,6 +268,31 @@ function install_colorific_themes {
   show_success "Themes installed."
 }
 
+function install_nightfox_themes {
+  show_header "Installing Nightfox themes for alacritty, kitty, and tmux."
+  local tmpdir
+  local themes=(carbonfox dawnfox dayfox duskfox nightfox nordfox terafox)
+  local theme
+  tmpdir="$(mktemp -d)"
+  git clone -b tweak --depth 1 \
+    https://github.com/sudorook/nightfox.nvim.git "${tmpdir}"
+  pushd "${tmpdir}" > /dev/null || exit
+  for theme in "${themes[@]}"; do
+    copy_config_file \
+      "extra/${theme}/nightfox_tmux.tmux" \
+      "${HOME}/.tmux/${theme}.tmuxtheme"
+    copy_config_file \
+      "extra/${theme}/nightfox_alacritty.yml" \
+      "${HOME}/.config/alacritty/themes/${theme}.yml"
+    copy_config_file \
+      "extra/${theme}/nightfox_kitty.conf" \
+      "${HOME}/.config/kitty/themes/${theme}.conf"
+  done
+  popd > /dev/null || exit
+  rm -rf "${tmpdir}"
+  show_success "Themes installed."
+}
+
 function install_timed_backgrounds {
   show_header "Installing timed backgrounds."
   local tmpdir
@@ -347,6 +372,7 @@ function 04-themes {
     "Fonts"
     "Papirus (icons)"
     "Colorific themes"
+    "Nightfox themes"
     "Timed backgrounds"
     "Dynamic wallpapers (Plasma)")
   local option
@@ -367,6 +393,7 @@ function 04-themes {
         install_fonts
         install_papirus_icons
         install_colorific_themes
+        install_nightfox_themes
         install_timed_backgrounds
         install_plasma_timed_backgrounds
         set_qtcompat
@@ -416,6 +443,10 @@ function 04-themes {
         ;;
       "Colorific themes")
         install_colorific_themes
+        show_info "Main\n ${ENDBRANCH} Themes (Hit ENTER to see options again.)"
+        ;;
+      "Nightfox themes")
+        install_nightfox_themes
         show_info "Main\n ${ENDBRANCH} Themes (Hit ENTER to see options again.)"
         ;;
       "Timed backgrounds")

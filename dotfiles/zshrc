@@ -12,7 +12,9 @@ fi
 #
 
 export BROWSER="firefox"
-if command -v nvim >/dev/null 2>&1; then
+if command -v nvim.appimage >/dev/null 2>&1; then
+  export EDITOR="nvim.applimage"
+elif command -v nvim >/dev/null 2>&1; then
   export EDITOR="nvim"
 elif command -v vim >/dev/null 2>&1; then
   export EDITOR="vim"
@@ -82,7 +84,12 @@ export LD_LIBRARY_PATH="${HOME}/.local/lib:/usr/local/lib:${LD_LIBRARY_PATH}"
 # Set zsh aliases
 #
 
-if command -v nvim >/dev/null 2>&1; then
+if command -v nvim.appimage >/dev/null 2>&1; then
+  alias nvim='nvim.appimage '
+  alias vi='nvim.appimage '
+  alias vim='nvim.appimage '
+  alias vimdiff='nvim.appimage -d '
+elif command -v nvim >/dev/null 2>&1; then
   alias vi='nvim '
   alias vim='nvim '
   alias vimdiff='nvim -d '

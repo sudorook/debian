@@ -80,8 +80,8 @@ function main {
 
           # Install a desktop environment
           # install_gnome
-          install_cinnamon
-          # install_kde
+          # install_cinnamon
+          install_kde
 
           # Set up network configuration
           install_network
@@ -92,25 +92,26 @@ function main {
           # Install useful packages
           install_3d_accel
           # install_android
-          install_apps
-          # install_apps_kde
+          # install_apps
+          install_apps_kde
           install_codecs
           install_containers
           install_dev
-          install_extra
-          # install_extra_kde
+          # install_extra
+          install_extra_kde
           # install_games
           # install_kvm
           # install_kvm_guest
           install_messaging
           # install_mingw
           install_music
-          install_pipewire
-          install_printing
+          # install_pipewire
+          # install_printing
           install_texlive
           # install_torbrowser
           # install_vim
-          install_neovim
+          # install_neovim
+          install_lazyvim
           # install_virtualbox
           # install_virtualbox_guest
           # install_wine
@@ -127,25 +128,27 @@ function main {
           install_fonts
           # install_papirus_icons
           # install_colorific_themes
+          install_nightfox_themes
           # install_timed_backgrounds
+          install_plasma_timed_backgrounds
           # set_qtcompat
 
           # Add my personal settings
           set_system_font
           # set_icon_theme
           # set_gtk_theme
-          # set_plasma_theme
+          set_plasma_theme
           # set_lightdm_theme
           # set_gdm_theme
           # set_sddm_theme
           # set_dark_gtk
           # set_bash_shell
           set_zsh_shell
-          import_cinnamon_dconf
+          # import_cinnamon_dconf
           # import_gnome_dconf
-          # import_kde_settings
-          import_apps_dconf
-          import_terminal_dconf
+          import_kde_settings
+          # import_apps_dconf
+          # import_terminal_dconf
           enable_autologin
           # invert_brightness
           # enable_intel_iommu

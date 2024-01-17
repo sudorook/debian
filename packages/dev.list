@@ -84,6 +84,8 @@ python-is-python3
 scour
 shellcheck
 sqlite3
+sqlite3-doc
+sqlite3-tools
 strace
 tesseract-ocr
 tesseract-ocr-eng

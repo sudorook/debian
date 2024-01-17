@@ -131,12 +131,10 @@ Automatically install (without prompting) packages and configs.
 #### 3) Base
 
 ```
-1) Back                      7) Enable contrib
-2) All                       8) Enable non-free
-3) Base packages             9) Upgrade Debian release
-4) Purge packages           10) Sudo insults
-5) Firmware                 11) Disable system beep
-6) Updates
+1) Back                   5) Firmware             9) Enable non-free-firmware
+2) All                    6) Updates              10) Upgrade Debian release
+3) Base packages          7) Enable contrib       11) Sudo insults
+4) Purge packages         8) Enable non-free      12) Disable system beep
 ```
 
 3. Installs [base.list](packages/base.list).
@@ -152,12 +150,14 @@ Automatically install (without prompting) packages and configs.
 
 8. Enable the `non-free` package repository.
 
-9. Upgrade the Debian release (e.g., Buster -> Bullseye).
+9. Enable the `non-free-firmware` package repository.
 
-10. Enable sudo insults for incorrect login attempts via `/etc/sudoers`. Pipes
+10. Upgrade the Debian release (e.g., Buster -> Bullseye).
+
+11. Enable sudo insults for incorrect login attempts via `/etc/sudoers`. Pipes
     to `visudo` via `tee`, so it's safe.
 
-11. Blacklist `pcskpr` and `snd_pcsp` kernel modules.
+12. Blacklist `pcskpr` and `snd_pcsp` kernel modules.
 
 #### 4) Miscellaneous
 
@@ -219,10 +219,10 @@ Automatically install (without prompting) packages and configs.
 3) 3D acceleration            12) Emulators                21) Tor browser
 4) Android tools              13) KVM (host)               22) Vim
 5) General applications       14) KVM (guest)              23) Neovim
-6) General KDE applications   15) Messaging                24) VirtualBox (host)
-7) Codecs                     16) MinGW                    25) VirtualBox (guest)
-8) Containers                 17) Music                    26) Wine
-9) Development                18) Printing
+6) General KDE applications   15) Messaging                24) LazyVim (Neovim)
+7) Codecs                     16) MinGW                    25) VirtualBox (host)
+8) Containers                 17) Music                    26) VirtualBox (guest)
+9) Development                18) Printing                 27) Wine
 ```
 
 3. Install 3D video acceleration packages in
@@ -276,21 +276,25 @@ Automatically install (without prompting) packages and configs.
 
 23. Install `neovim` and then set the user init.vim.
 
-24. Install VirtualBox and kernel modules (dkms) for running it (host).
+24. Install LazyVim for Neovim and its dependencies.
 
-25. Install kernel modules (dkms) and tools for VirtualBox guests.
+25. Install VirtualBox and kernel modules (dkms) for running it (host).
 
-26. Install Wine not-emulator, along with the Mono and browser and some audio
+26. Install kernel modules (dkms) and tools for VirtualBox guests.
+
+27. Install Wine not-emulator, along with the Mono and browser and some audio
     libraries.
 
 #### 8) Themes
 
 ```
-1) Back                 6) Plata (GTK)        11) Colorific themes
-2) All                  7) Materia (GTK)      12) Timed backgrounds
-3) Arc (GTK)            8) Materia (KDE)
-4) Arc (KDE)            9) Fonts
-5) Adapta (GTK)        10) Papirus (icons)
+1) Back                           8) Materia (KDE)
+2) All                            9) Fonts
+3) Arc (GTK)                     10) Papirus (icons)
+4) Arc (KDE)                     11) Colorific themes
+5) Adapta (GTK)                  12) Nightfox themes
+6) Plata (GTK)                   13) Timed backgrounds
+7) Materia (GTK)                 14) Dynamic wallpapers (Plasma)
 ```
 
 3. Download, compile, and install a
@@ -324,8 +328,15 @@ Automatically install (without prompting) packages and configs.
 11. Install [colorific themes](https://github.com/sudorook/colorific.vim) for
     alacritty, gitk, kitty, Neovim, tmux, and Vim.
 
-12. Install [timed backgrounds](https://github.com/sudorook/timed-backgrounds)
+12. Install [Nightfox themes](https://github.com/sudorook/nightfox.nvim) for
+    alacritty, kitty, Neovim, and tmux.
+
+13. Install [timed backgrounds](https://github.com/sudorook/timed-backgrounds)
     where transitions from day to night match sunrise/sunset times.
+
+14. Install
+    [timed backgrounds](https://github.com/sudorook/plasma5-timed-backgrounds)
+    for Plasma where transitions from day to night match sunrise/sunset times.
 
 #### 9) Personalization
 

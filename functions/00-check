@@ -36,54 +36,100 @@ export ENDBRANCH="\0342\0224\0224\0342\0224\0200\0342\0224\0200"
 # Fancy color output
 #
 
+show_error() {
+  local red=$'\033[0;91m'
+  local nc=$'\033[0m'
+  if [[ "${1:--e}" =~ ^(-e|-n)$ ]]; then
+    echo "${1:--e}" "${red}${*:2}${nc}" 1>&2
+  else
+    echo -e "${red}${*}${nc}" 1>&2
+  fi
+}
+export -f show_error
+
+show_info() {
+  local green=$'\033[0;92m'
+  local nc=$'\033[0m'
+  if [[ "${1:--e}" =~ ^(-e|-n)$ ]]; then
+    echo "${1:--e}" "${green}${*:2}${nc}" 1>&2
+  else
+    echo -e "${green}${*}${nc}" 1>&2
+  fi
+}
+export -f show_info
+
+show_warning() {
+  local yellow=$'\033[0;93m'
+  local nc=$'\033[0m'
+  if [[ "${1:--e}" =~ ^(-e|-n)$ ]]; then
+    echo "${1:--e}" "${yellow}${*:2}${nc}" 1>&2
+  else
+    echo -e "${yellow}${*}${nc}" 1>&2
+  fi
+}
+export -f show_warning
+
+show_question() {
+  local blue=$'\033[0;94m'
+  local nc=$'\033[0m'
+  if [[ "${1:--e}" =~ ^(-e|-n)$ ]]; then
+    echo "${1:--e}" "${blue}${*:2}${nc}" 1>&2
+  else
+    echo -e "${blue}${*}${nc}" 1>&2
+  fi
+}
+export -f show_question
+
 ask_question() {
+  local blue=$'\033[0;94m'
+  local nc=$'\033[0m'
   local var
-  read -r -p $'\033[1;34m'"$* "$'\033[0m' var
+  read -r -p "${blue}$*${nc} " var
   echo "${var}"
 }
 export -f ask_question
 
 ask_secret() {
+  local blue=$'\033[0;94m'
+  local nc=$'\033[0m'
   local var
   stty -echo echonl
-  read -r -p $'\033[1;34m'"$* "$'\033[0m' var
+  read -r -p "${blue}$*${nc} " var
   stty echo -echonl
   echo "${var}"
 }
 export -f ask_secret
 
-show_error() {
-  echo -e $'\033[1;31m'"$*"$'\033[0m' 1>&2
-}
-export -f show_error
-
-show_header() {
-  echo -e $'\033[1;36m'"$*"$'\033[0m'
-}
-export -f show_header
-
-show_info() {
-  echo -e $'\033[1;32m'"$*"$'\033[0m'
-}
-export -f show_info
-
-show_question() {
-  echo -e $'\033[1;34m'"$*"$'\033[0m'
-}
-export -f show_question
-
 show_success() {
-  echo -e $'\033[1;35m'"$*"$'\033[0m'
+  local purple=$'\033[0;95m'
+  local nc=$'\033[0m'
+  if [[ "${1:--e}" =~ ^(-e|-n)$ ]]; then
+    echo "${1:--e}" "${purple}${*:2}${nc}" 1>&2
+  else
+    echo -e "${purple}${*}${nc}" 1>&2
+  fi
 }
 export -f show_success
 
-show_warning() {
-  echo -e $'\033[1;33m'"$*"$'\033[0m'
+show_header() {
+  local cyan=$'\033[0;96m'
+  local nc=$'\033[0m'
+  if [[ "${1:--e}" =~ ^(-e|-n)$ ]]; then
+    echo "${1:--e}" "${cyan}${*:2}${nc}" 1>&2
+  else
+    echo -e "${cyan}${*}${nc}" 1>&2
+  fi
 }
-export -f show_warning
+export -f show_header
 
 show_listitem() {
-  echo -e $'\033[1;37m'"$*"$'\033[0m'
+  local white=$'\033[0;97m'
+  local nc=$'\033[0m'
+  if [[ "${1:--e}" =~ ^(-e|-n)$ ]]; then
+    echo "${1:--e}" "${white}${*:2}${nc}" 1>&2
+  else
+    echo -e "${white}${*}${nc}" 1>&2
+  fi
 }
 export -f show_listitem
 

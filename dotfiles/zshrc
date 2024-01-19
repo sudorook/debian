@@ -22,7 +22,6 @@ fi
 export SUDO_EDITOR="${EDITOR}"
 export VISUAL="${EDITOR}"
 
-
 #
 # Set environment variables for programming languages
 #
@@ -71,14 +70,13 @@ if [ -d ${HOME}/.local/share/zsh/site-functions ]; then
 fi
 
 # custom scripts
-export PATH="${PATH}:${HOME}/.scripts"
+export PATH="${HOME}/.scripts:${PATH}"
 
 # local executables
 export PATH="${HOME}/.local/bin:${PATH}"
 
 # local libraries
 export LD_LIBRARY_PATH="${HOME}/.local/lib:/usr/local/lib:${LD_LIBRARY_PATH}"
-
 
 #
 # Set zsh aliases

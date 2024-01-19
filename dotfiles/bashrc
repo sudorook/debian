@@ -15,48 +15,47 @@ PS1='[\u@\h \W]\$ '
 #
 
 export BROWSER="firefox"
-if command -v nvim.appimage >/dev/null 2>&1; then
+if command -v nvim.appimage > /dev/null 2>&1; then
   export EDITOR="nvim.appimage"
-elif command -v nvim >/dev/null 2>&1; then
+elif command -v nvim > /dev/null 2>&1; then
   export EDITOR="nvim"
-elif command -v vim >/dev/null 2>&1; then
+elif command -v vim > /dev/null 2>&1; then
   export EDITOR="vim"
 fi
 export SUDO_EDITOR="${EDITOR}"
 export VISUAL="${EDITOR}"
-
 
 #
 # Set environment variables for programming languages
 #
 
 # go
-command -v go >/dev/null 2>&1 && {
+if command -v go > /dev/null 2>&1; then
   export GOPATH="${HOME}/.go"
   export PATH="${PATH}:${GOPATH}/bin"
-}
+fi
 
 # ruby
-command -v ruby >/dev/null 2>&1 && {
+if command -v ruby > /dev/null 2>&1; then
   PATH="$(ruby -e 'print Gem.user_dir')/bin:${PATH}"
   GEM_HOME=$(ruby -e 'print Gem.user_dir')
   export PATH
   export GEM_HOME
-}
+fi
 
 # rust
-command -v cargo >/dev/null 2>&1 && {
+if command -v cargo > /dev/null 2>&1; then
   export PATH="${PATH}:${HOME}/.cargo/bin"
-}
+fi
 
 # npm
-command -v npm >/dev/null 2>&1 && {
+if command -v npm > /dev/null 2>&1; then
   export PATH="${PATH}:${HOME}/.npm/bin"
   export NPM_CONFIG_PREFIX="${HOME}/.npm"
-}
+fi
 
 # R
-command -v R >/dev/null 2>&1 && {
+if command -v R > /dev/null 2>&1; then
   R_LIBS_USER="${HOME}/.R/$(R --version | sed -n "s/^R version \([0-9\.]*\) .*/\1/p")"
   if ! [ -d "${R_LIBS_USER}" ]; then
     mkdir -p "${R_LIBS_USER}"
@@ -66,10 +65,10 @@ command -v R >/dev/null 2>&1 && {
   if [ -d /usr/share/mathjax ]; then
     export RMARKDOWN_MATHJAX_PATH=/usr/share/mathjax
   fi
-}
+fi
 
 # beet autocompletion
-command -v beet >/dev/null 2>&1 && {
+if command -v beet > /dev/null 2>&1; then
   if [ -f "/usr/share/bash-completion/completions/beet" ]; then
     source "/usr/share/bash-completion/completions/beet"
   elif [ -f "${HOME}/.local/share/bash-completion/completions/beet" ]; then
@@ -77,7 +76,7 @@ command -v beet >/dev/null 2>&1 && {
   else
     eval "$(beet completion)"
   fi
-}
+fi
 
 # custom scripts
 export PATH="${PATH}:${HOME}/.scripts"
@@ -88,21 +87,20 @@ export PATH="${HOME}/.local/bin:${PATH}"
 # local libraries
 export LD_LIBRARY_PATH="${HOME}/.local/lib64:${HOME}/.local/lib32:${HOME}/.local/lib:/usr/local/lib64:/usr/local/lib32:/usr/local/lib:${LD_LIBRARY_PATH}"
 
-
 #
 # Set bash aliases
 #
 
-if command -v nvim.appimage >/dev/null 2>&1; then
+if command -v nvim.appimage > /dev/null 2>&1; then
   alias nvim='nvim.appimage '
   alias vi='nvim.appimage '
   alias vim='nvim.appimage '
   alias vimdiff='nvim.appimage -d '
-elif command -v nvim >/dev/null 2>&1; then
+elif command -v nvim > /dev/null 2>&1; then
   alias vi='nvim '
   alias vim='nvim '
   alias vimdiff='nvim -d '
-elif command -v vim >/dev/null 2>&1; then
+elif command -v vim > /dev/null 2>&1; then
   alias vi='vim '
 fi
 alias sudo='sudo '
@@ -119,21 +117,21 @@ function megapurge {
 }
 
 function make_silent {
-  command -v "${1}" >/dev/null && {
+  if command -v "${1}" > /dev/null 2>&1; then
     local cmd
     local bin
     bin="$(which "${1}")"
     cmd="function ${1} { local cmd=\"(${bin} \${@@Q} >/dev/null 2>&1 &)\"; eval \"\${cmd}\"; }"
     eval "${cmd}"
-  }
+  fi
 }
 
 function run_silent {
-  command -v "${1}" >/dev/null && {
+  if command -v "${1}" > /dev/null 2>&1; then
     local bin="${1}"
     local args=("${@:2}")
-    (${bin} "${args[@]}" >/dev/null 2>&1 &);
-  }
+    (${bin} "${args[@]}" > /dev/null 2>&1 &)
+  fi
 }
 
 make_silent eog
@@ -149,8 +147,9 @@ make_silent okular
 
 unset -f make_silent
 
-{ command -v yt-dlp && ! command -v youtube-dl; } >/dev/null 2>&1 \
-  && alias youtube-dl='yt-dlp '
+if { command -v yt-dlp && ! command -v youtube-dl; } > /dev/null 2>&1; then
+  alias youtube-dl='yt-dlp '
+fi
 
 # list directory contents
 alias ls='ls --color=auto'
@@ -159,7 +158,6 @@ alias lsa='ls -lah'
 alias l='ls -lah'
 alias ll='ls -lh'
 alias la='ls -lAh'
-
 
 #
 # Color terminal output
@@ -171,13 +169,13 @@ eval "$(dircolors -b)"
 # color the man pages
 man() {
   env LESS_TERMCAP_mb=$'\E[01;31m' \
-  LESS_TERMCAP_md=$'\E[01;38;5;74m' \
-  LESS_TERMCAP_me=$'\E[0m' \
-  LESS_TERMCAP_se=$'\E[0m' \
-  LESS_TERMCAP_so=$'\E[38;5;246m' \
-  LESS_TERMCAP_ue=$'\E[0m' \
-  LESS_TERMCAP_us=$'\E[04;38;5;146m' \
-  man "$@"
+    LESS_TERMCAP_md=$'\E[01;38;5;74m' \
+    LESS_TERMCAP_me=$'\E[0m' \
+    LESS_TERMCAP_se=$'\E[0m' \
+    LESS_TERMCAP_so=$'\E[38;5;246m' \
+    LESS_TERMCAP_ue=$'\E[0m' \
+    LESS_TERMCAP_us=$'\E[04;38;5;146m' \
+    man "$@"
 }
 
 # colored GCC warnings and errors

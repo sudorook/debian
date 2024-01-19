@@ -32,7 +32,7 @@ export VISUAL="${EDITOR}"
 # go
 if command -v go > /dev/null 2>&1; then
   export GOPATH="${HOME}/.go"
-  export PATH="${PATH}:${GOPATH}/bin"
+  export PATH="${GOPATH}/bin:${PATH}"
 fi
 
 # ruby
@@ -45,12 +45,12 @@ fi
 
 # rust
 if command -v cargo > /dev/null 2>&1; then
-  export PATH="${PATH}:${HOME}/.cargo/bin"
+  export PATH="${HOME}/.cargo/bin:${PATH}"
 fi
 
 # npm
 if command -v npm > /dev/null 2>&1; then
-  export PATH="${PATH}:${HOME}/.npm/bin"
+  export PATH="${HOME}/.npm/bin:${PATH}"
   export NPM_CONFIG_PREFIX="${HOME}/.npm"
 fi
 
@@ -79,7 +79,7 @@ if command -v beet > /dev/null 2>&1; then
 fi
 
 # custom scripts
-export PATH="${PATH}:${HOME}/.scripts"
+export PATH="${HOME}/.scripts:${PATH}"
 
 # local executables
 export PATH="${HOME}/.local/bin:${PATH}"

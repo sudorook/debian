@@ -28,27 +28,37 @@ export VISUAL="${EDITOR}"
 
 # go
 if command -v go > /dev/null 2>&1; then
-  export GOPATH="${HOME}/.go"
-  export PATH="${GOPATH}/bin:${PATH}"
+  if [[ -v GOPATH ]]; then
+    export GOPATH="${HOME}/.go"
+  fi
+  if ! [[ "${PATH}" =~ :?${GOPATH}:? ]]; then
+    export PATH="${GOPATH}/bin:${PATH}"
+  fi
 fi
 
 # ruby
 if command -v ruby > /dev/null 2>&1; then
-  PATH="$(ruby -e 'print Gem.user_dir')/bin:${PATH}"
-  GEM_HOME=$(ruby -e 'print Gem.user_dir')
-  export PATH
+  GEM_HOME=$(gem env gemdir)
   export GEM_HOME
+  if ! [[ "${PATH}" =~ :?$(gem env gemdir)/bin:? ]]; then
+    PATH="$(gem env gemdir)/bin:${PATH}"
+    export PATH
+  fi
 fi
 
 # rust
 if command -v cargo > /dev/null 2>&1; then
-  export PATH="${HOME}/.cargo/bin:${PATH}"
+  if ! [[ "${PATH}" =~ :?${HOME}/.cargo/bin:? ]]; then
+    export PATH="${HOME}/.cargo/bin:${PATH}"
+  fi
 fi
 
 # npm
 if command -v npm > /dev/null 2>&1 && {
-  export PATH="${HOME}/.npm/bin:${PATH}"
   export NPM_CONFIG_PREFIX="${HOME}/.npm"
+  if ! [[ "${PATH}" =~ :?${HOME}/.npm/bin:? ]]; then
+    export PATH="${HOME}/.npm/bin:${PATH}"
+  fi
 fi
 
 # R
@@ -70,13 +80,23 @@ if [ -d ${HOME}/.local/share/zsh/site-functions ]; then
 fi
 
 # custom scripts
-export PATH="${HOME}/.scripts:${PATH}"
+if ! [[ "${PATH}" =~ :?${HOME}/.scripts:? ]]; then
+  export PATH="${HOME}/.scripts:${PATH}"
+fi
 
 # local executables
-export PATH="${HOME}/.local/bin:${PATH}"
+if ! [[ "${PATH}" =~ :?${HOME}/.local/bin:? ]]; then
+  export PATH="${HOME}/.local/bin:${PATH}"
+fi
 
 # local libraries
-export LD_LIBRARY_PATH="${HOME}/.local/lib64:${HOME}/.local/lib32:${HOME}/.local/lib:/usr/local/lib64:/usr/local/lib32:/usr/local/lib:${LD_LIBRARY_PATH}"
+if ! [[ "${LD_LIBRARY_PATH}" =~ :?/usr/local/lib:? ]]; then
+  LD_LIBRARY_PATH="/usr/local/lib64:/usr/local/lib32:/usr/local/lib:${LD_LIBRARY_PATH}"
+fi
+if ! [[ "${LD_LIBRARY_PATH}" =~ :?${HOME}/.local/lib:? ]]; then
+  LD_LIBRARY_PATH="${HOME}/.local/lib64:${HOME}/.local/lib32:${HOME}/.local/lib:${LD_LIBRARY_PATH}"
+fi
+export LD_LIBRARY_PATH
 
 #
 # Set zsh aliases

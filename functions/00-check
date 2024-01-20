@@ -22,15 +22,14 @@ DIR="$(dirname "$0")"
 export MIDBRANCH="\0342\0224\0234\0342\0224\0200\0342\0224\0200"
 export ENDBRANCH="\0342\0224\0224\0342\0224\0200\0342\0224\0200"
 
-# # Tricks vim-autointent into thinking the default indent is 1 space.
-# export heirarchy="Main
-#  ${midbranch} Base
-#  ${midbranch} Miscellaneous
-#  ${midbranch} Desktop environment
-#  ${midbranch} Network tools
-#  ${midbranch} Applications
-#  ${midbranch} Themes
-#  ${ENDBRANCH} Personalization"
+export HEIRARCHY="Main
+ ${MIDBRANCH} Base
+ ${MIDBRANCH} Miscellaneous
+ ${MIDBRANCH} Desktop environment
+ ${MIDBRANCH} Network tools
+ ${MIDBRANCH} Applications
+ ${MIDBRANCH} Themes
+ ${ENDBRANCH} Personalization"
 
 #
 # Fancy color output

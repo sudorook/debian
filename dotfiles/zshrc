@@ -38,10 +38,10 @@ fi
 
 # ruby
 if command -v ruby > /dev/null 2>&1; then
-  GEM_HOME=$(gem env gemdir)
+  GEM_HOME=$(gem env user_gemhome)
   export GEM_HOME
-  if ! [[ "${PATH}" =~ :?$(gem env gemdir)/bin:? ]]; then
-    PATH="$(gem env gemdir)/bin:${PATH}"
+  if ! [[ "${PATH}" =~ :?${GEM_HOME}/bin:? ]]; then
+    PATH="${GEM_HOME}/bin:${PATH}"
     export PATH
   fi
 fi

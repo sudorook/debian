@@ -13,7 +13,7 @@ fi
 
 export BROWSER="firefox"
 if command -v nvim.appimage > /dev/null 2>&1; then
-  export EDITOR="nvim.applimage"
+  export EDITOR="nvim.appimage"
 elif command -v nvim > /dev/null 2>&1; then
   export EDITOR="nvim"
 elif command -v vim > /dev/null 2>&1; then

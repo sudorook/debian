@@ -644,12 +644,15 @@ function install_lazyvim {
   if [ $EUID -ne 0 ]; then
     local lazyvim="${DIR}/packages/lazyvim.list"
     # local lazygit="${DIR}/configs/lazygit.yml"
+    local rubocop="${DIR}/configs/rubocop.yml"
 
     show_info "Installing LazyVim dependencies."
     check_installed "${lazyvim}"
     show_success "LazyVim dependencies installed."
 
     # copy_config_file "${lazygit}" "${HOME}/.config/lazygit/config.yml"
+
+    copy_config_file "${rubocop}" "${HOME}/.config/rubocop/config.yml"
 
     if command -v julia > /dev/null; then
       show_info "Installing Julia language server."

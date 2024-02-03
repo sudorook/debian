@@ -14,10 +14,13 @@ fi
 export BROWSER="firefox"
 if command -v nvim.appimage > /dev/null 2>&1; then
   export EDITOR="nvim.appimage"
+  export DIFFPROG='nvim.appimage -d'
 elif command -v nvim > /dev/null 2>&1; then
   export EDITOR="nvim"
+  export DIFFPROG='nvim -d'
 elif command -v vim > /dev/null 2>&1; then
   export EDITOR="vim"
+  export DIFFPROG='vimdiff'
 fi
 export SUDO_EDITOR="${EDITOR}"
 export VISUAL="${EDITOR}"

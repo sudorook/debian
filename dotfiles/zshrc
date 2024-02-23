@@ -57,7 +57,7 @@ if command -v cargo > /dev/null 2>&1; then
 fi
 
 # npm
-if command -v npm > /dev/null 2>&1 && {
+if command -v npm > /dev/null 2>&1; then
   export NPM_CONFIG_PREFIX="${HOME}/.npm"
   if ! [[ "${PATH}" =~ :?${HOME}/.npm/bin:? ]]; then
     export PATH="${HOME}/.npm/bin:${PATH}"

@@ -7,11 +7,13 @@ dmg2img
 dmidecode
 dos2unix
 dosfstools
+ecryptfs-utils
 ethtool
 exfatprogs
 gddrescue
 gdisk
 gnupg
+gocryptfs
 hfsprogs
 inotify-tools
 libbcprov-java

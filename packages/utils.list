@@ -19,6 +19,7 @@ inotify-tools
 libbcprov-java
 libcommons-lang3-java
 lm-sensors
+lshw
 mtools
 net-tools
 nmap

@@ -1,0 +1,42 @@
+import = ["~/.config/alacritty/themes/nightfox.toml"]
+
+[font]
+size = 9.3
+
+[font.bold]
+family = "JamboMono Nerd Font"
+style = "Bold"
+
+[font.bold_italic]
+family = "JamboMono Nerd Font"
+style = "Bold Italic"
+
+[font.italic]
+family = "JamboMono Nerd Font"
+style = "Italic"
+
+[font.normal]
+family = "JamboMono Nerd Font"
+style = "Regular"
+
+[[hints.enabled]]
+command = "xdg-open"
+post_processing = true
+regex = "(ipfs:|ipns:|magnet:|mailto:|gemini:|gopher:|https:|http:|news:|file:|git:|ssh:|ftp:)[^\u0000-\u001F\u007F-<>\"\\s{-}\\^⟨⟩`]+"
+
+[hints.enabled.mouse]
+enabled = false
+mods = "None"
+
+[[keyboard.bindings]]
+action = "SpawnNewInstance"
+key = "N"
+mods = "Control|Shift"
+
+[scrolling]
+history = 2000
+multiplier = 5
+
+[shell]
+args = ["--login"]
+program = "/bin/zsh"

@@ -200,6 +200,29 @@ function install_containers {
   show_success "Container packages installed."
 }
 
+function _install_julia {
+  local julia="${DIR}/packages/julia.list"
+
+  if ! command -v julia > /dev/null 2>&1; then
+    show_info "Install pipx for jill.py"
+    check_installed <(echo pipx)
+
+    show_info "Install jill"
+    pipx install jill
+
+    show_info "Install Julia via jill"
+    jill install --install_dir .jill --confirm
+
+    show_success "Julia installed."
+  else
+    show_success "Julia already installed."
+  fi
+
+  show_info "Installing Julia packages."
+  julia -e \
+    "f = open(\"${julia}\"); pkg = readlines(f); close(f); import Pkg; Pkg.add(pkg)"
+}
+
 function _install_r {
   local r="${DIR}/packages/r.list"
 
@@ -252,6 +275,7 @@ function install_dev {
   show_info "Setting default clang-format style."
   clang-format -style=mozilla -dump-config > "${HOME}/.clang-format"
 
+  _install_julia
   _install_r
   _install_rust
 

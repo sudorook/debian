@@ -18,6 +18,7 @@ kitty-terminfo
 libjpeg-turbo-progs
 libreoffice-base
 mpv
+mpv-mpris
 syncthing
 syncthing-gtk
 transmission-gtk

@@ -29,6 +29,7 @@ libjxl-tools
 libreoffice-base
 libreoffice-plasma
 mpv
+mpv-mpris
 okular
 okular-extra-backends
 partitionmanager

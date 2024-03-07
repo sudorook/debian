@@ -680,9 +680,9 @@ function install_lazyvim {
 
     if command -v julia > /dev/null; then
       show_info "Installing Julia language server."
-      if ! julia -e 'using Pkg; Pkg.status()' |
+      if ! julia --project="${HOME}"/.julia/environments/nvim-lspconfig -e 'using Pkg; Pkg.status()' |
          grep -q "\[[0-9a-f]\+\]\s\+LanguageServer\s\+"; then
-        julia -e 'import Pkg; Pkg.add("LanguageServer")'
+        julia --project="${HOME}"/.julia/environments/nvim-lspconfig -e 'import Pkg; Pkg.add("LanguageServer")'
       fi
     fi
 

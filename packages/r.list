@@ -18,6 +18,7 @@ r-cran-ggseqlogo
 r-cran-ggsignif
 r-cran-ggtext
 r-cran-ggthemes
+r-cran-ggvis
 r-cran-glmnet
 r-cran-gridextra
 r-cran-hdf5r
@@ -27,6 +28,7 @@ r-cran-knitr
 r-cran-mass
 r-cran-mvtnorm
 r-cran-optparse
+r-cran-parallel
 r-cran-patchwork
 r-cran-plyr
 r-cran-quadprog
@@ -37,8 +39,14 @@ r-cran-rcppeigen
 r-cran-reshape2
 r-cran-rglpk
 r-cran-rmarkdown
+r-cran-roxygen2
+r-cran-shiny
 r-cran-testthat
 r-cran-tidyverse
 r-cran-vegan
 r-cran-viridis
 r-cran-viridislite
+r-cran-xml
+r-cran-xtable
+r-cran-xts
+r-cran-zoo

@@ -465,13 +465,15 @@ function install_texlive {
 }
 
 function install_torbrowser {
+  local torbrowser="${DIR}/packages/torbrowser.list"
   local torbrowser_path="${HOME}/.local/share/tor-browser"
   local local_applications="${HOME}/.local/share/applications"
 
   show_header "Installing Tor browser."
+  check_installed "${torbrowser}"
 
   local response
-  local install_torbrowser
+  local install_torbrowser=true
   if [ -d "${torbrowser_path}" ]; then
     show_warning "Tor browser is already installed in ${torbrowser_path@Q}."
     response=$(ask_question "Replace? (y/N)")
@@ -480,8 +482,6 @@ function install_torbrowser {
     else
       install_torbrowser=false
     fi
-  else
-    install_torbrowser=true
   fi
 
   if ${install_torbrowser}; then
@@ -527,15 +527,13 @@ function install_torbrowser {
       mv "${torbrowser_path}" "${torbrowser_path}.$(date +%Y%m%d-%k%M%S)"
     fi
     mv tor-browser "${torbrowser_path}"
-    cp -f "${torbrowser_path}/start-tor-browser.desktop" "${local_applications}/"
-    chmod -x "${local_applications}/start-tor-browser.desktop"
-    sed -i \
-      -e "s,^Name=.*,Name=Tor Browser,g" \
-      -e "s,^Exec=.*,Exec=sh -c '\"${torbrowser_path}/Browser/start-tor-browser\" --detach || ([ ! -x \"${torbrowser_path}/Browser/start-tor-browser\" ] \&\& \"\$(dirname \"\$*\")\"/Browser/start-tor-browser --detach)' dummy %k,g" \
-      "${local_applications}/start-tor-browser.desktop"
-    update-desktop-database "${local_applications}"
 
     popd > /dev/null || exit
+
+    pushd "${torbrowser_path}" > /dev/null || exit
+    ./start-tor-browser.desktop --register-app
+    popd > /dev/null || exit
+
     rm -r "${tmpdir}"
     show_success "Tor browser installed."
   else

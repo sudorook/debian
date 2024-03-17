@@ -11,7 +11,7 @@ name='Launch Terminal'
 
 [org/gnome/shell]
 enabled-extensions=['user-theme@gnome-shell-extensions.gcampax.github.com', 'ding@rastersoft.com']
-favorite-apps=['firefox.desktop', 'kitty.desktop', 'org.gnome.Nautilus.desktop']
+favorite-apps=['firefox-esr.desktop', 'kitty.desktop', 'org.gnome.Nautilus.desktop']
 
 [org/gnome/mutter]
 dynamic-workspaces=false

@@ -175,6 +175,8 @@ function set_system_font {
       fi
 
       if dpkg -s plasma-desktop > /dev/null 2>&1; then
+        show_info "Setting fonts for KDE Plasma."
+
         kwriteconfig5 --file kdeglobals --group "General" --key "font" "Roboto,10,-1,5,50,0,0,0,0,0"
         kwriteconfig5 --file kdeglobals --group "General" --key "menuFont" "Roboto,10,-1,5,50,0,0,0,0,0"
         kwriteconfig5 --file kdeglobals --group "General" --key "smallestReadableFont" "Roboto,8,-1,5,50,0,0,0,0,0"

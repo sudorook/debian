@@ -1428,6 +1428,7 @@ function select_icon_theme {
 
   local options=(
     "Back"
+    "Adwaita"
     "Breeze"
     "Breeze-Dark"
     "Papirus"
@@ -1442,6 +1443,14 @@ function select_icon_theme {
     case "${option}" in
       "Back")
         return
+        ;;
+      "Adwaita")
+        if [ -d /usr/share/icons/Adwaita ]; then
+          ICONTHEME="Adwaita"
+          break
+        else
+          show_warning "${option@Q} icons are not installed."
+        fi
         ;;
       "Breeze")
         if [ -d /usr/share/icons/breeze ]; then

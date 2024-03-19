@@ -28,12 +28,16 @@ FONT="Roboto"
 function select_system_font {
   show_question "Select a font family:"
 
-  local options=("Back" "Noto" "Roboto")
+  local options=("Back" "Default" "Noto" "Roboto")
   local option
   select option in "${options[@]}"; do
     case "${option}" in
       "Back")
         return
+        ;;
+      "Default")
+        FONT="Default"
+        break
         ;;
       "Noto")
         if dpkg -s fonts-noto > /dev/null 2>&1; then
@@ -65,6 +69,52 @@ function set_system_font {
   show_header "Setting system font to ${FONT@Q}."
 
   case "${FONT}" in
+    "Default")
+      if dpkg -s cinnamon > /dev/null 2>&1; then
+        show_info "Resetting fonts for Cinnamon desktop environment."
+
+        # screensaver fonts
+        gsettings reset org.cinnamon.desktop.screensaver font-message
+        gsettings reset org.cinnamon.desktop.screensaver font-date
+        gsettings reset org.cinnamon.desktop.screensaver font-time
+
+        # desktop environment fonts
+        gsettings reset org.cinnamon.desktop.interface font-name
+        gsettings reset org.nemo.desktop font
+        gsettings reset org.gnome.desktop.interface document-font-name
+        gsettings reset org.gnome.desktop.interface monospace-font-name
+        gsettings reset org.cinnamon.desktop.wm.preferences titlebar-font
+      fi
+
+      if dpkg -s gnome-shell > /dev/null 2>&1; then
+        show_info "Resetting fonts for GNOME environment."
+
+        # desktop environment fonts
+        gsettings reset org.gnome.desktop.wm.preferences titlebar-font
+        gsettings reset org.gnome.desktop.interface document-font-name
+        gsettings reset org.gnome.desktop.interface font-name
+        gsettings reset org.gnome.desktop.interface monospace-font-name
+
+        # gnome-shell font
+        if [ -f "${HOME}/.local/share/themes/Adwaita/gnome-shell/gnome-shell.css" ]; then
+          sed -i -e "s,^\(\s\+font-size: [0-9\.]\+pt;\?\),/* \1 */,g" \
+            "${HOME}/.local/share/themes/Adwaita/gnome-shell/gnome-shell.css"
+        fi
+      fi
+
+      if dpkg -s plasma-desktop > /dev/null 2>&1; then
+        show_info "Resetting fonts for KDE Plasma."
+        kwriteconfig5 --file kdeglobals --group "General" --key "font" --delete
+        kwriteconfig5 --file kdeglobals --group "General" --key "menuFont" --delete
+        kwriteconfig5 --file kdeglobals --group "General" --key "smallestReadableFont" --delete
+        kwriteconfig5 --file kdeglobals --group "General" --key "toolBarFont" --delete
+        kwriteconfig5 --file kdeglobals --group "WM" --key "activeFont" --delete
+        kwriteconfig5 --file kdeglobals --group "General" --key "fixed" --delete
+        if qdbus org.kde.KWin > /dev/null; then
+          qdbus org.kde.KWin /KWin reconfigure
+        fi
+      fi
+      ;;
     "Roboto")
       if dpkg -s cinnamon > /dev/null 2>&1; then
         show_info "Setting fonts for Cinnamon desktop environment."
@@ -105,7 +155,9 @@ function set_system_font {
 
         # gnome-shell font
         if [ -f "${HOME}/.local/share/themes/Adwaita/gnome-shell/gnome-shell.css" ]; then
-          sed -i "s,font-size: [0-9\.]\+pt,font-size: 10.3pt,g" \
+          sed -i \
+            -e "s,^/\*\s\(\s\+font-size: .*;\?\) \*/$,\1,g" \
+            -e "s,font-size: [0-9\.]\+pt,font-size: 10.3pt,g" \
             "${HOME}/.local/share/themes/Adwaita/gnome-shell/gnome-shell.css"
         fi
 
@@ -183,7 +235,9 @@ function set_system_font {
 
         # gnome-shell font
         if [ -f "${HOME}/.local/share/themes/Adwaita/gnome-shell/gnome-shell.css" ]; then
-          sed -i "s,font-size: [0-9\.]\+pt,font-size: 10.3pt,g" \
+          sed -i \
+            -e "s,^/\*\s\(\s\+font-size: .*;\?\) \*/$,\1,g" \
+            -e "s,font-size: [0-9\.]\+pt,font-size: 10.3pt,g" \
             "${HOME}/.local/share/themes/Adwaita/gnome-shell/gnome-shell.css"
         fi
 

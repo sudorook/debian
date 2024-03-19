@@ -470,8 +470,11 @@ function set_gdm_theme {
             "/usr/share/gnome-shell/gnome-shell-theme.gresource"
         fi
       fi
+    elif [[ "${GTKTHEME}" =~ ^Adwaita ]]; then
+      show_info "Reinstalling GNOME-shell to reset theme files."
+      sudo apt install -y --reinstall gnome-shell gnome-shell-extensions gnome-shell-common
     else
-      show_warning "${GTKTHEME@Q} is unsupported."
+      show_warning "${GTKTHEME@Q} theme for GDM is unsupported."
     fi
   else
     show_warning "GDM is not installed. Skipping."

@@ -131,7 +131,7 @@ function set_system_font {
 
         # monospace font
         if grep -q "Jambo.*Mono" <(fc-list); then
-          gsettings set org.gnome.desktop.interface monospace-font-name "'Jambo Mono 9.3'"
+          gsettings set org.gnome.desktop.interface monospace-font-name "'JamboMono Nerd Font 9.3'"
         else
           show_warning "Jambo Mono font not found. Falling back to Ubuntu Mono."
           if dpkg -s fonts-ubuntu > /dev/null 2>&1; then
@@ -163,7 +163,7 @@ function set_system_font {
 
         # monospace font
         if grep -q "Jambo.*Mono" <(fc-list); then
-          gsettings set org.gnome.desktop.interface monospace-font-name "'Jambo Mono 9.3'"
+          gsettings set org.gnome.desktop.interface monospace-font-name "'JamboMono Nerd Font 9.3'"
         else
           show_warning "Jambo Mono font not found. Falling back to Ubuntu Mono."
           if dpkg -s fonts-ubuntu > /dev/null 2>&1; then
@@ -213,7 +213,7 @@ function set_system_font {
 
         # monospace font
         if grep -q "Jambo.*Mono" <(fc-list); then
-          gsettings set org.gnome.desktop.interface monospace-font-name "'Jambo Mono 10.4'"
+          gsettings set org.gnome.desktop.interface monospace-font-name "'JamboMono Nerd Font 10.4'"
         else
           show_warning "Jambo Mono font not found. Falling back to Ubuntu Mono."
           if dpkg -s fonts-ubuntu > /dev/null 2>&1; then
@@ -245,7 +245,7 @@ function set_system_font {
 
         # monospace font
         if grep -q "Jambo.*Mono" <(fc-list); then
-          gsettings set org.gnome.desktop.interface monospace-font-name "'Jambo Mono 10.4'"
+          gsettings set org.gnome.desktop.interface monospace-font-name "'JamboMono Nerd Font 10.4'"
         else
           show_warning "Jambo Mono font not found. Falling back to Ubuntu Mono."
           if dpkg -s fonts-ubuntu > /dev/null 2>&1; then

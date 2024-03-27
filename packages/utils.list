@@ -15,6 +15,7 @@ gdisk
 gnupg
 gocryptfs
 hfsprogs
+hyperfine
 inotify-tools
 libbcprov-java
 libcommons-lang3-java

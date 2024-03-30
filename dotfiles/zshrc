@@ -31,9 +31,7 @@ export VISUAL="${EDITOR}"
 
 # go
 if command -v go > /dev/null 2>&1; then
-  if [[ -v GOPATH ]]; then
-    export GOPATH="${HOME}/.go"
-  fi
+  export GOPATH="${HOME}/.go"
   if ! [[ "${PATH}" =~ :?${GOPATH}:? ]]; then
     export PATH="${GOPATH}/bin:${PATH}"
   fi

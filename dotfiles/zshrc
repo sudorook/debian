@@ -64,7 +64,7 @@ fi
 
 # R
 if command -v R > /dev/null 2>&1; then
-  R_LIBS_USER="${HOME}/.R/$(R --version | sed -n "s/^R version \([0-9\.]*\) .*/\1/p")"
+  R_LIBS_USER="${HOME}/.R/$(Rscript --version | sed -n "s/^Rscript (R) version \([0-9\.]*\) .*/\1/p")"
   if ! [ -d "${R_LIBS_USER}" ]; then
     mkdir -p "${R_LIBS_USER}"
   fi

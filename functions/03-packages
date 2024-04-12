@@ -666,6 +666,7 @@ function install_lazyvim {
   if [ $EUID -ne 0 ]; then
     local lazyvim="${DIR}/packages/lazyvim.list"
     # local lazygit="${DIR}/configs/lazygit.yml"
+    local nvimspell="${HOME}/.config/nvim/spell"
     local rubocop="${DIR}/configs/rubocop.yml"
 
     show_info "Installing LazyVim dependencies."
@@ -707,6 +708,24 @@ function install_lazyvim {
     fi
     git clone https://github.com/sudorook/lazyvim.nvim.git "${HOME}/.config/nvim"
     show_success "LazyVim installed."
+
+    show_info "Install local wordlist."
+    mkdir -p "${nvimspell}"
+    local tmpdir
+    tmpdir="$(mktemp -d)"
+    git clone --depth 1 \
+      https://github.com/sudorook/wordlist.vim.git "${tmpdir}"
+    pushd "${tmpdir}" > /dev/null || exit
+    ./build
+    if [ -f "${nvimspell}/en.utf-8.add" ]; then
+      show_info "Wordlist already exists in ${nvimspell@Q}. Appending."
+      ./append
+    else
+      ./install
+    fi
+    popd > /dev/null || exit
+    rm -rf "${tmpdir}"
+    show_success "Wordlist installed in ${nvimspell@Q}."
   else
     show_warning "Don't do this as root. Skipping..."
   fi

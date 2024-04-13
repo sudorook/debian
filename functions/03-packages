@@ -686,18 +686,25 @@ function install_lazyvim {
     fi
 
     if command -v R > /dev/null; then
-      if [[ -v R_LIBS_USER ]] && [ -d "${R_LIBS_USER}" ]; then
+      if [[ -v R_LIBS_USER ]] && [ -n "${R_LIBS_USER}" ]; then
         show_info "Installing R language server and code formatter."
-        Rscript -e "if (system.file(package='languageserver') == '') {
-                      install.packages(c('languageserver'),
-                                       lib=\"${R_LIBS_USER}\",
-                                       repo='https://cloud.r-project.org/')
-                    }"
-        Rscript -e "if (system.file(package='styler') == '') {
-                      install.packages(c('styler'),
-                                       lib=\"${R_LIBS_USER}\",
-                                       repo='https://cloud.r-project.org/')
-                    }"
+        mkdir -p "${R_LIBS_USER}"
+        Rscript <(
+          cat << EOF
+if (system.file(package='languageserver') == '') {
+  install.packages(c('languageserver'),
+                   lib = "${R_LIBS_USER}",
+                   clean = TRUE
+                   repo = 'https://cloud.r-project.org/')
+}
+if (system.file(package='styler') == '') {
+  install.packages(c('styler'),
+                   lib = "${R_LIBS_USER}",
+                   clean = TRUE
+                   repo = 'https://cloud.r-project.org/')
+}
+EOF
+        )
       fi
     fi
 

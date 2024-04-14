@@ -710,11 +710,22 @@ EOF
 
     show_info "Installing LazyVim configuration files for Neovim."
     if [ -d "${HOME}/.config/nvim" ]; then
-      show_info "Backing up existing ${HOME}/.config/nvim directory."
-      mv -v "${HOME}/.config/nvim" "${HOME}/.config/nvim_$(date +%Y%m%d-%k%M%S)"
+      if [ -d "${HOME}/.config/nvim/.git" ] &&
+        git -C "${HOME}/.config/nvim" remote show origin -n |
+          grep -q "sudorook/lazyvim.nvim"; then
+          show_info "LazyVim config already installed."
+          git -C "${HOME}/.config/nvim" pull
+          show_success "Existing LazyVim updated."
+      else
+        show_info "Backing up existing Neovim config directory."
+        mv -v "${HOME}/.config/nvim" "${HOME}/.config/nvim_$(date +%Y%m%d-%k%M%S)"
+        git clone https://github.com/sudorook/lazyvim.nvim.git "${HOME}/.config/nvim"
+        show_success "LazyVim installed."
+      fi
+    else
+      git clone https://github.com/sudorook/lazyvim.nvim.git "${HOME}/.config/nvim"
+      show_success "LazyVim installed."
     fi
-    git clone https://github.com/sudorook/lazyvim.nvim.git "${HOME}/.config/nvim"
-    show_success "LazyVim installed."
 
     show_info "Install local wordlist."
     mkdir -p "${nvimspell}"

@@ -790,6 +790,10 @@ function import_kde_settings {
   kwriteconfig5 --file gwenviewrc --group "ImageView" --key "EnlargeSmallerImages" "true"
   kwriteconfig5 --file gwenviewrc --group "ThumbnailView" --key "ListVideos" "false"
 
+  if qdbus org.kde.KWin > /dev/null; then
+    qdbus org.kde.KWin /KWin reconfigure
+  fi
+
   # Because the Wayland protocol does not allow for global keylogging needed to
   # detect global shorcuts, shortcut handling for Plasma wayland is built
   # directly into KWin itself. On X11, KGlobalAccel handles this instead. The
@@ -799,20 +803,14 @@ function import_kde_settings {
   # needs to be restarted instead.
   #
   # See: https://blog.martin-graesslin.com/blog/2015/06/global-shortcut-handling-in-a-plasma-wayland-session/
-  case "${DESKTOP_SESSION:-}" in
-    plasma)
-      if qdbus org.kde.KWin > /dev/null; then
-        qdbus org.kde.KWin /KWin reconfigure
-      fi
+  case "${XDG_SESSION_TYPE:-}" in
+    x11)
       kquitapp5 kglobalaccel ||
         killall kglobalaccel5 &&
         sleep 2s &&
         nohup kstart5 kglobalaccel5 --window --windowclass > /dev/null 2>&1
       ;;
-    plasmawayland)
-      if qdbus org.kde.KWin > /dev/null; then
-        qdbus org.kde.KWin /KWin reconfigure
-      fi
+    wayland)
       kwin_wayland --replace
       ;;
   esac

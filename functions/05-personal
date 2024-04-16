@@ -771,7 +771,7 @@ function import_kde_settings {
   sed -i "s/^IconSize=1$/IconSize=-1/g" "${HOME}/.config/dolphinrc"
   kwriteconfig5 --file dolphinrc --group "MainWindow" --group "Toolbar mainToolBar" --key "ToolButtonStyle" "IconOnly"  # icon-only menus in toolbar
 
-  # Stop notification sound whem emptying trash.
+  # Stop notification sound when emptying trash.
   kwriteconfig5 --file plasma_workspace.notifyrc --group "Event/Trash: emptied" --key "Action" ""
   kwriteconfig5 --file plasma_workspace.notifyrc --group "Event/Trash: emptied" --key "Execute" ""
   kwriteconfig5 --file plasma_workspace.notifyrc --group "Event/Trash: emptied" --key "Logfile" ""
@@ -795,7 +795,7 @@ function import_kde_settings {
   fi
 
   # Because the Wayland protocol does not allow for global keylogging needed to
-  # detect global shorcuts, shortcut handling for Plasma wayland is built
+  # detect global shortcuts, shortcut handling for Plasma wayland is built
   # directly into KWin itself. On X11, KGlobalAccel handles this instead. The
   # consequence of this is that when running DESKTOP_SESSION=plasma, restarting
   # KGlobalAccel will update the shortcuts, but when

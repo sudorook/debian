@@ -8,6 +8,7 @@ dmidecode
 dos2unix
 dosfstools
 ecryptfs-utils
+entr
 ethtool
 exfatprogs
 gddrescue

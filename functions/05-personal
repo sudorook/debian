@@ -25,6 +25,19 @@ PLASMATHEME="Breeze-Dark"
 ICONTHEME="Breeze-Dark"
 FONT="Roboto"
 
+function _get_kwrite_config {
+  if command -v kwriteconfig6 > /dev/null; then
+    echo kwriteconfig6
+    return
+  elif command -v kwriteconfig5 > /dev/null; then
+    echo kwriteconfig5
+    return
+  else
+    show_warning "No kwriteconfig executable found." >&2
+    return 1
+  fi
+}
+
 function select_system_font {
   show_question "Select a font family:"
 
@@ -104,14 +117,17 @@ function set_system_font {
 
       if dpkg -s plasma-desktop > /dev/null 2>&1; then
         show_info "Resetting fonts for KDE Plasma."
-        kwriteconfig5 --file kdeglobals --group "General" --key "font" --delete
-        kwriteconfig5 --file kdeglobals --group "General" --key "menuFont" --delete
-        kwriteconfig5 --file kdeglobals --group "General" --key "smallestReadableFont" --delete
-        kwriteconfig5 --file kdeglobals --group "General" --key "toolBarFont" --delete
-        kwriteconfig5 --file kdeglobals --group "WM" --key "activeFont" --delete
-        kwriteconfig5 --file kdeglobals --group "General" --key "fixed" --delete
-        if qdbus org.kde.KWin > /dev/null; then
-          qdbus org.kde.KWin /KWin reconfigure
+        local kwconfig
+        if kwconfig="$(_get_kwrite_config)"; then
+          "${kwconfig}" --file kdeglobals --group "General" --key "font" --delete
+          "${kwconfig}" --file kdeglobals --group "General" --key "menuFont" --delete
+          "${kwconfig}" --file kdeglobals --group "General" --key "smallestReadableFont" --delete
+          "${kwconfig}" --file kdeglobals --group "General" --key "toolBarFont" --delete
+          "${kwconfig}" --file kdeglobals --group "WM" --key "activeFont" --delete
+          "${kwconfig}" --file kdeglobals --group "General" --key "fixed" --delete
+          if qdbus org.kde.KWin > /dev/null; then
+            qdbus org.kde.KWin /KWin reconfigure
+          fi
         fi
       fi
       ;;
@@ -176,24 +192,27 @@ function set_system_font {
 
       if dpkg -s plasma-desktop > /dev/null 2>&1; then
         show_info "Setting fonts for KDE Plasma."
+        local kwconfig
 
-        kwriteconfig5 --file kdeglobals --group "General" --key "font" "Roboto,10,-1,5,50,0,0,0,0,0"
-        kwriteconfig5 --file kdeglobals --group "General" --key "menuFont" "Roboto,10,-1,5,50,0,0,0,0,0"
-        kwriteconfig5 --file kdeglobals --group "General" --key "smallestReadableFont" "Roboto,8,-1,5,50,0,0,0,0,0"
-        kwriteconfig5 --file kdeglobals --group "General" --key "toolBarFont" "Roboto,10,-1,5,50,0,0,0,0,0"
-        kwriteconfig5 --file kdeglobals --group "WM" --key "activeFont" "Roboto,10,-1,5,50,0,0,0,0,0"
-        if grep -q "Jambo.*Mono" <(fc-list); then
-          kwriteconfig5 --file kdeglobals --group "General" --key "fixed" "Jambo Mono,9,-1,5,50,0,0,0,0,0"
-        else
-          show_warning "Jambo Mono font not found. Falling back to Ubuntu Mono."
-          if dpkg -s fonts-ubuntu > /dev/null 2>&1; then
-            kwriteconfig5 --file kdeglobals --group "General" --key "fixed" "Ubuntu Mono,10,-1,5,50,0,0,0,0,0"
+        if kwconfig="$(_get_kwrite_config)"; then
+          "${kwconfig}" --file kdeglobals --group "General" --key "font" "Roboto,10,-1,5,50,0,0,0,0,0"
+          "${kwconfig}" --file kdeglobals --group "General" --key "menuFont" "Roboto,10,-1,5,50,0,0,0,0,0"
+          "${kwconfig}" --file kdeglobals --group "General" --key "smallestReadableFont" "Roboto,8,-1,5,50,0,0,0,0,0"
+          "${kwconfig}" --file kdeglobals --group "General" --key "toolBarFont" "Roboto,10,-1,5,50,0,0,0,0,0"
+          "${kwconfig}" --file kdeglobals --group "WM" --key "activeFont" "Roboto,10,-1,5,50,0,0,0,0,0"
+          if grep -q "Jambo.*Mono" <(fc-list); then
+            "${kwconfig}" --file kdeglobals --group "General" --key "fixed" "Jambo Mono,9,-1,5,50,0,0,0,0,0"
           else
-            show_warning "Ubuntu font family missing..."
+            show_warning "Jambo Mono font not found. Falling back to Ubuntu Mono."
+            if dpkg -s fonts-ubuntu > /dev/null 2>&1; then
+              "${kwconfig}" --file kdeglobals --group "General" --key "fixed" "Ubuntu Mono,10,-1,5,50,0,0,0,0,0"
+            else
+              show_warning "Ubuntu font family missing..."
+            fi
           fi
-        fi
-        if qdbus org.kde.KWin > /dev/null; then
-          qdbus org.kde.KWin /KWin reconfigure
+          if qdbus org.kde.KWin > /dev/null; then
+            qdbus org.kde.KWin /KWin reconfigure
+          fi
         fi
       fi
       ;;
@@ -257,19 +276,22 @@ function set_system_font {
       fi
 
       if dpkg -s plasma-shell > /dev/null 2>&1; then
-        kwriteconfig5 --file kdeglobals --group "General" --key "font" "Noto Sans,10,-1,5,50,0,0,0,0,0"
-        kwriteconfig5 --file kdeglobals --group "General" --key "menuFont" "Noto Sans,10,-1,5,50,0,0,0,0,0"
-        kwriteconfig5 --file kdeglobals --group "General" --key "smallestReadableFont" "Noto Sans,8,-1,5,50,0,0,0,0,0"
-        kwriteconfig5 --file kdeglobals --group "General" --key "toolBarFont" "Noto Sans,10,-1,5,50,0,0,0,0,0"
-        kwriteconfig5 --file kdeglobals --group "WM" --key "activeFont" "Noto Sans,10,-1,5,50,0,0,0,0,0"
-        if grep -q "Jambo.*Mono" <(fc-list); then
-          kwriteconfig5 --file kdeglobals --group "General" --key "fixed" "Jambo Mono,10,-1,5,50,0,0,0,0,0"
-        else
-          show_warning "Jambo Mono font not found. Falling back to Ubuntu Mono."
-          if dpkg -s fonts-ubuntu > /dev/null 2>&1; then
-            kwriteconfig5 --file kdeglobals --group "General" --key "fixed" "Ubuntu Mono,11,-1,5,50,0,0,0,0,0"
+        local kwconfig
+        if kwconfig="$(_get_kwrite_config)"; then
+          "${kwconfig}" --file kdeglobals --group "General" --key "font" "Noto Sans,10,-1,5,50,0,0,0,0,0"
+          "${kwconfig}" --file kdeglobals --group "General" --key "menuFont" "Noto Sans,10,-1,5,50,0,0,0,0,0"
+          "${kwconfig}" --file kdeglobals --group "General" --key "smallestReadableFont" "Noto Sans,8,-1,5,50,0,0,0,0,0"
+          "${kwconfig}" --file kdeglobals --group "General" --key "toolBarFont" "Noto Sans,10,-1,5,50,0,0,0,0,0"
+          "${kwconfig}" --file kdeglobals --group "WM" --key "activeFont" "Noto Sans,10,-1,5,50,0,0,0,0,0"
+          if grep -q "Jambo.*Mono" <(fc-list); then
+            "${kwconfig}" --file kdeglobals --group "General" --key "fixed" "Jambo Mono,10,-1,5,50,0,0,0,0,0"
           else
-            show_warning "Ubuntu font family missing..."
+            show_warning "Jambo Mono font not found. Falling back to Ubuntu Mono."
+            if dpkg -s fonts-ubuntu > /dev/null 2>&1; then
+              "${kwconfig}" --file kdeglobals --group "General" --key "fixed" "Ubuntu Mono,11,-1,5,50,0,0,0,0,0"
+            else
+              show_warning "Ubuntu font family missing..."
+            fi
           fi
         fi
         if qdbus org.kde.KWin > /dev/null; then
@@ -347,59 +369,62 @@ function set_gtk_theme {
 
 function set_plasma_theme {
   show_header "Setting Plasma theme to ${PLASMATHEME@Q}."
-  case "${PLASMATHEME,,}" in
-    arc)
-      plasma-apply-lookandfeel -a com.github.sudorook.arc
-      qdbus org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Arc"
-      kwriteconfig5 --file kdeglobals --group "KDE" --key "widgetStyle" "kvantum"
-      kvantummanager --set Arc
-      ;;
-    arcdark | arc-dark)
-      plasma-apply-lookandfeel -a com.github.sudorook.arc-dark
-      qdbus org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Arc-Dark"
-      kwriteconfig5 --file kdeglobals --group "KDE" --key "widgetStyle" "kvantum"
-      kvantummanager --set ArcDark
-      ;;
-    arc-darker | arcdarker)
-      plasma-apply-lookandfeel -a com.github.sudorook.arc-darker
-      qdbus org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Arc-Darker"
-      kwriteconfig5 --file kdeglobals --group "KDE" --key "widgetStyle" "kvantum"
-      kvantummanager --set ArcDarker
-      ;;
-    breeze)
-      plasma-apply-lookandfeel -a org.kde.breeze.desktop
-      qdbus org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Breeze"
-      kwriteconfig5 --file kdeglobals --group "KDE" --key "widgetStyle" "Breeze"
-      ;;
-    breeze-dark | breezedark)
-      plasma-apply-lookandfeel -a org.kde.breezedark.desktop
-      qdbus org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Breeze"
-      kwriteconfig5 --file kdeglobals --group "KDE" --key "widgetStyle" "Breeze"
-      ;;
-    breeze-twilight | breezetwilight)
-      plasma-apply-lookandfeel -a org.kde.breezetwilight.desktop
-      qdbus org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Breeze"
-      kwriteconfig5 --file kdeglobals --group "KDE" --key "widgetStyle" "Breeze"
-      ;;
-    materia)
-      plasma-apply-lookandfeel -a com.github.sudorook.materia
-      qdbus org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Materia"
-      kwriteconfig5 --file kdeglobals --group "KDE" --key "widgetStyle" "kvantum"
-      kvantummanager --set Materia
-      ;;
-    materiadark | materia-dark)
-      plasma-apply-lookandfeel -a com.github.sudorook.materia-dark
-      qdbus org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Materia-dark"
-      kwriteconfig5 --file kdeglobals --group "KDE" --key "widgetStyle" "kvantum"
-      kvantummanager --set MateriaDark
-      ;;
-    materialight | materia-light)
-      plasma-apply-lookandfeel -a com.github.sudorook.materia-light
-      qdbus org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Materia-light"
-      kwriteconfig5 --file kdeglobals --group "KDE" --key "widgetStyle" "kvantum"
-      kvantummanager --set MateriaLight
-      ;;
-  esac
+  local kwconfig
+  if kwconfig="$(_get_kwrite_config)"; then
+    case "${PLASMATHEME,,}" in
+      arc)
+        plasma-apply-lookandfeel -a com.github.sudorook.arc
+        qdbus org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Arc"
+        "${kwconfig}" --file kdeglobals --group "KDE" --key "widgetStyle" "kvantum"
+        kvantummanager --set Arc
+        ;;
+      arcdark | arc-dark)
+        plasma-apply-lookandfeel -a com.github.sudorook.arc-dark
+        qdbus org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Arc-Dark"
+        "${kwconfig}" --file kdeglobals --group "KDE" --key "widgetStyle" "kvantum"
+        kvantummanager --set ArcDark
+        ;;
+      arc-darker | arcdarker)
+        plasma-apply-lookandfeel -a com.github.sudorook.arc-darker
+        qdbus org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Arc-Darker"
+        "${kwconfig}" --file kdeglobals --group "KDE" --key "widgetStyle" "kvantum"
+        kvantummanager --set ArcDarker
+        ;;
+      breeze)
+        plasma-apply-lookandfeel -a org.kde.breeze.desktop
+        qdbus org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Breeze"
+        "${kwconfig}" --file kdeglobals --group "KDE" --key "widgetStyle" "Breeze"
+        ;;
+      breeze-dark | breezedark)
+        plasma-apply-lookandfeel -a org.kde.breezedark.desktop
+        qdbus org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Breeze"
+        "${kwconfig}" --file kdeglobals --group "KDE" --key "widgetStyle" "Breeze"
+        ;;
+      breeze-twilight | breezetwilight)
+        plasma-apply-lookandfeel -a org.kde.breezetwilight.desktop
+        qdbus org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Breeze"
+        "${kwconfig}" --file kdeglobals --group "KDE" --key "widgetStyle" "Breeze"
+        ;;
+      materia)
+        plasma-apply-lookandfeel -a com.github.sudorook.materia
+        qdbus org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Materia"
+        "${kwconfig}" --file kdeglobals --group "KDE" --key "widgetStyle" "kvantum"
+        kvantummanager --set Materia
+        ;;
+      materiadark | materia-dark)
+        plasma-apply-lookandfeel -a com.github.sudorook.materia-dark
+        qdbus org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Materia-dark"
+        "${kwconfig}" --file kdeglobals --group "KDE" --key "widgetStyle" "kvantum"
+        kvantummanager --set MateriaDark
+        ;;
+      materialight | materia-light)
+        plasma-apply-lookandfeel -a com.github.sudorook.materia-light
+        qdbus org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Materia-light"
+        "${kwconfig}" --file kdeglobals --group "KDE" --key "widgetStyle" "kvantum"
+        kvantummanager --set MateriaLight
+        ;;
+    esac
+  fi
 }
 
 function set_lightdm_theme {
@@ -494,23 +519,26 @@ function set_sddm_theme {
   if dpkg -s sddm > /dev/null 2>&1; then
     if [ -d "/usr/share/sddm/themes/${sddmtheme}" ]; then
       show_header "Setting SDDM login theme to ${sddmtheme@Q}."
-      sudo kwriteconfig5 --file "${sddmconf}" --group Theme --key Current "${sddmtheme}"
-      if [[ "${sddmtheme}" = breeze ]]; then
-        sudo kwriteconfig5 --file "${sddmconf}" --group Theme --key CursorTheme "breeze_cursors"
+      local kwconfig
+      if kwconfig="$(_get_kwrite_config)"; then
+        sudo "${kwconfig}" --file "${sddmconf}" --group Theme --key Current "${sddmtheme}"
+        if [[ "${sddmtheme}" = breeze ]]; then
+          sudo "${kwconfig}" --file "${sddmconf}" --group Theme --key CursorTheme "breeze_cursors"
+        fi
+        case "${FONT}" in
+          Noto)
+            if dpkg -s fonts-noto > /dev/null; then
+              sudo "${kwconfig}" --file "${sddmconf}" --group Theme --key Font "Noto Sans,10,-1,5,50,0,0,0,0,0"
+            fi
+            ;;
+          Roboto)
+            if dpkg -s fonts-roboto > /dev/null; then
+              sudo "${kwconfig}" --file "${sddmconf}" --group Theme --key Font "Roboto,10,-1,5,50,0,0,0,0,0"
+            fi
+            ;;
+          *) ;;
+        esac
       fi
-      case "${FONT}" in
-        Noto)
-          if dpkg -s fonts-noto > /dev/null; then
-            sudo kwriteconfig5 --file "${sddmconf}" --group Theme --key Font "Noto Sans,10,-1,5,50,0,0,0,0,0"
-          fi
-          ;;
-        Roboto)
-          if dpkg -s fonts-roboto > /dev/null; then
-            sudo kwriteconfig5 --file "${sddmconf}" --group Theme --key Font "Roboto,10,-1,5,50,0,0,0,0,0"
-          fi
-          ;;
-        *) ;;
-      esac
     else
       show_warning "SDDM theme for ${PLASMATHEME@Q} not found. Skipping."
     fi
@@ -623,175 +651,200 @@ function import_gnome_dconf {
 
 function import_kde_settings {
   show_header "Setting default Plasma behavior."
+  local kwconfig
+  if kwconfig="$(_get_kwrite_config)"; then
+    show_info "Adding Cinnamon-like desktop shortcuts."
+    "${kwconfig}" --file kglobalshortcutsrc --group "kwin" --key "Overview" "Ctrl+Alt+Up,Meta+W,Toggle Overview"
+    "${kwconfig}" --file kglobalshortcutsrc --group "kwin" --key "ShowDesktopGrid" "Ctrl+Alt+Down	Meta+F8,Meta+F8,Show Desktop Grid"
+    "${kwconfig}" --file kglobalshortcutsrc --group "kwin" --key "Switch to Next Desktop" "Ctrl+Alt+Right,,Switch to Next Desktop"
+    "${kwconfig}" --file kglobalshortcutsrc --group "kwin" --key "Switch to Previous Desktop" "Ctrl+Alt+Left,,Switch to Previous Desktop"
+    "${kwconfig}" --file kglobalshortcutsrc --group "kwin" --key "Window to Next Desktop" "Ctrl+Alt+Shift+Right,,Window to Next Desktop"
+    "${kwconfig}" --file kglobalshortcutsrc --group "kwin" --key "Window to Previous Desktop" "Ctrl+Alt+Shift+Left,,Window to Previous Desktop"
 
-  show_info "Adding Cinnamon-like desktop shortcuts."
-  kwriteconfig5 --file kglobalshortcutsrc --group "kwin" --key "Overview" "Ctrl+Alt+Up,Meta+W,Toggle Overview"
-  kwriteconfig5 --file kglobalshortcutsrc --group "kwin" --key "ShowDesktopGrid" "Ctrl+Alt+Down	Meta+F8,Meta+F8,Show Desktop Grid"
-  kwriteconfig5 --file kglobalshortcutsrc --group "kwin" --key "Switch to Next Desktop" "Ctrl+Alt+Right,,Switch to Next Desktop"
-  kwriteconfig5 --file kglobalshortcutsrc --group "kwin" --key "Switch to Previous Desktop" "Ctrl+Alt+Left,,Switch to Previous Desktop"
-  kwriteconfig5 --file kglobalshortcutsrc --group "kwin" --key "Window to Next Desktop" "Ctrl+Alt+Shift+Right,,Window to Next Desktop"
-  kwriteconfig5 --file kglobalshortcutsrc --group "kwin" --key "Window to Previous Desktop" "Ctrl+Alt+Shift+Left,,Window to Previous Desktop"
+    # Use 'Automatic' virtual destkop layout for overview, and display desktop name labels.
+    "${kwconfig}" --file kwinrc --group "Effect-desktopgrid" --key "DesktopLayoutMode" "1"     # automatic
+    "${kwconfig}" --file kwinrc --group "Effect-desktopgrid" --key "DesktopNameAlignment" "68"  # desktop names at bottom
 
-  # Use 'Automatic' virtual destkop layout for overview, and display desktop name labels.
-  kwriteconfig5 --file kwinrc --group "Effect-desktopgrid" --key "DesktopLayoutMode" "1"     # automatic
-  kwriteconfig5 --file kwinrc --group "Effect-desktopgrid" --key "DesktopNameAlignment" "68"  # desktop names at bottom
+    # Dim screen when in administer mode.
+    case "${kwconfig}" in
+      kwriteconfig6)
+        "${kwconfig}" --file kwinrc --group "Plugins" --key "dimscreenEnabled" "true"
+        ;;
+      kwriteconfig5)
+        "${kwconfig}" --file kwinrc --group "Plugins" --key "kwin4_effect_dimscreenEnabled" "true"
+        ;;
+    esac
 
-  # Dim screen when in administer mode.
-  kwriteconfig5 --file kwinrc --group "Plugins" --key "kwin4_effect_dimscreenEnabled" "true"
+    # Change desktop viewer animations.
+    case "${kwconfig}" in
+      kwriteconfig6)
+        "${kwconfig}" --file kwinrc --group "Plugins" --key "eyeonscreenEnabled" "true"
+        "${kwconfig}" --file kwinrc --group "Plugins" --key "windowapertureEnabled" "false"
+        ;;
+      kwriteconfig5)
+        "${kwconfig}" --file kwinrc --group "Plugins" --key "kwin4_effect_eyeonscreenEnabled" "true"
+        "${kwconfig}" --file kwinrc --group "Plugins" --key "kwin4_effect_windowapertureEnabled" "false"
+        ;;
+    esac
 
-  # Change desktop viewer animations.
-  kwriteconfig5 --file kwinrc --group "Plugins" --key "kwin4_effect_eyeonscreenEnabled" "true"
-  kwriteconfig5 --file kwinrc --group "Plugins" --key "kwin4_effect_windowapertureEnabled" "false"
+    # Don't focus alt-tab windows.
+    "${kwconfig}" --file kwinrc --group "TabBox" --key "HighlightWindows" "false"
 
-  # Don't focus alt-tab windows.
-  kwriteconfig5 --file kwinrc --group "TabBox" --key "HighlightWindows" "false"
+    # Move minimized windows to end of alt-tab list.
+    "${kwconfig}" --file kwinrc --group "TabBox" --key "OrderMinimizedMode" "1"
 
-  # Move minimized windows to end of alt-tab list.
-  kwriteconfig5 --file kwinrc --group "TabBox" --key "OrderMinimizedMode" "1"
+    # Use thumbnail-grid for alt-tab switcher.
+    "${kwconfig}" --file kwinrc --group "TabBox" --key "LayoutName" "thumbnail_grid"   # thumbnail grid
 
-  # Use thumbnail-grid for alt-tab switcher.
-  kwriteconfig5 --file kwinrc --group "TabBox" --key "LayoutName" "thumbnail_grid"   # thumbnail grid
+    # Increase delay for showing the alt-tab OSD.
+    "${kwconfig}" --file kwinrc --group "TabBox" --key "DelayTime" "180"  # ?
 
-  # Increase delay for showing the alt-tab OSD.
-  kwriteconfig5 --file kwinrc --group "TabBox" --key "DelayTime" "180"  # ?
+    # Disable auto-mount login service.
+    "${kwconfig}" --file kded5rc --group "Module-device_automounter" --key "autoload" "false"
 
-  # Disable auto-mount login service.
-  kwriteconfig5 --file kded5rc --group "Module-device_automounter" --key "autoload" "false"
+    # Show workspace switcher OSD and adjust default settings.
+    "${kwconfig}" --file kwinrc --group "Plugins" --key "desktopchangeosdEnabled" "true"
+    "${kwconfig}" --file kwinrc --group "Windows" --key "RollOverDesktops" "true"
+    case "${kwconfig}" in
+      kwriteconfig6)
+        "${kwconfig}" --file kwinrc --group "Plugins" --key "fadedesktopEnabled" "true"
+        "${kwconfig}" --file kwinrc --group "Plugins" --key "trackMouseEnabled" "true"
+        ;;
+      kwriteconfig5)
+        "${kwconfig}" --file kwinrc --group "Plugins" --key "kwin4_effect_fadedesktopEnabled" "true"
+        ;;
+    esac
+    "${kwconfig}" --file kwinrc --group "Plugins" --key "slideEnabled" "false"
+    "${kwconfig}" --file kwinrc --group "Script-desktopchangeosd" --key "PopupHideDelay" "300"  # speed up switcher OSD
+    "${kwconfig}" --file kwinrc --group "Script-desktopchangeosd" --key "TextOnly" "true"
 
-  # Show workspace switcher OSD and adjust default settings.
-  kwriteconfig5 --file kwinrc --group "Plugins" --key "desktopchangeosdEnabled" "true"
-  kwriteconfig5 --file kwinrc --group "Windows" --key "RollOverDesktops" "true"
-  kwriteconfig5 --file kwinrc --group "Plugins" --key "kwin4_effect_fadedesktopEnabled" "true"
-  kwriteconfig5 --file kwinrc --group "Plugins" --key "slideEnabled" "false"
-  kwriteconfig5 --file kwinrc --group "Script-desktopchangeosd" --key "PopupHideDelay" "300"  # speed up switcher OSD
-  kwriteconfig5 --file kwinrc --group "Script-desktopchangeosd" --key "TextOnly" "true"
+    # Disable software (Discover) search in krunner.
+    "${kwconfig}" --file krunnerrc --group "Plugins" --key "appstreamEnabled" "false"
 
-  # Disable software (Discover) search in krunner.
-  kwriteconfig5 --file krunnerrc --group "Plugins" --key "appstreamEnabled" "false"
+    # Increase notification time.
+    "${kwconfig}" --file plasmanotifyrc --group "Notifications" --key "PopupTimeout" "10000"
 
-  # Increase notification time.
-  kwriteconfig5 --file plasmanotifyrc --group "Notifications" --key "PopupTimeout" "10000"
+    # Use 'smart' new window placement.
+    "${kwconfig}" --file kwinrc --group "Windows" --key "Placement" "Smart"
 
-  # Use 'smart' new window placement.
-  kwriteconfig5 --file kwinrc --group "Windows" --key "Placement" "Smart"
+    # Reduce window shadows in breeze theme.
+    "${kwconfig}" --file breezerc --group "Common" --key "ShadowSize" "ShadowSmall"
+    "${kwconfig}" --file breezerc --group "Common" --key "ShadowStrength" "64"
 
-  # Reduce window shadows in breeze theme.
-  kwriteconfig5 --file breezerc --group "Common" --key "ShadowSize" "ShadowSmall"
-  kwriteconfig5 --file breezerc --group "Common" --key "ShadowStrength" "64"
+    # Make cursor waiting animation static.
+    "${kwconfig}" --file klaunchrc --group "BusyCursorSettings" --key "Bouncing" "false"
 
-  # Make cursor waiting animation static.
-  kwriteconfig5 --file klaunchrc --group "BusyCursorSettings" --key "Bouncing" "false"
+    # Enable 'Night Color' to reduce blue light at night.
+    "${kwconfig}" --file kwinrc --group "NightColor" --key "Active" "true"
+    "${kwconfig}" --file kwinrc --group "NightColor" --key "DayTemperature" "5700"
+    "${kwconfig}" --file kwinrc --group "NightColor" --key "NightTemperature" "2500"
 
-  # Enable 'Night Color' to reduce blue light at night.
-  kwriteconfig5 --file kwinrc --group "NightColor" --key "Active" "true"
-  kwriteconfig5 --file kwinrc --group "NightColor" --key "DayTemperature" "5700"
-  kwriteconfig5 --file kwinrc --group "NightColor" --key "NightTemperature" "2500"
+    # Double-click to open.
+    "${kwconfig}" --file kdeglobals --group "KDE" --key "SingleClick" "false"
 
-  # Double-click to open.
-  kwriteconfig5 --file kdeglobals --group "KDE" --key "SingleClick" "false"
+    # Speed up global animations.
+    "${kwconfig}" --file kdeglobals --group "KDE" --key "AnimationDurationFactor" "0.5"
 
-  # Speed up global animations.
-  kwriteconfig5 --file kdeglobals --group "KDE" --key "AnimationDurationFactor" "0.5"
+    # Disable Baloo indexing of file contents.
+    "${kwconfig}" --file baloofilerc --group "General" --key "only basic indexing" "true"
 
-  # Disable Baloo indexing of file contents.
-  kwriteconfig5 --file baloofilerc --group "General" --key "only basic indexing" "true"
+    # Disable plasma software update notifications.
+    "${kwconfig}" --file PlasmaDiscoverUpdates --group "Global" --key "RequiredNotificationInterval" "1"  # need to convert to -1
+    sed -i "s/^RequiredNotificationInterval=1$/RequiredNotificationInterval=-1/g" "${HOME}/.config/PlasmaDiscoverUpdates"
 
-  # Disable plasma software update notifications.
-  kwriteconfig5 --file PlasmaDiscoverUpdates --group "Global" --key "RequiredNotificationInterval" "1"  # need to convert to -1
-  sed -i "s/^RequiredNotificationInterval=1$/RequiredNotificationInterval=-1/g" "${HOME}/.config/PlasmaDiscoverUpdates"
+    # Disable top-left corner effect.
+    "${kwconfig}" --file kwinrc --group "Effect-windowview" --key "BorderActivateAll" "9"
 
-  # Disable top-left corner effect.
-  kwriteconfig5 --file kwinrc --group "Effect-windowview" --key "BorderActivateAll" "9"
+    # Remove desktop scrolling behavior.
+    "${kwconfig}" --file plasma-org.kde.plasma.desktop-appletsrc --group "ActionPlugins" --group "0" --key "wheel:Vertical;NoModifier" --delete
 
-  # Remove desktop scrolling behavior.
-  kwriteconfig5 --file plasma-org.kde.plasma.desktop-appletsrc --group "ActionPlugins" --group "0" --key "wheel:Vertical;NoModifier" --delete
+    # List desktop shortcuts top-to-bottom.
+    "${kwconfig}" --file plasma-org.kde.plasma.desktop-appletsrc --group "Containments" --group "1" --group "General" --key "arrangement" "1"
 
-  # List desktop shortcuts top-to-bottom.
-  kwriteconfig5 --file plasma-org.kde.plasma.desktop-appletsrc --group "Containments" --group "1" --group "General" --key "arrangement" "1"
+    # Disable folder preview in Desktop
+    "${kwconfig}" --file plasma-org.kde.plasma.desktop-appletsrc --group "Containments" --group "1" --group "General" --key "previewPlugins" "appimagethumbnail,audiothumbnail,blenderthumbnail,comicbookthumbnail,cursorthumbnail,djvuthumbnail,ebookthumbnail,exrthumbnail,fontthumbnail,imagethumbnail,jpegthumbnail,kraorathumbnail,windowsexethumbnail,windowsimagethumbnail,mltpreview,mobithumbnail,opendocumentthumbnail,gsthumbnail,quithumbnail,rawthumbnail,svgthumbnail,ffmpegthumbs"
 
-  # Disable folder preview in Desktop
-  kwriteconfig5 --file plasma-org.kde.plasma.desktop-appletsrc --group "Containments" --group "1" --group "General" --key "previewPlugins" "appimagethumbnail,audiothumbnail,blenderthumbnail,comicbookthumbnail,cursorthumbnail,djvuthumbnail,ebookthumbnail,exrthumbnail,fontthumbnail,imagethumbnail,jpegthumbnail,kraorathumbnail,windowsexethumbnail,windowsimagethumbnail,mltpreview,mobithumbnail,opendocumentthumbnail,gsthumbnail,quithumbnail,rawthumbnail,svgthumbnail,ffmpegthumbs"
+    # Disable screen dimming on idle.
+    "${kwconfig}" --file powermanagementprofilesrc --group "AC" --group "DimDisplay" --key "idleTime" --delete
+    "${kwconfig}" --file powermanagementprofilesrc --group "Battery" --group "DimDisplay" --key "idleTime" --delete
+    "${kwconfig}" --file powermanagementprofilesrc --group "LowBattery" --group "DimDisplay" --key "idleTime" --delete
+    "${kwconfig}" --file powermanagementprofilesrc --group "LowBattery" --group "BrightnessControl" --key "value" --delete
 
-  # Disable screen dimming on idle.
-  kwriteconfig5 --file powermanagementprofilesrc --group "AC" --group "DimDisplay" --key "idleTime" --delete
-  kwriteconfig5 --file powermanagementprofilesrc --group "Battery" --group "DimDisplay" --key "idleTime" --delete
-  kwriteconfig5 --file powermanagementprofilesrc --group "LowBattery" --group "DimDisplay" --key "idleTime" --delete
-  kwriteconfig5 --file powermanagementprofilesrc --group "LowBattery" --group "BrightnessControl" --key "value" --delete
+    # Change power notification settings.
+    "${kwconfig}" --file powerdevil.notifyrc --group "Event/criticalbattery" --key "Execute" ""
+    "${kwconfig}" --file powerdevil.notifyrc --group "Event/criticalbattery" --key "Logfile" ""
+    "${kwconfig}" --file powerdevil.notifyrc --group "Event/criticalbattery" --key "TTS" ""
 
-  # Change power notification settings.
-  kwriteconfig5 --file powerdevil.notifyrc --group "Event/criticalbattery" --key "Execute" ""
-  kwriteconfig5 --file powerdevil.notifyrc --group "Event/criticalbattery" --key "Logfile" ""
-  kwriteconfig5 --file powerdevil.notifyrc --group "Event/criticalbattery" --key "TTS" ""
+    "${kwconfig}" --file powerdevil.notifyrc --group "Event/fullbattery" --key "Action" "Popup"
+    "${kwconfig}" --file powerdevil.notifyrc --group "Event/fullbattery" --key "Execute" ""
+    "${kwconfig}" --file powerdevil.notifyrc --group "Event/fullbattery" --key "Logfile" ""
+    "${kwconfig}" --file powerdevil.notifyrc --group "Event/fullbattery" --key "TTS" ""
 
-  kwriteconfig5 --file powerdevil.notifyrc --group "Event/fullbattery" --key "Action" "Popup"
-  kwriteconfig5 --file powerdevil.notifyrc --group "Event/fullbattery" --key "Execute" ""
-  kwriteconfig5 --file powerdevil.notifyrc --group "Event/fullbattery" --key "Logfile" ""
-  kwriteconfig5 --file powerdevil.notifyrc --group "Event/fullbattery" --key "TTS" ""
+    "${kwconfig}" --file powerdevil.notifyrc --group "Event/lowbattery" --key "Action" "Popup"
+    "${kwconfig}" --file powerdevil.notifyrc --group "Event/lowbattery" --key "Execute" ""
+    "${kwconfig}" --file powerdevil.notifyrc --group "Event/lowbattery" --key "Logfile" ""
+    "${kwconfig}" --file powerdevil.notifyrc --group "Event/lowbattery" --key "TTS" ""
 
-  kwriteconfig5 --file powerdevil.notifyrc --group "Event/lowbattery" --key "Action" "Popup"
-  kwriteconfig5 --file powerdevil.notifyrc --group "Event/lowbattery" --key "Execute" ""
-  kwriteconfig5 --file powerdevil.notifyrc --group "Event/lowbattery" --key "Logfile" ""
-  kwriteconfig5 --file powerdevil.notifyrc --group "Event/lowbattery" --key "TTS" ""
+    "${kwconfig}" --file powerdevil.notifyrc --group "Event/lowperipheralbattery" --key "Action" "Popup"
+    "${kwconfig}" --file powerdevil.notifyrc --group "Event/lowperipheralbattery" --key "Execute" ""
+    "${kwconfig}" --file powerdevil.notifyrc --group "Event/lowperipheralbattery" --key "Logfile" ""
+    "${kwconfig}" --file powerdevil.notifyrc --group "Event/lowperipheralbattery" --key "TTS" ""
 
-  kwriteconfig5 --file powerdevil.notifyrc --group "Event/lowperipheralbattery" --key "Action" "Popup"
-  kwriteconfig5 --file powerdevil.notifyrc --group "Event/lowperipheralbattery" --key "Execute" ""
-  kwriteconfig5 --file powerdevil.notifyrc --group "Event/lowperipheralbattery" --key "Logfile" ""
-  kwriteconfig5 --file powerdevil.notifyrc --group "Event/lowperipheralbattery" --key "TTS" ""
+    "${kwconfig}" --file powerdevil.notifyrc --group "Event/pluggedin" --key "Action" ""
+    "${kwconfig}" --file powerdevil.notifyrc --group "Event/pluggedin" --key "Execute" ""
+    "${kwconfig}" --file powerdevil.notifyrc --group "Event/pluggedin" --key "Logfile" ""
+    "${kwconfig}" --file powerdevil.notifyrc --group "Event/pluggedin" --key "TTS" ""
 
-  kwriteconfig5 --file powerdevil.notifyrc --group "Event/pluggedin" --key "Action" ""
-  kwriteconfig5 --file powerdevil.notifyrc --group "Event/pluggedin" --key "Execute" ""
-  kwriteconfig5 --file powerdevil.notifyrc --group "Event/pluggedin" --key "Logfile" ""
-  kwriteconfig5 --file powerdevil.notifyrc --group "Event/pluggedin" --key "TTS" ""
+    "${kwconfig}" --file powerdevil.notifyrc --group "Event/unplugged" --key "Action" ""
+    "${kwconfig}" --file powerdevil.notifyrc --group "Event/unplugged" --key "Execute" ""
+    "${kwconfig}" --file powerdevil.notifyrc --group "Event/unplugged" --key "Logfile" ""
+    "${kwconfig}" --file powerdevil.notifyrc --group "Event/unplugged" --key "TTS" ""
 
-  kwriteconfig5 --file powerdevil.notifyrc --group "Event/unplugged" --key "Action" ""
-  kwriteconfig5 --file powerdevil.notifyrc --group "Event/unplugged" --key "Execute" ""
-  kwriteconfig5 --file powerdevil.notifyrc --group "Event/unplugged" --key "Logfile" ""
-  kwriteconfig5 --file powerdevil.notifyrc --group "Event/unplugged" --key "TTS" ""
+    # Remove file size limit for Trash
+    "${kwconfig}" --file ktrashrc --group "${HOME}/.local/share/Trash" --key "UseSizeLimit" "false"
 
-  # Remove file size limit for Trash
-  kwriteconfig5 --file ktrashrc --group "${HOME}/.local/share/Trash" --key "UseSizeLimit" "false"
+    # Do not prompt to clear clipboard.
+    "${kwconfig}" --file plasmashellrc --group "Notification Messages" --key "klipperClearHistoryAskAgain" "false"
 
-  # Do not prompt to clear clipboard.
-  kwriteconfig5 --file plasmashellrc --group "Notification Messages" --key "klipperClearHistoryAskAgain" "false"
+    # Do not save non-text to clipboard.
+    "${kwconfig}" --file klipperrc --group "General" --key "SelectionTextOnly" "false"
 
-  # Do not save non-text to clipboard.
-  kwriteconfig5 --file klipperrc --group "General" --key "SelectionTextOnly" "false"
+    # Dolphin settings.
+    "${kwconfig}" --file dolphinrc --group "General" --key "GlobalViewProps" "false"  # enable per-directory view style (e.g. sort by name, date modified, etc.)
+    "${kwconfig}" --file dolphinrc --group "General" --key "BrowseThroughArchives" "true"  # open archives as folders
+    "${kwconfig}" --file kdeglobals --group "KDE" --key "ShowDeleteCommand" "true"  # show delete command in menu
+    "${kwconfig}" --file kservicemenurc --group "Show" --key "runInKonsole" "false" # disable 'run in konsole' option in dolphin
+    "${kwconfig}" --file kiorc --group "Confirmations" --key "ConfirmDelete" "false"
+    "${kwconfig}" --file kiorc --group "Confirmations" --key "ConfirmEmptyTrash" "false"
+    "${kwconfig}" --file dolphinrc --group "General" --key "ConfirmClosingMultipleTabs" "false"
+    "${kwconfig}" --file dolphinrc --group "PreviewSettings" --key "Plugins" "appimagethumbnail,audiothumbnail,blenderthumbnail,comicbookthumbnail,cursorthumbnail,djvuthumbnail,ebookthumbnail,exrthumbnail,fontthumbnail,imagethumbnail,jpegthumbnail,kraorathumbnail,windowsexethumbnail,windowsimagethumbnail,mltpreview,mobithumbnail,opendocumentthumbnail,gsthumbnail,quithumbnail,rawthumbnail,svgthumbnail,ffmpegthumbs"  # disable folder image previews
+    "${kwconfig}" --file dolphinrc --group "KFileDialog Settings" --key "Places Icons Auto-resize" "true"  # auto-resize the icons
+    "${kwconfig}" --file dolphinrc --group "PlacesPanel" --key "IconSize" "1"  # change to -1 later
+    sed -i "s/^IconSize=1$/IconSize=-1/g" "${HOME}/.config/dolphinrc"
+    "${kwconfig}" --file dolphinrc --group "MainWindow" --group "Toolbar mainToolBar" --key "ToolButtonStyle" "IconOnly"  # icon-only menus in toolbar
 
-  # Dolphin settings.
-  kwriteconfig5 --file dolphinrc --group "General" --key "GlobalViewProps" "false"  # enable per-directory view style (e.g. sort by name, date modified, etc.)
-  kwriteconfig5 --file dolphinrc --group "General" --key "BrowseThroughArchives" "true"  # open archives as folders
-  kwriteconfig5 --file kdeglobals --group "KDE" --key "ShowDeleteCommand" "true"  # show delete command in menu
-  kwriteconfig5 --file kservicemenurc --group "Show" --key "runInKonsole" "false" # disable 'run in konsole' option in dolphin
-  kwriteconfig5 --file kiorc --group "Confirmations" --key "ConfirmDelete" "false"
-  kwriteconfig5 --file kiorc --group "Confirmations" --key "ConfirmEmptyTrash" "false"
-  kwriteconfig5 --file dolphinrc --group "General" --key "ConfirmClosingMultipleTabs" "false"
-  kwriteconfig5 --file dolphinrc --group "PreviewSettings" --key "Plugins" "appimagethumbnail,audiothumbnail,blenderthumbnail,comicbookthumbnail,cursorthumbnail,djvuthumbnail,ebookthumbnail,exrthumbnail,fontthumbnail,imagethumbnail,jpegthumbnail,kraorathumbnail,windowsexethumbnail,windowsimagethumbnail,mltpreview,mobithumbnail,opendocumentthumbnail,gsthumbnail,quithumbnail,rawthumbnail,svgthumbnail,ffmpegthumbs"  # disable folder image previews
-  kwriteconfig5 --file dolphinrc --group "KFileDialog Settings" --key "Places Icons Auto-resize" "true"  # auto-resize the icons
-  kwriteconfig5 --file dolphinrc --group "PlacesPanel" --key "IconSize" "1"  # change to -1 later
-  sed -i "s/^IconSize=1$/IconSize=-1/g" "${HOME}/.config/dolphinrc"
-  kwriteconfig5 --file dolphinrc --group "MainWindow" --group "Toolbar mainToolBar" --key "ToolButtonStyle" "IconOnly"  # icon-only menus in toolbar
+    # Stop notification sound when emptying trash.
+    "${kwconfig}" --file plasma_workspace.notifyrc --group "Event/Trash: emptied" --key "Action" ""
+    "${kwconfig}" --file plasma_workspace.notifyrc --group "Event/Trash: emptied" --key "Execute" ""
+    "${kwconfig}" --file plasma_workspace.notifyrc --group "Event/Trash: emptied" --key "Logfile" ""
+    "${kwconfig}" --file plasma_workspace.notifyrc --group "Event/Trash: emptied" --key "TTS" ""
 
-  # Stop notification sound when emptying trash.
-  kwriteconfig5 --file plasma_workspace.notifyrc --group "Event/Trash: emptied" --key "Action" ""
-  kwriteconfig5 --file plasma_workspace.notifyrc --group "Event/Trash: emptied" --key "Execute" ""
-  kwriteconfig5 --file plasma_workspace.notifyrc --group "Event/Trash: emptied" --key "Logfile" ""
-  kwriteconfig5 --file plasma_workspace.notifyrc --group "Event/Trash: emptied" --key "TTS" ""
+    show_info "Adjusting Okular default settings."
+    "${kwconfig}" --file okularrc --group "MainWindow" --group "Toolbar mainToolBar" --key "ToolButtonStyle" "IconOnly" # icons-only menus
+    "${kwconfig}" --file okularrc --group "MainWindow" --key "MenuBar" "Disabled"
+    "${kwconfig}" --file okularpartrc --group "PageView" --key "SmoothScrolling" "false"
+    "${kwconfig}" --file okularpartrc --group "PageView" --key "TrimMargins" "true"
+    "${kwconfig}" --file okularpartrc --group "Core Performance" --key "MemoryLevel" "Aggressive"
 
-  show_info "Adjusting Okular default settings."
-  kwriteconfig5 --file okularrc --group "MainWindow" --group "Toolbar mainToolBar" --key "ToolButtonStyle" "IconOnly" # icons-only menus
-  kwriteconfig5 --file okularrc --group "MainWindow" --key "MenuBar" "Disabled"
-  kwriteconfig5 --file okularpartrc --group "PageView" --key "SmoothScrolling" "false"
-  kwriteconfig5 --file okularpartrc --group "PageView" --key "TrimMargins" "true"
-  kwriteconfig5 --file okularpartrc --group "Core Performance" --key "MemoryLevel" "Aggressive"
+    show_info "Adjusting gwenview default settings."
+    "${kwconfig}" --file gwenviewrc --group "ImageView" --key "AnimationMethod" "DocumentView::NoAnimation"
+    "${kwconfig}" --file gwenviewrc --group "ImageView" --key "MouseWheelBehavior" "MouseWheelBehavior::Zoom"
+    "${kwconfig}" --file gwenviewrc --group "ImageView" --key "EnlargeSmallerImages" "true"
+    "${kwconfig}" --file gwenviewrc --group "ThumbnailView" --key "ListVideos" "false"
 
-  show_info "Adjusting gwenview default settings."
-  kwriteconfig5 --file gwenviewrc --group "ImageView" --key "AnimationMethod" "DocumentView::NoAnimation"
-  kwriteconfig5 --file gwenviewrc --group "ImageView" --key "MouseWheelBehavior" "MouseWheelBehavior::Zoom"
-  kwriteconfig5 --file gwenviewrc --group "ImageView" --key "EnlargeSmallerImages" "true"
-  kwriteconfig5 --file gwenviewrc --group "ThumbnailView" --key "ListVideos" "false"
-
-  if qdbus org.kde.KWin > /dev/null; then
-    qdbus org.kde.KWin /KWin reconfigure
+    if qdbus org.kde.KWin > /dev/null; then
+      qdbus org.kde.KWin /KWin reconfigure
+    fi
   fi
 
   # Because the Wayland protocol does not allow for global keylogging needed to
@@ -862,27 +915,30 @@ function enable_autologin {
 
   if dpkg -s sddm > /dev/null 2>&1; then
     show_info "Log in as ${USER@Q} via SDDM."
-    if ! [ -d /etc/sddm.conf.d/ ]; then
-      sudo mkdir /etc/sddm.conf.d/
-      sudo touch "${sddmconf}"
+    local kwconfig
+    if kwconfig="$(_get_kwrite_config)"; then
+      if ! [ -d /etc/sddm.conf.d/ ]; then
+        sudo mkdir /etc/sddm.conf.d/
+        sudo touch "${sddmconf}"
 
-      sudo kwriteconfig5 --file "${sddmconf}" --group Autologin --key Relogin "false"
-      sudo kwriteconfig5 --file "${sddmconf}" --group Autologin --key Session "${DESKTOP_SESSION:-plasmawayland}"
-      sudo kwriteconfig5 --file "${sddmconf}" --group Autologin --key User "${USER}"
+        sudo "${kwconfig}" --file "${sddmconf}" --group Autologin --key Relogin "false"
+        sudo "${kwconfig}" --file "${sddmconf}" --group Autologin --key Session "${DESKTOP_SESSION:-plasmawayland}"
+        sudo "${kwconfig}" --file "${sddmconf}" --group Autologin --key User "${USER}"
 
-      sudo kwriteconfig5 --file "${sddmconf}" --group General --key HaltCommand ""
-      sudo kwriteconfig5 --file "${sddmconf}" --group General --key RebootCommand ""
+        sudo "${kwconfig}" --file "${sddmconf}" --group General --key HaltCommand ""
+        sudo "${kwconfig}" --file "${sddmconf}" --group General --key RebootCommand ""
 
-      sudo kwriteconfig5 --file "${sddmconf}" --group Theme --key Current ""
+        sudo "${kwconfig}" --file "${sddmconf}" --group Theme --key Current ""
 
-      sudo kwriteconfig5 --file "${sddmconf}" --group Users --key MaximumUid 60000
-      sudo kwriteconfig5 --file "${sddmconf}" --group Users --key MinimumUid 1000
-    else
-      sudo kwriteconfig5 --file "${sddmconf}" --group Autologin --key Relogin "false"
-      sudo kwriteconfig5 --file "${sddmconf}" --group Autologin --key Session "${DESKTOP_SESSION:-plasmawayland}"
-      sudo kwriteconfig5 --file "${sddmconf}" --group Autologin --key User "${USER}"
+        sudo "${kwconfig}" --file "${sddmconf}" --group Users --key MaximumUid 60000
+        sudo "${kwconfig}" --file "${sddmconf}" --group Users --key MinimumUid 1000
+      else
+        sudo "${kwconfig}" --file "${sddmconf}" --group Autologin --key Relogin "false"
+        sudo "${kwconfig}" --file "${sddmconf}" --group Autologin --key Session "${DESKTOP_SESSION:-plasmawayland}"
+        sudo "${kwconfig}" --file "${sddmconf}" --group Autologin --key User "${USER}"
+      fi
+      is_autologin_set=true
     fi
-    is_autologin_set=true
   fi
 
   if "${is_autologin_set}"; then

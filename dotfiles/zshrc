@@ -54,6 +54,12 @@ if command -v cargo > /dev/null 2>&1; then
   fi
 fi
 
+if command -v luarocks > /dev/null 2>&1; then
+  if ! [[ "${PATH}" =~ :?${HOME}/.luarocks/bin:? ]]; then
+    export PATH="${HOME}/.luarocks/bin:${PATH}"
+  fi
+fi
+
 # npm
 if command -v npm > /dev/null 2>&1; then
   export NPM_CONFIG_PREFIX="${HOME}/.npm"

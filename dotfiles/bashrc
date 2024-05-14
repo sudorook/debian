@@ -163,9 +163,11 @@ function run_silent {
   fi
 }
 
+make_silent ebook-viewer
 make_silent eog
 make_silent evince
 make_silent feh
+make_silent firefox
 make_silent gimp
 make_silent gitg
 make_silent gitk

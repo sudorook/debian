@@ -1,10 +1,12 @@
 bc
-curl
 cryptsetup
+curl
 debootstrap
 dosfstools
 fzf
 gdisk
+grep
 lvm2
 parted
+sed
 systemd-boot

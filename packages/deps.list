@@ -1,2 +1,4 @@
 curl
 git
+grep
+sed

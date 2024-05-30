@@ -995,7 +995,7 @@ function install_gummiboot {
       fi
 
       # add entry to /etc/crypttab
-      if grep "${crypt_uuid}" /etc/crypttab > /dev/null 2>&1; then
+      if grep -q "${crypt_uuid}" /etc/crypttab; then
         sed -i "s|\([a-zA-Z0-9_-]\+\)\(\s\+\)UUID=${crypt_uuid}\(\s\+\)none\(\s\+\)\([A-Za-z0-9_\-\=,]\+\)|\1\2UUID=${crypt_uuid}\3none\4luks,discard|g" /etc/crypttab
       else
         echo "${PV}	UUID=${crypt_uuid}	none	luks,discard" >> /etc/crypttab
@@ -1085,7 +1085,7 @@ function install_grub {
     sed -i "s|^GRUB_CMDLINE_LINUX=[\"\"]*|GRUB_CMDLINE_LINUX=\"${cmdline}\"|g" /etc/default/grub
   fi
 
-  if grep "^#GRUB_ENABLE_CRYPTODISK" /etc/default/grub > /dev/null 2>&1; then
+  if grep -q "^#GRUB_ENABLE_CRYPTODISK" /etc/default/grub; then
     sed -i "s/^#GRUB_ENABLE_CRYPTODISK/GRUB_ENABLE_CRYPTODISK/g" /etc/default/grub
   else
     sed -i "/^GRUB_CMDLINE_LINUX=/a GRUB_ENABLE_CRYPTODISK=y" /etc/default/grub
@@ -1116,7 +1116,7 @@ function make_luks_key {
 
   # add key to /etc/crypttab
   crypt_uuid="$(lsblk -dno UUID "${CRYPT_PARTITION}")"
-  if grep "${crypt_uuid}" /etc/crypttab > /dev/null 2>&1; then
+  if grep -q "${crypt_uuid}" /etc/crypttab; then
     sed -i "s|\([a-zA-Z0-9_-]\+\)\(\s\+\)UUID=${crypt_uuid}\(\s\+\)none\(\s\+\)\([A-Za-z0-9_\-\=,]\+\)|\1\2UUID=${crypt_uuid}\3/${crypt_key}\4luks,discard,key-slot=1,keyscript=/bin/cat|g" /etc/crypttab
   else
     echo "${PV}	UUID=${crypt_uuid}	/${crypt_key}	luks,discard,key-slot=1,keyscript=/bin/cat" >> /etc/crypttab

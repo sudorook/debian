@@ -374,7 +374,7 @@ function install_kvm {
 
 function install_kvm_guest {
   local kvmguest="${DIR}/packages/kvm-guest.list"
-  if grep "^flags.*\ hypervisor" /proc/cpuinfo > /dev/null 2>&1; then
+  if grep -q "^flags.*\ hypervisor" /proc/cpuinfo; then
     show_header "Installing tools for KVM guests."
     check_installed "${kvmguest}"
     show_success "KVM installed."
@@ -764,7 +764,7 @@ function install_virtualbox {
 
 function install_virtualbox_guest {
   local virtualboxguest="${DIR}/packages/virtualbox-guest.list"
-  if grep "^flags.*\ hypervisor" /proc/cpuinfo > /dev/null 2>&1; then
+  if grep -q "^flags.*\ hypervisor" /proc/cpuinfo; then
     show_header "Installing packages for VirtualBox guests."
     check_installed "${virtualboxguest}"
     show_success "VirtualBox guest packages installed."

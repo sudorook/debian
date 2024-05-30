@@ -617,7 +617,7 @@ function set_dark_gtk {
   local gtksettings="${HOME}/.config/gtk-3.0/settings.ini"
   show_header "Setting global dark theme for gtk applications."
   local isgtkdark
-  if grep ^gtk-application-prefer-dark-theme= "${gtksettings}" > /dev/null 2>&1; then
+  if grep -q ^gtk-application-prefer-dark-theme= "${gtksettings}"; then
     isgtkdark=$(grep ^gtk-application-prefer-dark-theme= "${gtksettings}" | cut -d"=" -f2)
     if test "${isgtkdark}"; then
       show_info "Desktop is already set to use dark GTK variants."
@@ -1049,7 +1049,7 @@ function disable_11n {
     sudo sh -c "echo 'options iwlwifi 11n_disable=1' >> ${iwlwificonf}"
   else
     if ! find /etc/modprobe.d/ -type f \
-         -exec grep "^options iwlwifi .*11n_disable=1.*" {} + > /dev/null 2>&1; then
+         -exec grep -q "^options iwlwifi .*11n_disable=1.*" {} +; then
       sudo sh -c "echo 'options iwlwifi 11n_disable=1' >> ${iwlwificonf}"
     else
       show_info "11n_disable=1 flag is already set."

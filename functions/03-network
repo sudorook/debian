@@ -28,7 +28,7 @@ function install_network {
   show_success "Networking applications installed."
 
   show_info "Setting up MAC address randomization in Network Manager."
-  if ! test "$(grep "mac-address=random" ${nmconf})"; then
+  if ! grep -q "mac-address=random" "${nmconf}"; then
     sudo sh -c "echo "" >> ${nmconf}"
     sudo sh -c "echo '# Enabling built-in MAC Address randomization' >> ${nmconf}"
     sudo sh -c "echo '[connection-mac-randomization]' >> ${nmconf}"

@@ -113,7 +113,6 @@ flycheck_*.el
 # network security
 /network-security.data
 
-
 #
 # FROM: https://raw.githubusercontent.com/sudorook/gitignore/tweak/Global/Linux.gitignore
 #

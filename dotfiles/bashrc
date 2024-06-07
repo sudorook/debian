@@ -90,11 +90,8 @@ fi
 
 # beet autocompletion
 if command -v beet > /dev/null 2>&1; then
-  if [ -f "/usr/share/bash-completion/completions/beet" ]; then
-    source "/usr/share/bash-completion/completions/beet"
-  elif [ -f "${HOME}/.local/share/bash-completion/completions/beet" ]; then
-    source "${HOME}/.local/share/bash-completion/completions/beet"
-  else
+  if ! [ -f "/usr/share/bash-completion/completions/beet" ] &&
+     ! [ -f "${HOME}/.local/share/bash-completion/completions/beet" ]; then
     eval "$(beet completion)"
   fi
 fi

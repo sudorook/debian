@@ -1,5 +1,9 @@
 #! /bin/zsh
 
+#
+# ~/.zshrc
+#
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -73,13 +77,15 @@ if command -v R Rscript > /dev/null 2>&1; then
   R_LIBS_USER="$(Rscript --version)"
   R_LIBS_USER=("${=R_LIBS_USER}")
   R_LIBS_USER="${HOME}/.R/${R_LIBS_USER[4]}"
-  if ! [ -d "${R_LIBS_USER}" ]; then
-    mkdir -p "${R_LIBS_USER}"
-  fi
-  export R_LIBS_USER
-  alias R='R --no-save '
-  if [ -d /usr/share/mathjax ]; then
-    export RMARKDOWN_MATHJAX_PATH=/usr/share/mathjax
+  if [ -n "${R_LIBS_USER}" ]; then
+    export R_LIBS_USER
+    if ! [ -d "${R_LIBS_USER}" ]; then
+      mkdir -p "${R_LIBS_USER}"
+    fi
+    alias R='R --no-save '
+    if [ -d /usr/share/mathjax ]; then
+      export RMARKDOWN_MATHJAX_PATH=/usr/share/mathjax
+    fi
   fi
 fi
 
@@ -142,7 +148,7 @@ function make_silent {
     local cmd
     local bin
     bin="$(which "${1}")"
-    cmd="function ${1} { local cmd=\"(${bin} \${@:q} >/dev/null 2>&1 &!)\"; eval \"\${cmd}\"; }"
+    cmd="function ${1} { local cmd=\"(${bin} \${@:q} > /dev/null 2>&1 &!)\"; eval \"\${cmd}\"; }"
     eval "${cmd}"
   fi
 }
@@ -151,7 +157,7 @@ function run_silent {
   if command -v "${1}" > /dev/null 2>&1; then
     local bin="${1}"
     local args=(${@:2})
-    (${bin} ${args[@]} >/dev/null 2>&1 &!);
+    (${bin} ${args[@]} > /dev/null 2>&1 &!);
   fi
 }
 
@@ -170,7 +176,7 @@ make_silent okular
 
 unset -f make_silent
 
-if { command -v yt-dlp && ! command -v youtube-dl; } >/dev/null 2>&1; then
+if { command -v yt-dlp && ! command -v youtube-dl; } > /dev/null 2>&1; then
   alias youtube-dl='yt-dlp '
 fi
 

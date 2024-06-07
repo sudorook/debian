@@ -149,7 +149,7 @@ function make_silent {
     local cmd
     local bin
     bin="$(which "${1}")"
-    cmd="function ${1} { local cmd=\"(${bin} \${@@Q} >/dev/null 2>&1 &)\"; eval \"\${cmd}\"; }"
+    cmd="function ${1} { local cmd=\"(${bin} \${@@Q} > /dev/null 2>&1 &)\"; eval \"\${cmd}\"; }"
     eval "${cmd}"
   fi
 }

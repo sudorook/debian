@@ -69,7 +69,7 @@ if command -v npm > /dev/null 2>&1; then
 fi
 
 # R
-if command -v R > /dev/null 2>&1; then
+if command -v R Rscript > /dev/null 2>&1; then
   R_LIBS_USER="$(Rscript --version)"
   R_LIBS_USER=("${=R_LIBS_USER}")
   R_LIBS_USER="${HOME}/.R/${R_LIBS_USER[4]}"

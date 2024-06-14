@@ -132,6 +132,7 @@ elif command -v vim > /dev/null 2>&1; then
   alias vi='vim '
 fi
 alias sudo='sudo '
+alias visudo='EDITOR=${EDITOR} visudo '
 alias grep='grep --color=auto'
 alias diff='diff --color=auto'
 alias happymake="make -j\$(nproc) && sudo make install"

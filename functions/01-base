@@ -240,11 +240,13 @@ function upgrade_debian_release {
     fi
 
     sync_repos
-    sudo sh -c "apt-get -y upgrade && \
-                apt-get -y dist-upgrade && \
-                apt-get -y autoremove && \
-                apt-get -y autoclean && \
-                update-grub"
+  sudo sh -e << EOF
+apt -y upgrade
+apt -y full-upgrade
+apt -y autoremove
+apt -y autoclean
+update-grub
+EOF
 
     show_info "Reboot your system after major updates."
   fi
@@ -272,11 +274,13 @@ function purge_packages {
 function update_packages {
   show_header "Updating packages."
   sync_repos
-  sudo sh -c "apt-get -y upgrade && \
-              apt-get -y dist-upgrade && \
-              apt-get -y autoremove && \
-              apt-get -y autoclean && \
-              update-grub"
+  sudo sh -e << EOF
+apt -y upgrade
+apt -y full-upgrade
+apt -y autoremove
+apt -y autoclean
+update-grub
+EOF
   show_success "Packages updated."
 }
 

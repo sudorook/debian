@@ -960,9 +960,9 @@ export -f disable_root
 # function install_ucode {
 #   vendor="$(lscpu | sed -n "s,^Vendor ID: \+\([A-Za-z]\+\),\1,p")"
 #   if [[ "$vendor" =~ "AMD" ]]; then
-#     apt-get -y install amd64-microcode
+#     apt -y install amd64-microcode
 #   elif [[ "$vendor" =~ "Intel" ]]; then
-#     apt-get -y install intel-microcode
+#     apt -y install intel-microcode
 #   fi
 # }
 # export -f install_ucode
@@ -1052,9 +1052,9 @@ export -f install_gummiboot
 
 function install_grub {
   if [ -e /sys/firmware/efi ]; then
-    apt-get -y install grub-efi grub-pc-bin os-prober efibootmgr
+    apt -y install grub-efi grub-pc-bin os-prober efibootmgr
   else
-    apt-get -y install grub-pc os-prober
+    apt -y install grub-pc os-prober
   fi
 
   local root_uuid
@@ -1147,20 +1147,20 @@ EOF
 export -f make_luks_key
 
 function update_mirrorlist {
-  apt-get -y update
-  apt-get -y upgrade
-  apt-get -y dist-upgrade
+  apt -y update
+  apt -y upgrade
+  apt -y full-upgrade
 }
 export -f update_mirrorlist
 
 function install_packages {
-  apt-get -y install \
+  apt -y install \
     apt-transport-https bash-completion linux-base git man-db manpages \
     lsb-release network-manager curl rsync iwd netselect-apt lvm2 sudo \
     linux-image-amd64 linux-headers-amd64
 
   if [[ "${SCHEME}" =~ LUKS ]]; then
-    apt-get -y install cryptsetup
+    apt -y install cryptsetup
   fi
   tasksel install standard
 }

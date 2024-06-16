@@ -186,7 +186,7 @@ function check_installed {
     fi
   done < "${1}"
   if [[ -v to_install ]]; then
-    sudo apt-get -y install "${to_install[@]}"
+    sudo apt -y install "${to_install[@]}"
   fi
 }
 
@@ -197,8 +197,8 @@ function check_uninstalled {
 
     if dpkg -s "${package}" > /dev/null 2>&1; then
       show_listitem "Purging ${package@Q}."
-      sudo apt-get -y purge "${package}"
-      sudo apt-get -y autoremove
+      sudo apt -y purge "${package}"
+      sudo apt -y autoremove
     else
       show_warning "${package@Q} is not installed. Skipping."
     fi
@@ -239,7 +239,7 @@ function install_post_dependencies {
   while read -r package; do
     if ! dpkg -s "${package}" > /dev/null 2>&1; then
       show_info "${package@Q} is needed for this script."
-      sudo apt-get -y install "${package}"
+      sudo apt -y install "${package}"
       show_success "${package@Q} now installed."
     else
       show_success "${package@Q} is already installed."
@@ -264,7 +264,7 @@ function install_dependencies {
   while read -r package; do
     if ! dpkg -s "${package}" > /dev/null 2>&1; then
       show_info "${package@Q} is needed for this script."
-      apt-get -y install "${package}"
+      apt -y install "${package}"
       show_success "${package@Q} now installed."
     else
       show_success "${package@Q} is already installed."
@@ -281,10 +281,10 @@ function install_sudo {
     show_header "sudo is needed for this script."
     show_info "Installing sudo via root (enter root password):"
     if [ ${EUID} -eq 0 ]; then
-      apt-get -y install sudo
+      apt -y install sudo
       show_success "sudo installed." # will exit after check_user()
     else
-      su root - sh -c "apt-get -y install sudo && /sbin/adduser $(whoami) sudo"
+      su root - sh -c "apt -y install sudo && /sbin/adduser $(whoami) sudo"
       show_success "sudo installed and $(whoami) added to group sudo."
       show_info "Log out and log back in again."
       exit

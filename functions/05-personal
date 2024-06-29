@@ -661,7 +661,7 @@ function import_kde_settings {
     "${kwconfig}" --file kglobalshortcutsrc --group "kwin" --key "Window to Next Desktop" "Ctrl+Alt+Shift+Right,,Window to Next Desktop"
     "${kwconfig}" --file kglobalshortcutsrc --group "kwin" --key "Window to Previous Desktop" "Ctrl+Alt+Shift+Left,,Window to Previous Desktop"
 
-    # Use 'Automatic' virtual destkop layout for overview, and display desktop name labels.
+    # Use 'Automatic' virtual desktop layout for overview, and display desktop name labels.
     "${kwconfig}" --file kwinrc --group "Effect-desktopgrid" --key "DesktopLayoutMode" "1"     # automatic
     "${kwconfig}" --file kwinrc --group "Effect-desktopgrid" --key "DesktopNameAlignment" "68"  # desktop names at bottom
 

@@ -256,7 +256,7 @@ function deactivate_lvm {
 
 SCHEME=
 function ask_partition_scheme {
-  show_header "Parition scheme:"
+  show_header "Partition scheme:"
   local options=("Back" "LVM on LUKS" "LVM" "Plain")
   local option
   select option in "${options[@]}"; do
@@ -931,7 +931,7 @@ function ask_lukspass {
   local is_invalid=true
   while "${is_invalid}"; do
     tmp1="$(ask_secret "LUKS decryption password")"
-    tmp2="$(ask_secret "Re-enter LUKS decription password")"
+    tmp2="$(ask_secret "Re-enter LUKS decryption password")"
     if [ -z "${tmp1}" ]; then
       show_error "ERROR: no password given."
       continue
@@ -1122,7 +1122,7 @@ function make_luks_key {
     echo "${PV}	UUID=${crypt_uuid}	/${crypt_key}	luks,discard,key-slot=1,keyscript=/bin/cat" >> /etc/crypttab
   fi
 
-  # add hook to copy encrytion key to initial ramdisk
+  # add hook to copy encryption key to initial ramdisk
   cat > /etc/initramfs-tools/hooks/crypto_keyfile << EOF
 #!/bin/sh
 cp "${crypt_key_path}" "\${DESTDIR}"

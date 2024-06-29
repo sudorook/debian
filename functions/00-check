@@ -22,7 +22,7 @@ DIR="$(dirname "$0")"
 export MIDBRANCH="\0342\0224\0234\0342\0224\0200\0342\0224\0200"
 export ENDBRANCH="\0342\0224\0224\0342\0224\0200\0342\0224\0200"
 
-export HEIRARCHY="Main
+export HIERARCHY="Main
  ${MIDBRANCH} Base
  ${MIDBRANCH} Miscellaneous
  ${MIDBRANCH} Desktop environment

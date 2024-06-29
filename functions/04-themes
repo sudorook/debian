@@ -329,7 +329,7 @@ function install_plasma_timed_backgrounds {
 
 function set_qtcompat {
   local qt5ctconf="${DIR}/configs/qt5ct.conf"
-  local qt6ctconf="${DIR}/configs/qt5ct.conf"  # re-use qt5ct config for qt6ct
+  local qt6ctconf="${DIR}/configs/qt5ct.conf"  # reuse qt5ct config for qt6ct
   show_info "Copying qt5ct config."
   mkdir -p "${HOME}/.config/qt5ct"
   cp -f "${qt5ctconf}" "${HOME}/.config/qt5ct"

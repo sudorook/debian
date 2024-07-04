@@ -62,9 +62,15 @@ function main {
   format_partitions
 
   mount_install
-  debootstrap \
-    --include=locales,keyboard-configuration,cryptsetup,cryptsetup-initramfs,lvm2,zstd,util-linux,util-linux-extra \
-    --arch amd64 "${RELEASE}" /mnt https://deb.debian.org/debian
+  if [ "${RELEASE_VERSION}" -gt 11 ]; then
+    debootstrap \
+      --include=locales,keyboard-configuration,cryptsetup,cryptsetup-initramfs,lvm2,zstd,util-linux,util-linux-extra \
+      --arch amd64 "${RELEASE_NAME}" /mnt https://deb.debian.org/debian
+  else
+    debootstrap \
+      --include=locales,keyboard-configuration,cryptsetup,cryptsetup-initramfs,lvm2,zstd,util-linux \
+      --arch amd64 "${RELEASE_NAME}" /mnt https://deb.debian.org/debian
+  fi
   mkdir -p /mnt/run/udev
   for FS in proc sys dev dev/pts run/udev; do
     mount --bind /${FS} /mnt/${FS}
@@ -78,7 +84,7 @@ function main {
   LOCALE="${LOCALE}" CHARSET="${CHARSET}" chroot /mnt /bin/bash -c "set_locale"
   KBLAYOUT="us" chroot /mnt /bin/bash -c "set_keyboard"
 
-  cp "sources/${RELEASE}-sources.list" "/mnt/etc/apt/sources.list"
+  cp "sources/${RELEASE_NAME}-sources.list" "/mnt/etc/apt/sources.list"
   chroot /mnt /bin/bash -c "update_mirrorlist"
   SCHEME="${SCHEME}" chroot /mnt /bin/bash -c "install_packages"
   # chroot /mnt /bin/bash -c "install_ucode"

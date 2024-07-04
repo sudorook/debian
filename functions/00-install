@@ -34,7 +34,8 @@ function is_size_nonzero {
 }
 export -f is_size_nonzero
 
-RELEASE=
+RELEASE_NAME=
+RELEASE_VERSION=
 function ask_release {
   show_question "Select Debian release:"
   local options=("Back"
@@ -49,24 +50,29 @@ function ask_release {
         exit
         ;;
       "Bullseye (oldstable)")
-        RELEASE=bullseye
+        RELEASE_NAME=bullseye
+        RELEASE_VERSION=11
         break
         ;;
       "Bookworm (stable)")
-        RELEASE=bookworm
+        RELEASE_NAME=bookworm
+        RELEASE_VERSION=12
         break
         ;;
       "Trixie (testing)")
-        RELEASE=trixie
+        RELEASE_NAME=trixie
+        RELEASE_VERSION=13
         break
         ;;
       "Sid (unstable)")
-        RELEASE=sid
+        RELEASE_NAME=sid
+        RELEASE_VERSION=unstable
         break
         ;;
     esac
   done
-  export RELEASE
+  export RELEASE_NAME
+  export RELEASE_VERSION
 }
 
 DEVICE=

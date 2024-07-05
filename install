@@ -130,8 +130,10 @@ function main {
 
 check_root
 check_network
-check_sync_repos
-install_dependencies
+if ! check_install_commands; then
+  check_sync_repos
+  install_dependencies
+fi
 
 #
 # GO!!!

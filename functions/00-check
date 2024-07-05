@@ -232,6 +232,25 @@ function sync_repos {
   fi
 }
 
+function check_install_commands {
+  local install_cmds=(
+    apt
+    debootstrap
+    findmnt
+    fzf
+    mount
+    sed
+    umount
+  )
+  local c
+  for c in "${install_cmds[@]}"; do
+    if ! command -v "${c}" > /dev/null 2>&1; then
+      echo "${c@Q}"
+      return 1
+    fi
+  done
+}
+
 function install_post_dependencies {
   local deps="${DIR}/packages/deps.list"
   show_header "Checking post-installation dependencies."

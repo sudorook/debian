@@ -64,11 +64,11 @@ function main {
   mount_install
   if [ "${RELEASE_VERSION}" -gt 11 ]; then
     debootstrap \
-      --include=locales,keyboard-configuration,cryptsetup,cryptsetup-initramfs,lvm2,zstd,util-linux,util-linux-extra \
+      --include=locales,keyboard-configuration,cryptsetup,cryptsetup-initramfs,lvm2,zstd,util-linux,util-linux-extra,tasksel \
       --arch amd64 "${RELEASE_NAME}" /mnt https://deb.debian.org/debian
   else
     debootstrap \
-      --include=locales,keyboard-configuration,cryptsetup,cryptsetup-initramfs,lvm2,zstd,util-linux \
+      --include=locales,keyboard-configuration,cryptsetup,cryptsetup-initramfs,lvm2,zstd,util-linux,tasksel \
       --arch amd64 "${RELEASE_NAME}" /mnt https://deb.debian.org/debian
   fi
   mkdir -p /mnt/run/udev

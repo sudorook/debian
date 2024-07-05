@@ -58,6 +58,8 @@ function main {
     ask_lukspass
   fi
 
+  export PATH="/usr/sbin:/usr/bin:/sbin:/bin${PATH:+":${PATH}"}"
+
   set_partitions
   format_partitions
 

@@ -235,12 +235,18 @@ function sync_repos {
 function check_install_commands {
   local install_cmds=(
     apt
+    cryptsetup
     debootstrap
     findmnt
     fzf
+    lvcreate
     mount
+    partprobe
+    pvcreate
     sed
+    sgdisk
     umount
+    vgcreate
   )
   local c
   for c in "${install_cmds[@]}"; do

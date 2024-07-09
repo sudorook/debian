@@ -916,13 +916,19 @@ function enable_autologin {
   if dpkg -s sddm > /dev/null 2>&1; then
     show_info "Log in as ${USER@Q} via SDDM."
     local kwconfig
+    local plasmaversion
+    plasmaversion="$(plasmashell --version)"
     if kwconfig="$(_get_kwrite_config)"; then
       if ! [ -d /etc/sddm.conf.d/ ]; then
         sudo mkdir /etc/sddm.conf.d/
         sudo touch "${sddmconf}"
 
         sudo "${kwconfig}" --file "${sddmconf}" --group Autologin --key Relogin "false"
-        sudo "${kwconfig}" --file "${sddmconf}" --group Autologin --key Session "${DESKTOP_SESSION:-plasmawayland}"
+        if [[ "${plasmaversion}" =~ 6\.[0-9]+\.[0-9]+$ ]]; then
+          sudo "${kwconfig}" --file "${sddmconf}" --group Autologin --key Session "${DESKTOP_SESSION:-plasma}"
+        elif [[ "${plasmaversion}" =~ 5\.[0-9]+\.[0-9]+$ ]]; then
+          sudo "${kwconfig}" --file "${sddmconf}" --group Autologin --key Session "${DESKTOP_SESSION:-plasmawayland}"
+        fi
         sudo "${kwconfig}" --file "${sddmconf}" --group Autologin --key User "${USER}"
 
         sudo "${kwconfig}" --file "${sddmconf}" --group General --key HaltCommand ""
@@ -934,7 +940,11 @@ function enable_autologin {
         sudo "${kwconfig}" --file "${sddmconf}" --group Users --key MinimumUid 1000
       else
         sudo "${kwconfig}" --file "${sddmconf}" --group Autologin --key Relogin "false"
-        sudo "${kwconfig}" --file "${sddmconf}" --group Autologin --key Session "${DESKTOP_SESSION:-plasmawayland}"
+        if [[ "${plasmaversion}" =~ 6\.[0-9]+\.[0-9]+$ ]]; then
+          sudo "${kwconfig}" --file "${sddmconf}" --group Autologin --key Session "${DESKTOP_SESSION:-plasma}"
+        elif [[ "${plasmaversion}" =~ 5\.[0-9]+\.[0-9]+$ ]]; then
+          sudo "${kwconfig}" --file "${sddmconf}" --group Autologin --key Session "${DESKTOP_SESSION:-plasmawayland}"
+        fi
         sudo "${kwconfig}" --file "${sddmconf}" --group Autologin --key User "${USER}"
       fi
       is_autologin_set=true

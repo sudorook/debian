@@ -380,3 +380,16 @@ function copy_config_file {
     cp -v "${source}" "${dest}"
   fi
 }
+
+function _get_kwrite_config {
+  if command -v kwriteconfig6 > /dev/null; then
+    echo kwriteconfig6
+    return
+  elif command -v kwriteconfig5 > /dev/null; then
+    echo kwriteconfig5
+    return
+  else
+    show_warning "No kwriteconfig executable found." >&2
+    return 1
+  fi
+}

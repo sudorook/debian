@@ -145,18 +145,21 @@ function install_kde {
   # kwriteconfig5 --file kdeglobals --group "General" --key "BrowserApplication" "firefox-esr.desktop"
 
   show_info "Setting kitty as default terminal."
-  kwriteconfig5 --file kdeglobals --group "General" --key "TerminalApplication" "kitty"
-  kwriteconfig5 --file kdeglobals --group "General" --key "TerminalService" "kitty.desktop"
+  local kwconfig
+  if kwconfig="$(_get_kwrite_config)"; then
+    "${kwconfig}" --file kdeglobals --group "General" --key "TerminalApplication" "kitty"
+    "${kwconfig}" --file kdeglobals --group "General" --key "TerminalService" "kitty.desktop"
 
-  # Add Ctrl+Alt+T launcher for kitty
-  kwriteconfig5 --file kglobalshortcutsrc --group "kitty.desktop" --key "_k_friendly_name" "kitty"
-  kwriteconfig5 --file kglobalshortcutsrc --group "kitty.desktop" --key "_launch" "Ctrl+Alt+T,none,kitty"
+    # Add Ctrl+Alt+T launcher for kitty
+    "${kwconfig}" --file kglobalshortcutsrc --group "kitty.desktop" --key "_k_friendly_name" "kitty"
+    "${kwconfig}" --file kglobalshortcutsrc --group "kitty.desktop" --key "_launch" "Ctrl+Alt+T,none,kitty"
 
-  show_info "Creating Projects/ and Sync/ and setting kio icon metadata."
-  mkdir -p "${HOME}/Projects"
-  mkdir -p "${HOME}/Sync"
-  kwriteconfig5 --file "${HOME}/Projects/.directory" --group 'Desktop Entry' --key 'Icon' 'folder-development'
-  kwriteconfig5 --file "${HOME}/Sync/.directory" --group 'Desktop Entry' --key 'Icon' 'folder-cloud'
+    show_info "Creating Projects/ and Sync/ and setting kio icon metadata."
+    mkdir -p "${HOME}/Projects"
+    mkdir -p "${HOME}/Sync"
+    "${kwconfig}" --file "${HOME}/Projects/.directory" --group 'Desktop Entry' --key 'Icon' 'folder-development'
+    "${kwconfig}" --file "${HOME}/Sync/.directory" --group 'Desktop Entry' --key 'Icon' 'folder-cloud'
+  fi
 
   show_info "Disabling Templates/ and Public/ directories."
   sudo sed -i "s/^TEMPLATES/#TEMPLATES/g" "${xdgdefaultconf}"

@@ -105,6 +105,7 @@ function set_system_font {
       if dpkg -s plasma-desktop > /dev/null 2>&1; then
         show_info "Resetting fonts for KDE Plasma."
         local kwconfig
+        local qdb
         if kwconfig="$(_get_kwrite_config)"; then
           "${kwconfig}" --file kdeglobals --group "General" --key "font" --delete
           "${kwconfig}" --file kdeglobals --group "General" --key "menuFont" --delete
@@ -112,8 +113,10 @@ function set_system_font {
           "${kwconfig}" --file kdeglobals --group "General" --key "toolBarFont" --delete
           "${kwconfig}" --file kdeglobals --group "WM" --key "activeFont" --delete
           "${kwconfig}" --file kdeglobals --group "General" --key "fixed" --delete
-          if qdbus org.kde.KWin > /dev/null; then
-            qdbus org.kde.KWin /KWin reconfigure
+          if qdb="$(_get_qdbus)"; then
+            if "${qdb}" org.kde.KWin > /dev/null; then
+              "${qdb}" org.kde.KWin /KWin reconfigure
+            fi
           fi
         fi
       fi
@@ -180,6 +183,7 @@ function set_system_font {
       if dpkg -s plasma-desktop > /dev/null 2>&1; then
         show_info "Setting fonts for KDE Plasma."
         local kwconfig
+        local qdb
 
         if kwconfig="$(_get_kwrite_config)"; then
           "${kwconfig}" --file kdeglobals --group "General" --key "font" "Roboto,10,-1,5,50,0,0,0,0,0"
@@ -197,8 +201,10 @@ function set_system_font {
               show_warning "Ubuntu font family missing..."
             fi
           fi
-          if qdbus org.kde.KWin > /dev/null; then
-            qdbus org.kde.KWin /KWin reconfigure
+          if qdb="$(_get_qdbus)"; then
+            if "${qdb}" org.kde.KWin > /dev/null; then
+              "${qdb}" org.kde.KWin /KWin reconfigure
+            fi
           fi
         fi
       fi
@@ -264,6 +270,7 @@ function set_system_font {
 
       if dpkg -s plasma-shell > /dev/null 2>&1; then
         local kwconfig
+        local qdb
         if kwconfig="$(_get_kwrite_config)"; then
           "${kwconfig}" --file kdeglobals --group "General" --key "font" "Noto Sans,10,-1,5,50,0,0,0,0,0"
           "${kwconfig}" --file kdeglobals --group "General" --key "menuFont" "Noto Sans,10,-1,5,50,0,0,0,0,0"
@@ -280,9 +287,11 @@ function set_system_font {
               show_warning "Ubuntu font family missing..."
             fi
           fi
-        fi
-        if qdbus org.kde.KWin > /dev/null; then
-          qdbus org.kde.KWin /KWin reconfigure
+          if qdb="$(_get_qdbus)"; then
+            if "${qdb}" org.kde.KWin > /dev/null; then
+              "${qdb}" org.kde.KWin /KWin reconfigure
+            fi
+          fi
         fi
       fi
       ;;
@@ -344,8 +353,11 @@ function set_gtk_theme {
 
   if dpkg -s plasma-desktop > /dev/null 2>&1; then
     show_info "Setting Plasma GTK theme to ${GTKTHEME@Q}."
-    if qdbus org.kde.GtkConfig > /dev/null; then
-      qdbus org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "${GTKTHEME}"
+    local qdb
+    if qdb="$(_get_qdbus)"; then
+      if "${qdb}" org.kde.KWin > /dev/null; then
+        "${qdb}" org.kde.KWin /KWin reconfigure
+      fi
     fi
   fi
 
@@ -357,56 +369,57 @@ function set_gtk_theme {
 function set_plasma_theme {
   show_header "Setting Plasma theme to ${PLASMATHEME@Q}."
   local kwconfig
-  if kwconfig="$(_get_kwrite_config)"; then
+  local qdb
+  if kwconfig="$(_get_kwrite_config)" && qdb="$(_get_qdbus)"; then
     case "${PLASMATHEME,,}" in
       arc)
         plasma-apply-lookandfeel -a com.github.sudorook.arc
-        qdbus org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Arc"
+        "${qdb}" org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Arc"
         "${kwconfig}" --file kdeglobals --group "KDE" --key "widgetStyle" "kvantum"
         kvantummanager --set Arc
         ;;
       arcdark | arc-dark)
         plasma-apply-lookandfeel -a com.github.sudorook.arc-dark
-        qdbus org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Arc-Dark"
+        "${qdb}" org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Arc-Dark"
         "${kwconfig}" --file kdeglobals --group "KDE" --key "widgetStyle" "kvantum"
         kvantummanager --set ArcDark
         ;;
       arc-darker | arcdarker)
         plasma-apply-lookandfeel -a com.github.sudorook.arc-darker
-        qdbus org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Arc-Darker"
+        "${qdb}" org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Arc-Darker"
         "${kwconfig}" --file kdeglobals --group "KDE" --key "widgetStyle" "kvantum"
         kvantummanager --set ArcDarker
         ;;
       breeze)
         plasma-apply-lookandfeel -a org.kde.breeze.desktop
-        qdbus org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Breeze"
+        "${qdb}" org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Breeze"
         "${kwconfig}" --file kdeglobals --group "KDE" --key "widgetStyle" "Breeze"
         ;;
       breeze-dark | breezedark)
         plasma-apply-lookandfeel -a org.kde.breezedark.desktop
-        qdbus org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Breeze"
+        "${qdb}" org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Breeze"
         "${kwconfig}" --file kdeglobals --group "KDE" --key "widgetStyle" "Breeze"
         ;;
       breeze-twilight | breezetwilight)
         plasma-apply-lookandfeel -a org.kde.breezetwilight.desktop
-        qdbus org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Breeze"
+        "${qdb}" org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Breeze"
         "${kwconfig}" --file kdeglobals --group "KDE" --key "widgetStyle" "Breeze"
         ;;
       materia)
         plasma-apply-lookandfeel -a com.github.sudorook.materia
-        qdbus org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Materia"
+        "${qdb}" org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Materia"
         "${kwconfig}" --file kdeglobals --group "KDE" --key "widgetStyle" "kvantum"
         kvantummanager --set Materia
         ;;
       materiadark | materia-dark)
         plasma-apply-lookandfeel -a com.github.sudorook.materia-dark
-        qdbus org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Materia-dark"
+        "${qdb}" org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Materia-dark"
         "${kwconfig}" --file kdeglobals --group "KDE" --key "widgetStyle" "kvantum"
         kvantummanager --set MateriaDark
         ;;
       materialight | materia-light)
         plasma-apply-lookandfeel -a com.github.sudorook.materia-light
-        qdbus org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Materia-light"
+        "${qdb}" org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "Materia-light"
         "${kwconfig}" --file kdeglobals --group "KDE" --key "widgetStyle" "kvantum"
         kvantummanager --set MateriaLight
         ;;
@@ -639,6 +652,7 @@ function import_gnome_dconf {
 function import_kde_settings {
   show_header "Setting default Plasma behavior."
   local kwconfig
+  local qdb
   if kwconfig="$(_get_kwrite_config)"; then
     show_info "Adding Cinnamon-like desktop shortcuts."
     "${kwconfig}" --file kglobalshortcutsrc --group "kwin" --key "Overview" "Ctrl+Alt+Up,Meta+W,Toggle Overview"
@@ -829,8 +843,10 @@ function import_kde_settings {
     "${kwconfig}" --file gwenviewrc --group "ImageView" --key "EnlargeSmallerImages" "true"
     "${kwconfig}" --file gwenviewrc --group "ThumbnailView" --key "ListVideos" "false"
 
-    if qdbus org.kde.KWin > /dev/null; then
-      qdbus org.kde.KWin /KWin reconfigure
+    if qdb="$(_get_qdbus)"; then
+      if "${qdb}" org.kde.KWin > /dev/null; then
+        "${qdb}" org.kde.KWin /KWin reconfigure
+      fi
     fi
   fi
 

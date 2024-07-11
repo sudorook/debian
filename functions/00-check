@@ -393,3 +393,16 @@ function _get_kwrite_config {
     return 1
   fi
 }
+
+function _get_qdbus {
+  if command -v qdbus6 > /dev/null; then
+    echo qdbus6
+    return
+  elif command -v qdbus > /dev/null; then
+    echo qdbus
+    return
+  else
+    show_warning "No qdbus executable found." >&2
+    return 1
+  fi
+}

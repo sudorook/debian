@@ -853,10 +853,10 @@ function import_kde_settings {
   # Because the Wayland protocol does not allow for global keylogging needed to
   # detect global shortcuts, shortcut handling for Plasma wayland is built
   # directly into KWin itself. On X11, KGlobalAccel handles this instead. The
-  # consequence of this is that when running DESKTOP_SESSION=plasma, restarting
-  # KGlobalAccel will update the shortcuts, but when
-  # DESKTOP_SESSION=plasmawayland, KWin (and therefore the entire session)
-  # needs to be restarted instead.
+  # consequence of this is that when running DESKTOP_SESSION=plasmax11 (Plasma
+  # 6) or plasma (Plasma 5), restarting KGlobalAccel will update the shortcuts,
+  # but when DESKTOP_SESSION=plasma (Plasma 6) or plasmawayland (Plasma), KWin
+  # (and therefore the entire session) needs to be restarted instead.
   #
   # See: https://blog.martin-graesslin.com/blog/2015/06/global-shortcut-handling-in-a-plasma-wayland-session/
   case "${XDG_SESSION_TYPE:-}" in

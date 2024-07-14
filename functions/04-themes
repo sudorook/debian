@@ -279,13 +279,13 @@ function install_nightfox_themes {
   pushd "${tmpdir}" > /dev/null || exit
   for theme in "${themes[@]}"; do
     copy_config_file \
-      "extra/${theme}/nightfox_tmux.tmux" \
-      "${HOME}/.tmux/${theme}.tmuxtheme"
+      "extra/${theme}/${theme}.tmux" \
+      "${HOME}/.tmux/${theme}.tmux"
     copy_config_file \
-      "extra/${theme}/nightfox_alacritty.yml" \
-      "${HOME}/.config/alacritty/themes/${theme}.yml"
+      "extra/${theme}/alacritty.toml" \
+      "${HOME}/.config/alacritty/themes/${theme}.toml"
     copy_config_file \
-      "extra/${theme}/nightfox_kitty.conf" \
+      "extra/${theme}/kitty.conf" \
       "${HOME}/.config/kitty/themes/${theme}.conf"
   done
   popd > /dev/null || exit

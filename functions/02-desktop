@@ -148,12 +148,12 @@ EOF
     "${HOME}/.config/environment.d/envvars.conf" "GTK_USE_PORTAL" "1"
   set_config_key_value "${HOME}/.xprofile" "export GTK_USE_PORTAL" "1"
 
-  # show_info "Setting firefox-esr as default browser."
-  # kwriteconfig5 --file kdeglobals --group "General" --key "BrowserApplication" "firefox-esr.desktop"
-
-  show_info "Setting kitty as default terminal."
   local kwconfig
   if kwconfig="$(_get_kwrite_config)"; then
+    # show_info "Setting firefox-esr as default browser."
+    # "${kwconfig}" --file kdeglobals --group "General" --key "BrowserApplication" "firefox-esr.desktop"
+
+    show_info "Setting kitty as default terminal."
     "${kwconfig}" --file kdeglobals --group "General" --key "TerminalApplication" "kitty"
     "${kwconfig}" --file kdeglobals --group "General" --key "TerminalService" "kitty.desktop"
 

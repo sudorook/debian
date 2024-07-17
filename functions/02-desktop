@@ -136,6 +136,13 @@ function install_kde {
     export DESKTOP_SESSION="plasma"
   fi
 
+  show_info "Setting up SDDM greeter."
+  sudo mkdir -p /etc/sddm.conf.d/
+  sudo tee /etc/sddm.conf.d/virtualkbd.conf > /dev/null << EOF
+[General]
+InputMethod=qtvirtualkeyboard
+EOF
+
   # Set flag to enable KDE dialog boxes for GTK applications.
   set_config_key_value \
     "${HOME}/.config/environment.d/envvars.conf" "GTK_USE_PORTAL" "1"

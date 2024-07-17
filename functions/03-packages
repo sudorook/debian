@@ -616,8 +616,8 @@ function install_neovim {
 
   show_info "Setting Neovim as default tool for git diffs and merges."
   # 00-check makes sure the git is installed, so no need for checks here.
-  git config --global diff.tool "nvim -d"
-  git config --global merge.tool "nvim -d"
+  git config --global diff.tool nvimdiff
+  git config --global merge.tool nvimdiff
   git config --global difftool.prompt false
 
   if command -v xdg-mime > /dev/null 2>&1; then

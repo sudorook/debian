@@ -47,9 +47,9 @@ function install_gnome {
   local gnomeshellcss="${DIR}/configs/gnome-shell.css"
   mkdir -p "${HOME}/.local/share/themes/Adwaita/gnome-shell"
   cp "${gnomeshellcss}" "${HOME}/.local/share/themes/Adwaita/gnome-shell/gnome-shell.css"
-  pushd "${HOME}/.local/share/themes" >/dev/null || exit
+  pushd "${HOME}/.local/share/themes" > /dev/null || exit
   ln -s Adwaita Adwaita-dark
-  popd >/dev/null || exit
+  popd > /dev/null || exit
 
   show_info "Creating Projects/ and Sync/ and setting gvfs icon metadata."
   mkdir -p "${HOME}/Projects"

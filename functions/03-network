@@ -22,16 +22,15 @@ DIR="$(dirname "$0")"
 function install_network {
   local networking="${DIR}/packages/network.list"
   local nmconf="/etc/NetworkManager/NetworkManager.conf"
+  local nmrandomconf="/etc/NetworkManager/conf.d/randomize_mac_address.conf"
 
   show_header "Setting up networking."
   check_installed "${networking}"
   show_success "Networking applications installed."
 
   show_info "Setting up MAC address randomization in Network Manager."
-  if ! grep -q "mac-address=random" "${nmconf}"; then
-    sudo tee -a "${nmconf}" > /dev/null << EOF
-
-# Enabling built-in MAC address randomization
+  if ! find "${nmconf}" /etc/NetworkManager/conf.d/ -type f -exec grep -q "mac-address=random" {} +; then
+    sudo tee -a "${nmrandomconf}" > /dev/null << EOF
 [connection-mac-randomization]
 wifi.cloned-mac-address=random
 ethernet.cloned-mac-address=random

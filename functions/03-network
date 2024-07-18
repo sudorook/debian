@@ -29,11 +29,13 @@ function install_network {
 
   show_info "Setting up MAC address randomization in Network Manager."
   if ! grep -q "mac-address=random" "${nmconf}"; then
-    sudo sh -c "echo "" >> ${nmconf}"
-    sudo sh -c "echo '# Enabling built-in MAC Address randomization' >> ${nmconf}"
-    sudo sh -c "echo '[connection-mac-randomization]' >> ${nmconf}"
-    sudo sh -c "echo 'wifi.cloned-mac-address=random' >> ${nmconf}"
-    sudo sh -c "echo 'ethernet.cloned-mac-address=random' >> ${nmconf}"
+    sudo tee -a "${nmconf}" > /dev/null << EOF
+
+# Enabling built-in MAC address randomization
+[connection-mac-randomization]
+wifi.cloned-mac-address=random
+ethernet.cloned-mac-address=random
+EOF
   fi
 
   show_info "Disabling SSH root login and forcing SSH v2."

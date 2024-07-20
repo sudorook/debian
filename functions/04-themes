@@ -311,7 +311,9 @@ function install_timed_backgrounds {
 function install_plasma_timed_backgrounds {
   show_header "Installing timed Plasma wallpapers."
   if ! command -v kdynamicwallpaperbuilder > /dev/null 2>&1; then
-    show_warning "Plasma5 dynamic wallpaper builder not installed. Skipping."
+    show_warning \
+      "Plasma5 dynamic wallpaper builder not installed. Skipping.
+(See KDE AUR applications.)"
     return
   fi
   local tmpdir

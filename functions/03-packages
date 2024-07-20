@@ -171,6 +171,7 @@ function _install_plasma_dynamic_wallpapers {
       )
       ;;
     *)
+      show_warning "Not supported for ${release@Q}. Skipping."
       return
       ;;
   esac

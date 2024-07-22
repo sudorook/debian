@@ -861,10 +861,17 @@ function import_kde_settings {
   # See: https://blog.martin-graesslin.com/blog/2015/06/global-shortcut-handling-in-a-plasma-wayland-session/
   case "${XDG_SESSION_TYPE:-}" in
     x11)
-      kquitapp5 kglobalaccel ||
-        killall kglobalaccel5 &&
-        sleep 2s &&
-        nohup kstart5 kglobalaccel5 --window --windowclass > /dev/null 2>&1
+      case "${DESKTOP_SESSION:-}" in
+        plasmax11)
+          kquitapp6 kglobalaccel
+          nohup kstart /usr/lib/kglobalacceld > /dev/null 2>&1
+          ;;
+        plasma)
+          kquitapp5 kglobalaccel || killall kglobalaccel5
+          sleep 2s
+          nohup kstart5 kglobalaccel5 --window --windowclass > /dev/null 2>&1
+          ;;
+      esac
       ;;
     wayland)
       kwin_wayland --replace

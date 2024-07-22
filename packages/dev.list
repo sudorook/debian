@@ -2,6 +2,7 @@ asciidoc
 automake
 autotools-dev
 black
+catch2
 checkstyle
 clang
 clang-format
@@ -44,6 +45,7 @@ libeigen3-dev
 libgit2-dev
 libglpk-dev
 libgsl-dev
+libgtest-dev
 libimage-exiftool-perl
 libjs-mathjax
 liblapack-dev

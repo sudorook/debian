@@ -3,6 +3,7 @@ cryptsetup
 curl
 debootstrap
 dosfstools
+findutils
 fzf
 gdisk
 grep

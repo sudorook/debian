@@ -198,7 +198,7 @@ alias la='ls -lAh'
 eval "$(dircolors -b)"
 
 # color the man pages
-if { command -v nvim || command -v nvim.appimage } > /dev/null 2>&1; then
+if { command -v nvim || command -v nvim.appimage; } > /dev/null 2>&1; then
   export MANPAGER='nvim +Man! --clean'
 elif command -v less > /dev/null 2>&1; then
   export MANPAGER="less -R --use-color -Dd+r -Du+b -s -M +Gg"

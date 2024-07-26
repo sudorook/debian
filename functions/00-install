@@ -39,6 +39,7 @@ RELEASE_VERSION=
 function ask_release {
   show_question "Select Debian release:"
   local options=("Back"
+                 "Buster (oldoldstable)"
                  "Bullseye (oldstable)"
                  "Bookworm (stable)"
                  "Trixie (testing)"
@@ -48,6 +49,11 @@ function ask_release {
     case "${option}" in
       "Back")
         exit
+        ;;
+      "Buster (oldoldstable)")
+        RELEASE_NAME=buster
+        RELEASE_VERSION=10
+        break
         ;;
       "Bullseye (oldstable)")
         RELEASE_NAME=bullseye

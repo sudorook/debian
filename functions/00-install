@@ -72,7 +72,7 @@ function ask_release {
         ;;
       "Sid (unstable)")
         RELEASE_NAME=sid
-        RELEASE_VERSION=unstable
+        RELEASE_VERSION=99
         break
         ;;
     esac

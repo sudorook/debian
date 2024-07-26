@@ -201,10 +201,10 @@ function main {
 #
 
 check_user
-install_sudo
-check_network
-check_sync_repos
 check_debian_release
+check_network
+install_sudo
+check_sync_repos
 install_post_dependencies
 
 #

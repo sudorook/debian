@@ -22,6 +22,9 @@ DIR="$(dirname "$0")"
 export MIDBRANCH="\0342\0224\0234\0342\0224\0200\0342\0224\0200"
 export ENDBRANCH="\0342\0224\0224\0342\0224\0200\0342\0224\0200"
 
+export DEBIAN_CODENAME
+export DEBIAN_VERSION
+
 export HIERARCHY="Main
  ${MIDBRANCH} Base
  ${MIDBRANCH} Miscellaneous
@@ -155,16 +158,36 @@ function check_root {
 function check_debian_release {
   show_header "Checking current Debian release."
   local release
-  release=$(lsb_release -sc)
-  if ! [[ "${release}" == "bookworm" ]] &&
-     ! [[ "${release}" == "bullseye" ]] &&
-     ! [[ "${release}" == "trixie" ]] &&
-     ! [[ "${release}" == "sid" ]]; then
-    show_warning "This script is not intended for Debian ${release@Q}."
-    exit 1
-  else
-    show_success "Now running ${release@Q}."
-  fi
+  release="$(lsb_release -sc)"
+  case "${release}" in
+    buster)
+      DEBIAN_CODENAME=buster
+      DEBIAN_VERSION=10
+      ;;
+    bullseye)
+      DEBIAN_CODENAME=bullseye
+      DEBIAN_VERSION=11
+      ;;
+    bookworm)
+      DEBIAN_CODENAME=bookworm
+      DEBIAN_VERSION=12
+      ;;
+    trixie)
+      DEBIAN_CODENAME=trixie
+      DEBIAN_VERSION=13
+      ;;
+    sid)
+      DEBIAN_CODENAME=sid
+      DEBIAN_VERSION=99
+      ;;
+    *)
+      show_warning "This script is not intended for Debian ${release@Q}."
+      exit 1
+      ;;
+  esac
+  show_success "Now running ${release@Q}."
+  export DEBIAN_CODENAME
+  export DEBIAN_VERSION
 }
 
 function check_installed {

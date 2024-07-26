@@ -35,13 +35,20 @@ function install_base {
 function install_firmware {
   local firmware="${DIR}/packages/firmware.list"
   local srclist="/etc/apt/sources.list"
-  if ! grep -q 'non-free\( \|$\)' "${srclist}"; then
-    show_warning "non-free repos need to be enabled first."
+  if [ "${DEBIAN_VERSION}" -gt 11 ]; then
+    if ! grep -q '^deb .*non-free-firmware\( \|$\)' "${srclist}"; then
+      show_warning "'non-free-firmware' repo needs to be enabled first."
+      return
+    fi
   else
-    show_header "Installing non-free firmware."
-    check_installed "${firmware}"
-    show_success "Firmware installed."
+    if ! grep -q '^deb .*non-free\( \|$\)' "${srclist}"; then
+      show_warning "'non-free' repo needs to be enabled first."
+      return
+    fi
   fi
+  show_header "Installing proprietary firmware."
+  check_installed "${firmware}"
+  show_success "Firmware installed."
 }
 
 function enable_contrib_repos {

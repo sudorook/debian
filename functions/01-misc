@@ -101,6 +101,40 @@ function install_laptop {
   show_success "tlp enabled."
 }
 
+function install_plymouth {
+  local plymouth="${DIR}/packages/plymouth.list"
+  local plymouthkde="${DIR}/packages/plymouth-kde.list"
+  local grubconf="/etc/default/grub"
+
+  show_header "Installing Plymouth splash screen."
+  check_installed "${plymouth}"
+  show_success "Plymouth installed."
+
+  if dpkg -s plasma-shell > /dev/null 2>&1; then
+    show_header "KDE Plasma installed. Installing Plymouth integration."
+    check_installed "${plymouthkde}"
+    show_success "Plymouth integration installed."
+  fi
+
+  if [ -f "${grubconf}" ] && ! sudo grep -q "^GRUB_CMDLINE_LINUX_DEFAULT=.*splash" "${grubconf}"; then
+    show_info "Updating GRUB defaults for splash screen."
+    sudo sed -i '/^GRUB_CMDLINE_LINUX_DEFAULT=/s/"$/ splash"/g' "${grubconf}"
+    sudo update-grub
+  fi
+
+  if [ "$(sudo bootctl is-installed)" = yes ]; then
+    show_info "Updating Gummiboot entries for Plymouth splash screen."
+    local efidir
+    local conf
+    efidir="$(bootctl -p)"
+    while read -r conf; do
+      if ! grep -q "^options.*splash" "${conf}"; then
+        sudo sed -i "/^options/s/$/ splash/" "${conf}"
+      fi
+    done < <(sudo find "${efidir}"/loader/entries/ -name "*.conf")
+  fi
+}
+
 function 01-misc {
   show_question "Misc: what do you want to install?"
   show_info "Main\n ${ENDBRANCH} Misc (Hit ENTER to see options again.)"
@@ -110,6 +144,7 @@ function 01-misc {
     "All"
     "Linux utilities"
     "Laptop tools"
+    "Plymouth"
     "SELinux"
     "zsh")
   local option
@@ -121,6 +156,7 @@ function 01-misc {
       "All")
         install_utils
         install_laptop
+        install_plymouth
         install_selinux
         install_zsh
         show_info "Main\n ${ENDBRANCH} Misc (Hit ENTER to see options again.)"
@@ -131,6 +167,10 @@ function 01-misc {
         ;;
       "Laptop tools")
         install_laptop
+        show_info "Main\n ${ENDBRANCH} Misc (Hit ENTER to see options again.)"
+        ;;
+      "Plymouth")
+        install_plymouth
         show_info "Main\n ${ENDBRANCH} Misc (Hit ENTER to see options again.)"
         ;;
       "SELinux")

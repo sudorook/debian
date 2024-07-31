@@ -110,7 +110,7 @@ function install_plymouth {
   check_installed "${plymouth}"
   show_success "Plymouth installed."
 
-  if dpkg -s plasma-shell > /dev/null 2>&1; then
+  if dpkg -s plasma-desktop > /dev/null 2>&1; then
     show_header "KDE Plasma installed. Installing Plymouth integration."
     check_installed "${plymouthkde}"
     show_success "Plymouth integration installed."

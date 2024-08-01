@@ -874,7 +874,9 @@ function import_kde_settings {
       esac
       ;;
     wayland)
-      kwin_wayland --replace
+      if pidof -x kwin_wayland > /dev/null; then
+        kwin_wayland --replace
+      fi
       ;;
   esac
   show_success "Done! Reload Plasma to update settings."

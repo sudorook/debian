@@ -656,7 +656,14 @@ function import_kde_settings {
   if kwconfig="$(_get_kwrite_config)"; then
     show_info "Adding Cinnamon-like desktop shortcuts."
     "${kwconfig}" --file kglobalshortcutsrc --group "kwin" --key "Overview" "Ctrl+Alt+Up,Meta+W,Toggle Overview"
-    "${kwconfig}" --file kglobalshortcutsrc --group "kwin" --key "ShowDesktopGrid" "Ctrl+Alt+Down	Meta+F8,Meta+F8,Show Desktop Grid"
+    case "${kwconfig}" in
+      kwriteconfig6)
+        "${kwconfig}" --file kglobalshortcutsrc --group "kwin" --key "Grid View" "Ctrl+Alt+Down	Meta+G,Meta+G,Toggle Grid View"
+        ;;
+      kwriteconfig5)
+        "${kwconfig}" --file kglobalshortcutsrc --group "kwin" --key "ShowDesktopGrid" "Ctrl+Alt+Down	Meta+F8,Meta+F8,Show Desktop Grid"
+        ;;
+    esac
     "${kwconfig}" --file kglobalshortcutsrc --group "kwin" --key "Switch to Next Desktop" "Ctrl+Alt+Right,,Switch to Next Desktop"
     "${kwconfig}" --file kglobalshortcutsrc --group "kwin" --key "Switch to Previous Desktop" "Ctrl+Alt+Left,,Switch to Previous Desktop"
     "${kwconfig}" --file kglobalshortcutsrc --group "kwin" --key "Window to Next Desktop" "Ctrl+Alt+Shift+Right,,Window to Next Desktop"

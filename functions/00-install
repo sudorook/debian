@@ -1018,7 +1018,11 @@ function install_gummiboot {
     fi
     cmdline="${cmdline} rw"
   else
-    cmdline="rw"
+    if [ -n "${root_uuid}" ]; then
+      cmdline="root=UUID=${root_uuid} rw"
+    else
+      cmdline="rw"
+    fi
   fi
 
   bootctl install

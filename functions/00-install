@@ -536,7 +536,7 @@ function ask_partition_sizes {
     fi
     show_info "$(get_base10 "${free_size}") ($(get_base2 "${free_size}")) available"
 
-    root=$(ask_question "Root (default=20GiB):")
+    root=$(ask_question "Root (default=20GiB; enter 'fill' to use remaining space):")
     root=$(sanitize_size_input "${root}")
     if [[ -n "${root}" ]]; then
       PARTITIONS["root"]="${root}"

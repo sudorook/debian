@@ -615,23 +615,34 @@ function set_login_shell {
 
 function set_dark_gtk {
   local gtksettings="${HOME}/.config/gtk-3.0/settings.ini"
-  show_header "Setting global dark theme for gtk applications."
   local isgtkdark
-  if grep -q ^gtk-application-prefer-dark-theme= "${gtksettings}"; then
-    isgtkdark=$(grep ^gtk-application-prefer-dark-theme= "${gtksettings}" | cut -d"=" -f2)
-    if test "${isgtkdark}"; then
-      show_info "Desktop is already set to use dark GTK variants."
+
+  show_header "Setting global dark theme for gtk applications."
+  mkdir -p "$(dirname "${gtksettings}")"
+  if [ -f "${gtksettings}" ]; then
+    if grep -q ^gtk-application-prefer-dark-theme= "${gtksettings}"; then
+      isgtkdark=$(sed -n 's/^gtk-application-prefer-dark-theme\s*=\s*\(.*\)\s*/\1/p' "${gtksettings}")
+      if test "${isgtkdark}"; then
+        show_info "Desktop is already set to use dark GTK variants."
+      else
+        sed -i "s/^gtk-application-prefer-dark-theme=${isgtkdark}$/gtk-application-prefer-dark-theme=1/g" "${gtksettings}"
+      fi
     else
-      sed -i "s/^gtk-application-prefer-dark-theme=${isgtkdark}$/gtk-application-prefer-dark-theme=1/g" "${gtksettings}"
+      if grep -q "^\[Settings\]" "${gtksettings}"; then
+        sed -i "/^\[Settings\]/a gtk-application-prefer-dark-theme=1" "${gtksettings}"
+      else
+        cat >> "${gtksettings}" << EOF
+
+[Settings]
+gtk-application-prefer-dark-theme=1
+EOF
+      fi
     fi
   else
-    if [ -f "${gtksettings}" ]; then
-      echo "" >> "${gtksettings}"
-    else
-      mkdir -p "$(dirname "${gtksettings}")" && touch "${gtksettings}"
-    fi
-    echo "[Settings]" >> "${gtksettings}"
-    echo "gtk-application-prefer-dark-theme=1" >> "${gtksettings}"
+    cat > "${gtksettings}" << EOF
+[Settings]
+gtk-application-prefer-dark-theme=1
+EOF
   fi
 }
 

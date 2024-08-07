@@ -162,8 +162,8 @@ Automatically install (without prompting) packages and configs.
 #### 4) Miscellaneous
 
 ```
-1) Back             3) Linux utilities  5) SELinux
-2) All              4) Laptop tools     6) zsh
+1) Back        3) Linux utilities  5) Plymouth         7) zsh
+2) All         4) Laptop tools     6) SELinux
 ```
 
 3. Install general command line utilities in [utils.list](packages/utils.list).
@@ -171,9 +171,11 @@ Automatically install (without prompting) packages and configs.
 4. Install `tlp` for power management and `xorg-xbacklight` for screen
    brightness.
 
-5. Install and activate SELinux.
+5. Install Plymouth splash screen.
 
-6. Install `zsh`, fish-like plugins, nerd fonts, and powerlevel10k theme.
+6. Install and activate SELinux.
+
+7. Install `zsh`, fish-like plugins, nerd fonts, and powerlevel10k theme.
 
 #### 5) Desktop environment
 
@@ -351,6 +353,18 @@ Automatically install (without prompting) packages and configs.
  8) Select login shell              18) Disable 802.11n
  9) Import Cinnamon dconf           19) Add scripts
 10) Import GNOME dconf
+
+
+ 1) Back                            11) Import GNOME dconf
+ 2) All                             12) Import KDE settings
+ 3) Select system fonts             13) Import application dconf
+ 4) Select icon theme               14) Import GNOME terminal profiles
+ 5) Select GTK theme                15) Enable autologin
+ 6) Select Plasma theme             16) Invert brightness (i915)
+ 7) Select Plymouth theme           17) Enable IOMMU (Intel)
+ 8) Set dark GTK                    18) Disable PulseAudio suspend
+ 9) Select login shell              19) Disable 802.11n
+10) Import Cinnamon dconf           20) Add scripts
 ```
 
 3. Select the system font. (Noto or Roboto)
@@ -361,31 +375,33 @@ Automatically install (without prompting) packages and configs.
 
 6. Select the system desktop theme (Plasma).
 
-7. Set GTK applications to prefer the dark theme.
+7. Select the Plymouth splash screen theme.
 
-8. Select default login shell (Bash or Zsh).
+8. Set GTK applications to prefer the dark theme.
 
-9. Import pre-defined dconf settings for Cinnamon.
+9. Select default login shell (Bash or Zsh).
 
-10. Import pre-defined dconf settings for GNOME.
+10. Import pre-defined dconf settings for Cinnamon.
 
-11. Configure default desktop and application settings for Plasma.
+11. Import pre-defined dconf settings for GNOME.
 
-12. Import pre-defined dconf settings for applications.
+12. Configure default desktop and application settings for Plasma.
 
-13. Import GNOME-terminal profiles (Light/Dark) via dconf.
+13. Import pre-defined dconf settings for applications.
 
-14. Enable autologin for the current user.
+14. Import GNOME-terminal profiles (Light/Dark) via dconf.
 
-15. Invert brightness via kernel command line options in the GRUB prompt.
+15. Enable autologin for the current user.
 
-16. Enable Intel IOMMU for the i915 graphics driver. Helps fix blank displays
+16. Invert brightness via kernel command line options in the GRUB prompt.
+
+17. Enable Intel IOMMU for the i915 graphics driver. Helps fix blank displays
     for Haswell CPUs running kernels >=5.7.
 
-17. Disable PulseAudio suspend (suspend can sometimes cause weird buzzing).
+18. Disable PulseAudio suspend (suspend can sometimes cause weird buzzing).
 
-18. Disable 802.11n networking in iwlwifi. May help speed up poor 802.11ac
+19. Disable 802.11n networking in iwlwifi. May help speed up poor 802.11ac
     connections.
 
-19. Download and install
+20. Download and install
     [general utility scripts](https://github.com/sudorook/misc-scripts).

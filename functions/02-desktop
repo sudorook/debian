@@ -94,8 +94,7 @@ function install_cinnamon {
     local tmp
     local lat
     local lon
-    tmp="$(/usr/lib/geoclue-2.0/demos/where-am-i -t 10 -a 4)"
-    if [[ -n "${tmp}" ]]; then
+    if tmp="$(/usr/lib/geoclue-2.0/demos/where-am-i -t 10 -a 4)"; then
       lat="$(echo "${tmp}" | sed -n "s/.*Latitude: \+\([-0-9\.]\+\)°\?.*/\1/p")"
       lon="$(echo "${tmp}" | sed -n "s/.*Longitude: \+\([-0-9\.]\+\)°\?.*/\1/p")"
       sed -e "s,^lat=.*,lat=${lat},g" -e "s,^lon=.*,lon=${lon},g" \
@@ -105,7 +104,7 @@ function install_cinnamon {
       cp "${gammastepini}" "${HOME}/.config/gammastep/config.ini"
     fi
   else
-    show_warning "Geoclue 'where-am-i' demo not found. Default to NYC."
+    show_warning "Geoclue 'where-am-i' demo not found. Defaulting to NYC."
     cp "${gammastepini}" "${HOME}/.config/gammastep/config.ini"
   fi
 

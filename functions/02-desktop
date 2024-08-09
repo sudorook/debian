@@ -39,6 +39,9 @@ function install_gnome {
       "${HOME}/.local/share/gnome-shell/extensions/ding@rastersoft.com"
   fi
 
+  show_info "Enabling Night Light."
+  gsettings set org.gnome.settings-daemon.plugins.color night-light-enabled true
+
   show_info "Setting kitty as default terminal."
   sudo update-alternatives --set x-terminal-emulator /usr/bin/kitty
   gsettings set org.gnome.desktop.default-applications.terminal exec '/usr/bin/x-terminal-emulator'

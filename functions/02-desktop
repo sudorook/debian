@@ -146,6 +146,11 @@ function install_kde {
 InputMethod=qtvirtualkeyboard
 EOF
 
+  # Enable 'Night Color' to reduce blue light at night.
+  "${kwconfig}" --file kwinrc --group "NightColor" --key "Active" "true"
+  "${kwconfig}" --file kwinrc --group "NightColor" --key "DayTemperature" "5700"
+  "${kwconfig}" --file kwinrc --group "NightColor" --key "NightTemperature" "2500"
+
   # Set flag to enable KDE dialog boxes for GTK applications.
   set_config_key_value \
     "${HOME}/.config/environment.d/envvars.conf" "GTK_USE_PORTAL" "1"

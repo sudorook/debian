@@ -760,11 +760,6 @@ function import_kde_settings {
     # Make cursor waiting animation static.
     "${kwconfig}" --file klaunchrc --group "BusyCursorSettings" --key "Bouncing" "false"
 
-    # Enable 'Night Color' to reduce blue light at night.
-    "${kwconfig}" --file kwinrc --group "NightColor" --key "Active" "true"
-    "${kwconfig}" --file kwinrc --group "NightColor" --key "DayTemperature" "5700"
-    "${kwconfig}" --file kwinrc --group "NightColor" --key "NightTemperature" "2500"
-
     # Double-click to open.
     "${kwconfig}" --file kdeglobals --group "KDE" --key "SingleClick" "false"
 

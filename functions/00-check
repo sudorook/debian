@@ -180,6 +180,9 @@ function check_debian_release {
       DEBIAN_CODENAME=sid
       DEBIAN_VERSION=99
       ;;
+    noble | mantic | lunar | kinetic | jammy | impish | hirstute | groovy | focal)
+      show_warning "Use this script on Ubuntu at your own peril."
+      ;;
     *)
       show_warning "This script is not intended for Debian ${release@Q}."
       exit 1

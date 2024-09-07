@@ -24,9 +24,9 @@ function install_zsh {
   local zshrc="${DIR}/dotfiles/zshrc"
   local p10krc="${DIR}/dotfiles/p10k"
 
-  show_header "Installing zsh."
+  show_header "Installing Zsh."
   check_installed "${zsh}"
-  show_success "zsh installed."
+  show_success "Zsh installed."
 
   mkdir -p "${HOME}/.local/share/zsh/site-functions"
 
@@ -146,7 +146,7 @@ function 01-misc {
     "Laptop tools"
     "Plymouth"
     "SELinux"
-    "zsh")
+    "Zsh")
   local option
   select option in "${options[@]}"; do
     case "${option}" in
@@ -177,7 +177,7 @@ function 01-misc {
         install_selinux
         show_info "Main\n ${ENDBRANCH} Misc (Hit ENTER to see options again.)"
         ;;
-      "zsh")
+      "Zsh")
         install_zsh
         show_info "Main\n ${ENDBRANCH} Misc (Hit ENTER to see options again.)"
         ;;

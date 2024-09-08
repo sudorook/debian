@@ -779,6 +779,20 @@ function import_kde_settings {
     # Remove desktop scrolling behavior.
     "${kwconfig}" --file plasma-org.kde.plasma.desktop-appletsrc --group "ActionPlugins" --group "0" --key "wheel:Vertical;NoModifier" --delete
 
+    local touchpad
+    while read -r touchpad; do
+      local hex1
+      local hex2
+      hex1="$(echo "${touchpad}" | cut -d" " -f2 | cut -d":" -f1)"
+      hex2="$(echo "${touchpad}" | cut -d" " -f2 | cut -d":" -f2)"
+      hex1=$((16#"${hex1}"))
+      hex2=$((16#"${hex2}"))
+      if [ -n "${hex1}" ] && [ -n "${hex2}" ]; then
+        "${kwconfig}" --file kcminputrc --group "Libinput" --group "${hex1}" --group "${hex2}" --group "${touchpad}" --key "NaturalScroll" "true"
+        "${kwconfig}" --file kcminputrc --group "Libinput" --group "${hex1}" --group "${hex2}" --group "${touchpad}" --key "TapToClick" "true"
+      fi
+    done < <(grep -i touchpad /proc/bus/input/devices | sed -n "s/.*\"\(.*\)\"$/\1/p")
+
     # List desktop shortcuts top-to-bottom.
     "${kwconfig}" --file plasma-org.kde.plasma.desktop-appletsrc --group "Containments" --group "1" --group "General" --key "arrangement" "1"
 

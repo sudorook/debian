@@ -1,5 +1,28 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2012 - 2019 Dave Reisner <dreisner@archlinux.org>
+# SPDX-FileCopyrightText: 2012 Pierre Schmitz <pierre@archlinux.de>
+# SPDX-FileCopyrightText: 2019 Eli Schwartz <eschwartz@archlinux.org>
+# SPDX-FileCopyrightText: 2020 Takeshi Suzuki <takeshibaconsuzuki@gmail.com>
+# SPDX-FileCopyrightText: 2022 - 2024 Mike Yuan <me@yhndnzj.com>
+# SPDX-FileCopyrightText: 2023 Emil Velikov <emil.l.velikov@gmail.com>
+# SPDX-FileCopyrightText: 2023 Morten Linderud <morten@linderud.pw>
+#
+# SPDX-License-Identifier: GPL-2.0-only
+#
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation; version 2.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+# or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+# for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc., 51
+# Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
 shopt -s extglob
 
 # generated from util-linux source: libmount/src/utils.c

@@ -145,11 +145,6 @@ function install_kde {
 InputMethod=qtvirtualkeyboard
 EOF
 
-  # Enable 'Night Color' to reduce blue light at night.
-  "${kwconfig}" --file kwinrc --group "NightColor" --key "Active" "true"
-  "${kwconfig}" --file kwinrc --group "NightColor" --key "DayTemperature" "5700"
-  "${kwconfig}" --file kwinrc --group "NightColor" --key "NightTemperature" "2500"
-
   # Set flag to enable KDE dialog boxes for GTK applications.
   set_config_key_value \
     "${HOME}/.config/environment.d/envvars.conf" "GTK_USE_PORTAL" "1"
@@ -159,6 +154,11 @@ EOF
   if kwconfig="$(_get_kwrite_config)"; then
     # show_info "Setting firefox-esr as default browser."
     # "${kwconfig}" --file kdeglobals --group "General" --key "BrowserApplication" "firefox-esr.desktop"
+
+    show_info "Enabling 'Night Color' to reduce blue light at night."
+    "${kwconfig}" --file kwinrc --group "NightColor" --key "Active" "true"
+    "${kwconfig}" --file kwinrc --group "NightColor" --key "DayTemperature" "5700"
+    "${kwconfig}" --file kwinrc --group "NightColor" --key "NightTemperature" "2500"
 
     show_info "Setting kitty as default terminal."
     "${kwconfig}" --file kdeglobals --group "General" --key "TerminalApplication" "kitty"

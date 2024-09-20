@@ -312,6 +312,11 @@ function install_extra {
   check_installed "${extra}"
   show_success "Extra applications installed."
 
+  set_config_key_value \
+    "${HOME}/.xprofile" "export CALIBRE_USE_SYSTEM_THEME" "1"
+  set_config_key_value \
+    "${HOME}/.config/environment.d/envvars.conf" "CALIBRE_USE_SYSTEM_THEME" "1"
+
   _configure_ytdlp
 }
 
@@ -322,6 +327,11 @@ function install_extra_kde {
   show_header "Installing extra KDE desktop applications."
   check_installed "${extrakde}"
   show_success "Extra applications installed."
+
+  set_config_key_value \
+    "${HOME}/.xprofile" "export CALIBRE_USE_SYSTEM_THEME" "1"
+  set_config_key_value \
+    "${HOME}/.config/environment.d/envvars.conf" "CALIBRE_USE_SYSTEM_THEME" "1"
 
   _configure_ytdlp
 }

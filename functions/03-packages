@@ -688,37 +688,6 @@ function install_lazyvim {
 
     copy_config_file "${rubocop}" "${HOME}/.config/rubocop/config.yml"
 
-    if command -v julia > /dev/null; then
-      show_info "Installing Julia language server."
-      if ! julia --project="${HOME}"/.julia/environments/nvim-lspconfig -e 'using Pkg; Pkg.status()' |
-         grep -q "\[[0-9a-f]\+\]\s\+LanguageServer\s\+"; then
-        julia --project="${HOME}"/.julia/environments/nvim-lspconfig -e 'using Pkg; Pkg.add("LanguageServer")'
-      fi
-    fi
-
-    if command -v R > /dev/null; then
-      if [[ -v R_LIBS_USER ]] && [ -n "${R_LIBS_USER}" ]; then
-        show_info "Installing R language server and code formatter."
-        mkdir -p "${R_LIBS_USER}"
-        Rscript <(
-          cat << EOF
-if (system.file(package='languageserver') == '') {
-  install.packages(c('languageserver'),
-                   lib = "${R_LIBS_USER}",
-                   clean = TRUE
-                   repo = 'https://cloud.r-project.org/')
-}
-if (system.file(package='styler') == '') {
-  install.packages(c('styler'),
-                   lib = "${R_LIBS_USER}",
-                   clean = TRUE
-                   repo = 'https://cloud.r-project.org/')
-}
-EOF
-        )
-      fi
-    fi
-
     show_info "Installing LazyVim configuration files for Neovim."
     if [ -d "${HOME}/.config/nvim" ]; then
       if [ -d "${HOME}/.config/nvim/.git" ] &&

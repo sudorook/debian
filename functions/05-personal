@@ -788,6 +788,7 @@ function import_kde_settings {
       hex1=$((16#"${hex1}"))
       hex2=$((16#"${hex2}"))
       if [ -n "${hex1}" ] && [ -n "${hex2}" ]; then
+        "${kwconfig}" --file kcminputrc --group "Libinput" --group "${hex1}" --group "${hex2}" --group "${touchpad}" --key "Enabled" "true"
         "${kwconfig}" --file kcminputrc --group "Libinput" --group "${hex1}" --group "${hex2}" --group "${touchpad}" --key "NaturalScroll" "true"
         "${kwconfig}" --file kcminputrc --group "Libinput" --group "${hex1}" --group "${hex2}" --group "${touchpad}" --key "TapToClick" "true"
       fi

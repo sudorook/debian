@@ -10,6 +10,29 @@
 PS1='[\u@\h \W]\$ '
 
 #
+# Append local directories to PATH
+#
+
+# custom scripts
+if ! [[ "${PATH}" =~ :?${HOME}/.scripts:? ]]; then
+  export PATH="${HOME}/.scripts:${PATH}"
+fi
+
+# local executables
+if ! [[ "${PATH}" =~ :?${HOME}/.local/bin:? ]]; then
+  export PATH="${HOME}/.local/bin:${PATH}"
+fi
+
+# local libraries
+if ! [[ "${LD_LIBRARY_PATH}" =~ :?/usr/local/lib:? ]]; then
+  LD_LIBRARY_PATH="/usr/local/lib64:/usr/local/lib32:/usr/local/lib:${LD_LIBRARY_PATH}"
+fi
+if ! [[ "${LD_LIBRARY_PATH}" =~ :?${HOME}/.local/lib:? ]]; then
+  LD_LIBRARY_PATH="${HOME}/.local/lib64:${HOME}/.local/lib32:${HOME}/.local/lib:${LD_LIBRARY_PATH}"
+fi
+export LD_LIBRARY_PATH
+
+#
 # Global settings
 #
 
@@ -94,25 +117,6 @@ if command -v beet > /dev/null 2>&1; then
     eval "$(beet completion)"
   fi
 fi
-
-# custom scripts
-if ! [[ "${PATH}" =~ :?${HOME}/.scripts:? ]]; then
-  export PATH="${HOME}/.scripts:${PATH}"
-fi
-
-# local executables
-if ! [[ "${PATH}" =~ :?${HOME}/.local/bin:? ]]; then
-  export PATH="${HOME}/.local/bin:${PATH}"
-fi
-
-# local libraries
-if ! [[ "${LD_LIBRARY_PATH}" =~ :?/usr/local/lib:? ]]; then
-  LD_LIBRARY_PATH="/usr/local/lib64:/usr/local/lib32:/usr/local/lib:${LD_LIBRARY_PATH}"
-fi
-if ! [[ "${LD_LIBRARY_PATH}" =~ :?${HOME}/.local/lib:? ]]; then
-  LD_LIBRARY_PATH="${HOME}/.local/lib64:${HOME}/.local/lib32:${HOME}/.local/lib:${LD_LIBRARY_PATH}"
-fi
-export LD_LIBRARY_PATH
 
 #
 # Set bash aliases

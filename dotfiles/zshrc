@@ -12,6 +12,34 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 #
+# Append local directories to PATH
+#
+
+# zsh
+if [ -d ${HOME}/.local/share/zsh/site-functions ]; then
+  fpath=(${HOME}/.local/share/zsh/site-functions "${fpath[@]}")
+fi
+
+# custom scripts
+if ! [[ "${PATH}" =~ :?${HOME}/.scripts:? ]]; then
+  export PATH="${HOME}/.scripts:${PATH}"
+fi
+
+# local executables
+if ! [[ "${PATH}" =~ :?${HOME}/.local/bin:? ]]; then
+  export PATH="${HOME}/.local/bin:${PATH}"
+fi
+
+# local libraries
+if ! [[ "${LD_LIBRARY_PATH}" =~ :?/usr/local/lib:? ]]; then
+  LD_LIBRARY_PATH="/usr/local/lib64:/usr/local/lib32:/usr/local/lib:${LD_LIBRARY_PATH}"
+fi
+if ! [[ "${LD_LIBRARY_PATH}" =~ :?${HOME}/.local/lib:? ]]; then
+  LD_LIBRARY_PATH="${HOME}/.local/lib64:${HOME}/.local/lib32:${HOME}/.local/lib:${LD_LIBRARY_PATH}"
+fi
+export LD_LIBRARY_PATH
+
+#
 # Global settings
 #
 
@@ -88,30 +116,6 @@ if command -v R Rscript > /dev/null 2>&1; then
     fi
   fi
 fi
-
-# zsh
-if [ -d ${HOME}/.local/share/zsh/site-functions ]; then
-  fpath=(${HOME}/.local/share/zsh/site-functions "${fpath[@]}")
-fi
-
-# custom scripts
-if ! [[ "${PATH}" =~ :?${HOME}/.scripts:? ]]; then
-  export PATH="${HOME}/.scripts:${PATH}"
-fi
-
-# local executables
-if ! [[ "${PATH}" =~ :?${HOME}/.local/bin:? ]]; then
-  export PATH="${HOME}/.local/bin:${PATH}"
-fi
-
-# local libraries
-if ! [[ "${LD_LIBRARY_PATH}" =~ :?/usr/local/lib:? ]]; then
-  LD_LIBRARY_PATH="/usr/local/lib64:/usr/local/lib32:/usr/local/lib:${LD_LIBRARY_PATH}"
-fi
-if ! [[ "${LD_LIBRARY_PATH}" =~ :?${HOME}/.local/lib:? ]]; then
-  LD_LIBRARY_PATH="${HOME}/.local/lib64:${HOME}/.local/lib32:${HOME}/.local/lib:${LD_LIBRARY_PATH}"
-fi
-export LD_LIBRARY_PATH
 
 #
 # Set zsh aliases

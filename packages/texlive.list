@@ -1,4 +1,6 @@
 fonts-font-awesome
+libfile-homedir-perl
+libyaml-tiny-perl
 pdf-presenter-console
 texlive
 texlive-bibtex-extra

@@ -37,6 +37,7 @@ r-cran-rcppeigen
 r-cran-reshape2
 r-cran-rglpk
 r-cran-rmarkdown
+r-cran-rmpfr
 r-cran-roxygen2
 r-cran-shiny
 r-cran-testthat

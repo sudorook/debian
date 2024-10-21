@@ -4,6 +4,18 @@
 # ~/.zshrc
 #
 
+# Enable setting the starting directory to the current working directory of the
+# parent process in WSL2. This allows duplicate tabs/panes in Windows Terminal
+# to start in the directory of the tab/pane being duplicated.
+
+[[ -n "${WT_SESSION}" ]] && {
+  function chpwd {
+    echo -en '\e]9;9];"'
+    wslpath -w "${PWD}" | tr -d '\n'
+    echo -en '"\x07'
+  }
+}
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.

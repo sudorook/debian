@@ -9,6 +9,18 @@
 
 PS1='[\u@\h \W]\$ '
 
+# Enable setting the starting directory to the current working directory of the
+# parent process in WSL2. This allows duplicate tabs/panes in Windows Terminal
+# to start in the directory of the tab/pane being duplicated.
+
+[[ -n "${WT_SESSION}" ]] && {
+  chpwd() {
+    echo -en '\e]9;9];"'
+    wslpath -w "${PWD}" | tr -d '\n'
+    echo -en '"\x07'
+  }
+}
+
 #
 # Append local directories to PATH
 #

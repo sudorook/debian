@@ -2,5 +2,7 @@ iwd
 network-manager-openvpn
 network-manager-openvpn-gnome
 openssh-server
+tcpdump
+traceroute
 wireguard-tools
 wireless-tools

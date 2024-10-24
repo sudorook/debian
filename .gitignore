@@ -28,6 +28,7 @@ debian_postinstall
 *.cab
 *.xar
 *.zst
+*.tzst
 
 # Packing-only formats
 *.iso

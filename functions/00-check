@@ -396,7 +396,7 @@ function copy_config_file {
   if [ -f "${dest}" ]; then
     if ! cmp -s "${source}" "${dest}"; then
       show_info "Backing up existing ${dest@Q}."
-      mv -v "${dest}" "${dest}_$(date +%Y%m%d-%k%M%S).bak"
+      mv -v "${dest}" "${dest}_$(date +%Y%m%d-%H%M%S).bak"
       cp -v "${source}" "${dest}"
     else
       show_info "${dest} already set."

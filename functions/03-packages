@@ -535,7 +535,7 @@ function install_torbrowser {
     mkdir -p "${local_applications}"
     if [ -d "${torbrowser_path}" ]; then
       show_warning "Backing up and replacing existing Tor Browser installation."
-      mv "${torbrowser_path}" "${torbrowser_path}.$(date +%Y%m%d-%k%M%S)"
+      mv "${torbrowser_path}" "${torbrowser_path}.$(date +%Y%m%d-%H%M%S)"
     fi
     mv tor-browser "${torbrowser_path}"
 
@@ -698,7 +698,7 @@ function install_lazyvim {
           show_success "Existing LazyVim updated."
       else
         show_info "Backing up existing Neovim config directory."
-        mv -v "${HOME}/.config/nvim" "${HOME}/.config/nvim_$(date +%Y%m%d-%k%M%S)"
+        mv -v "${HOME}/.config/nvim" "${HOME}/.config/nvim_$(date +%Y%m%d-%H%M%S)"
         git clone https://github.com/sudorook/lazyvim.nvim.git "${HOME}/.config/nvim"
         show_success "LazyVim installed."
       fi

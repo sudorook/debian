@@ -1,3 +1,4 @@
 qemu-guest-agent
 spice-vdagent
+virglrenderer
 xserver-xorg-video-qxl

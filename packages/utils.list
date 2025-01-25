@@ -1,3 +1,4 @@
+7zip
 acpi
 aptitude
 bc
@@ -28,7 +29,6 @@ net-tools
 nmap
 ntfs-3g
 nvme-cli
-p7zip
 parallel
 parted
 pdftk

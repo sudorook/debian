@@ -24,6 +24,7 @@ libbcprov-java
 libcommons-lang3-java
 lm-sensors
 lshw
+lsscsi
 mtools
 net-tools
 nmap

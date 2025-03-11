@@ -47,28 +47,28 @@ function get_default {
     # for backported kernels...
     if [[ "${current}" =~ bpo ]]; then
       local kernels
-      kernels=($(ls -r /boot/vmlinuz*bpo*))
-      new=$(basename ${kernels[0]})
+      mapfile -t kernels < <(ls -r /boot/vmlinuz*bpo*)
+      new="$(basename "${kernels[0]}")"
     # if using default kernel...
     elif [[ "${current}" =~ vmlinuz-[0-9]\.[0-9]+\.0-[0-9]+-[amd64|i386] ]]; then
       local version
       local kernels
       version="$(basename "${current}" | sed -n "s/vmlinuz-\([0-9\.-]\+\)-[0-9]\+-\(i386\|amd64\)/\1/p")"
-      kernels=($(ls -r /boot/vmlinuz-${version}*))
-      new=$(basename ${kernels[0]})
+      mapfile -t kernels < <(ls -r /boot/vmlinuz-"${version}"*)
+      new="$(basename "${kernels[0]}")"
     # if using non-standard kernel, keep it if it still exists
     elif [ -f "/boot/$(basename "${current}")" ]; then
       new="$(basename "${current}")"
     # otherwise pick the first (lexicographically sorted) kernel
     else
       local kernels
-      kernels=($(ls -r /boot/vmlinuz*))
-      new=$(basename ${kernels[0]})
+      mapfile -t kernels < <(ls -r /boot/vmlinuz*)
+      new="$(basename "${kernels[0]}")"
     fi
   else
     local kernels
-    kernels=($(ls -r /boot/vmlinuz*))
-    new=$(basename ${kernels[0]})
+    mapfile -t kernels < <(ls -r /boot/vmlinuz*)
+    new="$(basename "${kernels[0]}")"
   fi
   echo "${new}"
 }

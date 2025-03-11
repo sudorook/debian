@@ -499,5 +499,3 @@ done < <(findmnt -Recvruno SOURCE,TARGET,FSTYPE,OPTIONS,FSROOT "$root")
     printf '\t%-10s\t%-10s\t%-10s\t0 0\n\n' 'none' 'swap' "$options"
   done
 } </proc/swaps
-
-# vim: et ts=2 sw=2 ft=sh:

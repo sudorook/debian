@@ -100,6 +100,7 @@ function main {
           install_codecs
           install_containers
           install_dev
+          # install_nix
           # install_extra
           install_extra_kde
           # install_pipewire

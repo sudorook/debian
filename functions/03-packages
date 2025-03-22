@@ -295,6 +295,16 @@ function install_dev {
   fi
 }
 
+function install_nix {
+  local nix="${DIR}/packages/nix.list"
+  show_header "Installing Nix."
+  check_installed "${nix}"
+  show_success "Installed Nix."
+
+  show_info "Adding ${USER} to nix-users."
+  sudo usermod -aG nix-users "${USER}"
+}
+
 function _configure_ytdlp {
   local ytdlconf="${DIR}/configs/ytdl.conf"
   show_info "Installing yt-dlp/youtube-dl config."
@@ -806,6 +816,7 @@ function 03-packages {
         install_codecs
         install_containers
         install_dev
+        install_nix
         install_extra
         install_extra_kde
         install_pipewire
@@ -852,6 +863,10 @@ function 03-packages {
         ;;
       "Development")
         install_dev
+        show_info "Main\n ${ENDBRANCH} Apps (Hit ENTER to see options again.)"
+        ;;
+      "Nix")
+        install_nix
         show_info "Main\n ${ENDBRANCH} Apps (Hit ENTER to see options again.)"
         ;;
       "Extra applications")

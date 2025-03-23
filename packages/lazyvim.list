@@ -6,3 +6,5 @@ npm
 python3-venv
 ripgrep
 ruby-rubygems
+wl-clipboard
+xclip

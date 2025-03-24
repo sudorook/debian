@@ -47,6 +47,19 @@ function check_url_debian {
   ${missing} && return 1 || return 0
 }
 
+function check_neovim_appimage {
+  local neovim_url="https://github.com/neovim/neovim/releases/download/stable/nvim-linux-x86_64.appimage"
+  local missing=false
+
+  if try_curl "${neovim_url}"; then
+    show_success "${neovim_url}"
+  else
+    show_error "${neovim_url}"
+    missing=true
+  fi
+  ${missing} && return 1 || return 0
+}
+
 function check_url_torbrowser {
   local torbrowser_version
   local torbrowser_url="https://www.torproject.org/dist/torbrowser"
@@ -66,4 +79,5 @@ function check_url_torbrowser {
 }
 
 check_url_debian
+check_neovim_appimage
 check_url_torbrowser

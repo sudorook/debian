@@ -677,7 +677,7 @@ function install_lazyvim {
     pushd "${tmp}" > /dev/null || exit
     mkdir -p ~/.local/bin
     curl -Ls \
-      https://github.com/neovim/neovim/releases/download/stable/nvim.appimage \
+      https://github.com/neovim/neovim/releases/download/stable/nvim-linux-x86_64.appimage \
       -o ~/.local/bin/nvim.appimage
     chmod +x ~/.local/bin/nvim.appimage
     popd > /dev/null || exit

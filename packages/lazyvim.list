@@ -1,7 +1,9 @@
 fd-find
 fzf
+gcc
 golang
 lua51
+luarocks
 npm
 python3-venv
 ripgrep

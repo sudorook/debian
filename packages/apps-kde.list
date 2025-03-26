@@ -1,5 +1,6 @@
 ark
 bleachbit
+calibre
 dconf-cli
 dconf-editor
 feh
@@ -45,3 +46,4 @@ syncthingtray-kde-plasma
 transmission-qt
 webp-pixbuf-loader
 xdg-utils
+yt-dlp

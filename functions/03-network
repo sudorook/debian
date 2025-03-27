@@ -95,6 +95,16 @@ function install_firewall {
   sudo systemctl enable ufw
 }
 
+function install_firewall_kde {
+  local firewallkde="${DIR}/packages/firewall-kde.list"
+
+  show_header "Setting up Plasma firewall."
+  check_installed "${firewallkde}"
+  show_success "Firewall packages installed."
+
+  sudo systemctl enable --now firewalld
+}
+
 function install_tor {
   local tor="${DIR}/packages/tor.list"
 
@@ -148,6 +158,7 @@ function 03-network {
     "Networking"
     "Local discovery"
     "Firewall"
+    "Firewall KDE"
     "Install Tor"
     "Tunnel apt over Tor")
   local option
@@ -160,6 +171,7 @@ function 03-network {
         install_network
         install_discovery
         install_firewall
+        install_firewall_kde
         install_tor
         use_onion_repos
         show_info "Main\n ${ENDBRANCH} Network (Hit ENTER to see options again.)"
@@ -174,6 +186,10 @@ function 03-network {
         ;;
       "Firewall")
         install_firewall
+        show_info "Main\n ${ENDBRANCH} Network (Hit ENTER to see options again.)"
+        ;;
+      "Firewall KDE")
+        install_firewall_kde
         show_info "Main\n ${ENDBRANCH} Network (Hit ENTER to see options again.)"
         ;;
       "Install Tor")

@@ -112,9 +112,8 @@ function install_tor {
   check_installed "${tor}"
   show_success "Tor installed."
 
-  show_info "Enabling and starting tor service."
-  sudo systemctl enable tor
-  sudo systemctl start tor
+  show_info "Enabling and starting Tor service."
+  sudo systemctl enable --now tor
 }
 
 function use_onion_repos {

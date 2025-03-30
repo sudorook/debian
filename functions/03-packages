@@ -279,20 +279,6 @@ function install_dev {
   _install_julia
   _install_r
   _install_rust
-
-  show_info "Installing Vim packages."
-  mkdir -p "${vimpack}"
-
-  if ! [[ -e "${vimpack}/kotlin-vim" ]]; then
-    show_info "Installing kotlin-vim for Vim syntax highlighting."
-    git clone https://github.com/udalov/kotlin-vim.git \
-      "${vimpack}/kotlin-vim"
-  fi
-
-  if ! [[ -e "${vimpack}/Nvim-R" ]]; then
-    show_info "Installing Nvim-R."
-    git clone https://github.com/jalvesaq/Nvim-R.git "${vimpack}/Nvim-R"
-  fi
 }
 
 function install_nix {
@@ -576,8 +562,6 @@ function install_vim {
   cp -f "${vimrc}" "${HOME}/.vimrc"
   show_success "vimrc installed."
 
-  mkdir -p "${vimpack}"
-
   show_info "Configuring active vim addons."
   # NOTE: DO NOT INSTALL AIRLINE FROM HERE!!!
   # It will be loaded automatically --- using vim-addons here will cause it to
@@ -586,9 +570,6 @@ function install_vim {
     align alternate ctrlp detectindent doxygen-toolkit fugitive \
     nerd-commenter pathogen surround syntastic tabular latex-suite \
     youcompleteme taglist julia ultisnips xmledit lastplace snippets
-
-  git clone https://github.com/airblade/vim-gitgutter.git \
-    "${vimpack}/vim-gitgutter"
 
   show_info "Setting Vim as default tool for git diffs and merges."
   # 00-check makes sure the git is installed, so no need for checks here.
@@ -599,6 +580,26 @@ function install_vim {
   if command -v xdg-mime > /dev/null 2>&1; then
     show_info "Setting Vim MIME associations."
     xdg-mime default vim.desktop text/plain
+  fi
+
+  show_info "Installing Vim packages."
+  mkdir -p "${vimpack}"
+
+  if ! [[ -e "${vimpack}/kotlin-vim" ]]; then
+    show_info "Installing kotlin-vim for Vim syntax highlighting."
+    git clone https://github.com/udalov/kotlin-vim.git \
+      "${vimpack}/kotlin-vim"
+  fi
+
+  if ! [[ -e "${vimpack}/Nvim-R" ]]; then
+    show_info "Installing Nvim-R."
+    git clone https://github.com/jalvesaq/Nvim-R.git "${vimpack}/Nvim-R"
+  fi
+
+  if ! [[ -e "${vimpack}/vim-gitgutter" ]]; then
+    show_info "Installing vim-gitgutter."
+    git clone https://github.com/airblade/vim-gitgutter.git \
+      "${vimpack}/vim-gitgutter"
   fi
 
   show_info "Install local wordlist."

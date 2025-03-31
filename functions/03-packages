@@ -363,7 +363,7 @@ function install_kvm {
   check_installed "${kvm}"
   show_success "KVM installed."
 
-  show_info "Adding $(whoami) to libvirt groups."
+  show_info "Adding $(whoami) to libvirt group."
   sudo usermod -aG libvirt "$(whoami)"
 
   show_info "Creating local libvirt directories."
@@ -375,8 +375,7 @@ function install_kvm {
     sudo sed -i "/^hosts/{s/files/files libvirt libvirt_guest/g}" "${nsconf}"
   fi
 
-  sudo systemctl enable libvirtd
-  sudo systemctl start libvirtd
+  sudo systemctl enable --now libvirtd
 }
 
 function install_kvm_guest {

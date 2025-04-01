@@ -784,6 +784,7 @@ function 03-packages {
     "Codecs"
     "Containers"
     "Development"
+    "Nix"
     "Extra applications"
     "Extra KDE applications"
     "Emulators"

@@ -1,3 +1,6 @@
+# Based on romkatv/powerlevel10k/config/p10k-lean.zsh, checksum 37983.
+# Wizard options: nerdfont-v3 + powerline, small icons, unicode, lean, 1 line, compact,
+# few icons, concise, transient_prompt, instant_prompt=verbose.
 # Type `p10k configure` to generate another config.
 #
 # Config for Powerlevel10k with lean prompt style. Type `p10k configure` to generate
@@ -231,6 +234,7 @@
     .perl-version
     .php-version
     .tool-versions
+    .mise.toml
     .shorten_folder_marker
     .svn
     .terraform
@@ -716,6 +720,12 @@
   typeset -g POWERLEVEL9K_RANGER_FOREGROUND=178
   # Custom icon.
   # typeset -g POWERLEVEL9K_RANGER_VISUAL_IDENTIFIER_EXPANSION='⭐'
+
+  ####################[ yazi: yazi shell (https://github.com/sxyazi/yazi) ]#####################
+  # Yazi shell color.
+  typeset -g POWERLEVEL9K_YAZI_FOREGROUND=178
+  # Custom icon.
+  # typeset -g POWERLEVEL9K_YAZI_VISUAL_IDENTIFIER_EXPANSION='⭐'
 
   ######################[ nnn: nnn shell (https://github.com/jarun/nnn) ]#######################
   # Nnn shell color.
@@ -1642,7 +1652,7 @@
 
   # User-defined prompt segments may optionally provide an instant_prompt_* function. Its job
   # is to generate the prompt segment for display in instant prompt. See
-  # https://github.com/romkatv/powerlevel10k/blob/master/README.md#instant-prompt.
+  # https://github.com/romkatv/powerlevel10k#instant-prompt.
   #
   # Powerlevel10k will call instant_prompt_* at the same time as the regular prompt_* function
   # and will record all `p10k segment` calls it makes. When displaying instant prompt, Powerlevel10k
@@ -1678,7 +1688,7 @@
   #              it incompatible with your zsh configuration files.
   #   - quiet:   Enable instant prompt and don't print warnings when detecting console output
   #              during zsh initialization. Choose this if you've read and understood
-  #              https://github.com/romkatv/powerlevel10k/blob/master/README.md#instant-prompt.
+  #              https://github.com/romkatv/powerlevel10k#instant-prompt.
   #   - verbose: Enable instant prompt and print a warning when detecting console output during
   #              zsh initialization. Choose this if you've never tried instant prompt, haven't
   #              seen the warning, or if you are unsure what this all means.
@@ -1805,14 +1815,21 @@ autoload -U +X bashcompinit && bashcompinit
 ## History wrapper
 function omz_history {
   # parse arguments and remove from $@
-  local clear list stamp
+  local clear list stamp REPLY
   zparseopts -E -D c=clear l=list f=stamp E=stamp i=stamp t:=stamp
 
   if [[ -n "$clear" ]]; then
     # if -c provided, clobber the history file
-    echo -n >| "$HISTFILE"
+
+    # confirm action before deleting history
+    print -nu2 "This action will irreversibly delete your command history. Are you sure? [y/N] "
+    builtin read -E
+    [[ "$REPLY" = [yY] ]] || return 0
+
+    print -nu2 >| "$HISTFILE"
     fc -p "$HISTFILE"
-    echo >&2 History file deleted.
+
+    print -u2 History file deleted.
   elif [[ $# -eq 0 ]]; then
     # if no arguments provided, show full history starting from 1
     builtin fc $stamp -l 1

@@ -32,7 +32,7 @@ function try_wget {
 }
 
 function try_curl {
-  curl -ILs --retry 5 --retry-connrefused "${1}" > /dev/null
+  curl -ILs --retry 5 --retry-connrefused --fail-with-body "${1}" > /dev/null
 }
 
 function check_url_debian {

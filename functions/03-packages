@@ -500,13 +500,13 @@ function install_torbrowser {
     show_info "Downloading Tor developers' GPG key."
     gpg --auto-key-locate nodefault,wkd --locate-keys torbrowser@torproject.org
 
-    torbrowser_version=$(curl -Ls https://www.torproject.org/download/ |
-                         sed -n 's,^ \+<a class="downloadLink" href="/dist/torbrowser/\([0-9\.]\+\)/tor-browser-linux.*">,\1,p')
+    torbrowser_version="$(curl -Ls 'https://www.torproject.org/download/' |
+                          sed -n 's,.*downloadLink.*href="/dist/torbrowser/\([0-9\.]\+\)/.*linux.*,\1,p')"
     arch=$(uname -m)
     if [ "${arch: -2}" -eq 86 ]; then
-      torbrowser_package="tor-browser-linux32-${torbrowser_version}_ALL.tar.xz"
+      torbrowser_package="tor-browser-linux-i686-${torbrowser_version}.tar.xz"
     elif [ "${arch: -2}" -eq 64 ]; then
-      torbrowser_package="tor-browser-linux64-${torbrowser_version}_ALL.tar.xz"
+      torbrowser_package="tor-browser-linux-x86_64-${torbrowser_version}.tar.xz"
     fi
 
     show_info "Downloading release tarball."

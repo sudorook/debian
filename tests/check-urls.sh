@@ -62,12 +62,12 @@ function check_neovim_appimage {
 
 function check_url_torbrowser {
   local torbrowser_version
-  local torbrowser_url="https://www.torproject.org/dist/torbrowser"
+  local torbrowser_url="https://dist.torproject.org/torbrowser"
   local missing=false
-  torbrowser_version=$(curl -Ls https://www.torproject.org/download/ |
-                       sed -n 's,^ \+<a class="downloadLink" href="/dist/torbrowser/\([0-9\.]\+\)/tor-browser-linux.*">,\1,p')
-  for arch in "32" "64"; do
-    local torbrowser_package="tor-browser-linux${arch}-${torbrowser_version}_ALL.tar.xz"
+  torbrowser_version="$(curl -Ls 'https://www.torproject.org/download/' |
+                        sed -n 's,.*downloadLink.*href="/dist/torbrowser/\([0-9\.]\+\)/.*linux.*,\1,p')"
+  for arch in "i686" "x86_64"; do
+    local torbrowser_package="tor-browser-linux-${arch}-${torbrowser_version}.tar.xz"
     if try_curl "${torbrowser_url}/${torbrowser_version}/${torbrowser_package}"; then
       show_success "${torbrowser_url}/${torbrowser_version}/${torbrowser_package}"
     else

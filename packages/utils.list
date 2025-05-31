@@ -18,6 +18,7 @@ gdisk
 gnupg
 gocryptfs
 hfsprogs
+hwinfo
 hyperfine
 inotify-tools
 libbcprov-java

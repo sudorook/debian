@@ -427,7 +427,7 @@ function install_music {
   local mpdconf="${DIR}/configs/mpd.conf"
   local mpddir="${HOME}/.config/mpd"
   local ncmpcppconf="${DIR}/configs/ncmpcpp.conf"
-  local ncmpcppdir="${HOME}/.ncmpcpp"
+  local ncmpcppdir="${HOME}/.config/ncmpcpp"
 
   show_header "Installing music applications."
   check_installed "${music}"

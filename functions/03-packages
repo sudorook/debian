@@ -170,6 +170,12 @@ function _install_plasma_dynamic_wallpapers {
         plasma-wallpaper-dynamic_4.4.0-0ubuntu9_amd64.deb
       )
       ;;
+    forky)
+      packages=(
+        libkdynamicwallpaper4_4.4.1-0ubuntu5_amd64.deb
+        plasma-wallpaper-dynamic_4.4.1-0ubuntu5_amd64.deb
+      )
+      ;;
     *)
       show_warning "Not supported for ${release@Q}. Skipping."
       return

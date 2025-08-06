@@ -89,10 +89,10 @@ function enable_nonfree_repos {
 
 function upgrade_debian_release {
   local srclist="/etc/apt/sources.list"
-  local busterlist="${DIR}/sources/buster-sources.list"
   local bullseyelist="${DIR}/sources/bullseye-sources.list"
   local bookwormlist="${DIR}/sources/bookworm-sources.list"
   local trixielist="${DIR}/sources/trixie-sources.list"
+  local forkylist="${DIR}/sources/forky-sources.list"
   local sidlist="${DIR}/sources/sid-sources.list"
 
   # check how current sources.list is configured.
@@ -118,27 +118,11 @@ function upgrade_debian_release {
   release="${DEBIAN_CODENAME:-"$(lsb_release -sc)"}"
 
   show_question "Upgrade Debian release?"
-  local options=("Back" "Buster" "Bullseye" "Bookworm" "Trixie" "Sid")
+  local options=("Back" "Bullseye" "Bookworm" "Trixie" "Forky" "Sid")
   local option
   select option in "${options[@]}"; do
     case "${option}" in
       "Back")
-        break
-        ;;
-      "Buster")
-        if [[ "${release}" == "buster" ]]; then
-          show_warning "Already set to ${release}."
-        elif [[ "${release}" == "bullseye" ]] ||
-             [[ "${release}" == "bookworm" ]] ||
-             [[ "${release}" == "trixie" ]] ||
-             [[ "${release}" == "sid" ]]; then
-          show_warning "Downgrades not possible."
-        else
-          sudo cp -f "${srclist}" "${srclist}.${RANDOM}.bak"
-          sudo cp -f "${busterlist}" "${srclist}"
-          is_upgraded=true
-          release=buster
-        fi
         break
         ;;
       "Bullseye")
@@ -146,6 +130,7 @@ function upgrade_debian_release {
           show_warning "Already set to ${release}."
         elif [[ "${release}" == "bookworm" ]] ||
              [[ "${release}" == "trixie" ]] ||
+             [[ "${release}" == "forky" ]] ||
              [[ "${release}" == "sid" ]]; then
           show_warning "Downgrades not possible."
         else
@@ -160,11 +145,11 @@ function upgrade_debian_release {
         if [[ "${release}" == "bookworm" ]]; then
           show_warning "Already set to ${release}."
         elif [[ "${release}" == "trixie" ]] ||
+             [[ "${release}" == "forky" ]] ||
              [[ "${release}" == "sid" ]]; then
           show_warning "Downgrades not possible."
         else
-          if [[ "${release}" == "buster" ]] ||
-             [[ "${release}" == "bullseye" ]]; then
+          if [[ "${release}" == "bullseye" ]]; then
             if [[ "${is_nonfree}" == true ]]; then
               is_nonfreefirmware=true
             fi
@@ -179,11 +164,11 @@ function upgrade_debian_release {
       "Trixie")
         if [[ "${release}" == "trixie" ]]; then
           show_warning "Already set to ${release}."
-        elif [[ "${release}" == "sid" ]]; then
+        elif [[ "${release}" == "forky" ]] ||
+             [[ "${release}" == "sid" ]]; then
           show_warning "Downgrades not possible."
         else
-          if [[ "${release}" == "buster" ]] ||
-             [[ "${release}" == "bullseye" ]]; then
+          if [[ "${release}" == "bullseye" ]]; then
             if [[ "${is_nonfree}" == true ]]; then
               is_nonfreefirmware=true
             fi
@@ -195,12 +180,29 @@ function upgrade_debian_release {
         fi
         break
         ;;
+      "Forky")
+        if [[ "${release}" == "forky" ]]; then
+          show_warning "Already set to ${release}."
+        elif [[ "${release}" == "sid" ]]; then
+          show_warning "Downgrades not possible."
+        else
+          if [[ "${release}" == "bullseye" ]]; then
+            if [[ "${is_nonfree}" == true ]]; then
+              is_nonfreefirmware=true
+            fi
+          fi
+          sudo cp -f "${srclist}" "${srclist}.${RANDOM}.bak"
+          sudo cp -f "${forkylist}" "${srclist}"
+          is_upgraded=true
+          release=forky
+        fi
+        break
+        ;;
       "Sid")
         if [[ "${release}" == "sid" ]]; then
           show_warning "Already set to ${release}."
         else
-          if [[ "${release}" == "buster" ]] ||
-             [[ "${release}" == "bullseye" ]]; then
+          if [[ "${release}" == "bullseye" ]]; then
             if [[ "${is_nonfree}" == true ]]; then
               is_nonfreefirmware=true
             fi

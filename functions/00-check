@@ -176,11 +176,15 @@ function check_debian_release {
       DEBIAN_CODENAME=trixie
       DEBIAN_VERSION=13
       ;;
+    forky)
+      DEBIAN_CODENAME=forky
+      DEBIAN_VERSION=14
+      ;;
     sid)
       DEBIAN_CODENAME=sid
       DEBIAN_VERSION=99
       ;;
-    noble | mantic | lunar | kinetic | jammy | impish | hirstute | groovy | focal)
+    plucky | oracular | noble | mantic | lunar | kinetic | jammy | impish | hirstute | groovy | focal)
       show_warning "Use this script on Ubuntu at your own peril."
       ;;
     *)

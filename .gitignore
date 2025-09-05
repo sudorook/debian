@@ -146,6 +146,7 @@ nohup.out
 
 # General
 .DS_Store
+__MACOSX/
 .AppleDouble
 .LSOverride
 Icon[]

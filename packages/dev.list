@@ -98,5 +98,6 @@ tesseract-ocr-eng
 tidy
 tk
 uncrustify
+xmlstarlet
 yamllint
 yq

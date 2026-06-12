@@ -50,11 +50,23 @@ debian_postinstall
 # FROM: https://raw.githubusercontent.com/sudorook/gitignore/tweak/Global/Backup.gitignore
 #
 
+# Generic backup files
 *.bak
+*.back
+*.backup
+
+# Norton Ghost backup files
 *.gho
+
+# Generic original files
 *.ori
 *.orig
+*.original
+
+# Generic temporary files
 *.tmp
+*.temp
+*.temporary
 
 #
 # FROM: https://raw.githubusercontent.com/sudorook/gitignore/tweak/Global/Diff.gitignore
